@@ -3,7 +3,6 @@
 #include "Guid.h"
 #include <strsafe.h>
 #include "resource.h"
-#include "Registry.h"
 
 
 std::map<DWORD, CDeskBand*> CDeskBand::m_desklist;	///< set of CDeskBand objects which use the keyboard hook
@@ -16,7 +15,6 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_dwBandID(0)
 	, m_oldEditWndProc(NULL)
 	, m_pSite(NULL)
-	, m_bHideUnchanged(false)
 {
 	m_ObjRefCount = 1;
 	g_DllRefCount++;
@@ -460,6 +458,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 	{
 	case BN_CLICKED:
 		// button was pressed
+		FindPaths();
 		switch(LOWORD(wParam))
 		{
 		case 1:		// options
