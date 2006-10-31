@@ -217,7 +217,7 @@ STDMETHODIMP CDeskBand::TranslateAcceleratorIO(LPMSG pMsg)
 	{
 		// remove system beep on enter key by setting key code to 0
 		pMsg->wParam = 0;
-		::PostMessage(m_hWnd, WM_COMMAND, BM_CLICK, 1);
+		::PostMessage(m_hWnd, WM_COMMAND, BN_CLICKED, 0);
 		return S_OK;
 	}
 	else if (WM_KEYDOWN == pMsg->message && nVirtKey == VK_TAB)
@@ -315,20 +315,20 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 		{
 			if (DBIF_VIEWMODE_FLOATING & dwViewMode)
 			{
-				pdbi->ptMinSize.x = 200;
-				pdbi->ptMinSize.y = 400;
+				pdbi->ptMinSize.x = m_tbSize.cx + BUTTONSIZEX;
+				pdbi->ptMinSize.y = m_tbSize.cy;
 			}
 			else
 			{
-				pdbi->ptMinSize.x = MIN_SIZE_X;
-				pdbi->ptMinSize.y = MIN_SIZE_Y;
+				pdbi->ptMinSize.x = m_tbSize.cx + BUTTONSIZEX;
+				pdbi->ptMinSize.y = m_tbSize.cy;
 			}
 		}
 
 		if (pdbi->dwMask & DBIM_MAXSIZE)
 		{
 			pdbi->ptMaxSize.x = -1;
-			pdbi->ptMaxSize.y = 20;
+			pdbi->ptMaxSize.y = m_tbSize.cy;
 		}
 
 		if (pdbi->dwMask & DBIM_INTEGRAL)
@@ -339,8 +339,8 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 
 		if (pdbi->dwMask & DBIM_ACTUAL)
 		{
-			pdbi->ptActual.x = 100;
-			pdbi->ptActual.y = 20;
+			pdbi->ptActual.x = m_tbSize.cx + BUTTONSIZEX;
+			pdbi->ptActual.y = m_tbSize.cy;
 		}
 
 		if (pdbi->dwMask & DBIM_TITLE)
@@ -461,10 +461,50 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 		FindPaths();
 		switch(LOWORD(wParam))
 		{
+		case 0:		// edit control enter pressed
+			{
+				// get the command entered in the edit box
+				int count = MAX_PATH;
+				TCHAR * buf = new TCHAR[count+1];
+				while (::GetWindowText(m_hWndEdit, buf, count)>=count)
+				{
+					delete [] buf;
+					count += MAX_PATH;
+					buf = new TCHAR[count+1];
+				}
+				// when we start the console with the command the user
+				// has entered in the edit box, we want the console
+				// to execute the command immediately, and *not* quit after
+				// executing the command so the user can see the output.
+				// If however the user enters a '@' char in front of the command
+				// then the console shall quit after executing the command.
+				std::wstring params;
+				if (buf[0] == '@')
+					params = _T("/c ");
+				else				
+					params = _T("/k ");
+				params += buf;
+				StartCmd(params);
+				delete [] buf;
+			}
+			break;
 		case 1:		// options
+			break;
 		case 2:		// cmd
+			StartCmd(_T(""));
+			break;
 		case 3:		// copy name
+			{
+				std::wstring str = GetFileNames(_T("\r\n"));
+				WriteStringToClipboard(str, m_hWnd);
+			}
+			break;
 		case 4:		// copy path
+			{
+				std::wstring str = GetFilePaths(_T("\r\n"));
+				WriteStringToClipboard(str, m_hWnd);
+			}
+			break;
 		default:	// custom commands
 			break;
 		}
@@ -604,7 +644,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		m_hWndToolbar = CreateWindowEx(0,
 			TOOLBARCLASSNAME, 
 			NULL, 
-			WS_CHILD|TBSTYLE_LIST|TBSTYLE_FLAT|TBSTYLE_TRANSPARENT|CCS_NORESIZE|CCS_NODIVIDER|CCS_NOPARENTALIGN, 
+			WS_CHILD|TBSTYLE_LIST|TBSTYLE_TRANSPARENT|CCS_NORESIZE|CCS_NODIVIDER|CCS_NOPARENTALIGN, 
 			rc.right - BUTTONSIZEX,
 			rc.top,
 			BUTTONSIZEX,
@@ -691,7 +731,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[1].idCommand = 2;
 	tb[1].fsState = TBSTATE_ENABLED;
 	tb[1].fsStyle = BTNS_BUTTON|BTNS_SHOWTEXT;
-	tb[1].iString = 0;
+	tb[1].iString = (INT_PTR)_T("Console");
 	DestroyIcon(hIcon);
 
 	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_COPYNAME));
@@ -699,7 +739,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[2].idCommand = 3;
 	tb[2].fsState = TBSTATE_ENABLED;
 	tb[2].fsStyle = BTNS_BUTTON|BTNS_SHOWTEXT;
-	tb[2].iString = 0;
+	tb[2].iString = (INT_PTR)_T("Copy Names");
 	DestroyIcon(hIcon);
 
 	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_COPYPATH));
@@ -707,7 +747,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[3].idCommand = 4;
 	tb[3].fsState = TBSTATE_ENABLED;
 	tb[3].fsStyle = BTNS_BUTTON|BTNS_SHOWTEXT;
-	tb[3].iString = 0;
+	tb[3].iString = (INT_PTR)_T("Copy Paths");
 	DestroyIcon(hIcon);
 
 	int customindex = NUMINTERNALCOMMANDS;

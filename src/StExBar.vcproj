@@ -199,6 +199,14 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Clipboard.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Cmd.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ExPaths.cpp"
 				>
 			</File>
