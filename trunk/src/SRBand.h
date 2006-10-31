@@ -131,5 +131,14 @@ private:
 
 	/// find all the paths of the current explorer view and the selected items
 	bool					FindPaths();
+	/// get a list of filenames in one string, separated by \c separator
+	std::wstring			GetFileNames(std::wstring separator);
+	/// get a list of filepaths in one string, separated by \c separator
+	std::wstring			GetFilePaths(std::wstring separator);
+	/// put a string on the clipboard
+	bool					WriteStringToClipboard(const stdstring& sClipdata, HWND hOwningWnd);
+	/// starts the console program to run a script
+	void					StartCmd(std::wstring params);
+
 };
 
