@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StExBar", "src\StExBar.vcproj", "{3C7BB9AF-8FB9-4AA5-ACAD-838C5C48716B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C7BB9AF-8FB9-4AA5-ACAD-838C5C48716B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3C7BB9AF-8FB9-4AA5-ACAD-838C5C48716B}.Debug|Win32.Build.0 = Debug|Win32
+		{3C7BB9AF-8FB9-4AA5-ACAD-838C5C48716B}.Release|Win32.ActiveCfg = Release|Win32
+		{3C7BB9AF-8FB9-4AA5-ACAD-838C5C48716B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
