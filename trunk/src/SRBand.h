@@ -6,6 +6,7 @@
 #include "ResizableGrip.h"
 #include <set>
 #include <map>
+#include "Registry.h"
 
 #define DB_CLASS_NAME (TEXT("SRBarClass"))
 
@@ -19,6 +20,15 @@
 #define SPACEBETWEENEDITANDBUTTON 0
 
 #define NUMINTERNALCOMMANDS 4
+
+/*
+command
+	name
+	icon
+	commandline
+	shortcutkey
+*/
+
 /**
  * Desk Band.
  * Implements a desk band used by the shell.
@@ -83,13 +93,13 @@ private:
 	HIMAGELIST		m_hToolbarImgList;	///< image list of the toolbar
 	SIZE			m_tbSize;			///< the max size of the toolbar
 
-	std::set<std::wstring> m_filelist;	///< list of files in the current view
-	std::wstring	m_filterstring;		///< the filter string
 	CResizableGrip	m_grip;				///< the grip used in the rename dialog
-	bool			m_bHideUnchanged;	///< true if the file which don't get renamed should be hidden
 
 	static std::map<DWORD, CDeskBand*> m_desklist;	///< map of thread-ID's and CDeskBand objects which use the keyboard hook
 	HHOOK			m_hook;				///< handle of the keyboard hook procedure
+
+	stdstring		m_currentDirectory;	///< the current directory of the explorer view
+	std::set<stdstring> m_selectedItems;///< list of items which are selected in the explorer view
 private:
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
@@ -116,5 +126,10 @@ private:
 	BOOL					RegisterAndCreateWindow(void);
 	/// set up the toolbar
 	BOOL					BuildToolbarButtons();
+
+	// functions put into separate cpp files
+
+	/// find all the paths of the current explorer view and the selected items
+	bool					FindPaths();
 };
 

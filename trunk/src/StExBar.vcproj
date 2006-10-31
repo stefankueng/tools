@@ -199,6 +199,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\ExPaths.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Registry.cpp"
 				>
 			</File>
