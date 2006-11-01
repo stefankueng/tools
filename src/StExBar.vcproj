@@ -215,6 +215,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Pidl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Registry.cpp"
 				>
 			</File>
@@ -302,6 +306,10 @@
 			</File>
 			<File
 				RelativePath=".\Guid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Pidl.h"
 				>
 			</File>
 			<File

@@ -2,6 +2,7 @@
 #include "SRBand.h"
 #include "Guid.h"
 #include <strsafe.h>
+#include <algorithm>
 #include "resource.h"
 #include "SimpleIni.h"
 
@@ -502,17 +503,55 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 			break;
 		case 3:		// copy name
 			{
-				wstring str = GetFileNames(_T("\r\n"));
+				wstring str = GetFileNames(_T("\r\n"), false);
 				WriteStringToClipboard(str, m_hWnd);
 			}
 			break;
 		case 4:		// copy path
 			{
-				wstring str = GetFilePaths(_T("\r\n"));
+				wstring str = GetFilePaths(_T("\r\n"), false);
 				WriteStringToClipboard(str, m_hWnd);
 			}
 			break;
 		default:	// custom commands
+			{
+				map<WORD, wstring>::iterator cl = m_commands.find(LOWORD(wParam));
+				if (cl != m_commands.end())
+				{
+					// now it->second is the command line string for the command
+					wstring commandline = cl->second;
+
+					// replace "%selpaths" with the paths of the selected items
+					wstring tag(_T("%selpaths"));
+					wstring::iterator it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+					if (it_begin != commandline.end())
+					{
+						// prepare the selected paths
+						wstring selpaths = GetFilePaths(_T(" "), true);
+						wstring::iterator it_end= it_begin + tag.size();
+						commandline.replace(it_begin, it_end, selpaths);
+					}
+					// replace "%selnames" with the names of the selected items
+					tag = _T("%selnames");
+					it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+					if (it_begin != commandline.end())
+					{
+						// prepare the selected names
+						wstring selnames = GetFileNames(_T(" "), true);
+						wstring::iterator it_end= it_begin + tag.size();
+						commandline.replace(it_begin, it_end, selnames);
+					}
+					// replace "%curdir" with the current directory
+					tag = _T("%curdir");
+					it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+					if (it_begin != commandline.end())
+					{
+						wstring::iterator it_end= it_begin + tag.size();
+						commandline.replace(it_begin, it_end, m_currentDirectory);
+					}
+					StartApplication(commandline);
+				}
+			}
 			break;
 		}
 		FocusChange(false);
@@ -676,17 +715,25 @@ LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lPa
 	map<DWORD, CDeskBand*>::iterator it = m_desklist.find(threadID);
 	if (it != m_desklist.end())
 	{
-		if (wParam == 'S' )//its about S key
+		if ((lParam & 0xc0000000) == 0)//key went from 'up' to 'down' state
 		{
-			if (GetKeyState(VK_CONTROL)&0x8000)// and Ctrl is currently pressed
+			map<WPARAM, hotkeymodifiers>::iterator hk = it->second->m_hotkeys.find(wParam);
+			if (hk != it->second->m_hotkeys.end())
 			{
-				if ((lParam & 0xc0000000) == 0)//key went from 'up' to 'down' state
-				{	
-					if (it->second->m_pSite)
+				bool alt = !!(GetKeyState(VK_MENU)&0x8000);
+				bool shift = !!(GetKeyState(VK_SHIFT)&0x8000);
+				bool control = !!(GetKeyState(VK_CONTROL)&0x8000);
+				if ((hk->second.alt == alt)&&
+					(hk->second.shift == shift)&&
+					(hk->second.control == control))
+				{
+					// special handling of command 0: just set the focus!
+					if ((hk->second.command==0)&&(it->second->m_pSite))
 					{
 						it->second->OnSetFocus();
 						return 1;//we processed it
 					}
+					it->second->OnCommand(MAKEWORD(hk->second.command, BN_CLICKED), 0);
 				}
 			}
 		}
@@ -697,6 +744,26 @@ LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lPa
 
 BOOL CDeskBand::BuildToolbarButtons()
 {
+	m_hotkeys.clear();
+	m_commands.clear();
+	// now fill in our own hotkeys
+	hotkeymodifiers modifiers;
+	modifiers.command = 0;		// edit box : ctrl-K
+	modifiers.alt = false;
+	modifiers.shift = false;
+	modifiers.control = true;
+	m_hotkeys[WPARAM('K')] = modifiers;
+	modifiers.command = 2;		// console : ctrl-M
+	modifiers.alt = false;
+	modifiers.shift = false;
+	modifiers.control = true;
+	m_hotkeys[WPARAM('M')] = modifiers;
+	modifiers.command = 4;		// copy paths : ctrl-shift-C
+	modifiers.alt = false;
+	modifiers.shift = true;
+	modifiers.control = true;
+	m_hotkeys[WPARAM('C')] = modifiers;
+
 	if (m_hWndToolbar == NULL)
 		return FALSE;
 
@@ -772,7 +839,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[3].iString = (INT_PTR)_T("Copy Paths");
 	DestroyIcon(hIcon);
 
-	int customindex = NUMINTERNALCOMMANDS;
+	int customindex = NUMINTERNALCOMMANDS-1;
 
 	for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
 	{
@@ -785,11 +852,33 @@ BOOL CDeskBand::BuildToolbarButtons()
 			hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_DEFAULT));
 			tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
 		}
-		tb[customindex].idCommand = customindex;
+		tb[customindex].idCommand = customindex+1;
 		tb[customindex].fsState = TBSTATE_ENABLED;
 		tb[customindex].fsStyle = fsStyle;
 		tb[customindex].iString = (INT_PTR)inifile.GetValue(*it, _T("name"), _T(""));
 		DestroyIcon(hIcon);
+		wstring cl = inifile.GetValue(*it, _T("commandline"), _T(""));
+		// now add the hotkey if it's present
+		wstring value;
+		hotkeymodifiers modifiers;
+		modifiers.command = customindex+1;
+		value = inifile.GetValue(*it, _T("hotkey_alt"), _T(""));
+		modifiers.alt = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))));
+		value = inifile.GetValue(*it, _T("hotkey_shift"), _T(""));
+		modifiers.shift = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))));
+		value = inifile.GetValue(*it, _T("hotkey_control"), _T(""));
+		modifiers.control = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))));
+		value = inifile.GetValue(*it, _T("hotkey"), _T(""));
+		if ((!value.empty())&&(!cl.empty()))
+		{
+			// the hotkey value could be a simple char or something more complicated like VK_F9
+			WCHAR * stop;
+			long val = wcstol(value.c_str(), &stop, 0);
+			if (val)
+				m_hotkeys[WPARAM(val)] = modifiers;
+		}
+		if (!cl.empty())
+			m_commands[WORD(customindex+1)] = cl;
 	}
 
 	SendMessage(m_hWndToolbar, TB_SETIMAGELIST, 0, (LPARAM)m_hToolbarImgList);
