@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SRBand.h"
 
-bool CDeskBand::WriteStringToClipboard(const stdstring& sClipdata, HWND hOwningWnd)
+bool CDeskBand::WriteStringToClipboard(const std::wstring& sClipdata, HWND hOwningWnd)
 {
 	// copy the string in ASCII and UNICODE to the clipboard
 

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SRBand.h"
+#include "SimpleIni.h"
 
 bool CDeskBand::FindPaths()
 {
@@ -46,7 +47,7 @@ bool CDeskBand::FindPaths()
 						if (SUCCEEDED(pFolderView->Items(SVGIO_SELECTION, IID_IEnumIDList, (LPVOID*)&pEnum)))
 						{
 							LPITEMIDLIST pidl;
-							TCHAR buf[MAX_PATH] = {0};
+							WCHAR buf[MAX_PATH] = {0};
 							ULONG fetched = 0;
 							do 
 							{
@@ -56,7 +57,7 @@ bool CDeskBand::FindPaths()
 									if (fetched)
 									{
 										if (SHGetPathFromIDList(pidl, buf))
-											m_selectedItems.insert(stdstring(buf));
+											m_selectedItems.insert(wstring(buf));
 									}
 									CoTaskMemFree(pidl);
 								}
@@ -76,12 +77,12 @@ bool CDeskBand::FindPaths()
 	return ((!m_currentDirectory.empty()) || (m_selectedItems.size()!=0));
 }
 
-std::wstring CDeskBand::GetFileNames(std::wstring separator)
+wstring CDeskBand::GetFileNames(wstring separator)
 {
-	std::wstring sRet;
+	wstring sRet;
 	if (m_selectedItems.size())
 	{
-		for (std::set<stdstring>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
+		for (set<wstring>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
 		{
 			size_t pos = it->find_last_of('\\');
 			if (pos >= 0)
@@ -95,12 +96,12 @@ std::wstring CDeskBand::GetFileNames(std::wstring separator)
 	return sRet;
 }
 
-std::wstring CDeskBand::GetFilePaths(std::wstring separator)
+wstring CDeskBand::GetFilePaths(wstring separator)
 {
-	std::wstring sRet;
+	wstring sRet;
 	if (m_selectedItems.size())
 	{
-		for (std::set<stdstring>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
+		for (set<wstring>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
 		{
 			if (!sRet.empty())
 				sRet += separator;

@@ -3,12 +3,13 @@
 #include <shlobj.h>
 
 #include "Globals.h"
-#include "ResizableGrip.h"
 #include <set>
 #include <map>
 #include "Registry.h"
 
-#define DB_CLASS_NAME (TEXT("SRBarClass"))
+using namespace std;
+
+#define DB_CLASS_NAME (TEXT("StExBarClass"))
 
 #define MIN_SIZE_X   100
 #define MIN_SIZE_Y   20
@@ -93,18 +94,18 @@ private:
 	HIMAGELIST		m_hToolbarImgList;	///< image list of the toolbar
 	SIZE			m_tbSize;			///< the max size of the toolbar
 
-	CResizableGrip	m_grip;				///< the grip used in the rename dialog
-
 	static std::map<DWORD, CDeskBand*> m_desklist;	///< map of thread-ID's and CDeskBand objects which use the keyboard hook
 	HHOOK			m_hook;				///< handle of the keyboard hook procedure
 
-	stdstring		m_currentDirectory;	///< the current directory of the explorer view
-	std::set<stdstring> m_selectedItems;///< list of items which are selected in the explorer view
+	wstring			m_currentDirectory;	///< the current directory of the explorer view
+	set<wstring>	m_selectedItems;	///< list of items which are selected in the explorer view
+
+	CRegStdWORD		m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
 private:
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
-	/// rename dialog callback function
-	static INT_PTR CALLBACK	RenameDlgFunc(HWND, UINT, WPARAM, LPARAM);
+	/// options dialog callback function
+	static INT_PTR CALLBACK	OptionsDlgFunc(HWND, UINT, WPARAM, LPARAM);
 
 	static LRESULT CALLBACK KeyboardHookProc(int code, WPARAM wParam, LPARAM lParam);
 
@@ -132,13 +133,13 @@ private:
 	/// find all the paths of the current explorer view and the selected items
 	bool					FindPaths();
 	/// get a list of filenames in one string, separated by \c separator
-	std::wstring			GetFileNames(std::wstring separator);
-	/// get a list of filepaths in one string, separated by \c separator
-	std::wstring			GetFilePaths(std::wstring separator);
+	wstring					GetFileNames(wstring separator);
+	/// get a list of file paths in one string, separated by \c separator
+	wstring					GetFilePaths(wstring separator);
 	/// put a string on the clipboard
-	bool					WriteStringToClipboard(const stdstring& sClipdata, HWND hOwningWnd);
+	bool					WriteStringToClipboard(const wstring& sClipdata, HWND hOwningWnd);
 	/// starts the console program to run a script
-	void					StartCmd(std::wstring params);
+	void					StartCmd(wstring params);
 
 };
 

@@ -3,9 +3,10 @@
 #include "Guid.h"
 #include <strsafe.h>
 #include "resource.h"
+#include "SimpleIni.h"
 
 
-std::map<DWORD, CDeskBand*> CDeskBand::m_desklist;	///< set of CDeskBand objects which use the keyboard hook
+map<DWORD, CDeskBand*> CDeskBand::m_desklist;	///< set of CDeskBand objects which use the keyboard hook
 
 CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_hwndParent(NULL)
@@ -15,6 +16,7 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_dwBandID(0)
 	, m_oldEditWndProc(NULL)
 	, m_pSite(NULL)
+	, m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
 {
 	m_ObjRefCount = 1;
 	g_DllRefCount++;
@@ -38,7 +40,7 @@ CDeskBand::~CDeskBand()
 		UnhookWindowsHookEx(m_hook);
 		m_pSite->Release();
 		m_pSite = NULL;
-		std::map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
+		map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
 		if (it != m_desklist.end())
 			m_desklist.erase(it);
 	}
@@ -243,7 +245,7 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
 		UnhookWindowsHookEx(m_hook);
 		m_pSite->Release();
 		m_pSite = NULL;
-		std::map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
+		map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
 		if (it != m_desklist.end())
 			m_desklist.erase(it);
 	}
@@ -478,7 +480,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 				// executing the command so the user can see the output.
 				// If however the user enters a '@' char in front of the command
 				// then the console shall quit after executing the command.
-				std::wstring params;
+				wstring params;
 				if (buf[0] == '@')
 					params = _T("/c ");
 				else				
@@ -489,19 +491,23 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 			}
 			break;
 		case 1:		// options
+			if (DialogBoxParam(g_hInst, MAKEINTRESOURCE(IDD_OPTIONS), m_hWnd, OptionsDlgFunc, (LPARAM)this)==IDOK)
+			{
+
+			}
 			break;
 		case 2:		// cmd
 			StartCmd(_T(""));
 			break;
 		case 3:		// copy name
 			{
-				std::wstring str = GetFileNames(_T("\r\n"));
+				wstring str = GetFileNames(_T("\r\n"));
 				WriteStringToClipboard(str, m_hWnd);
 			}
 			break;
 		case 4:		// copy path
 			{
-				std::wstring str = GetFilePaths(_T("\r\n"));
+				wstring str = GetFilePaths(_T("\r\n"));
 				WriteStringToClipboard(str, m_hWnd);
 			}
 			break;
@@ -666,7 +672,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lParam)
 {
 	DWORD threadID = GetCurrentThreadId();
-	std::map<DWORD, CDeskBand*>::iterator it = m_desklist.find(threadID);
+	map<DWORD, CDeskBand*>::iterator it = m_desklist.find(threadID);
 	if (it != m_desklist.end())
 	{
 		if (wParam == 'S' )//its about S key
@@ -703,14 +709,26 @@ BOOL CDeskBand::BuildToolbarButtons()
 	ImageList_Destroy(m_hToolbarImgList);
 
 	// find custom commands
-	CStdRegistryKey regkeys = CStdRegistryKey(_T("Software\\StefansTools\\"));
-	stdregistrykeylist subkeys;
-	regkeys.getSubKeys(subkeys);
+	TCHAR szPath[MAX_PATH] = {0};
+	if (SUCCEEDED(SHGetFolderPath(NULL, 
+		CSIDL_APPDATA|CSIDL_FLAG_CREATE, 
+		NULL, 
+		SHGFP_TYPE_CURRENT, 
+		szPath))) 
+	{
+		PathAppend(szPath, TEXT("StExBar"));
+		CreateDirectory(szPath, NULL);
+		PathAppend(szPath, TEXT("CustomCommands.ini"));
+	}
 
-	TBBUTTON * tb = new TBBUTTON[subkeys.size()+NUMINTERNALCOMMANDS];
+	CSimpleIni inifile;
+	inifile.LoadFile(szPath);
+	CSimpleIni::TNamesDepend sections;
+	inifile.GetAllSections(sections);
+	TBBUTTON * tb = new TBBUTTON[sections.size()+NUMINTERNALCOMMANDS];
 
 	// create an image list containing the icons for the toolbar
-	m_hToolbarImgList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, subkeys.size()+NUMINTERNALCOMMANDS, 1);
+	m_hToolbarImgList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, sections.size()+NUMINTERNALCOMMANDS, 1);
 	if (m_hToolbarImgList == NULL)
 	{
 		delete [] tb;
@@ -751,24 +769,27 @@ BOOL CDeskBand::BuildToolbarButtons()
 	DestroyIcon(hIcon);
 
 	int customindex = NUMINTERNALCOMMANDS;
-	for (stdregistrykeylist::iterator it = subkeys.begin(); it != subkeys.end(); ++it)
+
+	for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
 	{
 		customindex++;
-		stdstring key = _T("Software\\StefansTools\\");
-		key += it->c_str();
-		stdstring sIcon = key + _T("\\icon");
-		CRegStdString regicon = CRegStdString(sIcon);
-		hIcon = LoadIcon(g_hInst, sIcon.c_str());
-		tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
-		tb[customindex].idCommand = 4;
+		hIcon = LoadIcon(g_hInst, inifile.GetValue(*it, _T("icon"), _T("")));
+		if (hIcon)
+			tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
+		else
+		{
+			hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_DEFAULT));
+			tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
+		}
+		tb[customindex].idCommand = customindex;
 		tb[customindex].fsState = TBSTATE_ENABLED;
 		tb[customindex].fsStyle = BTNS_BUTTON|BTNS_SHOWTEXT;
-		tb[customindex].iString = (INT_PTR)it->substr(1).c_str();
+		tb[customindex].iString = (INT_PTR)inifile.GetValue(*it, _T("name"), _T(""));
 		DestroyIcon(hIcon);
 	}
 
 	SendMessage(m_hWndToolbar, TB_SETIMAGELIST, 0, (LPARAM)m_hToolbarImgList);
-	SendMessage(m_hWndToolbar, TB_ADDBUTTONS, subkeys.size()+NUMINTERNALCOMMANDS, (LPARAM)tb);
+	SendMessage(m_hWndToolbar, TB_ADDBUTTONS, sections.size()+NUMINTERNALCOMMANDS, (LPARAM)tb);
 	SendMessage(m_hWndToolbar, TB_AUTOSIZE, 0, 0);
 	SendMessage(m_hWndToolbar, TB_GETMAXSIZE, 0,(LPARAM)&m_tbSize);
 	delete [] tb;
