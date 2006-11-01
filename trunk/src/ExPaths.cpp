@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SRBand.h"
 #include "SimpleIni.h"
+#include "Pidl.h"
 
 bool CDeskBand::FindPaths()
 {
@@ -25,7 +26,7 @@ bool CDeskBand::FindPaths()
 					// that means the explorer is active and well :)
 
 					// but we also need the IShellFolder interface because
-					// we need its GetDisplayNameOf() method
+					// we need its GetCurFolder() method
 					IPersistFolder2 * pPersistFolder;
 					if (SUCCEEDED(pFolderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&pPersistFolder)))
 					{
@@ -39,30 +40,37 @@ bool CDeskBand::FindPaths()
 								m_currentDirectory = buf;
 							// if m_currentDirectory is empty here, that means
 							// the current directory is a virtual path
-							CoTaskMemFree(folderpidl);
-						}
 
-						// find all selected items
-						IEnumIDList * pEnum;
-						if (SUCCEEDED(pFolderView->Items(SVGIO_SELECTION, IID_IEnumIDList, (LPVOID*)&pEnum)))
-						{
-							LPITEMIDLIST pidl;
-							WCHAR buf[MAX_PATH] = {0};
-							ULONG fetched = 0;
-							do 
+							// find all selected items
+							IEnumIDList * pEnum;
+							if (SUCCEEDED(pFolderView->Items(SVGIO_SELECTION, IID_IEnumIDList, (LPVOID*)&pEnum)))
 							{
-								pidl = NULL;
-								if (SUCCEEDED(pEnum->Next(1, &pidl, &fetched)))
+								LPITEMIDLIST pidl;
+								WCHAR buf[MAX_PATH] = {0};
+								ULONG fetched = 0;
+								do 
 								{
-									if (fetched)
+									pidl = NULL;
+									if (SUCCEEDED(pEnum->Next(1, &pidl, &fetched)))
 									{
-										if (SHGetPathFromIDList(pidl, buf))
-											m_selectedItems.insert(wstring(buf));
+										if (fetched)
+										{
+											// the pidl we get here is relative!
+											// create an absolute pidl with the pidl we got above
+											LPITEMIDLIST abspidl = CPidl::Append(folderpidl, pidl);
+											if (abspidl)
+											{
+												if (SHGetPathFromIDList(abspidl, buf))
+													m_selectedItems.insert(wstring(buf));
+												CoTaskMemFree(abspidl);
+											}
+										}
+										CoTaskMemFree(pidl);
 									}
-									CoTaskMemFree(pidl);
-								}
-							} while(fetched);
-							pEnum->Release();
+								} while(fetched);
+								pEnum->Release();
+							}
+							CoTaskMemFree(folderpidl);
 						}
 						pPersistFolder->Release();
 					}
@@ -77,9 +85,10 @@ bool CDeskBand::FindPaths()
 	return ((!m_currentDirectory.empty()) || (m_selectedItems.size()!=0));
 }
 
-wstring CDeskBand::GetFileNames(wstring separator)
+wstring CDeskBand::GetFileNames(wstring separator, bool quotespaces)
 {
 	wstring sRet;
+	WCHAR buf[MAX_PATH+2];
 	if (m_selectedItems.size())
 	{
 		for (set<wstring>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
@@ -89,15 +98,23 @@ wstring CDeskBand::GetFileNames(wstring separator)
 			{
 				if (!sRet.empty())
 					sRet += separator;
-				sRet += it->substr(pos+1);
+				if (quotespaces)
+				{
+					_tcscpy_s(buf, MAX_PATH, it->substr(pos+1).c_str());
+					PathQuoteSpaces(buf);
+					sRet += buf;
+				}
+				else
+					sRet += it->substr(pos+1);
 			}
 		}
 	}
 	return sRet;
 }
 
-wstring CDeskBand::GetFilePaths(wstring separator)
+wstring CDeskBand::GetFilePaths(wstring separator, bool quotespaces)
 {
+	WCHAR buf[MAX_PATH+2];
 	wstring sRet;
 	if (m_selectedItems.size())
 	{
@@ -105,7 +122,14 @@ wstring CDeskBand::GetFilePaths(wstring separator)
 		{
 			if (!sRet.empty())
 				sRet += separator;
-			sRet += *it;
+			if (quotespaces)
+			{
+				_tcscpy_s(buf, MAX_PATH, it->c_str());
+				PathQuoteSpaces(buf);
+				sRet += buf;
+			}
+			else
+				sRet += *it;
 		}
 	}
 	return sRet;

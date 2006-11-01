@@ -22,6 +22,13 @@ using namespace std;
 
 #define NUMINTERNALCOMMANDS 4
 
+typedef struct hotkeymodifiers
+{
+	int		command;
+	bool	control;
+	bool	shift;
+	bool	alt;
+} hotkeymodifiers;
 /*
 command
 	name
@@ -101,6 +108,8 @@ private:
 	set<wstring>	m_selectedItems;	///< list of items which are selected in the explorer view
 
 	CRegStdWORD		m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
+	map<WPARAM, hotkeymodifiers> m_hotkeys;	///< the hotkeys for our commands
+	map<WORD, wstring> m_commands;		///< the custom commands and their command lines
 private:
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
@@ -133,13 +142,15 @@ private:
 	/// find all the paths of the current explorer view and the selected items
 	bool					FindPaths();
 	/// get a list of filenames in one string, separated by \c separator
-	wstring					GetFileNames(wstring separator);
+	wstring					GetFileNames(wstring separator, bool quotespaces);
 	/// get a list of file paths in one string, separated by \c separator
-	wstring					GetFilePaths(wstring separator);
+	wstring					GetFilePaths(wstring separator, bool quotespaces);
 	/// put a string on the clipboard
 	bool					WriteStringToClipboard(const wstring& sClipdata, HWND hOwningWnd);
 	/// starts the console program to run a script
 	void					StartCmd(wstring params);
+	/// start a new process with the specified command line
+	void					StartApplication(std::wstring commandline);
 
 };
 

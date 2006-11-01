@@ -24,3 +24,20 @@ void CDeskBand::StartCmd(std::wstring params)
 	CloseHandle(process.hThread);
 	CloseHandle(process.hProcess);
 }
+
+void CDeskBand::StartApplication(std::wstring commandline)
+{
+	STARTUPINFO startup;
+	PROCESS_INFORMATION process;
+	memset(&startup, 0, sizeof(startup));
+	startup.cb = sizeof(startup);
+	memset(&process, 0, sizeof(process));
+
+	TCHAR * nonconst = new TCHAR[commandline.size()+1];
+	_tcscpy_s(nonconst, commandline.size()+1, commandline.c_str());
+
+	CreateProcess(NULL, nonconst, NULL, NULL, FALSE, CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE, 0, m_currentDirectory.c_str(), &startup, &process);
+	delete [] nonconst;
+	CloseHandle(process.hThread);
+	CloseHandle(process.hProcess);
+}
