@@ -493,7 +493,8 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 		case 1:		// options
 			if (DialogBoxParam(g_hInst, MAKEINTRESOURCE(IDD_OPTIONS), m_hWnd, OptionsDlgFunc, (LPARAM)this)==IDOK)
 			{
-
+				BuildToolbarButtons();
+				OnMove(0);
 			}
 			break;
 		case 2:		// cmd
@@ -647,10 +648,10 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		SendMessage(m_hWndEdit, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), 0);
 
 		// create a toolbar which will hold our button
-		m_hWndToolbar = CreateWindowEx(0,
+		m_hWndToolbar = CreateWindowEx(TBSTYLE_EX_MIXEDBUTTONS,
 			TOOLBARCLASSNAME, 
 			NULL, 
-			WS_CHILD|TBSTYLE_LIST|TBSTYLE_TRANSPARENT|CCS_NORESIZE|CCS_NODIVIDER|CCS_NOPARENTALIGN, 
+			WS_CHILD|TBSTYLE_LIST|TBSTYLE_FLAT|TBSTYLE_TRANSPARENT|CCS_NORESIZE|CCS_NODIVIDER|CCS_NOPARENTALIGN, 
 			rc.right - BUTTONSIZEX,
 			rc.top,
 			BUTTONSIZEX,
@@ -734,13 +735,16 @@ BOOL CDeskBand::BuildToolbarButtons()
 		delete [] tb;
 		return false;
 	}
+	BYTE fsStyle = BTNS_BUTTON;
+	if (DWORD(m_regShowBtnText))
+		fsStyle |= BTNS_SHOWTEXT;
 
 	// now add the default command buttons
 	HICON hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_OPTIONS));
 	tb[0].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
 	tb[0].idCommand = 1;
 	tb[0].fsState = TBSTATE_ENABLED;
-	tb[0].fsStyle = BTNS_BUTTON|BTNS_SHOWTEXT;
+	tb[0].fsStyle = fsStyle;
 	tb[0].iString = (INT_PTR)_T("Options");
 	DestroyIcon(hIcon);
 
@@ -748,7 +752,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[1].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
 	tb[1].idCommand = 2;
 	tb[1].fsState = TBSTATE_ENABLED;
-	tb[1].fsStyle = BTNS_BUTTON|BTNS_SHOWTEXT;
+	tb[1].fsStyle = fsStyle;
 	tb[1].iString = (INT_PTR)_T("Console");
 	DestroyIcon(hIcon);
 
@@ -756,7 +760,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[2].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
 	tb[2].idCommand = 3;
 	tb[2].fsState = TBSTATE_ENABLED;
-	tb[2].fsStyle = BTNS_BUTTON|BTNS_SHOWTEXT;
+	tb[2].fsStyle = fsStyle;
 	tb[2].iString = (INT_PTR)_T("Copy Names");
 	DestroyIcon(hIcon);
 
@@ -764,7 +768,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[3].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
 	tb[3].idCommand = 4;
 	tb[3].fsState = TBSTATE_ENABLED;
-	tb[3].fsStyle = BTNS_BUTTON|BTNS_SHOWTEXT;
+	tb[3].fsStyle = fsStyle;
 	tb[3].iString = (INT_PTR)_T("Copy Paths");
 	DestroyIcon(hIcon);
 
@@ -783,7 +787,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 		}
 		tb[customindex].idCommand = customindex;
 		tb[customindex].fsState = TBSTATE_ENABLED;
-		tb[customindex].fsStyle = BTNS_BUTTON|BTNS_SHOWTEXT;
+		tb[customindex].fsStyle = fsStyle;
 		tb[customindex].iString = (INT_PTR)inifile.GetValue(*it, _T("name"), _T(""));
 		DestroyIcon(hIcon);
 	}
@@ -792,6 +796,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	SendMessage(m_hWndToolbar, TB_ADDBUTTONS, sections.size()+NUMINTERNALCOMMANDS, (LPARAM)tb);
 	SendMessage(m_hWndToolbar, TB_AUTOSIZE, 0, 0);
 	SendMessage(m_hWndToolbar, TB_GETMAXSIZE, 0,(LPARAM)&m_tbSize);
+	SendMessage(m_hWndToolbar, TB_SETEXTENDEDSTYLE, 0,(LPARAM)TBSTYLE_EX_MIXEDBUTTONS);
 	delete [] tb;
 	return TRUE;
 }
