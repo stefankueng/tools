@@ -79,11 +79,21 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 								"# icon = path to an icon file with 16x16 size\n"
 								"# commandline = the command line to execute\n"
 								"#\n"
-								"# example configuration for a new custom command:\n"
+								"# example configuration for a new custom command\n"
+								"# this example command starts notepad with the currently\n"
+								"# selected path in the explorer, and adds the hotkey\n"
+								"# ctrl-shift-E for it.\n"
 								"# [Notepad]\n"
 								"# name = Editor\n"
 								"# icon = c:\\icons\\editor.ico\n"
 								"# commandline = c:\\windows\\system32\\notepad.exe %selpaths\n"
+								"# hotkey = 0x45\n"
+								"# hotkey_alt = 0\n"
+								"# hotkey_shift = 1\n"
+								"# hotkey_control = 1\n"
+								"#\n"
+								"# for available key-codes please see here:\n"
+								"# http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/WinUI/WindowsUserInterface/UserInput/VirtualKeyCodes.asp\n"
 								"#\n"
 								"# some special placeholders are available\n"
 								"# %selpaths : will be replaced with the paths of the selected items\n"
@@ -130,7 +140,7 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 						viewer = buf;
 					}
 					// replace "%1" with the path to our config file
-					string tag("%1");
+					wstring tag(_T("%1"));
 					// get the range of tag in viewer
 					wstring::iterator it_begin = search(viewer.begin(), viewer.end(), tag.begin(), tag.end());
 
