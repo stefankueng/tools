@@ -844,6 +844,18 @@ BOOL CDeskBand::BuildToolbarButtons()
 	for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
 	{
 		customindex++;
+		// check if this entry is a separator
+		wstring value = inifile.GetValue(*it, _T("separator"), _T(""));
+		if (((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0)))
+		{
+			tb[customindex].iBitmap = 0;
+			tb[customindex].idCommand = 0;
+			tb[customindex].fsState = 0;
+			tb[customindex].fsStyle = BTNS_SEP;
+			tb[customindex].dwData = 0;
+			tb[customindex].iString = 0;
+			continue;
+		}
 		hIcon = LoadIcon(g_hInst, inifile.GetValue(*it, _T("icon"), _T("")));
 		if (hIcon)
 			tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
@@ -859,15 +871,14 @@ BOOL CDeskBand::BuildToolbarButtons()
 		DestroyIcon(hIcon);
 		wstring cl = inifile.GetValue(*it, _T("commandline"), _T(""));
 		// now add the hotkey if it's present
-		wstring value;
 		hotkeymodifiers modifiers;
 		modifiers.command = customindex+1;
 		value = inifile.GetValue(*it, _T("hotkey_alt"), _T(""));
-		modifiers.alt = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))));
+		modifiers.alt = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
 		value = inifile.GetValue(*it, _T("hotkey_shift"), _T(""));
-		modifiers.shift = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))));
+		modifiers.shift = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
 		value = inifile.GetValue(*it, _T("hotkey_control"), _T(""));
-		modifiers.control = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))));
+		modifiers.control = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
 		value = inifile.GetValue(*it, _T("hotkey"), _T(""));
 		if ((!value.empty())&&(!cl.empty()))
 		{
