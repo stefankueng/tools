@@ -86,7 +86,7 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 								"# [01Notepad]\n"
 								"# name = Editor\n"
 								"# icon = c:\\icons\\editor.ico\n"
-								"# commandline = c:\\windows\\system32\\notepad.exe %selpaths\n"
+								"# commandline = %WINDIR%\\system32\\notepad.exe %selpaths\n"
 								"# hotkey = 0x45\n"
 								"# hotkey_alt = 0\n"
 								"# hotkey_shift = 1\n"
