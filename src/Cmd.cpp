@@ -33,8 +33,10 @@ void CDeskBand::StartApplication(std::wstring commandline)
 	startup.cb = sizeof(startup);
 	memset(&process, 0, sizeof(process));
 
-	TCHAR * nonconst = new TCHAR[commandline.size()+1];
-	_tcscpy_s(nonconst, commandline.size()+1, commandline.c_str());
+	DWORD len = ExpandEnvironmentStrings(commandline.c_str(), NULL, 0);
+	TCHAR * nonconst = new TCHAR[len+1];
+	if (ExpandEnvironmentStrings(commandline.c_str(), nonconst, len)==0)
+		_tcscpy_s(nonconst, commandline.size()+1, commandline.c_str());
 
 	CreateProcess(NULL, nonconst, NULL, NULL, FALSE, CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE, 0, m_currentDirectory.c_str(), &startup, &process);
 	delete [] nonconst;
