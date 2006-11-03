@@ -462,15 +462,19 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 			HDC hDC = (HDC)wParam;
 			RECT rc;
 			::GetClientRect(pThis->m_hWnd, &rc);
+			// only draw the themed background if themes are enabled
 			if (IsThemeActive())
 			{
 				HTHEME hTheme = OpenThemeData(pThis->m_hWnd, L"Rebar");
 				if (hTheme)
 				{
+					// now draw the themed background of a rebar control, because
+					// that's what we're actually in and should look like.
 					DrawThemeBackground(hTheme, hDC, 0, 0, &rc, NULL);
-					return TRUE;
+					return TRUE;	// we've drawn the background
 				}
 			}
+			// just do nothing so the system knows that we haven't erased the background
 		}
 
 	}
