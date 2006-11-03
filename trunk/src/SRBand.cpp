@@ -156,11 +156,13 @@ STDMETHODIMP CDeskBand::ShowDW(BOOL fShow)
 		{
 			// show our window
 			ShowWindow(m_hWnd, SW_SHOW);
+			::SetTimer(m_hWnd, TID_IDLE, 100, NULL);
 		}
 		else
 		{
 			// hide our window
 			ShowWindow(m_hWnd, SW_HIDE);
+			::KillTimer(m_hWnd, TID_IDLE);
 		}
 	}
 
@@ -425,6 +427,18 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 		}
 		break;
 
+	case WM_TIMER:
+		if (wParam == TID_IDLE)
+		{
+			pThis->FindPaths();
+			// now enable/disable the commands depending
+			// on view and the selected items
+
+			::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, 2, !pThis->m_currentDirectory.empty());
+			::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, 3, !pThis->m_currentDirectory.empty() && pThis->m_selectedItems.size());
+			::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, 4, !pThis->m_currentDirectory.empty() && pThis->m_selectedItems.size());
+		}
+		break;
 	case WM_COMMAND:
 		return pThis->OnCommand(wParam, lParam);
 
@@ -503,13 +517,13 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 			break;
 		case 3:		// copy name
 			{
-				wstring str = GetFileNames(_T("\r\n"), false);
+				wstring str = GetFileNames(_T("\r\n"), false, true, true);
 				WriteStringToClipboard(str, m_hWnd);
 			}
 			break;
 		case 4:		// copy path
 			{
-				wstring str = GetFilePaths(_T("\r\n"), false);
+				wstring str = GetFilePaths(_T("\r\n"), false, true, true);
 				WriteStringToClipboard(str, m_hWnd);
 			}
 			break;
@@ -527,7 +541,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					if (it_begin != commandline.end())
 					{
 						// prepare the selected paths
-						wstring selpaths = GetFilePaths(_T(" "), true);
+						wstring selpaths = GetFilePaths(_T(" "), true, true, true);
 						wstring::iterator it_end= it_begin + tag.size();
 						commandline.replace(it_begin, it_end, selpaths);
 					}
@@ -537,7 +551,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					if (it_begin != commandline.end())
 					{
 						// prepare the selected names
-						wstring selnames = GetFileNames(_T(" "), true);
+						wstring selnames = GetFileNames(_T(" "), true, true, true);
 						wstring::iterator it_end= it_begin + tag.size();
 						commandline.replace(it_begin, it_end, selnames);
 					}
