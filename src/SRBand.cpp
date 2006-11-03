@@ -5,6 +5,9 @@
 #include <algorithm>
 #include "resource.h"
 #include "SimpleIni.h"
+#include "uxtheme.h"
+
+#pragma comment(lib, "uxtheme.lib")
 
 
 map<DWORD, CDeskBand*> CDeskBand::m_desklist;	///< set of CDeskBand objects which use the keyboard hook
@@ -453,6 +456,22 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 
 	case WM_MOVE:
 		return pThis->OnMove(lParam);
+
+	case WM_ERASEBKGND:
+		{
+			HDC hDC = (HDC)wParam;
+			RECT rc;
+			::GetClientRect(pThis->m_hWnd, &rc);
+			if (IsThemeActive())
+			{
+				HTHEME hTheme = OpenThemeData(pThis->m_hWnd, L"Rebar");
+				if (hTheme)
+				{
+					DrawThemeBackground(hTheme, hDC, 0, 0, &rc, NULL);
+					return TRUE;
+				}
+			}
+		}
 
 	}
 
