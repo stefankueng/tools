@@ -7,6 +7,8 @@ bool CDeskBand::FindPaths()
 {
 	m_currentDirectory.clear();
 	m_selectedItems.clear();
+	m_bFilesSelected = false;
+	m_bFolderSelected = false;
 
 	if (m_pSite == NULL)
 		return false;
@@ -41,34 +43,51 @@ bool CDeskBand::FindPaths()
 							// if m_currentDirectory is empty here, that means
 							// the current directory is a virtual path
 
-							// find all selected items
-							IEnumIDList * pEnum;
-							if (SUCCEEDED(pFolderView->Items(SVGIO_SELECTION, IID_IEnumIDList, (LPVOID*)&pEnum)))
+							IShellFolder * pShellFolder;
+							if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
 							{
-								LPITEMIDLIST pidl;
-								WCHAR buf[MAX_PATH] = {0};
-								ULONG fetched = 0;
-								do 
+								// find all selected items
+								IEnumIDList * pEnum;
+								if (SUCCEEDED(pFolderView->Items(SVGIO_SELECTION, IID_IEnumIDList, (LPVOID*)&pEnum)))
 								{
-									pidl = NULL;
-									if (SUCCEEDED(pEnum->Next(1, &pidl, &fetched)))
+									LPITEMIDLIST pidl;
+									WCHAR buf[MAX_PATH] = {0};
+									ULONG fetched = 0;
+									ULONG attribs = 0;
+									do 
 									{
-										if (fetched)
+										pidl = NULL;
+										if (SUCCEEDED(pEnum->Next(1, &pidl, &fetched)))
 										{
-											// the pidl we get here is relative!
-											// create an absolute pidl with the pidl we got above
-											LPITEMIDLIST abspidl = CPidl::Append(folderpidl, pidl);
-											if (abspidl)
+											if (fetched)
 											{
-												if (SHGetPathFromIDList(abspidl, buf))
-													m_selectedItems.insert(wstring(buf));
-												CoTaskMemFree(abspidl);
+												// the pidl we get here is relative!
+												attribs = SFGAO_FILESYSTEM|SFGAO_FOLDER;
+												if (SUCCEEDED(pShellFolder->GetAttributesOf(1, (LPCITEMIDLIST*)&pidl, &attribs)))
+												{
+													if (attribs & SFGAO_FILESYSTEM)
+													{
+														// create an absolute pidl with the pidl we got above
+														LPITEMIDLIST abspidl = CPidl::Append(folderpidl, pidl);
+														if (abspidl)
+														{
+															if (SHGetPathFromIDList(abspidl, buf))
+																m_selectedItems[wstring(buf)] = attribs;
+															CoTaskMemFree(abspidl);
+														}
+														if (attribs & SFGAO_FOLDER)
+															m_bFolderSelected = true;
+														else
+															m_bFilesSelected = true;
+													}
+												}
 											}
+											CoTaskMemFree(pidl);
 										}
-										CoTaskMemFree(pidl);
-									}
-								} while(fetched);
-								pEnum->Release();
+									} while(fetched);
+									pEnum->Release();
+								}
+								pShellFolder->Release();
 							}
 							CoTaskMemFree(folderpidl);
 						}
@@ -85,51 +104,57 @@ bool CDeskBand::FindPaths()
 	return ((!m_currentDirectory.empty()) || (m_selectedItems.size()!=0));
 }
 
-wstring CDeskBand::GetFileNames(wstring separator, bool quotespaces)
+wstring CDeskBand::GetFileNames(wstring separator, bool quotespaces, bool includefiles, bool includefolders)
 {
 	wstring sRet;
 	WCHAR buf[MAX_PATH+2];
 	if (m_selectedItems.size())
 	{
-		for (set<wstring>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
+		for (map<wstring, ULONG>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
 		{
-			size_t pos = it->find_last_of('\\');
-			if (pos >= 0)
+			if (((it->second & SFGAO_FOLDER)&&(includefolders))||(((it->second & SFGAO_FOLDER)==0)&&(includefiles)))
 			{
-				if (!sRet.empty())
-					sRet += separator;
-				if (quotespaces)
+				size_t pos = it->first.find_last_of('\\');
+				if (pos >= 0)
 				{
-					_tcscpy_s(buf, MAX_PATH, it->substr(pos+1).c_str());
-					PathQuoteSpaces(buf);
-					sRet += buf;
+					if (!sRet.empty())
+						sRet += separator;
+					if (quotespaces)
+					{
+						_tcscpy_s(buf, MAX_PATH, it->first.substr(pos+1).c_str());
+						PathQuoteSpaces(buf);
+						sRet += buf;
+					}
+					else
+						sRet += it->first.substr(pos+1);
 				}
-				else
-					sRet += it->substr(pos+1);
 			}
 		}
 	}
 	return sRet;
 }
 
-wstring CDeskBand::GetFilePaths(wstring separator, bool quotespaces)
+wstring CDeskBand::GetFilePaths(wstring separator, bool quotespaces, bool includefiles, bool includefolders)
 {
 	WCHAR buf[MAX_PATH+2];
 	wstring sRet;
 	if (m_selectedItems.size())
 	{
-		for (set<wstring>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
+		for (map<wstring, ULONG>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
 		{
-			if (!sRet.empty())
-				sRet += separator;
-			if (quotespaces)
+			if (((it->second & SFGAO_FOLDER)&&(includefolders))||(((it->second & SFGAO_FOLDER)==0)&&(includefiles)))
 			{
-				_tcscpy_s(buf, MAX_PATH, it->c_str());
-				PathQuoteSpaces(buf);
-				sRet += buf;
+				if (!sRet.empty())
+					sRet += separator;
+				if (quotespaces)
+				{
+					_tcscpy_s(buf, MAX_PATH, it->first.c_str());
+					PathQuoteSpaces(buf);
+					sRet += buf;
+				}
+				else
+					sRet += it->first;
 			}
-			else
-				sRet += *it;
 		}
 	}
 	return sRet;

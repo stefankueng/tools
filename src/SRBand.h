@@ -22,6 +22,8 @@ using namespace std;
 
 #define NUMINTERNALCOMMANDS 4
 
+#define TID_IDLE 100
+
 typedef struct hotkeymodifiers
 {
 	int		command;
@@ -105,7 +107,9 @@ private:
 	HHOOK			m_hook;				///< handle of the keyboard hook procedure
 
 	wstring			m_currentDirectory;	///< the current directory of the explorer view
-	set<wstring>	m_selectedItems;	///< list of items which are selected in the explorer view
+	map<wstring, ULONG>	m_selectedItems;///< list of items which are selected in the explorer view
+	bool			m_bFilesSelected;	///< at least one file is selected
+	bool			m_bFolderSelected;	///< at least one folder is selected
 
 	CRegStdWORD		m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
 	map<WPARAM, hotkeymodifiers> m_hotkeys;	///< the hotkeys for our commands
@@ -142,9 +146,10 @@ private:
 	/// find all the paths of the current explorer view and the selected items
 	bool					FindPaths();
 	/// get a list of filenames in one string, separated by \c separator
-	wstring					GetFileNames(wstring separator, bool quotespaces);
+	wstring					GetFileNames(wstring separator, bool quotespaces, bool includefiles, bool includefolders);
 	/// get a list of file paths in one string, separated by \c separator
-	wstring					GetFilePaths(wstring separator, bool quotespaces);
+	wstring					GetFilePaths(wstring separator, bool quotespaces, bool includefiles, bool includefolders);
+	/// get a list of folder paths in one string, separated by \c separator
 	/// put a string on the clipboard
 	bool					WriteStringToClipboard(const wstring& sClipdata, HWND hOwningWnd);
 	/// starts the console program to run a script
