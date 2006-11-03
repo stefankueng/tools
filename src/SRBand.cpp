@@ -514,6 +514,8 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 	{
 	case BN_CLICKED:
 		// button was pressed
+		if ((SendMessage(m_hWndToolbar, TB_GETSTATE, LOWORD(wParam), 0) & TBSTATE_ENABLED)==0)
+			return 0;
 		FindPaths();
 		switch(LOWORD(wParam))
 		{
