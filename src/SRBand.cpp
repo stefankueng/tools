@@ -903,9 +903,47 @@ BOOL CDeskBand::BuildToolbarButtons()
 
 	for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
 	{
+		wstring value = inifile.GetValue(*it, _T("internalcommand"), _T(""));
+		if (!value.empty())
+		{
+			// some internal commands are overwritten
+			WCHAR * stop;
+			long command = wcstol(value.c_str(), &stop, 0);
+			if (command <= NUMINTERNALCOMMANDS)
+			{
+				// we have to find the existing hotkey for that command
+				// and remove it from the map first
+				for (map<WPARAM, hotkeymodifiers>::iterator hk = m_hotkeys.begin(); hk != m_hotkeys.end(); ++hk)
+				{
+					if (hk->second.command == command)
+					{
+						m_hotkeys.erase(hk);
+						break;
+					}
+				}
+
+				hotkeymodifiers modifiers;
+				modifiers.command = command;
+				value = inifile.GetValue(*it, _T("hotkey_alt"), _T(""));
+				modifiers.alt = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
+				value = inifile.GetValue(*it, _T("hotkey_shift"), _T(""));
+				modifiers.shift = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
+				value = inifile.GetValue(*it, _T("hotkey_control"), _T(""));
+				modifiers.control = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
+				value = inifile.GetValue(*it, _T("hotkey"), _T(""));
+				long val = 0;
+				if (!value.empty())
+				{
+					val = wcstol(value.c_str(), &stop, 0);
+				}
+				m_hotkeys[WPARAM(val)] = modifiers;
+			}
+			continue;
+		}
+
 		customindex++;
 		// check if this entry is a separator
-		wstring value = inifile.GetValue(*it, _T("separator"), _T(""));
+		value = inifile.GetValue(*it, _T("separator"), _T(""));
 		if (((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0)))
 		{
 			tb[customindex].iBitmap = 0;
