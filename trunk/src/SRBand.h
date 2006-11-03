@@ -20,9 +20,20 @@ using namespace std;
 #define BUTTONSIZEX	60
 #define SPACEBETWEENEDITANDBUTTON 0
 
+// the number of 'internal' commands
 #define NUMINTERNALCOMMANDS 4
 
+// the timer ID
 #define TID_IDLE 100
+
+// the enabled states
+#define ENABLED_VIEWPATH			0x00000001
+#define ENABLED_NOVIEWPATH			0x00000002
+#define ENABLED_FOLDERSELECTED		0x00000004
+#define ENABLED_FILESELECTED		0x00000008
+#define ENABLED_NOSELECTION			0x00000010
+#define ENABLED_SELECTED (ENABLED_FOLDERSELECTED|ENABLED_FILESELECTED)
+#define ENABLED_ALWAYS	(ENABLED_VIEWPATH|ENABLED_NOVIEWPATH|ENABLED_FOLDERSELECTED|ENABLED_FILESELECTED|ENABLED_NOSELECTION)
 
 typedef struct hotkeymodifiers
 {
@@ -114,6 +125,7 @@ private:
 	CRegStdWORD		m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
 	map<WPARAM, hotkeymodifiers> m_hotkeys;	///< the hotkeys for our commands
 	map<WORD, wstring> m_commands;		///< the custom commands and their command lines
+	map<int, DWORD> m_enablestates;	///< the custom commands and their enabled states
 private:
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
