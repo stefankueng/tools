@@ -437,9 +437,25 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 			// now enable/disable the commands depending
 			// on view and the selected items
 
-			::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, 2, !pThis->m_currentDirectory.empty());
-			::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, 3, !pThis->m_currentDirectory.empty() && pThis->m_selectedItems.size());
-			::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, 4, !pThis->m_currentDirectory.empty() && pThis->m_selectedItems.size());
+			WORD state = 0;
+			if (pThis->m_currentDirectory.empty())
+				state |= ENABLED_NOVIEWPATH;
+			else
+				state |= ENABLED_VIEWPATH;
+			if (pThis->m_bFilesSelected)
+				state |= ENABLED_FILESELECTED;
+			if (pThis->m_bFolderSelected)
+				state |= ENABLED_FOLDERSELECTED;
+			if (pThis->m_selectedItems.size() == 0)
+				state |= ENABLED_NOSELECTION;
+			for (map<int, DWORD>::iterator it = pThis->m_enablestates.begin(); it != pThis->m_enablestates.end(); ++it)
+			{
+				if (((it->second & 0xFFFF)&state)&&
+					((HIWORD(it->second) == 0)||((pThis->m_selectedItems.size() == 0)&&(it->second & ENABLED_NOSELECTION))||(HIWORD(it->second) == pThis->m_selectedItems.size())))
+					::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, it->first, (LPARAM)TRUE);
+				else
+					::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, it->first, (LPARAM)FALSE);
+			}
 		}
 		break;
 	case WM_COMMAND:
@@ -783,23 +799,28 @@ BOOL CDeskBand::BuildToolbarButtons()
 {
 	m_hotkeys.clear();
 	m_commands.clear();
-	// now fill in our own hotkeys
+	m_enablestates.clear();
+	// now fill in our own hotkeys and enabled states
 	hotkeymodifiers modifiers;
 	modifiers.command = 0;		// edit box : ctrl-K
 	modifiers.alt = false;
 	modifiers.shift = false;
 	modifiers.control = true;
 	m_hotkeys[WPARAM('K')] = modifiers;
+	m_enablestates[1] = ENABLED_ALWAYS;
 	modifiers.command = 2;		// console : ctrl-M
 	modifiers.alt = false;
 	modifiers.shift = false;
 	modifiers.control = true;
 	m_hotkeys[WPARAM('M')] = modifiers;
+	m_enablestates[2] = ENABLED_VIEWPATH;
+	m_enablestates[3] = ENABLED_SELECTED;
 	modifiers.command = 4;		// copy paths : ctrl-shift-C
 	modifiers.alt = false;
 	modifiers.shift = true;
 	modifiers.control = true;
 	m_hotkeys[WPARAM('C')] = modifiers;
+	m_enablestates[4] = ENABLED_SELECTED;
 
 	if (m_hWndToolbar == NULL)
 		return FALSE;
@@ -927,6 +948,37 @@ BOOL CDeskBand::BuildToolbarButtons()
 		}
 		if (!cl.empty())
 			m_commands[WORD(customindex+1)] = cl;
+		// now parse the enabled states
+		DWORD state = 0;
+		value = inifile.GetValue(*it, _T("enabled_selected"), _T(""));
+		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
+			state |= ENABLED_SELECTED;
+		value = inifile.GetValue(*it, _T("enabled_fileselected"), _T(""));
+		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
+			state |= ENABLED_FILESELECTED;
+		value = inifile.GetValue(*it, _T("enabled_folderselected"), _T(""));
+		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
+			state |= ENABLED_FOLDERSELECTED;
+		value = inifile.GetValue(*it, _T("enabled_noselection"), _T(""));
+		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
+			state |= ENABLED_NOSELECTION;
+		value = inifile.GetValue(*it, _T("enabled_viewpath"), _T(""));
+		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
+			state |= ENABLED_VIEWPATH;
+		value = inifile.GetValue(*it, _T("enabled_noviewpath"), _T(""));
+		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
+			state |= ENABLED_NOVIEWPATH;
+		if (state == 0)
+			state = ENABLED_ALWAYS;
+		value = inifile.GetValue(*it, _T("enabled_numberselected"), _T(""));
+		if (!value.empty())
+		{
+			WCHAR * stop;
+			long val = wcstol(value.c_str(), &stop, 0);
+			if (val)
+				state = MAKELONG(state, val);
+		}
+		m_enablestates[customindex+1] = state;
 	}
 
 	SendMessage(m_hWndToolbar, TB_SETIMAGELIST, 0, (LPARAM)m_hToolbarImgList);
