@@ -19,7 +19,16 @@ void CDeskBand::StartCmd(std::wstring params)
 	TCHAR * nonconstparams = new TCHAR[params.size()+1];
 	_tcscpy_s(nonconstparams, params.size()+1, params.c_str());
 
-	CreateProcess(buf, nonconstparams, NULL, NULL, FALSE, CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE, 0, m_currentDirectory.c_str(), &startup, &process);
+	CreateProcess(buf, 
+		nonconstparams, 
+		NULL, 
+		NULL, 
+		FALSE, 
+		CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE, 
+		0, 
+		m_currentDirectory.empty() ? NULL : m_currentDirectory.c_str(), 
+		&startup, 
+		&process);
 	delete [] nonconstparams;
 	CloseHandle(process.hThread);
 	CloseHandle(process.hProcess);
@@ -38,7 +47,16 @@ void CDeskBand::StartApplication(std::wstring commandline)
 	if (ExpandEnvironmentStrings(commandline.c_str(), nonconst, len)==0)
 		_tcscpy_s(nonconst, commandline.size()+1, commandline.c_str());
 
-	CreateProcess(NULL, nonconst, NULL, NULL, FALSE, CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE, 0, m_currentDirectory.c_str(), &startup, &process);
+	CreateProcess(NULL, 
+		nonconst, 
+		NULL, 
+		NULL, 
+		FALSE, 
+		CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE, 
+		0, 
+		m_currentDirectory.empty() ? NULL : m_currentDirectory.c_str(), 
+		&startup, 
+		&process);
 	delete [] nonconst;
 	CloseHandle(process.hThread);
 	CloseHandle(process.hProcess);
