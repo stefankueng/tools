@@ -3,6 +3,7 @@
 #include "Guid.h"
 #include <strsafe.h>
 #include <algorithm>
+#include <vector>
 #include "resource.h"
 #include "SimpleIni.h"
 #include "uxtheme.h"
@@ -513,104 +514,129 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 	switch (HIWORD(wParam))
 	{
 	case BN_CLICKED:
-		// button was pressed
-		if ((SendMessage(m_hWndToolbar, TB_GETSTATE, LOWORD(wParam), 0) & TBSTATE_ENABLED)==0)
-			return 0;
-		FindPaths();
-		switch(LOWORD(wParam))
 		{
-		case 0:		// edit control enter pressed
-			{
-				// get the command entered in the edit box
-				int count = MAX_PATH;
-				TCHAR * buf = new TCHAR[count+1];
-				while (::GetWindowText(m_hWndEdit, buf, count)>=count)
-				{
-					delete [] buf;
-					count += MAX_PATH;
-					buf = new TCHAR[count+1];
-				}
-				// when we start the console with the command the user
-				// has entered in the edit box, we want the console
-				// to execute the command immediately, and *not* quit after
-				// executing the command so the user can see the output.
-				// If however the user enters a '@' char in front of the command
-				// then the console shall quit after executing the command.
-				wstring params;
-				if (buf[0] == '@')
-					params = _T("/c ");
-				else				
-					params = _T("/k ");
-				params += buf;
-				StartCmd(params);
-				delete [] buf;
-			}
-			break;
-		case 1:		// options
-			if (DialogBoxParam(g_hInst, MAKEINTRESOURCE(IDD_OPTIONS), m_hWnd, OptionsDlgFunc, (LPARAM)this)==IDOK)
-			{
-				BuildToolbarButtons();
-				OnMove(0);
-			}
-			break;
-		case 2:		// cmd
-			StartCmd(_T(""));
-			break;
-		case 3:		// copy name
-			{
-				wstring str = GetFileNames(_T("\r\n"), false, true, true);
-				WriteStringToClipboard(str, m_hWnd);
-			}
-			break;
-		case 4:		// copy path
-			{
-				wstring str = GetFilePaths(_T("\r\n"), false, true, true);
-				WriteStringToClipboard(str, m_hWnd);
-			}
-			break;
-		default:	// custom commands
-			{
-				map<WORD, wstring>::iterator cl = m_commands.find(LOWORD(wParam));
-				if (cl != m_commands.end())
-				{
-					// now it->second is the command line string for the command
-					wstring commandline = cl->second;
+			// button was pressed
+			// but was it really pressed or did the keyboard hook send the message?
+			// we have to check if the command is really enabled:
 
-					// replace "%selpaths" with the paths of the selected items
-					wstring tag(_T("%selpaths"));
-					wstring::iterator it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-					if (it_begin != commandline.end())
-					{
-						// prepare the selected paths
-						wstring selpaths = GetFilePaths(_T(" "), true, true, true);
-						wstring::iterator it_end= it_begin + tag.size();
-						commandline.replace(it_begin, it_end, selpaths);
-					}
-					// replace "%selnames" with the names of the selected items
-					tag = _T("%selnames");
-					it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-					if (it_begin != commandline.end())
-					{
-						// prepare the selected names
-						wstring selnames = GetFileNames(_T(" "), true, true, true);
-						wstring::iterator it_end= it_begin + tag.size();
-						commandline.replace(it_begin, it_end, selnames);
-					}
-					// replace "%curdir" with the current directory
-					tag = _T("%curdir");
-					it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-					if (it_begin != commandline.end())
-					{
-						wstring::iterator it_end= it_begin + tag.size();
-						commandline.replace(it_begin, it_end, m_currentDirectory);
-					}
-					StartApplication(commandline);
-				}
+			WORD state = 0;
+			if (m_currentDirectory.empty())
+				state |= ENABLED_NOVIEWPATH;
+			else
+				state |= ENABLED_VIEWPATH;
+			if (m_bFilesSelected)
+				state |= ENABLED_FILESELECTED;
+			if (m_bFolderSelected)
+				state |= ENABLED_FOLDERSELECTED;
+			if (m_selectedItems.size() == 0)
+				state |= ENABLED_NOSELECTION;
+			map<int, DWORD>::iterator it = m_enablestates.find(LOWORD(wParam));
+			bool bEnabled = false;
+			if (it != m_enablestates.end())
+			{
+				if (((it->second & 0xFFFF)&state)&&
+					((HIWORD(it->second) == 0)||((m_selectedItems.size() == 0)&&(it->second & ENABLED_NOSELECTION))||(HIWORD(it->second) == m_selectedItems.size())))
+					bEnabled = true;
 			}
+			if (!bEnabled)
+				return 0;
+
+			FindPaths();
+			switch(LOWORD(wParam))
+			{
+			case 0:		// edit control enter pressed
+				{
+					// get the command entered in the edit box
+					int count = MAX_PATH;
+					TCHAR * buf = new TCHAR[count+1];
+					while (::GetWindowText(m_hWndEdit, buf, count)>=count)
+					{
+						delete [] buf;
+						count += MAX_PATH;
+						buf = new TCHAR[count+1];
+					}
+					// when we start the console with the command the user
+					// has entered in the edit box, we want the console
+					// to execute the command immediately, and *not* quit after
+					// executing the command so the user can see the output.
+					// If however the user enters a '@' char in front of the command
+					// then the console shall quit after executing the command.
+					wstring params;
+					if (buf[0] == '@')
+						params = _T("/c ");
+					else				
+						params = _T("/k ");
+					params += buf;
+					StartCmd(params);
+					delete [] buf;
+				}
+				break;
+			case 1:		// options
+				if (DialogBoxParam(g_hInst, MAKEINTRESOURCE(IDD_OPTIONS), m_hWnd, OptionsDlgFunc, (LPARAM)this)==IDOK)
+				{
+					BuildToolbarButtons();
+					OnMove(0);
+				}
+				break;
+			case 2:		// cmd
+				StartCmd(_T(""));
+				break;
+			case 3:		// copy name
+				{
+					wstring str = GetFileNames(_T("\r\n"), false, true, true);
+					WriteStringToClipboard(str, m_hWnd);
+				}
+				break;
+			case 4:		// copy path
+				{
+					wstring str = GetFilePaths(_T("\r\n"), false, true, true);
+					WriteStringToClipboard(str, m_hWnd);
+				}
+				break;
+			default:	// custom commands
+				{
+					map<WORD, wstring>::iterator cl = m_commands.find(LOWORD(wParam));
+					if (cl != m_commands.end())
+					{
+						// now it->second is the command line string for the command
+						wstring commandline = cl->second;
+
+						// replace "%selpaths" with the paths of the selected items
+						wstring tag(_T("%selpaths"));
+						wstring::iterator it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+						if (it_begin != commandline.end())
+						{
+							// prepare the selected paths
+							wstring selpaths = GetFilePaths(_T(" "), true, true, true);
+							wstring::iterator it_end= it_begin + tag.size();
+							commandline.replace(it_begin, it_end, selpaths);
+						}
+						// replace "%selnames" with the names of the selected items
+						tag = _T("%selnames");
+						it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+						if (it_begin != commandline.end())
+						{
+							// prepare the selected names
+							wstring selnames = GetFileNames(_T(" "), true, true, true);
+							wstring::iterator it_end= it_begin + tag.size();
+							commandline.replace(it_begin, it_end, selnames);
+						}
+						// replace "%curdir" with the current directory
+						tag = _T("%curdir");
+						it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+						if (it_begin != commandline.end())
+						{
+							wstring::iterator it_end= it_begin + tag.size();
+							commandline.replace(it_begin, it_end, m_currentDirectory);
+						}
+						StartApplication(commandline);
+					}
+				}
+				break;
+			}
+			FocusChange(false);
 			break;
 		}
-		FocusChange(false);
-		break;
 	}
 	return 0;
 }
@@ -900,7 +926,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	DestroyIcon(hIcon);
 
 	int customindex = NUMINTERNALCOMMANDS-1;
-
+	vector<int> hidelist;
 	for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
 	{
 		wstring value = inifile.GetValue(*it, _T("internalcommand"), _T(""));
@@ -912,13 +938,17 @@ BOOL CDeskBand::BuildToolbarButtons()
 			if (command <= NUMINTERNALCOMMANDS)
 			{
 				// we have to find the existing hotkey for that command
-				// and remove it from the map first
-				for (map<WPARAM, hotkeymodifiers>::iterator hk = m_hotkeys.begin(); hk != m_hotkeys.end(); ++hk)
+				// and remove it from the map first, but only if the user
+				// has specified a new hotkey or set it to 0
+				if (_tcslen(inifile.GetValue(*it, _T("hotkey"), _T(""))))
 				{
-					if (hk->second.command == command)
+					for (map<WPARAM, hotkeymodifiers>::iterator hk = m_hotkeys.begin(); hk != m_hotkeys.end(); ++hk)
 					{
-						m_hotkeys.erase(hk);
-						break;
+						if (hk->second.command == command)
+						{
+							m_hotkeys.erase(hk);
+							break;
+						}
 					}
 				}
 
@@ -937,6 +967,11 @@ BOOL CDeskBand::BuildToolbarButtons()
 					val = wcstol(value.c_str(), &stop, 0);
 				}
 				m_hotkeys[WPARAM(val)] = modifiers;
+				value = inifile.GetValue(*it, _T("hide"), _T(""));
+				if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
+				{
+					hidelist.push_back(command);
+				}
 			}
 			continue;
 		}
@@ -1027,5 +1062,10 @@ BOOL CDeskBand::BuildToolbarButtons()
 	SendMessage(m_hWndToolbar, TB_AUTOSIZE, 0, 0);
 	SendMessage(m_hWndToolbar, TB_GETMAXSIZE, 0,(LPARAM)&m_tbSize);
 	delete [] tb;
+	// now hide the internal commands which the user configured to be hidden:
+	for (vector<int>::iterator it = hidelist.begin(); it != hidelist.end(); ++it)
+	{
+		::SendMessage(m_hWndToolbar, TB_HIDEBUTTON, *it, (LPARAM)TRUE);
+	}
 	return TRUE;
 }
