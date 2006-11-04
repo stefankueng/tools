@@ -22,6 +22,7 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_oldEditWndProc(NULL)
 	, m_pSite(NULL)
 	, m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
+	, m_bCmdEditEnabled(true)
 {
 	m_ObjRefCount = 1;
 	g_DllRefCount++;
@@ -324,12 +325,12 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 		{
 			if (DBIF_VIEWMODE_FLOATING & dwViewMode)
 			{
-				pdbi->ptMinSize.x = m_tbSize.cx + BUTTONSIZEX;
+				pdbi->ptMinSize.x = m_tbSize.cx + (m_bCmdEditEnabled ? EDITBOXSIZEX : 0);
 				pdbi->ptMinSize.y = m_tbSize.cy;
 			}
 			else
 			{
-				pdbi->ptMinSize.x = m_tbSize.cx + BUTTONSIZEX;
+				pdbi->ptMinSize.x = m_tbSize.cx + (m_bCmdEditEnabled ? EDITBOXSIZEX : 0);
 				pdbi->ptMinSize.y = m_tbSize.cy;
 			}
 		}
@@ -348,7 +349,7 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 
 		if (pdbi->dwMask & DBIM_ACTUAL)
 		{
-			pdbi->ptActual.x = m_tbSize.cx + BUTTONSIZEX;
+			pdbi->ptActual.x = m_tbSize.cx + (m_bCmdEditEnabled ? EDITBOXSIZEX : 0);
 			pdbi->ptActual.y = m_tbSize.cy;
 		}
 
@@ -750,7 +751,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 			WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_CLIPSIBLINGS | WS_BORDER | ES_LEFT | ES_AUTOHSCROLL,
 			rc.left,
 			rc.top,
-			rc.right - rc.left - BUTTONSIZEX - SPACEBETWEENEDITANDBUTTON,
+			rc.right - rc.left - EDITBOXSIZEX - SPACEBETWEENEDITANDBUTTON,
 			rc.bottom - rc.top,
 			m_hWnd,
 			NULL,
@@ -772,9 +773,9 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 			TOOLBARCLASSNAME, 
 			NULL, 
 			WS_CHILD|TBSTYLE_LIST|TBSTYLE_FLAT|TBSTYLE_TRANSPARENT|CCS_NORESIZE|CCS_NODIVIDER|CCS_NOPARENTALIGN, 
-			rc.right - BUTTONSIZEX,
+			rc.right - EDITBOXSIZEX,
 			rc.top,
-			BUTTONSIZEX,
+			EDITBOXSIZEX,
 			rc.bottom - rc.top,
 			m_hWnd, 
 			NULL, 
@@ -811,7 +812,8 @@ LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lPa
 					// special handling of command 0: just set the focus!
 					if ((hk->second.command==0)&&(it->second->m_pSite))
 					{
-						it->second->OnSetFocus();
+						if (it->second->m_bCmdEditEnabled)
+							it->second->OnSetFocus();
 						return 1;//we processed it
 					}
 					it->second->OnCommand(MAKEWORD(hk->second.command, BN_CLICKED), 0);
@@ -829,6 +831,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	m_hotkeys.clear();
 	m_commands.clear();
 	m_enablestates.clear();
+	m_bCmdEditEnabled = true;
 	// now fill in our own hotkeys and enabled states
 	hotkeymodifiers modifiers;
 	modifiers.command = 0;		// edit box : ctrl-K
@@ -1066,7 +1069,23 @@ BOOL CDeskBand::BuildToolbarButtons()
 	// now hide the internal commands which the user configured to be hidden:
 	for (vector<int>::iterator it = hidelist.begin(); it != hidelist.end(); ++it)
 	{
-		::SendMessage(m_hWndToolbar, TB_HIDEBUTTON, *it, (LPARAM)TRUE);
+		if (*it == 0)
+		{
+			m_bCmdEditEnabled = false;
+		}
+		else
+			::SendMessage(m_hWndToolbar, TB_HIDEBUTTON, *it, (LPARAM)TRUE);
+	}
+	::ShowWindow(m_hWndEdit, m_bCmdEditEnabled ? SW_SHOW : SW_HIDE);
+
+	// now inform our parent that the size of the deskband has changed
+	if (m_pSite)
+	{
+		IOleCommandTarget * pOleCommandTarget;
+		if (SUCCEEDED(m_pSite->QueryInterface(IID_IOleCommandTarget, (LPVOID*)&pOleCommandTarget)))
+		{
+			pOleCommandTarget->Exec(&CGID_DeskBand, DBID_BANDINFOCHANGED, OLECMDEXECOPT_DONTPROMPTUSER, NULL, NULL);
+		}
 	}
 	return TRUE;
 }

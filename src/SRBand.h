@@ -17,7 +17,7 @@ using namespace std;
 #define IDM_COMMAND  0
 #define ID_SELECTTIMER 101
 
-#define BUTTONSIZEX	60
+#define EDITBOXSIZEX	60
 #define SPACEBETWEENEDITANDBUTTON 0
 
 // the number of 'internal' commands
@@ -126,6 +126,7 @@ private:
 	map<WPARAM, hotkeymodifiers> m_hotkeys;	///< the hotkeys for our commands
 	map<WORD, wstring> m_commands;		///< the custom commands and their command lines
 	map<int, DWORD> m_enablestates;	///< the custom commands and their enabled states
+	bool			m_bCmdEditEnabled;	///< the cmd edit box is special, because it's not part of the toolbar
 private:
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
