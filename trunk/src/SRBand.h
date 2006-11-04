@@ -168,6 +168,5 @@ private:
 	void					StartCmd(wstring params);
 	/// start a new process with the specified command line
 	void					StartApplication(std::wstring commandline);
-
 };
 
