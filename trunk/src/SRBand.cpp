@@ -896,40 +896,56 @@ BOOL CDeskBand::BuildToolbarButtons()
 	if (DWORD(m_regShowBtnText))
 		fsStyle |= BTNS_SHOWTEXT;
 
+	int customindex = 0;
+
 	// now add the default command buttons
 	HICON hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_OPTIONS));
-	tb[0].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
-	tb[0].idCommand = 1;
-	tb[0].fsState = TBSTATE_ENABLED;
-	tb[0].fsStyle = fsStyle;
-	tb[0].iString = (INT_PTR)_T("Options");
+	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
+	tb[customindex].idCommand = 1;
+	tb[customindex].fsState = TBSTATE_ENABLED;
+	tb[customindex].fsStyle = fsStyle;
+	tb[customindex].iString = (INT_PTR)_T("Options");
 	DestroyIcon(hIcon);
+
+	customindex++;
+
+	tb[customindex].iBitmap = 0;
+	tb[customindex].idCommand = 0;
+	tb[customindex].fsState = 0;
+	tb[customindex].fsStyle = BTNS_SEP;
+	tb[customindex].dwData = 0;
+	tb[customindex].iString = 0;
+
+	customindex++;
 
 	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_CMD));
-	tb[1].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
-	tb[1].idCommand = 2;
-	tb[1].fsState = TBSTATE_ENABLED;
-	tb[1].fsStyle = fsStyle;
-	tb[1].iString = (INT_PTR)_T("Console");
+	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
+	tb[customindex].idCommand = 2;
+	tb[customindex].fsState = TBSTATE_ENABLED;
+	tb[customindex].fsStyle = fsStyle;
+	tb[customindex].iString = (INT_PTR)_T("Console");
 	DestroyIcon(hIcon);
+
+	customindex++;
 
 	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_COPYNAME));
-	tb[2].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
-	tb[2].idCommand = 3;
-	tb[2].fsState = TBSTATE_ENABLED;
-	tb[2].fsStyle = fsStyle;
-	tb[2].iString = (INT_PTR)_T("Copy Names");
+	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
+	tb[customindex].idCommand = 3;
+	tb[customindex].fsState = TBSTATE_ENABLED;
+	tb[customindex].fsStyle = fsStyle;
+	tb[customindex].iString = (INT_PTR)_T("Copy Names");
 	DestroyIcon(hIcon);
+
+	customindex++;
 
 	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_COPYPATH));
-	tb[3].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
-	tb[3].idCommand = 4;
-	tb[3].fsState = TBSTATE_ENABLED;
-	tb[3].fsStyle = fsStyle;
-	tb[3].iString = (INT_PTR)_T("Copy Paths");
+	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
+	tb[customindex].idCommand = 4;
+	tb[customindex].fsState = TBSTATE_ENABLED;
+	tb[customindex].fsStyle = fsStyle;
+	tb[customindex].iString = (INT_PTR)_T("Copy Paths");
 	DestroyIcon(hIcon);
 
-	int customindex = NUMINTERNALCOMMANDS-1;
 	vector<int> hidelist;
 	for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
 	{
