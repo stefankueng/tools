@@ -1000,13 +1000,45 @@ BOOL CDeskBand::BuildToolbarButtons()
 			customindex--;
 			continue;
 		}
-		hIcon = LoadIcon(g_hInst, inifile.GetValue(*it, _T("icon"), _T("")));
+		value = inifile.GetValue(*it, _T("icon"), _T(""));
+		hIcon = LoadIcon(g_hInst, value.c_str());
 		if (hIcon)
 			tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
 		else
 		{
-			hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_DEFAULT));
-			tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);;
+			// icon loading failed. Let's try to load it differently:
+			// the user might have specified a module path and an icon index
+			// like this: c:\windows\explorer.exe,3 (the icon with ID 3 in explorer.exe)
+			hIcon = NULL;
+			if (value.find(',')>=0)
+			{
+				size_t pos = value.find_last_of(',');
+				wstring resourcefile, iconid;
+				if (pos >= 0)
+				{
+					resourcefile = value.substr(0, pos);
+					iconid = value.substr(pos+1);
+					hIcon = ExtractIcon(g_hInst, resourcefile.c_str(), _ttoi(iconid.c_str()));
+				}
+			}
+			if (hIcon == NULL)
+			{
+				// loading the icon with an index didn't work either
+				// next we try to use the icon of the application defined in the commandline
+				wstring appname;
+				if (cl.find(' ')>=0)
+					appname = cl.substr(0, cl.find(' '));
+				else
+					appname = cl;
+				hIcon = ExtractIcon(g_hInst, appname.c_str(), 0);
+			}
+			if (hIcon == NULL)
+			{
+				// if the icon handle is still invalid (no icon found yet),
+				// we use a default icon
+				hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_DEFAULT));
+			}
+			tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
 		}
 		tb[customindex].idCommand = customindex+1;
 		tb[customindex].fsState = TBSTATE_ENABLED;
