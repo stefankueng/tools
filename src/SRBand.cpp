@@ -796,7 +796,7 @@ LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lPa
 	map<DWORD, CDeskBand*>::iterator it = m_desklist.find(threadID);
 	if (it != m_desklist.end())
 	{
-		if ((lParam & 0xc0000000) == 0)//key went from 'up' to 'down' state
+		if ((code >= 0)&&((lParam & 0xc0000000) == 0))//key went from 'up' to 'down' state
 		{
 			map<WPARAM, hotkeymodifiers>::iterator hk = it->second->m_hotkeys.find(wParam);
 			if (hk != it->second->m_hotkeys.end())
@@ -815,6 +815,7 @@ LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lPa
 						return 1;//we processed it
 					}
 					it->second->OnCommand(MAKEWORD(hk->second.command, BN_CLICKED), 0);
+					return 1; // we processed it
 				}
 			}
 		}
