@@ -993,6 +993,13 @@ BOOL CDeskBand::BuildToolbarButtons()
 			tb[customindex].iString = 0;
 			continue;
 		}
+		wstring cl = inifile.GetValue(*it, _T("commandline"), _T(""));
+		if (cl.empty())
+		{
+			// if no command line is specified, just get out of here
+			customindex--;
+			continue;
+		}
 		hIcon = LoadIcon(g_hInst, inifile.GetValue(*it, _T("icon"), _T("")));
 		if (hIcon)
 			tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
@@ -1006,7 +1013,6 @@ BOOL CDeskBand::BuildToolbarButtons()
 		tb[customindex].fsStyle = fsStyle;
 		tb[customindex].iString = (INT_PTR)inifile.GetValue(*it, _T("name"), _T(""));
 		DestroyIcon(hIcon);
-		wstring cl = inifile.GetValue(*it, _T("commandline"), _T(""));
 		// now add the hotkey if it's present
 		hotkeymodifiers modifiers;
 		modifiers.command = customindex+1;
