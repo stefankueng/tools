@@ -6,6 +6,7 @@
 #include <set>
 #include <map>
 #include "Registry.h"
+#include "ResizableGrip.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ using namespace std;
 #define SPACEBETWEENEDITANDBUTTON 0
 
 // the number of 'internal' commands
-#define NUMINTERNALCOMMANDS 6
+#define NUMINTERNALCOMMANDS 8
 
 // the timer ID
 #define TID_IDLE 100
@@ -127,11 +128,18 @@ private:
 	map<WORD, wstring> m_commands;		///< the custom commands and their command lines
 	map<int, DWORD> m_enablestates;	///< the custom commands and their enabled states
 	bool			m_bCmdEditEnabled;	///< the cmd edit box is special, because it's not part of the toolbar
+
+	CResizableGrip	m_grip;				///< the grip used in the rename dialog
+	wstring			m_sMatch;			///< the match string of the rename
+	wstring			m_sReplace;			///< the replace string of the rename
+	set<wstring>	m_filelist;			///< the list of selected file/foldernames
 private:
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
 	/// options dialog callback function
 	static INT_PTR CALLBACK	OptionsDlgFunc(HWND, UINT, WPARAM, LPARAM);
+	/// rename dialog callback function
+	static INT_PTR CALLBACK	RenameDlgFunc(HWND, UINT, WPARAM, LPARAM);
 
 	static LRESULT CALLBACK KeyboardHookProc(int code, WPARAM wParam, LPARAM lParam);
 
@@ -171,5 +179,9 @@ private:
 	void					StartApplication(std::wstring commandline);
 	/// creates a new folder and starts the editing of it
 	bool					CreateNewFolder();
+	/// Opens a rename dialog where the user can rename the selected files
+	void					Rename();
+	/// Fills the list with the renamed files in the rename dialog
+	void					FillRenamedList(HWND hDlg);
 };
 

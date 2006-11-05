@@ -227,6 +227,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Rename.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ResizableGrip.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SRBand.cpp"
 				>
 				<FileConfiguration
@@ -321,6 +329,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ResizableGrip.h"
+				>
+			</File>
+			<File
 				RelativePath=".\resource.h"
 				>
 			</File>
@@ -372,6 +384,10 @@
 			</File>
 			<File
 				RelativePath=".\icons\options.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\icons\rename.ico"
 				>
 			</File>
 			<File
