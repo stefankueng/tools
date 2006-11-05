@@ -21,7 +21,7 @@ using namespace std;
 #define SPACEBETWEENEDITANDBUTTON 0
 
 // the number of 'internal' commands
-#define NUMINTERNALCOMMANDS 5
+#define NUMINTERNALCOMMANDS 6
 
 // the timer ID
 #define TID_IDLE 100
@@ -169,5 +169,7 @@ private:
 	void					StartCmd(wstring params);
 	/// start a new process with the specified command line
 	void					StartApplication(std::wstring commandline);
+	/// creates a new folder and starts the editing of it
+	bool					CreateNewFolder();
 };
 

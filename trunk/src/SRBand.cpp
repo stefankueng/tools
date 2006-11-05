@@ -594,6 +594,11 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					WriteStringToClipboard(str, m_hWnd);
 				}
 				break;
+			case 5:		// New Folder
+				{
+					CreateNewFolder();
+				}
+				break;
 			default:	// custom commands
 				{
 					map<WORD, wstring>::iterator cl = m_commands.find(LOWORD(wParam));
@@ -853,6 +858,12 @@ BOOL CDeskBand::BuildToolbarButtons()
 	modifiers.control = true;
 	m_hotkeys[WPARAM('C')] = modifiers;
 	m_enablestates[4] = ENABLED_SELECTED;
+	modifiers.command = 5;		// new folder : ctrl-shift-N
+	modifiers.alt = false;
+	modifiers.shift = true;
+	modifiers.control = true;
+	m_hotkeys[WPARAM('N')] = modifiers;
+	m_enablestates[5] = ENABLED_VIEWPATH;
 
 	if (m_hWndToolbar == NULL)
 		return FALSE;
@@ -944,6 +955,16 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("Copy Paths");
+	DestroyIcon(hIcon);
+
+	customindex++;
+
+	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_NEWFOLDER));
+	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
+	tb[customindex].idCommand = 5;
+	tb[customindex].fsState = TBSTATE_ENABLED;
+	tb[customindex].fsStyle = fsStyle;
+	tb[customindex].iString = (INT_PTR)_T("New Folder");
 	DestroyIcon(hIcon);
 
 	vector<int> hidelist;

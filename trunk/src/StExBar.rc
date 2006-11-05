@@ -33,6 +33,7 @@ IDI_COPYNAME            ICON                    "icons\\copyname.ico"
 IDI_COPYPATH            ICON                    "icons\\copypath.ico"
 IDI_OPTIONS             ICON                    "icons\\options.ico"
 IDI_DEFAULT             ICON                    "icons\\default.ico"
+IDI_NEWFOLDER           ICON                    "icons\\newfolder.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
