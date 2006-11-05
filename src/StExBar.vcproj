@@ -211,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NewFolder.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OptionsDlg.cpp"
 				>
 			</File>
@@ -360,6 +364,10 @@
 			</File>
 			<File
 				RelativePath=".\icons\default.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\icons\newfolder.ico"
 				>
 			</File>
 			<File
