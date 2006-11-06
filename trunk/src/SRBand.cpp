@@ -809,26 +809,23 @@ LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lPa
 	{
 		if ((code >= 0)&&((lParam & 0xc0000000) == 0))//key went from 'up' to 'down' state
 		{
-			map<WPARAM, hotkeymodifiers>::iterator hk = it->second->m_hotkeys.find(wParam);
+			hotkey realhk;
+			realhk.keycode = wParam;
+			realhk.alt = !!(GetKeyState(VK_MENU)&0x8000);
+			realhk.control = !!(GetKeyState(VK_CONTROL)&0x8000);
+			realhk.shift = !!(GetKeyState(VK_SHIFT)&0x8000);
+			map<hotkey, int>::iterator hk = it->second->m_hotkeys.find(realhk);
 			if (hk != it->second->m_hotkeys.end())
 			{
-				bool alt = !!(GetKeyState(VK_MENU)&0x8000);
-				bool shift = !!(GetKeyState(VK_SHIFT)&0x8000);
-				bool control = !!(GetKeyState(VK_CONTROL)&0x8000);
-				if ((hk->second.alt == alt)&&
-					(hk->second.shift == shift)&&
-					(hk->second.control == control))
-				{
 					// special handling of command 0: just set the focus!
-					if ((hk->second.command==0)&&(it->second->m_pSite))
+					if ((hk->second==0)&&(it->second->m_pSite))
 					{
 						if (it->second->m_bCmdEditEnabled)
 							it->second->OnSetFocus();
 						return 1;//we processed it
 					}
-					it->second->OnCommand(MAKEWORD(hk->second.command, BN_CLICKED), 0);
+					it->second->OnCommand(MAKEWORD(hk->second, BN_CLICKED), 0);
 					return 1; // we processed it
-				}
 			}
 		}
 		return CallNextHookEx(it->second->m_hook, code, wParam, lParam);
@@ -843,37 +840,43 @@ BOOL CDeskBand::BuildToolbarButtons()
 	m_enablestates.clear();
 	m_bCmdEditEnabled = true;
 	// now fill in our own hotkeys and enabled states
-	hotkeymodifiers modifiers;
-	modifiers.command = 0;		// edit box : ctrl-K
+	hotkey modifiers;
+	modifiers.keycode = WPARAM('K');
 	modifiers.alt = false;
 	modifiers.shift = false;
 	modifiers.control = true;
-	m_hotkeys[WPARAM('K')] = modifiers;
+	m_hotkeys[modifiers] = 0;	// edit box : ctrl-K
+
 	m_enablestates[1] = ENABLED_ALWAYS;
-	modifiers.command = 2;		// console : ctrl-M
+	
+	modifiers.keycode = WPARAM('M');
 	modifiers.alt = false;
 	modifiers.shift = false;
 	modifiers.control = true;
-	m_hotkeys[WPARAM('M')] = modifiers;
+	m_hotkeys[modifiers] = 2;	// console : ctrl-M
 	m_enablestates[2] = ENABLED_VIEWPATH;
+
 	m_enablestates[3] = ENABLED_SELECTED;
-	modifiers.command = 4;		// copy paths : ctrl-shift-C
+	
+	modifiers.keycode = WPARAM('C');
 	modifiers.alt = false;
 	modifiers.shift = true;
 	modifiers.control = true;
-	m_hotkeys[WPARAM('C')] = modifiers;
+	m_hotkeys[modifiers] = 4;	// copy paths : ctrl-shift-C
 	m_enablestates[4] = ENABLED_SELECTED;
-	modifiers.command = 5;		// new folder : ctrl-shift-N
+
+	modifiers.keycode = WPARAM('N');
 	modifiers.alt = false;
 	modifiers.shift = true;
 	modifiers.control = true;
-	m_hotkeys[WPARAM('N')] = modifiers;
+	m_hotkeys[modifiers] = 5;	// new folder : ctrl-shift-N
 	m_enablestates[5] = ENABLED_VIEWPATH;
-	modifiers.command = 6;		// Rename : ctrl-shift-R
+
+	modifiers.keycode = WPARAM('R');
 	modifiers.alt = false;
 	modifiers.shift = true;
 	modifiers.control = true;
-	m_hotkeys[WPARAM('R')] = modifiers;
+	m_hotkeys[modifiers] = 6;	// Rename : ctrl-shift-R
 	m_enablestates[6] = ENABLED_SELECTED;
 
 	if (m_hWndToolbar == NULL)
@@ -1013,9 +1016,9 @@ BOOL CDeskBand::BuildToolbarButtons()
 				// has specified a new hotkey or set it to 0
 				if (_tcslen(inifile.GetValue(*it, _T("hotkey"), _T(""))))
 				{
-					for (map<WPARAM, hotkeymodifiers>::iterator hk = m_hotkeys.begin(); hk != m_hotkeys.end(); ++hk)
+					for (map<hotkey, int>::iterator hk = m_hotkeys.begin(); hk != m_hotkeys.end(); ++hk)
 					{
-						if (hk->second.command == command)
+						if (hk->second == command)
 						{
 							m_hotkeys.erase(hk);
 							break;
@@ -1023,8 +1026,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 					}
 				}
 
-				hotkeymodifiers modifiers;
-				modifiers.command = command;
+				hotkey modifiers;
 				value = inifile.GetValue(*it, _T("hotkey_alt"), _T(""));
 				modifiers.alt = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
 				value = inifile.GetValue(*it, _T("hotkey_shift"), _T(""));
@@ -1037,7 +1039,8 @@ BOOL CDeskBand::BuildToolbarButtons()
 				{
 					val = wcstol(value.c_str(), &stop, 0);
 				}
-				m_hotkeys[WPARAM(val)] = modifiers;
+				modifiers.keycode = WPARAM(val);
+				m_hotkeys[modifiers] = command;
 				value = inifile.GetValue(*it, _T("hide"), _T(""));
 				if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
 				{
@@ -1113,8 +1116,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 		tb[customindex].iString = (INT_PTR)inifile.GetValue(*it, _T("name"), _T(""));
 		DestroyIcon(hIcon);
 		// now add the hotkey if it's present
-		hotkeymodifiers modifiers;
-		modifiers.command = customindex+1;
+		hotkey modifiers;
 		value = inifile.GetValue(*it, _T("hotkey_alt"), _T(""));
 		modifiers.alt = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
 		value = inifile.GetValue(*it, _T("hotkey_shift"), _T(""));
@@ -1128,7 +1130,10 @@ BOOL CDeskBand::BuildToolbarButtons()
 			WCHAR * stop;
 			long val = wcstol(value.c_str(), &stop, 0);
 			if (val)
-				m_hotkeys[WPARAM(val)] = modifiers;
+			{
+				modifiers.keycode = WPARAM(val);
+				m_hotkeys[modifiers] = customindex+1;
+			}
 		}
 		if (!cl.empty())
 			m_commands[WORD(customindex+1)] = cl;
