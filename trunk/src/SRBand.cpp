@@ -842,6 +842,8 @@ BOOL CDeskBand::BuildToolbarButtons()
 	m_enablestates.clear();
 	m_bCmdEditEnabled = true;
 	// now fill in our own hotkeys and enabled states
+	m_enablestates[0] = ENABLED_VIEWPATH;
+
 	hotkey modifiers;
 	modifiers.keycode = WPARAM('K');
 	modifiers.alt = false;
