@@ -532,12 +532,14 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 			if (m_selectedItems.size() == 0)
 				state |= ENABLED_NOSELECTION;
 			map<int, DWORD>::iterator it = m_enablestates.find(LOWORD(wParam));
-			bool bEnabled = false;
+			bool bEnabled = true;
 			if (it != m_enablestates.end())
 			{
 				if (((it->second & 0xFFFF)&state)&&
 					((HIWORD(it->second) == 0)||((m_selectedItems.size() == 0)&&(it->second & ENABLED_NOSELECTION))||(HIWORD(it->second) == m_selectedItems.size())))
 					bEnabled = true;
+				else
+					bEnabled = false;
 			}
 			if (!bEnabled)
 				return 0;
