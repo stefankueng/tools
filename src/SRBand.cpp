@@ -1197,6 +1197,11 @@ BOOL CDeskBand::BuildToolbarButtons()
 				state = MAKELONG(state, val);
 		}
 		m_enablestates[customindex+1] = state;
+		value = inifile.GetValue(*it, _T("tooltip"), _T(""));
+		if (value.empty())
+			value = inifile.GetValue(*it, _T("name"), _T(""));
+		if (!value.empty())
+			m_tooltips[customindex+1] = value.c_str();
 	}
 
 	SendMessage(m_hWndToolbar, TB_SETIMAGELIST, 0, (LPARAM)m_hToolbarImgList);

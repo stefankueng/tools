@@ -86,6 +86,8 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 								"# [00NotePad]\n"
 								"### the name of the custom command is shown as the button text.\n"
 								"# name = Editor\n"
+								"### a tooltip will be shown on each button in the toolbar.\n"
+								"# tooltip = Opens the selected file in the editor\n"
 								"### set icon to a path pointing to an *.ico file which has the size 16x16 and 24x24\n"
 								"# icon = c:\\myicons\\customcommand.ico\n"
 								"### the command line is the path to the custom program, including the parameters passed to it.\n"
