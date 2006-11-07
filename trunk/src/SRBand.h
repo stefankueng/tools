@@ -137,6 +137,7 @@ private:
 	wstring			m_sMatch;			///< the match string of the rename
 	wstring			m_sReplace;			///< the replace string of the rename
 	set<wstring>	m_filelist;			///< the list of selected file/folder names
+	map<int, wstring> m_tooltips;		///< maps command/button ids against the tooltips to show for them
 private:
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);

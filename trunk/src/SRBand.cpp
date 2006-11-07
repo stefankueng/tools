@@ -475,6 +475,23 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 	case WM_MOVE:
 		return pThis->OnMove(lParam);
 
+	case WM_NOTIFY:
+		{
+			LPNMHDR pnmh = (LPNMHDR)lParam;
+			if (pnmh->code == TTN_GETDISPINFO)
+			{
+				// tooltips requested...
+				LPNMTTDISPINFO lpnmtdi = (LPNMTTDISPINFO) lParam;
+				map<int, wstring>::iterator it = pThis->m_tooltips.find(pnmh->idFrom);
+				if (it != pThis->m_tooltips.end())
+				{
+					_tcscpy_s(lpnmtdi->lpszText, 80, it->second.c_str());
+				}
+			}
+
+		}
+		break;
+
 	case WM_ERASEBKGND:
 		{
 			HDC hDC = (HDC)wParam;
@@ -785,7 +802,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		m_hWndToolbar = CreateWindowEx(TBSTYLE_EX_MIXEDBUTTONS,
 			TOOLBARCLASSNAME, 
 			NULL, 
-			WS_CHILD|TBSTYLE_LIST|TBSTYLE_FLAT|TBSTYLE_TRANSPARENT|CCS_NORESIZE|CCS_NODIVIDER|CCS_NOPARENTALIGN, 
+			WS_CHILD|TBSTYLE_TOOLTIPS|TBSTYLE_LIST|TBSTYLE_FLAT|TBSTYLE_TRANSPARENT|CCS_NORESIZE|CCS_NODIVIDER|CCS_NOPARENTALIGN, 
 			rc.right - EDITBOXSIZEX,
 			rc.top,
 			EDITBOXSIZEX,
@@ -841,6 +858,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	m_hotkeys.clear();
 	m_commands.clear();
 	m_enablestates.clear();
+	m_tooltips.clear();
 	m_bCmdEditEnabled = true;
 	// now fill in our own hotkeys and enabled states
 	m_enablestates[0] = ENABLED_VIEWPATH;
@@ -935,6 +953,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("Options");
+	m_tooltips[tb[customindex].idCommand] = _T("Options");
 	DestroyIcon(hIcon);
 
 	customindex++;
@@ -954,6 +973,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("Console");
+	m_tooltips[tb[customindex].idCommand] = _T("Console");
 	DestroyIcon(hIcon);
 
 	customindex++;
@@ -964,6 +984,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("Copy Names");
+	m_tooltips[tb[customindex].idCommand] = _T("Copy Names to clipboard");
 	DestroyIcon(hIcon);
 
 	customindex++;
@@ -974,6 +995,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("Copy Paths");
+	m_tooltips[tb[customindex].idCommand] = _T("Copy Paths to clipboard");
 	DestroyIcon(hIcon);
 
 	customindex++;
@@ -984,6 +1006,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("New Folder");
+	m_tooltips[tb[customindex].idCommand] = _T("Create new folder");
 	DestroyIcon(hIcon);
 
 	customindex++;
@@ -1003,6 +1026,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("Rename");
+	m_tooltips[tb[customindex].idCommand] = _T("Rename selected items");
 	DestroyIcon(hIcon);
 
 	vector<int> hidelist;
