@@ -485,7 +485,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 				map<int, wstring>::iterator it = pThis->m_tooltips.find(pnmh->idFrom);
 				if (it != pThis->m_tooltips.end())
 				{
-					_tcscpy_s(lpnmtdi->lpszText, 80, it->second.c_str());
+					_tcsncpy_s(lpnmtdi->lpszText, 80, it->second.c_str(), 79);
 				}
 			}
 
