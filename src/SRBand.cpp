@@ -506,6 +506,7 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
 	if (uMessage == WM_SETFOCUS)
 	{
 		pThis->OnSetFocus();
+		::SendMessage(pThis->m_hWndEdit, EM_SETSEL, 0, (LPARAM)-1);
 	}
 	return CallWindowProc(pThis->m_oldEditWndProc, hWnd, uMessage, wParam, lParam);
 }
