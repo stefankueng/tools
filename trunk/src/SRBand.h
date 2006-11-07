@@ -128,7 +128,7 @@ private:
 	bool			m_bFolderSelected;	///< at least one folder is selected
 
 	CRegStdWORD		m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
-	map<hotkey, int> m_hotkeys;///< the hotkeys for our commands
+	map<hotkey, int> m_hotkeys;			///< the hotkeys for our commands
 	map<WORD, wstring> m_commands;		///< the custom commands and their command lines
 	map<int, DWORD> m_enablestates;	///< the custom commands and their enabled states
 	bool			m_bCmdEditEnabled;	///< the cmd edit box is special, because it's not part of the toolbar
@@ -136,7 +136,7 @@ private:
 	CResizableGrip	m_grip;				///< the grip used in the rename dialog
 	wstring			m_sMatch;			///< the match string of the rename
 	wstring			m_sReplace;			///< the replace string of the rename
-	set<wstring>	m_filelist;			///< the list of selected file/foldernames
+	set<wstring>	m_filelist;			///< the list of selected file/folder names
 private:
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
