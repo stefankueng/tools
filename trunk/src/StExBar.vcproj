@@ -211,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hyperlink.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NewFolder.cpp"
 				>
 			</File>
@@ -318,6 +322,10 @@
 			</File>
 			<File
 				RelativePath=".\Guid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hyperlink.h"
 				>
 			</File>
 			<File

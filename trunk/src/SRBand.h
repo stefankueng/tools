@@ -7,6 +7,7 @@
 #include <map>
 #include "Registry.h"
 #include "ResizableGrip.h"
+#include "hyperlink.h"
 
 using namespace std;
 
@@ -138,6 +139,7 @@ private:
 	wstring			m_sReplace;			///< the replace string of the rename
 	set<wstring>	m_filelist;			///< the list of selected file/folder names
 	map<int, wstring> m_tooltips;		///< maps command/button ids against the tooltips to show for them
+	CHyperLink		m_link;				///< the hyperlink used in the options dialog
 private:
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
