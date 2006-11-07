@@ -34,6 +34,8 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 			//::SendMessage(hwndDlg, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
 			//::SendMessage(hwndDlg, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 
+			pThis->m_link.ConvertStaticToHyperlink(hwndDlg, IDC_LINK, _T("http://tools.tortoisesvn.net"));
+
 			SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_SETCHECK, DWORD(pThis->m_regShowBtnText) ? BST_CHECKED : BST_UNCHECKED, 0);
 		}
 		return (INT_PTR)TRUE;
