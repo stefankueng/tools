@@ -639,6 +639,8 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 						{
 							// prepare the selected paths
 							wstring selpaths = GetFilePaths(_T(" "), true, true, true);
+							if (selpaths.empty())
+								selpaths = m_currentDirectory;
 							wstring::iterator it_end= it_begin + tag.size();
 							commandline.replace(it_begin, it_end, selpaths);
 						}
@@ -648,9 +650,11 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 						if (it_begin != commandline.end())
 						{
 							// prepare the selected names
-							wstring selnames = GetFilePaths(_T("*"), false, true, true);
+							wstring selpaths = GetFilePaths(_T("*"), false, true, true);
+							if (selpaths.empty())
+								selpaths = m_currentDirectory;
 							wstring::iterator it_end= it_begin + tag.size();
-							commandline.replace(it_begin, it_end, selnames);
+							commandline.replace(it_begin, it_end, selpaths);
 						}
 						// replace "%selnames" with the names of the selected items
 						tag = _T("%selnames");
