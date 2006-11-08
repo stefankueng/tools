@@ -642,6 +642,16 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 							wstring::iterator it_end= it_begin + tag.size();
 							commandline.replace(it_begin, it_end, selpaths);
 						}
+						// replace "%sel*paths" with the names of the selected items
+						tag = _T("%sel*paths");
+						it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+						if (it_begin != commandline.end())
+						{
+							// prepare the selected names
+							wstring selnames = GetFilePaths(_T("*"), false, true, true);
+							wstring::iterator it_end= it_begin + tag.size();
+							commandline.replace(it_begin, it_end, selnames);
+						}
 						// replace "%selnames" with the names of the selected items
 						tag = _T("%selnames");
 						it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());

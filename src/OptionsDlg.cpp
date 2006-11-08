@@ -30,9 +30,9 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 			OffsetRect(&rc, -rcDlg.right, -rcDlg.bottom); 
 
 			SetWindowPos(hwndDlg, HWND_TOP, rcOwner.left + (rc.right / 2), rcOwner.top + (rc.bottom / 2), 0, 0,	SWP_NOSIZE); 
-			//HICON hIcon = (HICON)::LoadImage(g_hInst, MAKEINTRESOURCE(IDI_RENDLG), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE|LR_SHARED);
-			//::SendMessage(hwndDlg, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
-			//::SendMessage(hwndDlg, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+			HICON hIcon = (HICON)::LoadImage(g_hInst, MAKEINTRESOURCE(IDI_OPTIONS), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE|LR_SHARED);
+			::SendMessage(hwndDlg, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+			::SendMessage(hwndDlg, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 
 			pThis->m_link.ConvertStaticToHyperlink(hwndDlg, IDC_LINK, _T("http://tools.tortoisesvn.net"));
 
@@ -156,7 +156,12 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 								"\n"
 								"\n"
 								"### some special placeholders are available for the command line:\n"
-								"### %selpaths : will be replaced with the paths of the selected items\n"
+								"### %selpaths : will be replaced with the paths of the selected items.\n"
+								"###             the paths are separated by a space char.\n"
+								"###             note: if too many items are selected, the command line\n"
+								"###             could get too long and get truncated!\n"
+								"### %sel*paths: will be replaced with the paths of the selected items.\n"
+								"###             the paths are separated by a '*' char.\n"
 								"###             note: if too many items are selected, the command line\n"
 								"###             could get too long and get truncated!\n"
 								"### %selnames : will be replaced with the names of the selected items\n"
