@@ -23,6 +23,7 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_pSite(NULL)
 	, m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
 	, m_bCmdEditEnabled(true)
+	, m_hToolbarImgList(NULL)
 {
 	m_ObjRefCount = 1;
 	g_DllRefCount++;
@@ -925,8 +926,11 @@ BOOL CDeskBand::BuildToolbarButtons()
 	{
 		::SendMessage(m_hWndToolbar, TB_DELETEBUTTON, 0, 0);
 	}
-	// destroy the image list
-	ImageList_Destroy(m_hToolbarImgList);
+	if (m_hToolbarImgList)
+	{
+		// destroy the image list
+		ImageList_Destroy(m_hToolbarImgList);
+	}
 
 	// find custom commands
 	TCHAR szPath[MAX_PATH] = {0};
