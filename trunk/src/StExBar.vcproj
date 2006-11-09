@@ -115,10 +115,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
+				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;SRBAR_EXPORTS"
+				StringPooling="true"
 				RuntimeLibrary="0"
+				DisableLanguageExtensions="false"
+				RuntimeTypeInfo="false"
 				UsePrecompiledHeader="2"
 				WarningLevel="4"
 				WarnAsError="false"
@@ -137,7 +140,7 @@
 				Name="VCLinkerTool"
 				LinkIncremental="1"
 				ModuleDefinitionFile="StExBar.def"
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
