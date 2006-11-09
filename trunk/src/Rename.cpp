@@ -77,14 +77,18 @@ void CDeskBand::Rename()
 													try
 													{
 														wstring sDispName = dispname;
-														replaced = boost::regex_replace(sDispName, e1, m_sReplace);
-														if (replaced.compare(sDispName))
+														// check if the item is in the list of selected items
+														if (m_filelist.find(sDispName) != m_filelist.end())
 														{
-															ITEMIDLIST * pidlrenamed;
-															pShellFolder->SetNameOf(NULL, pidl, replaced.c_str(), SHGDN_FORPARSING|SHGDN_INFOLDER, &pidlrenamed);
-															// if the rename was successful, select the renamed item
-															if (pidlrenamed)
-																pFolderView->SelectItem(i, SVSI_CHECK|SVSI_SELECT);
+															replaced = boost::regex_replace(sDispName, e1, m_sReplace);
+															if (replaced.compare(sDispName))
+															{
+																ITEMIDLIST * pidlrenamed;
+																pShellFolder->SetNameOf(NULL, pidl, replaced.c_str(), SHGDN_FORPARSING|SHGDN_INFOLDER, &pidlrenamed);
+																// if the rename was successful, select the renamed item
+																if (pidlrenamed)
+																	pFolderView->SelectItem(i, SVSI_CHECK|SVSI_SELECT);
+															}
 														}
 													}
 													catch (runtime_error x)
