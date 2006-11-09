@@ -129,6 +129,7 @@ private:
 	bool			m_bFolderSelected;	///< at least one folder is selected
 
 	CRegStdWORD		m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
+	CRegStdWORD		m_regUseUNCPaths;	///< config setting whether to copy the UNC paths of mapped paths or not
 	map<hotkey, int> m_hotkeys;			///< the hotkeys for our commands
 	map<WORD, wstring> m_commands;		///< the custom commands and their command lines
 	map<int, DWORD> m_enablestates;	///< the custom commands and their enabled states
@@ -176,7 +177,7 @@ private:
 	/// get a list of filenames in one string, separated by \c separator
 	wstring					GetFileNames(wstring separator, bool quotespaces, bool includefiles, bool includefolders);
 	/// get a list of file paths in one string, separated by \c separator
-	wstring					GetFilePaths(wstring separator, bool quotespaces, bool includefiles, bool includefolders);
+	wstring					GetFilePaths(wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc);
 	/// get a list of folder paths in one string, separated by \c separator
 	/// put a string on the clipboard
 	bool					WriteStringToClipboard(const wstring& sClipdata, HWND hOwningWnd);
@@ -190,5 +191,8 @@ private:
 	void					Rename();
 	/// Fills the list with the renamed files in the rename dialog
 	void					FillRenamedList(HWND hDlg);
+	/// convert a path to an UNC path (if it points to a network share)
+	wstring					ConvertToUNC(wstring sPath);
+
 };
 

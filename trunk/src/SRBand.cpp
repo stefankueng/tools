@@ -22,6 +22,7 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_oldEditWndProc(NULL)
 	, m_pSite(NULL)
 	, m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
+	, m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
 	, m_bCmdEditEnabled(true)
 	, m_hToolbarImgList(NULL)
 {
@@ -611,7 +612,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 				break;
 			case 4:		// copy path
 				{
-					wstring str = GetFilePaths(_T("\r\n"), false, true, true);
+					wstring str = GetFilePaths(_T("\r\n"), false, true, true, DWORD(m_regUseUNCPaths) ? true : false);
 					WriteStringToClipboard(str, m_hWnd);
 				}
 				break;
@@ -639,7 +640,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 						if (it_begin != commandline.end())
 						{
 							// prepare the selected paths
-							wstring selpaths = GetFilePaths(_T(" "), true, true, true);
+							wstring selpaths = GetFilePaths(_T(" "), true, true, true, false);
 							if (selpaths.empty())
 								selpaths = m_currentDirectory;
 							wstring::iterator it_end= it_begin + tag.size();
@@ -651,7 +652,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 						if (it_begin != commandline.end())
 						{
 							// prepare the selected names
-							wstring selpaths = GetFilePaths(_T("*"), false, true, true);
+							wstring selpaths = GetFilePaths(_T("*"), false, true, true, false);
 							if (selpaths.empty())
 								selpaths = m_currentDirectory;
 							wstring::iterator it_end= it_begin + tag.size();

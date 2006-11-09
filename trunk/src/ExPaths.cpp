@@ -3,6 +3,8 @@
 #include "SimpleIni.h"
 #include "Pidl.h"
 
+#pragma comment(lib, "Mpr")
+
 bool CDeskBand::FindPaths()
 {
 	m_currentDirectory.clear();
@@ -134,7 +136,7 @@ wstring CDeskBand::GetFileNames(wstring separator, bool quotespaces, bool includ
 	return sRet;
 }
 
-wstring CDeskBand::GetFilePaths(wstring separator, bool quotespaces, bool includefiles, bool includefolders)
+wstring CDeskBand::GetFilePaths(wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc)
 {
 	WCHAR buf[MAX_PATH+2];
 	wstring sRet;
@@ -146,16 +148,49 @@ wstring CDeskBand::GetFilePaths(wstring separator, bool quotespaces, bool includ
 			{
 				if (!sRet.empty())
 					sRet += separator;
+				wstring sPath = it->first;
+				if (useunc)
+				{
+					sPath = ConvertToUNC(sPath);
+				}
 				if (quotespaces)
 				{
-					_tcscpy_s(buf, MAX_PATH, it->first.c_str());
+					_tcscpy_s(buf, MAX_PATH, sPath.c_str());
 					PathQuoteSpaces(buf);
 					sRet += buf;
 				}
 				else
-					sRet += it->first;
+					sRet += sPath;
 			}
 		}
 	}
 	return sRet;
 }
+
+wstring CDeskBand::ConvertToUNC(wstring sPath)
+{
+	WCHAR temp;
+	UNIVERSAL_NAME_INFO * puni = NULL;
+	DWORD bufsize = 0;
+	wstring sRet = sPath;
+	//Call WNetGetUniversalName using UNIVERSAL_NAME_INFO_LEVEL option
+	if (WNetGetUniversalName(sPath.c_str(),
+		UNIVERSAL_NAME_INFO_LEVEL,
+		(LPVOID) &temp,
+		&bufsize) == ERROR_MORE_DATA)
+	{
+		// now we have the size required to hold the UNC path
+		WCHAR * buf = new WCHAR[bufsize+1];
+		puni = (UNIVERSAL_NAME_INFO *)buf;
+		if (WNetGetUniversalName(sPath.c_str(),
+			UNIVERSAL_NAME_INFO_LEVEL,
+			(LPVOID) puni,
+			&bufsize) == NO_ERROR)
+		{
+			sRet = wstring(puni->lpUniversalName);
+		}
+		delete [] buf;
+	}
+
+	return sRet;;
+} 
