@@ -750,22 +750,24 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		}
 
 		// If the window class has not been registered, then do so.
-		WNDCLASS wc;
-		if (!GetClassInfo(g_hInst, DB_CLASS_NAME, &wc))
+		WNDCLASSEX wc;
+		if (!GetClassInfoEx(g_hInst, DB_CLASS_NAME, &wc))
 		{
 			ZeroMemory(&wc, sizeof(wc));
+			wc.cbSize		  = sizeof(WNDCLASSEX);
 			wc.style          = CS_HREDRAW | CS_VREDRAW;
 			wc.lpfnWndProc    = (WNDPROC)WndProc;
 			wc.cbClsExtra     = 0;
 			wc.cbWndExtra     = 0;
 			wc.hInstance      = g_hInst;
 			wc.hIcon          = NULL;
+			wc.hIconSm		  = NULL;
 			wc.hCursor        = LoadCursor(NULL, IDC_ARROW);
 			wc.hbrBackground  = (HBRUSH)(COLOR_BTNFACE+1);
 			wc.lpszMenuName   = NULL;
 			wc.lpszClassName  = DB_CLASS_NAME;
 
-			if (!RegisterClass(&wc))
+			if (!RegisterClassEx(&wc))
 			{
 				return FALSE;
 			}
