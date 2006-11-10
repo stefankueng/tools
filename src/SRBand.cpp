@@ -754,7 +754,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		if (!GetClassInfo(g_hInst, DB_CLASS_NAME, &wc))
 		{
 			ZeroMemory(&wc, sizeof(wc));
-			wc.style          = CS_HREDRAW | CS_VREDRAW | CS_GLOBALCLASS;
+			wc.style          = CS_HREDRAW | CS_VREDRAW;
 			wc.lpfnWndProc    = (WNDPROC)WndProc;
 			wc.cbClsExtra     = 0;
 			wc.cbWndExtra     = 0;
