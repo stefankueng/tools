@@ -40,6 +40,7 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance,
 		g_hInst = hInstance;
 		break;
 	case DLL_PROCESS_DETACH:
+		UnregisterClass(DB_CLASS_NAME, g_hInst);
 		break;
 	}
 
