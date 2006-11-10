@@ -776,7 +776,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		GetClientRect(m_hwndParent, &rc);
 
 		//Create the window. The WndProc will set m_hWnd.
-		CreateWindowEx(0,
+		CreateWindowEx(WS_EX_CONTROLPARENT,
 			DB_CLASS_NAME,
 			NULL,
 			WS_CHILD | WS_CLIPSIBLINGS,
@@ -786,7 +786,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 			rc.bottom - rc.top,
 			m_hwndParent,
 			NULL,
-			g_hInst,
+			NULL,
 			(LPVOID)this);
 
 		GetClientRect(m_hWnd, &rc);
@@ -802,7 +802,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 			rc.bottom - rc.top,
 			m_hWnd,
 			NULL,
-			g_hInst,
+			NULL,
 			NULL);
 
 		if (m_hWndEdit == NULL)
