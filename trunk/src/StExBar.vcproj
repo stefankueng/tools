@@ -410,6 +410,14 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\Setup.wxs"
+			>
+		</File>
+		<File
+			RelativePath=".\version.in"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
