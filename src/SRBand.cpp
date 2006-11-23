@@ -608,12 +608,34 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 			case 3:		// copy name
 				{
 					wstring str = GetFileNames(_T("\r\n"), false, true, true);
+					if (str.empty())
+					{
+						// Seems no items are selected
+						// Use the view path instead
+						size_t pos = m_currentDirectory.find_last_of('\\');
+						WCHAR buf[MAX_PATH];
+						if (pos >= 0)
+						{
+							_tcscpy_s(buf, MAX_PATH, m_currentDirectory.substr(pos+1).c_str());
+							PathQuoteSpaces(buf);
+							str = buf;
+						}
+					}
 					WriteStringToClipboard(str, m_hWnd);
 				}
 				break;
 			case 4:		// copy path
 				{
 					wstring str = GetFilePaths(_T("\r\n"), false, true, true, DWORD(m_regUseUNCPaths) ? true : false);
+					if (str.empty())
+					{
+						// Seems no items are selected
+						// Use the view path instead
+						WCHAR buf[MAX_PATH];
+						_tcscpy_s(buf, MAX_PATH, m_currentDirectory.c_str());
+						PathQuoteSpaces(buf);
+						str = buf;
+					}
 					WriteStringToClipboard(str, m_hWnd);
 				}
 				break;
@@ -898,14 +920,14 @@ BOOL CDeskBand::BuildToolbarButtons()
 	m_hotkeys[modifiers] = 2;	// console : ctrl-M
 	m_enablestates[2] = ENABLED_VIEWPATH;
 
-	m_enablestates[3] = ENABLED_SELECTED;
+	m_enablestates[3] = ENABLED_SELECTED | ENABLED_VIEWPATH;
 	
 	modifiers.keycode = WPARAM('C');
 	modifiers.alt = false;
 	modifiers.shift = true;
 	modifiers.control = true;
 	m_hotkeys[modifiers] = 4;	// copy paths : ctrl-shift-C
-	m_enablestates[4] = ENABLED_SELECTED;
+	m_enablestates[4] = ENABLED_SELECTED | ENABLED_VIEWPATH;
 
 	modifiers.keycode = WPARAM('N');
 	modifiers.alt = false;
