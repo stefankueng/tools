@@ -8,7 +8,7 @@ bool CDeskBand::CreateNewFolder()
 
 	if (m_currentDirectory.empty())
 		return false;
-
+	
 	IServiceProvider * pServiceProvider;
 	if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
 	{
@@ -30,6 +30,8 @@ bool CDeskBand::CreateNewFolder()
 							CMINVOKECOMMANDINFO cici = {0};
 							cici.cbSize = sizeof(CMINVOKECOMMANDINFO);
 							cici.lpVerb = CMDSTR_NEWFOLDERA;
+							cici.nShow = SW_SHOWNORMAL;
+							cici.hwnd = m_hwndParent;
 							if (SUCCEEDED(pContextMenu->InvokeCommand(&cici)))
 							{
 								IFolderView * pFolderView;
@@ -56,5 +58,6 @@ bool CDeskBand::CreateNewFolder()
 		}
 		pServiceProvider->Release();
 	}
+
 	return true;
 }
