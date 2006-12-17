@@ -7,6 +7,7 @@
 #include "resource.h"
 #include "SimpleIni.h"
 #include "uxtheme.h"
+#include "ChevronMenu.h"
 
 #pragma comment(lib, "uxtheme.lib")
 
@@ -46,13 +47,15 @@ CDeskBand::~CDeskBand()
 	// it is defined here to be safe.
 	if (m_pSite)
 	{
-		UnhookWindowsHookEx(m_hook);
 		m_pSite->Release();
 		m_pSite = NULL;
-		map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
-		if (it != m_desklist.end())
-			m_desklist.erase(it);
 	}
+	UnhookWindowsHookEx(m_hook);
+	map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
+	if (it != m_desklist.end())
+		m_desklist.erase(it);
+	// un-subclass
+	SetWindowLongPtr(::GetParent(m_hwndParent), GWL_WNDPROC, (LONG)m_oldDeskBandProc);
 
 	g_DllRefCount--;
 }
@@ -328,12 +331,12 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 		{
 			if (DBIF_VIEWMODE_FLOATING & dwViewMode)
 			{
-				pdbi->ptMinSize.x = m_tbSize.cx + (m_bCmdEditEnabled ? EDITBOXSIZEX : 0);
+				pdbi->ptMinSize.x = 0;
 				pdbi->ptMinSize.y = m_tbSize.cy;
 			}
 			else
 			{
-				pdbi->ptMinSize.x = m_tbSize.cx + (m_bCmdEditEnabled ? EDITBOXSIZEX : 0);
+				pdbi->ptMinSize.x = 0;
 				pdbi->ptMinSize.y = m_tbSize.cy;
 			}
 		}
@@ -352,7 +355,7 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 
 		if (pdbi->dwMask & DBIM_ACTUAL)
 		{
-			pdbi->ptActual.x = m_tbSize.cx + (m_bCmdEditEnabled ? EDITBOXSIZEX : 0);
+			pdbi->ptActual.x = m_tbSize.cx;// + (m_bCmdEditEnabled ? EDITBOXSIZEX : 0);
 			pdbi->ptActual.y = m_tbSize.cy;
 		}
 
@@ -363,9 +366,8 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 
 		if (pdbi->dwMask & DBIM_MODEFLAGS)
 		{
-			pdbi->dwModeFlags = DBIMF_NORMAL;
-
-			pdbi->dwModeFlags |= DBIMF_VARIABLEHEIGHT;
+			// We want chevrons
+			pdbi->dwModeFlags = DBIMF_NORMAL|DBIMF_USECHEVRON;
 		}
 
 		if (pdbi->dwMask & DBIM_BKCOLOR)
@@ -529,6 +531,22 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
 		::SendMessage(pThis->m_hWndEdit, EM_SETSEL, 0, (LPARAM)-1);
 	}
 	return CallWindowProc(pThis->m_oldEditWndProc, hWnd, uMessage, wParam, lParam);
+}
+
+LRESULT CALLBACK CDeskBand::DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+{
+	CDeskBand *pThis = (CDeskBand*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+	LPNMREBARCHEVRON pnmh = (LPNMREBARCHEVRON)lParam;
+	if ((uMessage == WM_NOTIFY)&&(pnmh->hdr.code == RBN_CHEVRONPUSHED))
+	{
+		CChevronMenu menu(g_hInst);
+		if (menu.Show(pnmh, pThis->m_hWndToolbar))
+		{
+			::SendMessage(pThis->m_hWndToolbar, menu.m_uMsg, menu.m_wParam, menu.m_lParam);
+		}
+		return 0;
+	}
+	return CallWindowProc(pThis->m_oldDeskBandProc, hWnd, uMessage, wParam, lParam);
 }
 
 LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
@@ -730,7 +748,7 @@ LRESULT CDeskBand::OnMove(LPARAM /*lParam*/)
 
 	HDWP hdwp = BeginDeferWindowPos(2);
 	DeferWindowPos(hdwp, m_hWndToolbar, NULL, 0, 0, m_tbSize.cx, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
-	DeferWindowPos(hdwp, m_hWndEdit, NULL, m_tbSize.cx+SPACEBETWEENEDITANDBUTTON, 0, rc.right-rc.left-m_tbSize.cx-SPACEBETWEENEDITANDBUTTON, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
+	DeferWindowPos(hdwp, m_hWndEdit, NULL, m_tbSize.cx, 0, rc.right-rc.left-m_tbSize.cx-SPACEBETWEENEDITANDBUTTON, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
 	EndDeferWindowPos(hdwp);
 	return 0;
 }
@@ -799,6 +817,10 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 
 		GetClientRect(m_hwndParent, &rc);
 
+		// subclass the parent deskbar control to intercept the RBN_CHEVRONPUSHED messages
+		m_oldDeskBandProc = (WNDPROC)SetWindowLongPtr(::GetParent(m_hwndParent), GWL_WNDPROC, (LONG)DeskBandProc);
+		SetWindowLongPtr(::GetParent(m_hwndParent), GWL_USERDATA, (LONG)this);
+
 		//Create the window. The WndProc will set m_hWnd.
 		CreateWindowEx(WS_EX_CONTROLPARENT,
 			DB_CLASS_NAME,
@@ -840,10 +862,10 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		SendMessage(m_hWndEdit, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), 0);
 
 		// create a toolbar which will hold our button
-		m_hWndToolbar = CreateWindowEx(TBSTYLE_EX_MIXEDBUTTONS,
+		m_hWndToolbar = CreateWindowEx(TBSTYLE_EX_MIXEDBUTTONS|TBSTYLE_EX_HIDECLIPPEDBUTTONS,
 			TOOLBARCLASSNAME, 
 			NULL, 
-			WS_CHILD|TBSTYLE_TOOLTIPS|TBSTYLE_LIST|TBSTYLE_FLAT|TBSTYLE_TRANSPARENT|CCS_NORESIZE|CCS_NODIVIDER|CCS_NOPARENTALIGN, 
+			WS_CHILD|TBSTYLE_TOOLTIPS|TBSTYLE_WRAPABLE|TBSTYLE_LIST|TBSTYLE_FLAT|TBSTYLE_TRANSPARENT|CCS_NORESIZE|CCS_NODIVIDER|CCS_NOPARENTALIGN, 
 			rc.right - EDITBOXSIZEX,
 			rc.top,
 			EDITBOXSIZEX,
@@ -1250,7 +1272,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 
 	SendMessage(m_hWndToolbar, TB_SETIMAGELIST, 0, (LPARAM)m_hToolbarImgList);
 	SendMessage(m_hWndToolbar, TB_ADDBUTTONS, sections.size()+NUMINTERNALCOMMANDS, (LPARAM)tb);
-	SendMessage(m_hWndToolbar, TB_SETEXTENDEDSTYLE, 0,(LPARAM)TBSTYLE_EX_MIXEDBUTTONS);
+	SendMessage(m_hWndToolbar, TB_SETEXTENDEDSTYLE, 0,(LPARAM)TBSTYLE_EX_MIXEDBUTTONS|TBSTYLE_EX_HIDECLIPPEDBUTTONS);
 	SendMessage(m_hWndToolbar, TB_AUTOSIZE, 0, 0);
 	SendMessage(m_hWndToolbar, TB_GETMAXSIZE, 0,(LPARAM)&m_tbSize);
 	delete [] tb;
@@ -1273,6 +1295,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 		if (SUCCEEDED(m_pSite->QueryInterface(IID_IOleCommandTarget, (LPVOID*)&pOleCommandTarget)))
 		{
 			pOleCommandTarget->Exec(&CGID_DeskBand, DBID_BANDINFOCHANGED, OLECMDEXECOPT_DONTPROMPTUSER, NULL, NULL);
+			pOleCommandTarget->Release();
 		}
 	}
 	return TRUE;
