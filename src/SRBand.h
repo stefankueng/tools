@@ -117,6 +117,7 @@ private:
 	DWORD			m_dwBandID;			///< the ID of the deskband
 	IInputObjectSite *m_pSite;			///< the IInputObjectSite of the parent
 	WNDPROC			m_oldEditWndProc;	///< pointer to the original window proc of the edit control
+	WNDPROC			m_oldDeskBandProc;	///< pointer to the original window proc of the parent deskbar control
 	HIMAGELIST		m_hToolbarImgList;	///< image list of the toolbar
 	SIZE			m_tbSize;			///< the max size of the toolbar
 
@@ -142,6 +143,8 @@ private:
 	map<int, wstring> m_tooltips;		///< maps command/button ids against the tooltips to show for them
 	CHyperLink		m_link;				///< the hyperlink used in the options dialog
 private:
+	/// window procedure of the sub classed desk band control
+	static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
 	/// options dialog callback function
