@@ -31,8 +31,14 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
 		if (EqualRect(&intersect, &buttonrect)==FALSE)
 		{
 			// this is the first button which is not completely visible
-			iFirstHidden = i;
-			break;
+			// but make sure that it's not a separator
+			TBBUTTON tb = {0};
+			::SendMessage(hToolbar, TB_GETBUTTON, i, (LPARAM)&tb);
+			if ((tb.fsStyle & BTNS_SEP) == 0)
+			{
+				iFirstHidden = i;
+				break;
+			}
 		}
 	}
 	if (iFirstHidden >= 0)
