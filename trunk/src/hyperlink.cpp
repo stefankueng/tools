@@ -111,19 +111,19 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
 	HWND hwndParent = GetParent(hwndCtl);
 	if (NULL != hwndParent)
 	{
-		WNDPROC pfnOrigProc = (WNDPROC) GetWindowLong(hwndParent, GWL_WNDPROC);
+		WNDPROC pfnOrigProc = (WNDPROC) GetWindowLongPtr(hwndParent, GWLP_WNDPROC);
 		if (pfnOrigProc != _HyperlinkParentProc)
 		{
 			SetProp( hwndParent, PROP_ORIGINAL_PROC, (HANDLE)pfnOrigProc );
-			SetWindowLong( hwndParent, GWL_WNDPROC,
+			SetWindowLongPtr( hwndParent, GWLP_WNDPROC,
 				           (LONG) (WNDPROC) _HyperlinkParentProc );
 		}
 	}
 
 	// Make sure the control will send notifications.
 
-	DWORD dwStyle = GetWindowLong(hwndCtl, GWL_STYLE);
-	SetWindowLong(hwndCtl, GWL_STYLE, dwStyle | SS_NOTIFY);
+	LONG_PTR Style = GetWindowLongPtr(hwndCtl, GWL_STYLE);
+	SetWindowLongPtr(hwndCtl, GWL_STYLE, Style | SS_NOTIFY);
 
 	// Create an updated font by adding an underline.
 
@@ -136,9 +136,9 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
 
 	// Subclass the existing control.
 
-	m_pfnOrigCtlProc = (WNDPROC) GetWindowLong(hwndCtl, GWL_WNDPROC);
+	m_pfnOrigCtlProc = (WNDPROC) GetWindowLongPtr(hwndCtl, GWLP_WNDPROC);
 	SetProp(hwndCtl, PROP_OBJECT_PTR, (HANDLE) this);
-	SetWindowLong(hwndCtl, GWL_WNDPROC, (LONG) (WNDPROC) _HyperlinkProc);
+	SetWindowLongPtr(hwndCtl, GWLP_WNDPROC, (LONG) (WNDPROC) _HyperlinkProc);
 
 	return TRUE;
 }
@@ -212,7 +212,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkParentProc(HWND hwnd, UINT message,
 		}
 	case WM_DESTROY:
 		{
-			SetWindowLong(hwnd, GWL_WNDPROC, (LONG) pfnOrigProc);
+			SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG) pfnOrigProc);
 			RemoveProp(hwnd, PROP_ORIGINAL_PROC);
 			break;
 		}
@@ -347,7 +347,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 		}
 	case WM_DESTROY:
 		{
-			SetWindowLong(hwnd, GWL_WNDPROC,
+			SetWindowLongPtr(hwnd, GWLP_WNDPROC,
 				          (LONG) pHyperLink->m_pfnOrigCtlProc);
 
 			SendMessage(hwnd, WM_SETFONT, (WPARAM) pHyperLink->m_StdFont, 0);

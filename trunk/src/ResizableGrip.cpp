@@ -274,12 +274,12 @@ BOOL CResizableGrip::InitGrip(HWND hParent)
 
 		// subclass control
 		::SetProp(m_wndGrip, RSZ_GRIP_OBJ,
-			(HANDLE)::GetWindowLong(m_wndGrip, GWL_WNDPROC));
-		::SetWindowLong(m_wndGrip, GWL_WNDPROC, (LONG)GripWindowProc);
+			(HANDLE)::GetWindowLongPtr(m_wndGrip, GWLP_WNDPROC));
+		::SetWindowLongPtr(m_wndGrip, GWLP_WNDPROC, (LONG)GripWindowProc);
 
 		// force dialog styles (RESIZABLE BORDER, NO FLICKERING)
-		::SetWindowLong(hParent, GWL_STYLE, 
-			::GetWindowLong(hParent, GWL_STYLE) | WS_THICKFRAME | WS_CLIPCHILDREN);
+		::SetWindowLongPtr(hParent, GWL_STYLE, 
+			::GetWindowLongPtr(hParent, GWL_STYLE) | WS_THICKFRAME | WS_CLIPCHILDREN);
 		
 
 		// update pos
@@ -308,7 +308,7 @@ LRESULT CResizableGrip::GripWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		
 		// unsubclass
 		::RemoveProp(hwnd, RSZ_GRIP_OBJ);
-		::SetWindowLong(hwnd, GWL_WNDPROC, (LONG)oldWndProc);
+		::SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG)oldWndProc);
 
 		break;
 	}
