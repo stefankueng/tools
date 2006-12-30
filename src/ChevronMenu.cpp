@@ -87,6 +87,11 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
 		chevronxy.x = lpRebarChevron->rc.left;
 		chevronxy.y = lpRebarChevron->rc.bottom;
 		::ClientToScreen(lpRebarChevron->hdr.hwndFrom, &chevronxy);
+		// make sure that the toolbar does not leave the screen on the right
+		RECT testrect = {chevronxy.x, chevronxy.y, chevronxy.x+tbsize.cx, chevronxy.y+tbsize.cy};
+		::SystemParametersInfo(SPI_GETWORKAREA, 0, &testrect, 0);
+		if (chevronxy.x + tbsize.cx > (testrect.right))
+			chevronxy.x = testrect.right - tbsize.cx;
 		::ShowWindow(*this, SW_SHOW);
 		::SetWindowPos(*this, HWND_TOP, 
 			chevronxy.x, chevronxy.y, 
