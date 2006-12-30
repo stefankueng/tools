@@ -55,7 +55,7 @@ CDeskBand::~CDeskBand()
 	if (it != m_desklist.end())
 		m_desklist.erase(it);
 	// un-subclass
-	SetWindowLongPtr(::GetParent(m_hwndParent), GWL_WNDPROC, (LONG)m_oldDeskBandProc);
+	SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_WNDPROC, (LONG)m_oldDeskBandProc);
 
 	g_DllRefCount--;
 }
@@ -422,7 +422,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 									WPARAM wParam, 
 									LPARAM lParam)
 {
-	CDeskBand *pThis = (CDeskBand*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+	CDeskBand *pThis = (CDeskBand*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 
 	switch (uMessage)
 	{
@@ -430,7 +430,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 		{
 			LPCREATESTRUCT lpcs = (LPCREATESTRUCT)lParam;
 			pThis = (CDeskBand*)(lpcs->lpCreateParams);
-			SetWindowLong(hWnd, GWL_USERDATA, (LONG)pThis);
+			SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG)pThis);
 
 			//set the window handle
 			pThis->m_hWnd = hWnd;
@@ -524,7 +524,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 
 LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
-	CDeskBand *pThis = (CDeskBand*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+	CDeskBand *pThis = (CDeskBand*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 	if (uMessage == WM_SETFOCUS)
 	{
 		pThis->OnSetFocus();
@@ -535,7 +535,7 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
 
 LRESULT CALLBACK CDeskBand::DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
-	CDeskBand *pThis = (CDeskBand*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+	CDeskBand *pThis = (CDeskBand*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 	LPNMREBARCHEVRON pnmh = (LPNMREBARCHEVRON)lParam;
 	if ((uMessage == WM_NOTIFY)&&(pnmh->hdr.code == RBN_CHEVRONPUSHED))
 	{
@@ -837,8 +837,8 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		GetClientRect(m_hwndParent, &rc);
 
 		// subclass the parent deskbar control to intercept the RBN_CHEVRONPUSHED messages
-		m_oldDeskBandProc = (WNDPROC)SetWindowLongPtr(::GetParent(m_hwndParent), GWL_WNDPROC, (LONG)DeskBandProc);
-		SetWindowLongPtr(::GetParent(m_hwndParent), GWL_USERDATA, (LONG)this);
+		m_oldDeskBandProc = (WNDPROC)SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_WNDPROC, (LONG)DeskBandProc);
+		SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_USERDATA, (LONG)this);
 
 		//Create the window. The WndProc will set m_hWnd.
 		CreateWindowEx(WS_EX_CONTROLPARENT,
@@ -874,8 +874,8 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 			return FALSE;
 
 		// subclass the edit control to intercept the WM_SETFOCUS messages
-		m_oldEditWndProc = (WNDPROC)SetWindowLongPtr(m_hWndEdit, GWL_WNDPROC, (LONG)EditProc);
-		SetWindowLongPtr(m_hWndEdit, GWL_USERDATA, (LONG)this);
+		m_oldEditWndProc = (WNDPROC)SetWindowLongPtr(m_hWndEdit, GWLP_WNDPROC, (LONG)EditProc);
+		SetWindowLongPtr(m_hWndEdit, GWLP_USERDATA, (LONG)this);
 
 		// set the font for the edit control
 		SendMessage(m_hWndEdit, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), 0);

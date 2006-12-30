@@ -225,10 +225,10 @@ INT_PTR CDeskBand::RenameDlgFunc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 					{
 						LPNMLVCUSTOMDRAW lpcd = (LPNMLVCUSTOMDRAW)lParam;
 						// use the default processing if not otherwise specified
-						SetWindowLong(hDlg, DWL_MSGRESULT, CDRF_DODEFAULT); 
+						SetWindowLongPtr(hDlg, DWLP_MSGRESULT, CDRF_DODEFAULT); 
 						if (lpcd->nmcd.dwDrawStage == CDDS_PREPAINT)
 						{
-							SetWindowLong(hDlg, DWL_MSGRESULT, CDRF_NOTIFYITEMDRAW); 
+							SetWindowLongPtr(hDlg, DWLP_MSGRESULT, CDRF_NOTIFYITEMDRAW); 
 						}
 						else if (lpcd->nmcd.dwDrawStage == CDDS_ITEMPREPAINT)
 						{
@@ -244,7 +244,7 @@ INT_PTR CDeskBand::RenameDlgFunc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 							lpcd->clrText = crText;
 
 							// Tell Windows to paint the control itself.
-							SetWindowLong(hDlg, DWL_MSGRESULT, CDRF_DODEFAULT); 
+							SetWindowLongPtr(hDlg, DWLP_MSGRESULT, CDRF_DODEFAULT); 
 						}
 					}
 					return TRUE;
