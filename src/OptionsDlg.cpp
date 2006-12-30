@@ -174,6 +174,8 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 								"###             Note: not all views in explorer have a defined directory\n"
 								"###             for example the search window does not have a 'current\n"
 								"###             directory', and there the %curdir is not defined\n"
+								"### %cmdtext  : Will be replaced with the text entered in the console\n"
+								"###             edit box\n"
 								"\n"
 								"\n"
 								, stream);
