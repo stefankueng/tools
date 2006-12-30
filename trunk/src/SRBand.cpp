@@ -669,6 +669,17 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 				break;
 			default:	// custom commands
 				{
+					// get the command entered in the edit box
+					int count = MAX_PATH;
+					TCHAR * buf = new TCHAR[count+1];
+					while (::GetWindowText(m_hWndEdit, buf, count)>=count)
+					{
+						delete [] buf;
+						count += MAX_PATH;
+						buf = new TCHAR[count+1];
+					}
+					wstring consoletext = buf;
+
 					map<WORD, wstring>::iterator cl = m_commands.find(LOWORD(wParam));
 					if (cl != m_commands.end())
 					{
@@ -687,7 +698,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 							wstring::iterator it_end= it_begin + tag.size();
 							commandline.replace(it_begin, it_end, selpaths);
 						}
-						// replace "%sel*paths" with the names of the selected items
+						// replace "%sel*paths" with the paths of the selected items
 						tag = _T("%sel*paths");
 						it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
 						if (it_begin != commandline.end())
@@ -716,6 +727,14 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 						{
 							wstring::iterator it_end= it_begin + tag.size();
 							commandline.replace(it_begin, it_end, m_currentDirectory);
+						}
+						// replace "%cmdtext" with the text in the console edit box
+						tag = _T("%cmdtext");
+						it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+						if (it_begin != commandline.end())
+						{
+							wstring::iterator it_end= it_begin + tag.size();
+							commandline.replace(it_begin, it_end, consoletext);
 						}
 						StartApplication(commandline);
 					}
