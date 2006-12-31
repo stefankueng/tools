@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<project name="StExBar" default="build">
+
+	<include buildfile="default.build.user" />
+
+	<target name="build" depends="VSNET,env">
+		<!-- run SubWCRev to get the revision of the working copy -->
+		<exec program="SubWCRev.exe">
+			<arg value="." />
+			<arg value="src/version.in" />
+			<arg value="src/version.h" />
+		</exec>
+
+		<exec program="devenv.com" >
+			<arg value="StExBar.sln" />
+			<arg value="/rebuild" />
+			<arg value="debug|win32" />
+		</exec>
+		<exec program="devenv.com" >
+			<arg value="StExBar.sln" />
+			<arg value="/rebuild" />
+			<arg value="release|win32" />
+		</exec>
+
+		<exec program="candle">
+			<arg value="-nologo" />
+			<arg value="-out" />
+			<arg value="bin\" />
+			<arg value="src/Setup.wxs" />
+		</exec>
+		<exec program="light">
+			<arg value="-nologo" />
+			<arg value="-out" />
+			<arg value="bin\StExBar.msi" />
+			<arg value="bin\Setup.wixobj" />
+			<arg value="${environment::get-variable('WIXUI')}\WixUI.wixlib" />
+			<arg value="-loc" />
+			<arg value="${environment::get-variable('WIXUI')}\WixUI_en-us.wxl" />
+		</exec>
+		<delete>
+			<fileset>
+				<include name="bin\*.wixobj" />
+			</fileset>
+		</delete>
+
+	</target>
+
+</project>
+
