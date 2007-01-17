@@ -1115,6 +1115,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	DestroyIcon(hIcon);
 
 	vector<int> hidelist;
+	int scount = 0;
 	for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
 	{
 		wstring value = inifile.GetValue(*it, _T("internalcommand"), _T(""));
@@ -1163,7 +1164,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 			}
 			continue;
 		}
-
+		scount++;
 		customindex++;
 		// check if this entry is a separator
 		value = inifile.GetValue(*it, _T("separator"), _T(""));
@@ -1290,7 +1291,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 	}
 
 	SendMessage(m_hWndToolbar, TB_SETIMAGELIST, 0, (LPARAM)m_hToolbarImgList);
-	SendMessage(m_hWndToolbar, TB_ADDBUTTONS, sections.size()+NUMINTERNALCOMMANDS, (LPARAM)tb);
+	SendMessage(m_hWndToolbar, TB_ADDBUTTONS, scount+NUMINTERNALCOMMANDS, (LPARAM)tb);
 	SendMessage(m_hWndToolbar, TB_SETEXTENDEDSTYLE, 0,(LPARAM)TBSTYLE_EX_MIXEDBUTTONS|TBSTYLE_EX_HIDECLIPPEDBUTTONS);
 	SendMessage(m_hWndToolbar, TB_AUTOSIZE, 0, 0);
 	SendMessage(m_hWndToolbar, TB_GETMAXSIZE, 0,(LPARAM)&m_tbSize);
