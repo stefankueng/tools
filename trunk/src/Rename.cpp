@@ -131,7 +131,7 @@ INT_PTR CDeskBand::RenameDlgFunc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 
 			SetLastError(0);
 			if ((SetWindowLongPtr(hDlg, GWLP_USERDATA, (LONG_PTR)pThis)==0)&&(GetLastError()))
-				EndDialog(hDlg, IDCANCEL);	// if we could not set the user data, get out ogf here immediately!
+				EndDialog(hDlg, IDCANCEL);	// if we could not set the user data, get out of here immediately!
 
 			hwndOwner = ::GetParent(hDlg);
 			if (hwndOwner == NULL)
