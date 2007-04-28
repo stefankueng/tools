@@ -422,6 +422,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\icons\showhide.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\StExBar.rc"
 				>
 			</File>

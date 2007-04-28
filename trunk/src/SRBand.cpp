@@ -463,6 +463,11 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 				else
 					::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, it->first, (LPARAM)FALSE);
 			}
+			// the "show/hide system files" button is special: it has a pressed state if the
+			// hidden files are shown
+			SHELLSTATE shellstate = {0};
+			SHGetSetSettings(&shellstate, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, FALSE);
+			::SendMessage(pThis->m_hWndToolbar, TB_CHECKBUTTON, 2, (LPARAM)shellstate.fShowAllObjects);
 		}
 		break;
 	case WM_COMMAND:
@@ -620,10 +625,40 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					OnMove(0);
 				}
 				break;
-			case 2:		// cmd
+			case 2:		// show/hide system files
+				{
+					HCURSOR hCur = GetCursor();
+					SetCursor(LoadCursor(NULL, IDC_WAIT));
+					SHELLSTATE state = {0};
+					SHGetSetSettings(&state, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, FALSE);
+					state.fShowSysFiles = !state.fShowAllObjects;
+					state.fShowAllObjects = !state.fShowAllObjects;
+					state.fShowSuperHidden = !state.fShowAllObjects;
+					SHGetSetSettings(&state, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, TRUE);
+					// now refresh the view
+					IServiceProvider * pServiceProvider;
+					if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
+					{
+						IShellBrowser * pShellBrowser;
+						if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
+						{
+							IShellView * pShellView;
+							if (SUCCEEDED(pShellBrowser->QueryActiveShellView(&pShellView)))
+							{
+								pShellView->Refresh();
+								pShellView->Release();
+							}
+							pShellBrowser->Release();
+						}
+						pServiceProvider->Release();
+					}
+					SetCursor(hCur);
+				}
+				break;
+			case 3:		// cmd
 				StartCmd(_T(""));
 				break;
-			case 3:		// copy name
+			case 4:		// copy name
 				{
 					wstring str = GetFileNames(_T("\r\n"), false, true, true);
 					if (str.empty())
@@ -642,7 +677,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					WriteStringToClipboard(str, m_hWnd);
 				}
 				break;
-			case 4:		// copy path
+			case 5:		// copy path
 				{
 					wstring str = GetFilePaths(_T("\r\n"), false, true, true, DWORD(m_regUseUNCPaths) ? true : false);
 					if (str.empty())
@@ -657,12 +692,12 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					WriteStringToClipboard(str, m_hWnd);
 				}
 				break;
-			case 5:		// New Folder
+			case 6:		// New Folder
 				{
 					CreateNewFolder();
 				}
 				break;
-			case 6:		// Rename
+			case 7:		// Rename
 				{
 					Rename();
 				}
@@ -954,35 +989,42 @@ BOOL CDeskBand::BuildToolbarButtons()
 
 	m_enablestates[1] = ENABLED_ALWAYS;
 	
+	modifiers.keycode = WPARAM('H');
+	modifiers.alt = false;
+	modifiers.shift = true;
+	modifiers.control = true;
+	m_hotkeys[modifiers] = 2;	// show/hide system files: ctrl-shift-H
+	m_enablestates[2] = ENABLED_ALWAYS;
+
 	modifiers.keycode = WPARAM('M');
 	modifiers.alt = false;
 	modifiers.shift = false;
 	modifiers.control = true;
-	m_hotkeys[modifiers] = 2;	// console : ctrl-M
-	m_enablestates[2] = ENABLED_VIEWPATH;
+	m_hotkeys[modifiers] = 3;	// console : ctrl-M
+	m_enablestates[3] = ENABLED_VIEWPATH;
 
-	m_enablestates[3] = ENABLED_SELECTED | ENABLED_VIEWPATH;
+	m_enablestates[4] = ENABLED_SELECTED | ENABLED_VIEWPATH;
 	
 	modifiers.keycode = WPARAM('C');
 	modifiers.alt = false;
 	modifiers.shift = true;
 	modifiers.control = true;
-	m_hotkeys[modifiers] = 4;	// copy paths : ctrl-shift-C
-	m_enablestates[4] = ENABLED_SELECTED | ENABLED_VIEWPATH;
+	m_hotkeys[modifiers] = 5;	// copy paths : ctrl-shift-C
+	m_enablestates[5] = ENABLED_SELECTED | ENABLED_VIEWPATH;
 
 	modifiers.keycode = WPARAM('N');
 	modifiers.alt = false;
 	modifiers.shift = true;
 	modifiers.control = true;
-	m_hotkeys[modifiers] = 5;	// new folder : ctrl-shift-N
-	m_enablestates[5] = ENABLED_VIEWPATH;
+	m_hotkeys[modifiers] = 6;	// new folder : ctrl-shift-N
+	m_enablestates[6] = ENABLED_VIEWPATH;
 
 	modifiers.keycode = WPARAM('R');
 	modifiers.alt = false;
 	modifiers.shift = true;
 	modifiers.control = true;
-	m_hotkeys[modifiers] = 6;	// Rename : ctrl-shift-R
-	m_enablestates[6] = ENABLED_SELECTED;
+	m_hotkeys[modifiers] = 7;	// Rename : ctrl-shift-R
+	m_enablestates[7] = ENABLED_SELECTED;
 
 	if (m_hWndToolbar == NULL)
 		return FALSE;
@@ -1052,9 +1094,20 @@ BOOL CDeskBand::BuildToolbarButtons()
 
 	customindex++;
 
-	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_CMD));
+	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_SHOWHIDE));
 	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
 	tb[customindex].idCommand = 2;
+	tb[customindex].fsState = TBSTATE_ENABLED;
+	tb[customindex].fsStyle = fsStyle;
+	tb[customindex].iString = (INT_PTR)_T("Show system files");
+	m_tooltips[tb[customindex].idCommand] = _T("Show/Hide system files");
+	DestroyIcon(hIcon);
+
+	customindex++;
+
+	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_CMD));
+	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
+	tb[customindex].idCommand = 3;
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("Console");
@@ -1065,7 +1118,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 
 	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_COPYNAME));
 	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 3;
+	tb[customindex].idCommand = 4;
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("Copy Names");
@@ -1076,7 +1129,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 
 	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_COPYPATH));
 	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 4;
+	tb[customindex].idCommand = 5;
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("Copy Paths");
@@ -1087,7 +1140,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 
 	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_NEWFOLDER));
 	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 5;
+	tb[customindex].idCommand = 6;
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("New Folder");
@@ -1107,7 +1160,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 
 	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_RENAME));
 	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 6;
+	tb[customindex].idCommand = 7;
 	tb[customindex].fsState = TBSTATE_ENABLED;
 	tb[customindex].fsStyle = fsStyle;
 	tb[customindex].iString = (INT_PTR)_T("Rename");
