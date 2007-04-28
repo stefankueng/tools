@@ -34,6 +34,7 @@ public:
 	WPARAM m_wParam;
 	LPARAM m_lParam;
 private:
+	bool m_bRun;
 	HWND m_hwndToolbar;
 	HWND hHiddenToolbar;
 	LRESULT CALLBACK WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

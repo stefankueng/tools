@@ -109,11 +109,15 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
 
 		// stay modal
 		MSG msg;
-		BOOL bRet;
-		while ((bRet = GetMessage(&msg, NULL, 0, 0)) != 0)
-		{ 
-			if (bRet != -1)
-			{
+		m_bRun = true;
+		while (m_bRun)
+		{
+			while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+			{ 
+				if (msg.message == WM_QUIT)
+				{
+					m_bRun = false;
+				}
 				TranslateMessage(&msg); 
 				DispatchMessage(&msg); 
 			}
@@ -151,11 +155,12 @@ LRESULT CChevronMenu::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 		break;
 	case WM_KILLFOCUS:
 		::SendMessage(*this, WM_CLOSE, 0, 0);
-		break;
+		return 0L;
 	case WM_CLOSE:
 		DestroyWindow(*this);
-		::PostQuitMessage(0);
-		break;
+		PostMessage(*this, WM_QUIT, 0, 0);
+		m_bRun = false;
+		return 0L;
 	case WM_COMMAND:
 		{
 			m_uMsg = uMsg;
