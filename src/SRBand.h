@@ -23,7 +23,7 @@ using namespace std;
 #define SPACEBETWEENEDITANDBUTTON 0
 
 // the number of 'internal' commands
-#define NUMINTERNALCOMMANDS 8
+#define NUMINTERNALCOMMANDS 9
 
 // the timer ID
 #define TID_IDLE 100
