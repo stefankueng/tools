@@ -542,7 +542,7 @@ LRESULT CALLBACK CDeskBand::DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam
 {
 	CDeskBand *pThis = (CDeskBand*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 	LPNMREBARCHEVRON pnmh = (LPNMREBARCHEVRON)lParam;
-	if ((uMessage == WM_NOTIFY)&&(pnmh->hdr.code == RBN_CHEVRONPUSHED))
+	if ((uMessage == WM_NOTIFY)&&(pnmh->hdr.code == RBN_CHEVRONPUSHED)&&(pnmh->wID == pThis->m_dwBandID))
 	{
 		CChevronMenu menu(g_hInst);
 		if (menu.Show(pnmh, pThis->m_hWndToolbar))
