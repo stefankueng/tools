@@ -6,13 +6,18 @@
   Id='????????-????-????-????-????????????'
   Language='1031' 
   Codepage='1252' 
-  Version='1.1.1' 
+  Version='1.2.1' 
   Manufacturer='Stefans Tools'>
 
     <Package Id='????????-????-????-????-????????????' Keywords='Installer'
       Description="Stefans Shell Extension Bar"
       Comments='http://tools.tortoisesvn.net' Manufacturer='Stefans Tools'
       InstallerVersion='100' Languages='1031' Compressed='yes' SummaryCodepage='1252' />
+      
+    <Upgrade Id="8F75040C-433F-4eab-B1F0-2D8FA4153D92" >
+      <!-- flag is set if the install will trigger an upgrade of an existing install -->
+      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="1.2.1" IncludeMaximum="no" />
+    </Upgrade>
 
     <Media Id='1' Cabinet='StExBar.cab' EmbedCab='yes' />
 	<Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
@@ -48,6 +53,12 @@
 
     <UIRef Id="WixUI_InstallDir" />
     <UIRef Id="WixUI_ErrorProgressText" />
+    
+    <InstallExecuteSequence>
+      <AppSearch Sequence="1"></AppSearch>
+      <LaunchConditions After="AppSearch" />
+      <RemoveExistingProducts After="InstallValidate"><![CDATA[PREVIOUSVERSIONSINSTALLED]]></RemoveExistingProducts>
+    </InstallExecuteSequence>
 
   </Product>
 </Wix>
