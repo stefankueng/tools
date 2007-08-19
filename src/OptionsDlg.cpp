@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SRBand.h"
 #include "resource.h"
+#include "version.h"
 #include <algorithm>
 
 INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -39,6 +40,10 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 			SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_SETCHECK, DWORD(pThis->m_regShowBtnText) ? BST_CHECKED : BST_UNCHECKED, 0);
 			SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_SETCHECK, DWORD(pThis->m_regUseUNCPaths) ? BST_CHECKED : BST_UNCHECKED, 0);
 			SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_SETCHECK, DWORD(pThis->m_regUseSelector) ? BST_CHECKED : BST_UNCHECKED, 0);
+
+			TCHAR buf[MAX_PATH] = {0};
+			_stprintf_s(buf, MAX_PATH, _T("StExBar %ld.%ld.%ld.%ld"), VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
+			SetDlgItemText(hwndDlg, IDC_VERSIONSTRING, buf);
 		}
 		return (INT_PTR)TRUE;
 	case WM_COMMAND:

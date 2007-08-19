@@ -66,7 +66,7 @@ BEGIN
     GROUPBOX        "Custom Commands",IDC_STATIC,7,115,191,77
     PUSHBUTTON      "&Edit Config File",IDC_EDITCONFIG,58,170,88,14
     LTEXT           "Stefan's Tools - tools.tortoisesvn.net",IDC_LINK,7,28,120,8
-    LTEXT           "StExBar v1.1.1",IDC_STATIC,7,7,50,8
+    LTEXT           "StExBar v1.1.1",IDC_VERSIONSTRING,7,7,191,8
     LTEXT           "Copyright 2006 Stefan Küng",IDC_STATIC,7,17,92,8
     LTEXT           "Once you've edited the config file, dismiss this dialog by clicking on OK to use the changes you made to the config file.",IDC_STATIC,14,133,184,32
     CONTROL         "Copy UNC paths",IDC_USEUNCCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,75,69,10
