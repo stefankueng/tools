@@ -25,6 +25,7 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_pSite(NULL)
 	, m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
 	, m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
+	, m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
 	, m_bCmdEditEnabled(true)
 	, m_hToolbarImgList(NULL)
 {
@@ -114,6 +115,12 @@ STDMETHODIMP CDeskBand::QueryInterface(REFIID riid, LPVOID *ppReturn)
 	{
 		*ppReturn = (IPersistStream*)this;
 	}   
+
+	// IPersistStream
+	else if (IsEqualIID(riid, IID_IColumnProvider))
+	{
+		*ppReturn = (IColumnProvider*)this;
+	}
 
 	if (*ppReturn)
 	{
@@ -602,19 +609,27 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 						count += MAX_PATH;
 						buf = new TCHAR[count+1];
 					}
-					// when we start the console with the command the user
-					// has entered in the edit box, we want the console
-					// to execute the command immediately, and *not* quit after
-					// executing the command so the user can see the output.
-					// If however the user enters a '@' char in front of the command
-					// then the console shall quit after executing the command.
-					wstring params;
-					if (buf[0] == '@')
-						params = _T("/c ");
-					else				
-						params = _T("/k ");
-					params += buf;
-					StartCmd(params);
+					if (DWORD(m_regUseSelector))
+					{
+						// select the files which match the filter string
+						Select(buf);
+					}
+					else
+					{
+						// when we start the console with the command the user
+						// has entered in the edit box, we want the console
+						// to execute the command immediately, and *not* quit after
+						// executing the command so the user can see the output.
+						// If however the user enters a '@' char in front of the command
+						// then the console shall quit after executing the command.
+						wstring params;
+						if (buf[0] == '@')
+							params = _T("/c ");
+						else				
+							params = _T("/k ");
+						params += buf;
+						StartCmd(params);
+					}
 					delete [] buf;
 				}
 				break;
@@ -714,7 +729,6 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 						buf = new TCHAR[count+1];
 					}
 					wstring consoletext = buf;
-
 					map<WORD, wstring>::iterator cl = m_commands.find(LOWORD(wParam));
 					if (cl != m_commands.end())
 					{

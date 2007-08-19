@@ -14,7 +14,6 @@
 #define IDI_NEWFOLDER                   110
 #define IDD_RENAMEDLG                   111
 #define IDI_RENAME                      112
-#define IDI_ICON1                       113
 #define IDI_SHOWHIDE                    113
 #define IDC_LIST1                       1001
 #define IDC_FILELIST                    1001
@@ -27,6 +26,8 @@
 #define IDC_REPLACELABEL                1012
 #define IDC_LINK                        1013
 #define IDC_USEUNCCHECK                 1015
+#define IDC_CHECK1                      1016
+#define IDC_SELECTORCHECK               1016
 
 // Next default values for new objects
 // 
@@ -34,7 +35,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        114
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

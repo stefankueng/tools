@@ -131,6 +131,7 @@ private:
 
 	CRegStdWORD		m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
 	CRegStdWORD		m_regUseUNCPaths;	///< config setting whether to copy the UNC paths of mapped paths or not
+	CRegStdWORD		m_regUseSelector;	///< config setting whether to use the selector or the cmd.exe replacement
 	map<hotkey, int> m_hotkeys;			///< the hotkeys for our commands
 	map<WORD, wstring> m_commands;		///< the custom commands and their command lines
 	map<int, DWORD> m_enablestates;	///< the custom commands and their enabled states
@@ -142,6 +143,7 @@ private:
 	set<wstring>	m_filelist;			///< the list of selected file/folder names
 	map<int, wstring> m_tooltips;		///< maps command/button ids against the tooltips to show for them
 	CHyperLink		m_link;				///< the hyperlink used in the options dialog
+
 private:
 	/// window procedure of the sub classed desk band control
 	static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
@@ -196,6 +198,9 @@ private:
 	void					FillRenamedList(HWND hDlg);
 	/// convert a path to an UNC path (if it points to a network share)
 	wstring					ConvertToUNC(wstring sPath);
+	/// selects all the items which match the filter string
+	bool					Select(LPTSTR filter);
+
 
 };
 
