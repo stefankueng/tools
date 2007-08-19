@@ -62,14 +62,16 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,73,197,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,148,197,50,14
     CONTROL         "Show button text on toolbar",IDC_SHOWTEXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,57,107,10
-    GROUPBOX        "Misc",IDC_STATIC,7,44,191,52
-    GROUPBOX        "Custom Commands",IDC_STATIC,7,102,191,77
-    PUSHBUTTON      "&Edit Config File",IDC_EDITCONFIG,58,157,88,14
+    GROUPBOX        "Misc",IDC_STATIC,7,44,191,66
+    GROUPBOX        "Custom Commands",IDC_STATIC,7,115,191,77
+    PUSHBUTTON      "&Edit Config File",IDC_EDITCONFIG,58,170,88,14
     LTEXT           "Stefan's Tools - tools.tortoisesvn.net",IDC_LINK,7,28,120,8
     LTEXT           "StExBar v1.1.1",IDC_STATIC,7,7,50,8
     LTEXT           "Copyright 2006 Stefan Küng",IDC_STATIC,7,17,92,8
-    LTEXT           "Once you've edited the config file, dismiss this dialog by clicking on OK to use the changes you made to the config file.",IDC_STATIC,14,120,184,32
+    LTEXT           "Once you've edited the config file, dismiss this dialog by clicking on OK to use the changes you made to the config file.",IDC_STATIC,14,133,184,32
     CONTROL         "Copy UNC paths",IDC_USEUNCCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,75,69,10
+    CONTROL         "Use selector instead of cmd replacement",IDC_SELECTORCHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,93,145,10
 END
 
 IDD_RENAMEDLG DIALOGEX 0, 0, 391, 190

@@ -38,6 +38,7 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 
 			SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_SETCHECK, DWORD(pThis->m_regShowBtnText) ? BST_CHECKED : BST_UNCHECKED, 0);
 			SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_SETCHECK, DWORD(pThis->m_regUseUNCPaths) ? BST_CHECKED : BST_UNCHECKED, 0);
+			SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_SETCHECK, DWORD(pThis->m_regUseSelector) ? BST_CHECKED : BST_UNCHECKED, 0);
 		}
 		return (INT_PTR)TRUE;
 	case WM_COMMAND:
@@ -48,6 +49,7 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 				CDeskBand * pThis = (CDeskBand*)GetWindowLongPtr(hwndDlg, GWLP_USERDATA);
 				pThis->m_regShowBtnText = SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_GETCHECK, 0, 0);
 				pThis->m_regUseUNCPaths = SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_GETCHECK, 0, 0);
+				pThis->m_regUseSelector = SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_GETCHECK, 0, 0);
 			}
 			// fall through
 		case IDCANCEL:

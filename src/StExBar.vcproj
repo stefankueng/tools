@@ -250,6 +250,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Select.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SRBand.cpp"
 				>
 				<FileConfiguration
