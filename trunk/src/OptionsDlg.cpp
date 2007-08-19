@@ -212,14 +212,21 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 						viewer = buf;
 					}
 					// replace "%1" with the path to our config file
-					wstring tag(_T("%1"));
+					wstring tag1(_T("\"%1\""));
+					wstring tag2(_T("%1"));
 					// get the range of tag in viewer
-					wstring::iterator it_begin = search(viewer.begin(), viewer.end(), tag.begin(), tag.end());
+					wstring::iterator it_begin1 = search(viewer.begin(), viewer.end(), tag1.begin(), tag1.end());
+					wstring::iterator it_begin2 = search(viewer.begin(), viewer.end(), tag2.begin(), tag2.end());
 
-					if (it_begin != viewer.end())
+					if (it_begin1 != viewer.end())
 					{
-						wstring::iterator it_end= it_begin + tag.size();
-						viewer.replace(it_begin, it_end, wstring(szPath));
+						wstring::iterator it_end= it_begin1 + tag1.size();
+						viewer.replace(it_begin1, it_end, wstring(szPath));
+					}
+					else if (it_begin2 != viewer.end())
+					{
+						wstring::iterator it_end= it_begin2 + tag2.size();
+						viewer.replace(it_begin2, it_end, wstring(szPath));
 					}
 					else
 					{
