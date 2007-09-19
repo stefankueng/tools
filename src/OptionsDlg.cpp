@@ -3,43 +3,38 @@
 #include "resource.h"
 #include "version.h"
 #include <algorithm>
+#include "OptionsDlg.h"
+#include <string>
 
-INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+#include <boost/regex.hpp>
+using namespace boost;
+using namespace std;
+
+
+COptionsDlg::COptionsDlg(HWND hParent) : m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
+	, m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
+	, m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
+{
+	m_hParent = hParent;
+}
+
+COptionsDlg::~COptionsDlg(void)
+{
+}
+
+LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
 		{
-			CDeskBand * pThis = (CDeskBand*)lParam;
-			HWND hwndOwner; 
-			RECT rc, rcDlg, rcOwner;
+			InitDialog(hwndDlg, IDI_OPTIONS);
 
-			SetLastError(0);
-			if ((SetWindowLongPtr(hwndDlg, GWLP_USERDATA, (LONG_PTR)pThis)==0)&&(GetLastError()))
-				EndDialog(hwndDlg, IDCANCEL);	// if we could not set the user data, get out of here immediately!
+			m_link.ConvertStaticToHyperlink(hwndDlg, IDC_LINK, _T("http://tools.tortoisesvn.net"));
 
-			hwndOwner = ::GetParent(hwndDlg);
-			if (hwndOwner == NULL)
-				hwndOwner = ::GetDesktopWindow();
-
-			GetWindowRect(hwndOwner, &rcOwner); 
-			GetWindowRect(hwndDlg, &rcDlg); 
-			CopyRect(&rc, &rcOwner); 
-
-			OffsetRect(&rcDlg, -rcDlg.left, -rcDlg.top); 
-			OffsetRect(&rc, -rc.left, -rc.top); 
-			OffsetRect(&rc, -rcDlg.right, -rcDlg.bottom); 
-
-			SetWindowPos(hwndDlg, HWND_TOP, rcOwner.left + (rc.right / 2), rcOwner.top + (rc.bottom / 2), 0, 0,	SWP_NOSIZE); 
-			HICON hIcon = (HICON)::LoadImage(g_hInst, MAKEINTRESOURCE(IDI_OPTIONS), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE|LR_SHARED);
-			::SendMessage(hwndDlg, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
-			::SendMessage(hwndDlg, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
-
-			pThis->m_link.ConvertStaticToHyperlink(hwndDlg, IDC_LINK, _T("http://tools.tortoisesvn.net"));
-
-			SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_SETCHECK, DWORD(pThis->m_regShowBtnText) ? BST_CHECKED : BST_UNCHECKED, 0);
-			SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_SETCHECK, DWORD(pThis->m_regUseUNCPaths) ? BST_CHECKED : BST_UNCHECKED, 0);
-			SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_SETCHECK, DWORD(pThis->m_regUseSelector) ? BST_CHECKED : BST_UNCHECKED, 0);
+			SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_SETCHECK, DWORD(m_regShowBtnText) ? BST_CHECKED : BST_UNCHECKED, 0);
+			SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_SETCHECK, DWORD(m_regUseUNCPaths) ? BST_CHECKED : BST_UNCHECKED, 0);
+			SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_SETCHECK, DWORD(m_regUseSelector) ? BST_CHECKED : BST_UNCHECKED, 0);
 
 			TCHAR buf[MAX_PATH] = {0};
 			_stprintf_s(buf, MAX_PATH, _T("StExBar %ld.%ld.%ld.%ld"), VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
@@ -51,14 +46,13 @@ INT_PTR CALLBACK CDeskBand::OptionsDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 		{
 		case IDOK:
 			{
-				CDeskBand * pThis = (CDeskBand*)GetWindowLongPtr(hwndDlg, GWLP_USERDATA);
-				pThis->m_regShowBtnText = SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_GETCHECK, 0, 0);
-				pThis->m_regUseUNCPaths = SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_GETCHECK, 0, 0);
-				pThis->m_regUseSelector = SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_GETCHECK, 0, 0);
+				m_regShowBtnText = SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_GETCHECK, 0, 0);
+				m_regUseUNCPaths = SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_GETCHECK, 0, 0);
+				m_regUseSelector = SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_GETCHECK, 0, 0);
 			}
 			// fall through
 		case IDCANCEL:
-			EndDialog(hwndDlg, LOWORD(wParam));
+			EndDialog(*this, LOWORD(wParam));
 			return (INT_PTR)TRUE;
 		case IDC_EDITCONFIG:
 			{
