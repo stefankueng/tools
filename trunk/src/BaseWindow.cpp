@@ -41,7 +41,11 @@ bool CWindow::RegisterWindow(CONST WNDCLASSEX* wcx)
 	sClassName = std::wstring(wcx->lpszClassName);
 
 	if (RegisterClassEx(wcx) == 0)
+	{
+		if (GetLastError() == ERROR_CLASS_ALREADY_EXISTS)
+			return TRUE;
 		return FALSE;
+	}
 	else
 		return TRUE;
 }

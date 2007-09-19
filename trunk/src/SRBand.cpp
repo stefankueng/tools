@@ -8,6 +8,7 @@
 #include "SimpleIni.h"
 #include "uxtheme.h"
 #include "ChevronMenu.h"
+#include "OptionsDlg.h"
 
 #pragma comment(lib, "uxtheme.lib")
 
@@ -634,10 +635,16 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 				}
 				break;
 			case 1:		// options
-				if (DialogBoxParam(g_hInst, MAKEINTRESOURCE(IDD_OPTIONS), m_hWnd, OptionsDlgFunc, (LPARAM)this)==IDOK)
 				{
-					BuildToolbarButtons();
-					OnMove(0);
+					COptionsDlg dlg(m_hWnd);
+					if (dlg.DoModal(g_hInst, IDD_OPTIONS, m_hWnd) == IDOK)
+					{
+						m_regUseSelector.read();
+						m_regUseUNCPaths.read();
+						m_regShowBtnText.read();
+						BuildToolbarButtons();
+						OnMove(0);
+					}
 				}
 				break;
 			case 2:		// show/hide system files

@@ -182,6 +182,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\BaseDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\BaseWindow.cpp"
 				>
 			</File>
@@ -218,6 +222,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DlgResizer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ExPaths.cpp"
 				>
 			</File>
@@ -246,7 +254,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ResizableGrip.cpp"
+				RelativePath=".\RenameDlg.cpp"
 				>
 			</File>
 			<File
@@ -328,6 +336,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\BaseDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\BaseWindow.h"
 				>
 			</File>
@@ -337,6 +349,10 @@
 			</File>
 			<File
 				RelativePath=".\ClassFactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DlgResizer.h"
 				>
 			</File>
 			<File
@@ -352,6 +368,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OptionsDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Pidl.h"
 				>
 			</File>
@@ -360,7 +380,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ResizableGrip.h"
+				RelativePath=".\RenameDlg.h"
 				>
 			</File>
 			<File

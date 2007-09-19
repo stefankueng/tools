@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+using namespace std;
 
 /**
  * Loads a string from the application resources.

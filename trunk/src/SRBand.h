@@ -6,8 +6,6 @@
 #include <set>
 #include <map>
 #include "Registry.h"
-#include "ResizableGrip.h"
-#include "hyperlink.h"
 
 using namespace std;
 
@@ -129,30 +127,22 @@ private:
 	bool			m_bFilesSelected;	///< at least one file is selected
 	bool			m_bFolderSelected;	///< at least one folder is selected
 
-	CRegStdWORD		m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
-	CRegStdWORD		m_regUseUNCPaths;	///< config setting whether to copy the UNC paths of mapped paths or not
-	CRegStdWORD		m_regUseSelector;	///< config setting whether to use the selector or the cmd.exe replacement
 	map<hotkey, int> m_hotkeys;			///< the hotkeys for our commands
 	map<WORD, wstring> m_commands;		///< the custom commands and their command lines
 	map<int, DWORD> m_enablestates;	///< the custom commands and their enabled states
 	bool			m_bCmdEditEnabled;	///< the cmd edit box is special, because it's not part of the toolbar
 
-	CResizableGrip	m_grip;				///< the grip used in the rename dialog
-	wstring			m_sMatch;			///< the match string of the rename
-	wstring			m_sReplace;			///< the replace string of the rename
 	set<wstring>	m_filelist;			///< the list of selected file/folder names
 	map<int, wstring> m_tooltips;		///< maps command/button ids against the tooltips to show for them
-	CHyperLink		m_link;				///< the hyperlink used in the options dialog
+	CRegStdWORD		m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
+	CRegStdWORD		m_regUseUNCPaths;	///< config setting whether to copy the UNC paths of mapped paths or not
+	CRegStdWORD		m_regUseSelector;	///< config setting whether to use the selector or the cmd.exe replacement
 
 private:
 	/// window procedure of the sub classed desk band control
 	static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
 	/// window procedure of the sub classed edit control
 	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
-	/// options dialog callback function
-	static INT_PTR CALLBACK	OptionsDlgFunc(HWND, UINT, WPARAM, LPARAM);
-	/// rename dialog callback function
-	static INT_PTR CALLBACK	RenameDlgFunc(HWND, UINT, WPARAM, LPARAM);
 
 	static LRESULT CALLBACK KeyboardHookProc(int code, WPARAM wParam, LPARAM lParam);
 
