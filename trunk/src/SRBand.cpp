@@ -27,6 +27,7 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
 	, m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
 	, m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
+	, m_regHideEditBox(_T("Software\\StefansTools\\StExBar\\HideEditBox"), 0)
 	, m_hToolbarImgList(NULL)
 {
 	m_ObjRefCount = 1;
@@ -804,10 +805,19 @@ LRESULT CDeskBand::OnSize(LPARAM /*lParam*/)
 	RECT rc;
 	::GetClientRect(m_hWnd, &rc);
 
-	HDWP hdwp = BeginDeferWindowPos(2);
-	DeferWindowPos(hdwp, m_hWndToolbar, NULL, 0, 0, m_tbSize.cx, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
-	DeferWindowPos(hdwp, m_hWndEdit, NULL, m_tbSize.cx+SPACEBETWEENEDITANDBUTTON, 0, rc.right-rc.left-m_tbSize.cx-SPACEBETWEENEDITANDBUTTON, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
-	EndDeferWindowPos(hdwp);
+	if (m_bCmdEditEnabled)
+	{
+		HDWP hdwp = BeginDeferWindowPos(2);
+		DeferWindowPos(hdwp, m_hWndToolbar, NULL, 0, 0, m_tbSize.cx, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
+		DeferWindowPos(hdwp, m_hWndEdit, NULL, m_tbSize.cx+SPACEBETWEENEDITANDBUTTON, 0, rc.right-rc.left-m_tbSize.cx-SPACEBETWEENEDITANDBUTTON, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
+		EndDeferWindowPos(hdwp);
+		ShowWindow(m_hWndEdit, SW_SHOW);
+	}
+	else
+	{
+		SetWindowPos(m_hWndToolbar, NULL, 0, 0, m_tbSize.cx, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
+		ShowWindow(m_hWndEdit, SW_HIDE);
+	}
 	return 0;
 }
 
@@ -816,10 +826,19 @@ LRESULT CDeskBand::OnMove(LPARAM /*lParam*/)
 	RECT rc;
 	::GetClientRect(m_hWnd, &rc);
 
-	HDWP hdwp = BeginDeferWindowPos(2);
-	DeferWindowPos(hdwp, m_hWndToolbar, NULL, 0, 0, m_tbSize.cx, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
-	DeferWindowPos(hdwp, m_hWndEdit, NULL, m_tbSize.cx, 0, rc.right-rc.left-m_tbSize.cx-SPACEBETWEENEDITANDBUTTON, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
-	EndDeferWindowPos(hdwp);
+	if (m_bCmdEditEnabled)
+	{
+		HDWP hdwp = BeginDeferWindowPos(2);
+		DeferWindowPos(hdwp, m_hWndToolbar, NULL, 0, 0, m_tbSize.cx, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
+		DeferWindowPos(hdwp, m_hWndEdit, NULL, m_tbSize.cx, 0, rc.right-rc.left-m_tbSize.cx-SPACEBETWEENEDITANDBUTTON, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
+		EndDeferWindowPos(hdwp);
+		ShowWindow(m_hWndEdit, SW_SHOW);
+	}
+	else
+	{
+		SetWindowPos(m_hWndToolbar, NULL, 0, 0, m_tbSize.cx, m_tbSize.cy, SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
+		ShowWindow(m_hWndEdit, SW_HIDE);
+	}
 	return 0;
 }
 
@@ -991,7 +1010,8 @@ BOOL CDeskBand::BuildToolbarButtons()
 	m_hotkeys.clear();
 	m_enablestates.clear();
 	m_tooltips.clear();
-	m_bCmdEditEnabled = true;
+	m_regHideEditBox.read();
+	m_bCmdEditEnabled = !DWORD(m_regHideEditBox);
 
 	if (m_hWndToolbar == NULL)
 		return FALSE;
