@@ -181,6 +181,7 @@ bool CCommands::LoadFromFile()
 	c.key = key;
 	m_commands.push_back(c);
 
+	int nInternals = m_commands.size();
 
 	TCHAR szPath[MAX_PATH] = {0};
 	if (SUCCEEDED(SHGetFolderPath(NULL, 
@@ -198,6 +199,7 @@ bool CCommands::LoadFromFile()
 	inifile.LoadFile(szPath);
 	CSimpleIni::TNamesDepend sections;
 	inifile.GetAllSections(sections);
+	int loopcounter = 0;
 	for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
 	{
 		hotkey key;
@@ -224,28 +226,32 @@ bool CCommands::LoadFromFile()
 
 		// check if that command already exists
 		bool alreadyexists = false;
-		for (vector<Command>::iterator cit = m_commands.begin(); cit != m_commands.end(); ++cit)
+		if (!cmd.separator)
 		{
-			if (cit->name.compare(cmd.name) == 0)
+			for (vector<Command>::iterator cit = m_commands.begin(); cit != m_commands.end(); ++cit)
 			{
-				// found the command
-				alreadyexists = true;
-				// for normal commands, we simply ignore duplicate entries.
-				// but for internal commands, we overwrite the default settings.
-				if (cit->commandline.compare(INTERNALCOMMAND)==0)
+				if (cit->name.compare(cmd.name) == 0)
 				{
-					// the icon for internal commands isn't saved to the ini file, so
-					// we copy it from the existing one
-					cmd.nIconID = cit->nIconID;
-					*cit = cmd;
+					// found the command
+					alreadyexists = true;
+					// for normal commands, we simply ignore duplicate entries.
+					// but for internal commands, we overwrite the default settings.
+					if (cit->commandline.compare(INTERNALCOMMAND)==0)
+					{
+						// the icon for internal commands isn't saved to the ini file, so
+						// we copy it from the existing one
+						cmd.nIconID = cit->nIconID;
+						*cit = cmd;
+					}
+					break;
 				}
-				break;
 			}
 		}
-		if (!alreadyexists)
+		if ((!alreadyexists)&&(loopcounter >= nInternals))
 		{
 			m_commands.push_back(cmd);
 		}
+		loopcounter++;
 	}
 	return false;
 }
