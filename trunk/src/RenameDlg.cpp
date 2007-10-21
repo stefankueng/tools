@@ -150,6 +150,8 @@ void CRenameDlg::FillRenamedList()
 		return;
 	GetWindowText(hMatchstring, buf, MAX_PATH);
 	m_sMatch = buf;
+	if (m_sMatch.size() == 0)
+		return;
 	HWND hReplaceString = GetDlgItem(*this, IDC_REPLACESTRING);
 	if (hReplaceString == NULL)
 		return;
