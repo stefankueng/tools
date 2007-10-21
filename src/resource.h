@@ -15,12 +15,14 @@
 #define IDD_RENAMEDLG                   111
 #define IDI_RENAME                      112
 #define IDI_SHOWHIDE                    113
+#define IDD_EDITCMD                     114
 #define IDC_LIST1                       1001
 #define IDC_FILELIST                    1001
+#define IDC_CUSTCOMMANDS                1001
 #define IDC_EDIT2                       1003
 #define IDC_REPLACESTRING               1003
+#define IDC_ICONPATH                    1003
 #define IDC_SHOWTEXT                    1007
-#define IDC_EDITCONFIG                  1009
 #define IDC_MATCHSTRING                 1010
 #define IDC_MATCHLABEL                  1011
 #define IDC_REPLACELABEL                1012
@@ -28,14 +30,28 @@
 #define IDC_USEUNCCHECK                 1015
 #define IDC_SELECTORCHECK               1016
 #define IDC_VERSIONSTRING               1017
+#define IDC_EDITCMD                     1018
+#define IDC_ADD                         1019
+#define IDC_REMOVE                      1020
+#define IDC_NAME                        1021
+#define IDC_COMMANDLINE                 1022
+#define IDC_HOTKEY                      1023
+#define IDC_VIEWPATH                    1024
+#define IDC_NOVIEWPATH                  1025
+#define IDC_FILESELECTED                1026
+#define IDC_FOLDERSELECTED              1027
+#define IDC_SELECTED                    1028
+#define IDC_NOSELECTION                 1029
+#define IDC_SELECTEDCOUNT               1030
+#define IDC_SEPARATOR                   1031
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        114
+#define _APS_NEXT_RESOURCE_VALUE        115
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1018
+#define _APS_NEXT_CONTROL_VALUE         1032
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
