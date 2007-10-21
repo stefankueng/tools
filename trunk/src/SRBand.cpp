@@ -1113,7 +1113,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 		tb[index].idCommand = j;
 		tb[index].fsState = cmd.separator ? 0 : TBSTATE_ENABLED;
 		tb[index].fsStyle = cmd.separator ? BTNS_SEP : fsStyle;
-		tb[index].iString = cmd.separator ? NULL : (INT_PTR)cmd.name.c_str();
+		tb[index].iString = cmd.separator ? NULL : (INT_PTR)m_commands.GetCommandPtr(j)->name.c_str();
 		if (!cmd.separator)
 			m_tooltips[tb[index].idCommand] = cmd.name.c_str();
 		index++;

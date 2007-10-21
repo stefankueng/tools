@@ -113,7 +113,7 @@ private:
 
 	CCommands		m_commands;
 	map<hotkey, int> m_hotkeys;			///< the hotkeys for our commands
-	map<int, DWORD> m_enablestates;	///< the custom commands and their enabled states
+	map<int, DWORD> m_enablestates;		///< the custom commands and their enabled states
 	bool			m_bCmdEditEnabled;	///< the cmd edit box is special, because it's not part of the toolbar
 
 	set<wstring>	m_filelist;			///< the list of selected file/folder names
