@@ -59,6 +59,7 @@ public:
 	bool				SaveToFile();
 	int					GetCount() {return (int)m_commands.size();}
 	Command 			GetCommand(int index) {return m_commands[index];}
+	Command *			GetCommandPtr(int index) {return &m_commands[index];}
 	void				RemoveCommand(int index) {m_commands.erase(m_commands.begin()+index);}
 	void				InsertCommand(int index, Command cmd) {m_commands.insert(m_commands.begin()+index, cmd);}
 	void				SetCommand(int index, Command cmd) {m_commands[index] = cmd;}
