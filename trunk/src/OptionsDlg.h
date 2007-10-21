@@ -22,6 +22,8 @@ protected:
 	void					OnSelectListItem(LPNMLISTVIEW lpNMListView);
 	void					EditSelectedItem();
 	void					RemoveSelectedItem();
+	void					MoveSelectedUp();
+	void					MoveSelectedDown();
 private:
 	HWND					m_hParent;
 	CRegStdWORD				m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not

@@ -20,7 +20,7 @@ CEditCmdDlg::~CEditCmdDlg(void)
 {
 }
 
-LRESULT CEditCmdDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CEditCmdDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM /*lParam*/)
 {
 	switch (uMsg)
 	{
@@ -45,6 +45,7 @@ LRESULT CEditCmdDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 		case IDC_SEPARATOR:
 			m_command.separator = SendMessage(GetDlgItem(*this, IDC_SEPARATOR), BM_GETCHECK, 0, 0) == BST_CHECKED;
 			SetSeparator(m_command.separator);
+			break;
 		}
 		break;
 	}
