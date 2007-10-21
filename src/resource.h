@@ -45,8 +45,9 @@
 #define IDC_SELECTEDCOUNT               1030
 #define IDC_SEPARATOR                   1031
 #define IDC_MOVEUP                      1032
-#define IDC_BUTTON2                     1033
 #define IDC_MOVEDOWN                    1033
+#define IDC_CHECK1                      1034
+#define IDC_HIDEEDITBOX                 1034
 
 // Next default values for new objects
 // 
@@ -54,7 +55,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        115
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1034
+#define _APS_NEXT_CONTROL_VALUE         1035
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
