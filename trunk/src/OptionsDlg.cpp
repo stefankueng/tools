@@ -202,6 +202,7 @@ void COptionsDlg::MoveSelectedUp()
 				item.stateMask = LVIS_SELECTED;
 				item.iItem = i-1;
 				ListView_SetItem(m_hListControl, &item);
+				ListView_EnsureVisible(m_hListControl, i-1, FALSE);
 			}
 			return;
 		}
@@ -229,6 +230,7 @@ void COptionsDlg::MoveSelectedDown()
 				item.stateMask = LVIS_SELECTED;
 				item.iItem = i+1;
 				ListView_SetItem(m_hListControl, &item);
+				ListView_EnsureVisible(m_hListControl, i+1, FALSE);
 			}
 			return;
 		}
@@ -248,6 +250,7 @@ void COptionsDlg::RemoveSelectedItem()
 		{
 			m_commands.RemoveCommand(i+1);
 			InitCustomCommandsList();
+			ListView_EnsureVisible(m_hListControl, i-1, FALSE);
 			return;
 		}
 	}
