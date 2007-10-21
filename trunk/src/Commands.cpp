@@ -241,7 +241,10 @@ bool CCommands::LoadFromFile()
 						// the icon for internal commands isn't saved to the ini file, so
 						// we copy it from the existing one
 						cmd.nIconID = cit->nIconID;
-						*cit = cmd;
+						// swap the commands in their order
+						Command c1 = m_commands[loopcounter];
+						m_commands[loopcounter] = cmd;
+						*cit = c1;
 					}
 					break;
 				}
