@@ -83,6 +83,12 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 		case IDC_REMOVE:
 			RemoveSelectedItem();
 			break;
+		case IDC_MOVEUP:
+			MoveSelectedUp();
+			break;
+		case IDC_MOVEDOWN:
+			MoveSelectedDown();
+			break;
 		}
 		break;
 	case WM_NOTIFY:
@@ -97,12 +103,12 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				LPNMLVKEYDOWN pnkd = (LPNMLVKEYDOWN)lParam;
 				if (pnkd->wVKey == VK_DELETE)
 				{
-
+					RemoveSelectedItem();
 				}
 			}
 			if ((lpnmhdr->code == NM_DBLCLK)&&(lpnmhdr->hwndFrom == m_hListControl))
 			{
-				//OnDblClickListItem((LPNMITEMACTIVATE)lParam);
+				EditSelectedItem();
 			}
 			return FALSE;
 		}
@@ -133,11 +139,10 @@ void COptionsDlg::InitCustomCommandsList()
 	ListView_InsertColumn(m_hListControl, 0, &lvc);
 
 	LVITEM item = {0};
-	int i = 0;
 	TCHAR buf[1024];
-	for (int i = 0; i < m_commands.GetCount(); ++i)
+	for (int i = 0; i < m_commands.GetCount()-1; ++i)
 	{
-		Command cmd = m_commands.GetCommand(i);
+		Command cmd = m_commands.GetCommand(i+1);
 		item.mask = LVIF_TEXT|LVIF_PARAM;
 		item.iItem = i;
 		item.lParam = i;
@@ -153,14 +158,72 @@ void COptionsDlg::InitCustomCommandsList()
 	// disable the edit and remove button since nothing is selected now
 	EnableWindow(GetDlgItem(*this, IDC_EDITCMD), FALSE);
 	EnableWindow(GetDlgItem(*this, IDC_REMOVE), FALSE);
+	EnableWindow(GetDlgItem(*this, IDC_MOVEUP), FALSE);
+	EnableWindow(GetDlgItem(*this, IDC_MOVEDOWN), FALSE);
 	::InvalidateRect(m_hListControl, NULL, false);
 }
 
-void COptionsDlg::OnSelectListItem(LPNMLISTVIEW lpNMListView)
+void COptionsDlg::OnSelectListItem(LPNMLISTVIEW /*lpNMListView*/)
 {
 	UINT nCount = ListView_GetSelectedCount(m_hListControl);
 	EnableWindow(GetDlgItem(*this, IDC_EDITCMD), nCount == 1);
 	EnableWindow(GetDlgItem(*this, IDC_REMOVE), nCount == 1);
+	EnableWindow(GetDlgItem(*this, IDC_MOVEUP), nCount == 1);
+	EnableWindow(GetDlgItem(*this, IDC_MOVEDOWN), nCount == 1);
+}
+
+void COptionsDlg::MoveSelectedUp()
+{
+	LVITEM item = {0};
+	for (int i=0; i<ListView_GetItemCount(m_hListControl); ++i)
+	{
+		item.mask = LVIF_PARAM|LVIF_STATE;
+		item.stateMask = LVIS_SELECTED;
+		item.iItem = i;
+		ListView_GetItem(m_hListControl, &item);
+		if (item.state & LVIS_SELECTED)
+		{
+			if (i > 1)
+			{
+				Command c1 = m_commands.GetCommand(i);
+				m_commands.SetCommand(i, m_commands.GetCommand(i+1));
+				m_commands.SetCommand(i+1, c1);
+				InitCustomCommandsList();
+				item.mask = LVIF_PARAM|LVIF_STATE;
+				item.stateMask = LVIS_SELECTED;
+				item.iItem = i-1;
+				ListView_SetItem(m_hListControl, &item);
+			}
+			return;
+		}
+	}
+}
+
+void COptionsDlg::MoveSelectedDown()
+{
+	LVITEM item = {0};
+	for (int i=0; i<ListView_GetItemCount(m_hListControl); ++i)
+	{
+		item.mask = LVIF_PARAM|LVIF_STATE;
+		item.stateMask = LVIS_SELECTED;
+		item.iItem = i;
+		ListView_GetItem(m_hListControl, &item);
+		if (item.state & LVIS_SELECTED)
+		{
+			if (i < m_commands.GetCount()-3)
+			{
+				Command c1 = m_commands.GetCommand(i+2);
+				m_commands.SetCommand(i+2, m_commands.GetCommand(i+1));
+				m_commands.SetCommand(i+1, c1);
+				InitCustomCommandsList();
+				item.mask = LVIF_PARAM|LVIF_STATE;
+				item.stateMask = LVIS_SELECTED;
+				item.iItem = i+1;
+				ListView_SetItem(m_hListControl, &item);
+			}
+			return;
+		}
+	}
 }
 
 void COptionsDlg::RemoveSelectedItem()
@@ -174,7 +237,7 @@ void COptionsDlg::RemoveSelectedItem()
 		ListView_GetItem(m_hListControl, &item);
 		if (item.state & LVIS_SELECTED)
 		{
-			m_commands.RemoveCommand(i);
+			m_commands.RemoveCommand(i+1);
 			InitCustomCommandsList();
 			return;
 		}
@@ -192,12 +255,12 @@ void COptionsDlg::EditSelectedItem()
 		ListView_GetItem(m_hListControl, &item);
 		if (item.state & LVIS_SELECTED)
 		{
-			Command cmd = m_commands.GetCommand(i);
+			Command cmd = m_commands.GetCommand(i+1);
 			CEditCmdDlg dlg(*this);
 			dlg.SetCommand(cmd);
 			if (dlg.DoModal(hResource, IDD_EDITCMD, *this) == IDOK)
 			{
-				m_commands.SetCommand(i, dlg.GetCommand());
+				m_commands.SetCommand(i+1, dlg.GetCommand());
 				InitCustomCommandsList();
 			}
 
