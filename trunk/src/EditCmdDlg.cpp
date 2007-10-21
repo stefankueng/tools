@@ -95,6 +95,26 @@ void CEditCmdDlg::SetupControls()
 	TCHAR buf[40] = {0};
 	_stprintf_s(buf, 40, _T("%ld"), m_command.enabled_selectedcount);
 	SetDlgItemText(*this, IDC_SELECTEDCOUNT, buf);
+
+	// disable controls which must not be changed for internal commands
+	if (m_command.commandline.compare(INTERNALCOMMAND) == 0)
+	{
+		EnableWindow(GetDlgItem(*this, IDC_SEPARATOR), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_NAME), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_ICONPATH), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_COMMANDLINE), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_VIEWPATH), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_NOVIEWPATH), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_FILESELECTED), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_FOLDERSELECTED), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_SELECTED), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_NOSELECTION), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_SELECTEDCOUNT), FALSE);
+	}
+	else
+	{
+		EnableWindow(GetDlgItem(*this, IDC_SEPARATOR), TRUE);
+	}
 }
 
 void CEditCmdDlg::SetupCommand()
