@@ -222,7 +222,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Commands.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DlgResizer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditCmdDlg.cpp"
 				>
 			</File>
 			<File
@@ -352,7 +360,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Commands.h"
+				>
+			</File>
+			<File
 				RelativePath=".\DlgResizer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditCmdDlg.h"
 				>
 			</File>
 			<File

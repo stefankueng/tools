@@ -6,6 +6,7 @@
 #include <set>
 #include <map>
 #include "Registry.h"
+#include "Commands.h"
 
 using namespace std;
 
@@ -35,23 +36,6 @@ using namespace std;
 #define ENABLED_SELECTED (ENABLED_FOLDERSELECTED|ENABLED_FILESELECTED)
 #define ENABLED_ALWAYS	(ENABLED_VIEWPATH|ENABLED_NOVIEWPATH|ENABLED_FOLDERSELECTED|ENABLED_FILESELECTED|ENABLED_NOSELECTION)
 
-class hotkey
-{
-public:
-	WPARAM	keycode;
-	bool	control;
-	bool	shift;
-	bool	alt;
-	bool operator<(const hotkey & hk) const
-	{
-		if (keycode < hk.keycode) return true;
-		if (keycode > hk.keycode) return false;
-
-		return (((control ? 4 : 0)|(shift ? 2 : 0)|(alt ? 1 : 0))
-				<
-				((hk.control ? 4 : 0)|(hk.shift ? 2 : 0)|(hk.alt ? 1 : 0)));
-	}
-};
 
 
 /**
@@ -127,8 +111,8 @@ private:
 	bool			m_bFilesSelected;	///< at least one file is selected
 	bool			m_bFolderSelected;	///< at least one folder is selected
 
+	CCommands		m_commands;
 	map<hotkey, int> m_hotkeys;			///< the hotkeys for our commands
-	map<WORD, wstring> m_commands;		///< the custom commands and their command lines
 	map<int, DWORD> m_enablestates;	///< the custom commands and their enabled states
 	bool			m_bCmdEditEnabled;	///< the cmd edit box is special, because it's not part of the toolbar
 

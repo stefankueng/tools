@@ -54,24 +54,26 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_OPTIONS DIALOGEX 0, 0, 205, 218
+IDD_OPTIONS DIALOGEX 0, 0, 241, 278
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Settings"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,73,197,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,148,197,50,14
+    DEFPUSHBUTTON   "OK",IDOK,126,257,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,184,257,50,14
     CONTROL         "Show button text on toolbar",IDC_SHOWTEXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,57,107,10
-    GROUPBOX        "Misc",IDC_STATIC,7,44,191,66
-    GROUPBOX        "Custom Commands",IDC_STATIC,7,115,191,77
-    PUSHBUTTON      "&Edit Config File",IDC_EDITCONFIG,58,170,88,14
+    GROUPBOX        "Misc",IDC_STATIC,7,44,227,66
+    GROUPBOX        "Custom Commands",IDC_STATIC,7,115,227,134
     LTEXT           "Stefan's Tools - tools.tortoisesvn.net",IDC_LINK,7,28,120,8
-    LTEXT           "StExBar v1.1.1",IDC_VERSIONSTRING,7,7,191,8
+    LTEXT           "StExBar v1.1.1",IDC_VERSIONSTRING,7,7,227,8
     LTEXT           "Copyright 2006 Stefan Küng",IDC_STATIC,7,17,92,8
-    LTEXT           "Once you've edited the config file, dismiss this dialog by clicking on OK to use the changes you made to the config file.",IDC_STATIC,14,133,184,32
     CONTROL         "Copy UNC paths",IDC_USEUNCCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,75,69,10
     CONTROL         "Use selector instead of cmd replacement",IDC_SELECTORCHECK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,93,145,10
+    CONTROL         "",IDC_CUSTCOMMANDS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,14,127,213,96
+    PUSHBUTTON      "Edit",IDC_EDITCMD,61,229,50,14
+    PUSHBUTTON      "Add",IDC_ADD,119,229,50,14
+    PUSHBUTTON      "Remove",IDC_REMOVE,177,229,50,14
 END
 
 IDD_RENAMEDLG DIALOGEX 0, 0, 391, 190
@@ -88,6 +90,38 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,334,169,50,14
 END
 
+IDD_EDITCMD DIALOGEX 0, 0, 308, 247
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Command"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,186,226,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,251,226,50,14
+    LTEXT           "Name:",IDC_STATIC,7,23,22,8
+    EDITTEXT        IDC_NAME,90,20,211,14,ES_AUTOHSCROLL
+    LTEXT           "Icon:",IDC_STATIC,7,41,18,8
+    EDITTEXT        IDC_ICONPATH,90,39,211,14,ES_AUTOHSCROLL
+    LTEXT           "Command line:",IDC_STATIC,7,60,48,8
+    EDITTEXT        IDC_COMMANDLINE,90,58,211,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_HOTKEY,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,90,79,211,14
+    LTEXT           "Hotkey:",IDC_STATIC,7,82,26,8
+    CONTROL         "Enabled when showing file system folders",IDC_VIEWPATH,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,114,149,10
+    CONTROL         "Enabled when showing system folders (e.g. Printers view)",IDC_NOVIEWPATH,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,130,201,10
+    CONTROL         "Enabled when files are selected",IDC_FILESELECTED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,146,117,10
+    CONTROL         "Enabled when directories are selected",IDC_FOLDERSELECTED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,162,137,10
+    CONTROL         "Enabled when anything is selected",IDC_SELECTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,177,126,10
+    CONTROL         "Enabled when nothing is selected",IDC_NOSELECTION,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,191,122,10
+    LTEXT           "Enabled when exactly",IDC_STATIC,7,207,71,8
+    EDITTEXT        IDC_SELECTEDCOUNT,90,204,40,14,ES_AUTOHSCROLL
+    LTEXT           "items are selected",IDC_STATIC,137,207,59,8
+    CONTROL         "Separator",IDC_SEPARATOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,48,10
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -100,10 +134,11 @@ BEGIN
     IDD_OPTIONS, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 198
+        RIGHTMARGIN, 234
         VERTGUIDE, 14
+        VERTGUIDE, 227
         TOPMARGIN, 7
-        BOTTOMMARGIN, 211
+        BOTTOMMARGIN, 271
     END
 
     IDD_RENAMEDLG, DIALOG
@@ -113,6 +148,15 @@ BEGIN
         VERTGUIDE, 60
         TOPMARGIN, 7
         BOTTOMMARGIN, 183
+    END
+
+    IDD_EDITCMD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 301
+        VERTGUIDE, 90
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 240
     END
 END
 #endif    // APSTUDIO_INVOKED

@@ -1,6 +1,7 @@
 #pragma once
 #include "basedialog.h"
 #include "hyperlink.h"
+#include "Commands.h"
 #include <string>
 
 using namespace std;
@@ -16,10 +17,18 @@ public:
 
 protected:
 	LRESULT CALLBACK		DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+	void					InitCustomCommandsList();
+	void					OnSelectListItem(LPNMLISTVIEW lpNMListView);
+	void					EditSelectedItem();
+	void					RemoveSelectedItem();
 private:
 	HWND					m_hParent;
 	CRegStdWORD				m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
 	CRegStdWORD				m_regUseUNCPaths;	///< config setting whether to copy the UNC paths of mapped paths or not
 	CRegStdWORD				m_regUseSelector;	///< config setting whether to use the selector or the cmd.exe replacement
 	CHyperLink				m_link;				///< the hyperlink used in the options dialog
+
+	CCommands				m_commands;
+	HWND					m_hListControl;
 };

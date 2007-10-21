@@ -27,7 +27,6 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
 	, m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
 	, m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
-	, m_bCmdEditEnabled(true)
 	, m_hToolbarImgList(NULL)
 {
 	m_ObjRefCount = 1;
@@ -597,9 +596,15 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 				return 0;
 
 			FindPaths();
-			switch(LOWORD(wParam))
+
+			// find the command
+			if (LOWORD(wParam) >= m_commands.GetCount())
+				DebugBreak();
+			Command cmd = m_commands.GetCommand(LOWORD(wParam));
+			if (cmd.commandline.compare(INTERNALCOMMAND) == 0)
 			{
-			case 0:		// edit control enter pressed
+				// an internal command
+				if (cmd.name.compare(_T("StexBar Internal Edit Box")) == 0)
 				{
 					// get the command entered in the edit box
 					int count = MAX_PATH;
@@ -633,8 +638,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					}
 					delete [] buf;
 				}
-				break;
-			case 1:		// options
+				else if (cmd.name.compare(_T("Options")) == 0)
 				{
 					COptionsDlg dlg(m_hWnd);
 					if (dlg.DoModal(g_hInst, IDD_OPTIONS, m_hWnd) == IDOK)
@@ -646,8 +650,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 						OnMove(0);
 					}
 				}
-				break;
-			case 2:		// show/hide system files
+				else if (cmd.name.compare(_T("Show system files")) == 0)
 				{
 					HCURSOR hCur = GetCursor();
 					SetCursor(LoadCursor(NULL, IDC_WAIT));
@@ -676,11 +679,11 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					}
 					SetCursor(hCur);
 				}
-				break;
-			case 3:		// cmd
-				StartCmd(_T(""));
-				break;
-			case 4:		// copy name
+				else if (cmd.name.compare(_T("Console")) == 0)
+				{
+					StartCmd(_T(""));
+				}
+				else if (cmd.name.compare(_T("Copy Names")) == 0)
 				{
 					wstring str = GetFileNames(_T("\r\n"), false, true, true);
 					if (str.empty())
@@ -698,8 +701,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					}
 					WriteStringToClipboard(str, m_hWnd);
 				}
-				break;
-			case 5:		// copy path
+				else if (cmd.name.compare(_T("Copy Paths")) == 0)
 				{
 					wstring str = GetFilePaths(_T("\r\n"), false, true, true, DWORD(m_regUseUNCPaths) ? true : false);
 					if (str.empty())
@@ -713,90 +715,83 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					}
 					WriteStringToClipboard(str, m_hWnd);
 				}
-				break;
-			case 6:		// New Folder
+				else if (cmd.name.compare(_T("New Folder")) == 0)
 				{
 					CreateNewFolder();
 				}
-				break;
-			case 7:		// Rename
+				else if (cmd.name.compare(_T("Rename")) == 0)
 				{
 					Rename();
 				}
-				break;
-			default:	// custom commands
-				{
-					// get the command entered in the edit box
-					int count = MAX_PATH;
-					TCHAR * buf = new TCHAR[count+1];
-					while (::GetWindowText(m_hWndEdit, buf, count)>=count)
-					{
-						delete [] buf;
-						count += MAX_PATH;
-						buf = new TCHAR[count+1];
-					}
-					wstring consoletext = buf;
-					map<WORD, wstring>::iterator cl = m_commands.find(LOWORD(wParam));
-					if (cl != m_commands.end())
-					{
-						// now it->second is the command line string for the command
-						wstring commandline = cl->second;
-
-						// replace "%selpaths" with the paths of the selected items
-						wstring tag(_T("%selpaths"));
-						wstring::iterator it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-						if (it_begin != commandline.end())
-						{
-							// prepare the selected paths
-							wstring selpaths = GetFilePaths(_T(" "), true, true, true, false);
-							if (selpaths.empty())
-								selpaths = m_currentDirectory;
-							wstring::iterator it_end= it_begin + tag.size();
-							commandline.replace(it_begin, it_end, selpaths);
-						}
-						// replace "%sel*paths" with the paths of the selected items
-						tag = _T("%sel*paths");
-						it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-						if (it_begin != commandline.end())
-						{
-							// prepare the selected names
-							wstring selpaths = GetFilePaths(_T("*"), false, true, true, false);
-							if (selpaths.empty())
-								selpaths = m_currentDirectory;
-							wstring::iterator it_end= it_begin + tag.size();
-							commandline.replace(it_begin, it_end, selpaths);
-						}
-						// replace "%selnames" with the names of the selected items
-						tag = _T("%selnames");
-						it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-						if (it_begin != commandline.end())
-						{
-							// prepare the selected names
-							wstring selnames = GetFileNames(_T(" "), true, true, true);
-							wstring::iterator it_end= it_begin + tag.size();
-							commandline.replace(it_begin, it_end, selnames);
-						}
-						// replace "%curdir" with the current directory
-						tag = _T("%curdir");
-						it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-						if (it_begin != commandline.end())
-						{
-							wstring::iterator it_end= it_begin + tag.size();
-							commandline.replace(it_begin, it_end, m_currentDirectory);
-						}
-						// replace "%cmdtext" with the text in the console edit box
-						tag = _T("%cmdtext");
-						it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-						if (it_begin != commandline.end())
-						{
-							wstring::iterator it_end= it_begin + tag.size();
-							commandline.replace(it_begin, it_end, consoletext);
-						}
-						StartApplication(commandline);
-					}
-				}
-				break;
+				else
+					DebugBreak();
 			}
+			else
+			{
+				int count = MAX_PATH;
+				TCHAR * buf = new TCHAR[count+1];
+				while (::GetWindowText(m_hWndEdit, buf, count)>=count)
+				{
+					delete [] buf;
+					count += MAX_PATH;
+					buf = new TCHAR[count+1];
+				}
+				wstring consoletext = buf;
+
+				// replace "%selpaths" with the paths of the selected items
+				wstring tag(_T("%selpaths"));
+				wstring commandline = cmd.commandline;
+				wstring::iterator it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+				if (it_begin != commandline.end())
+				{
+					// prepare the selected paths
+					wstring selpaths = GetFilePaths(_T(" "), true, true, true, false);
+					if (selpaths.empty())
+						selpaths = m_currentDirectory;
+					wstring::iterator it_end= it_begin + tag.size();
+					commandline.replace(it_begin, it_end, selpaths);
+				}
+				// replace "%sel*paths" with the paths of the selected items
+				tag = _T("%sel*paths");
+				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+				if (it_begin != commandline.end())
+				{
+					// prepare the selected names
+					wstring selpaths = GetFilePaths(_T("*"), false, true, true, false);
+					if (selpaths.empty())
+						selpaths = m_currentDirectory;
+					wstring::iterator it_end= it_begin + tag.size();
+					commandline.replace(it_begin, it_end, selpaths);
+				}
+				// replace "%selnames" with the names of the selected items
+				tag = _T("%selnames");
+				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+				if (it_begin != commandline.end())
+				{
+					// prepare the selected names
+					wstring selnames = GetFileNames(_T(" "), true, true, true);
+					wstring::iterator it_end= it_begin + tag.size();
+					commandline.replace(it_begin, it_end, selnames);
+				}
+				// replace "%curdir" with the current directory
+				tag = _T("%curdir");
+				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+				if (it_begin != commandline.end())
+				{
+					wstring::iterator it_end= it_begin + tag.size();
+					commandline.replace(it_begin, it_end, m_currentDirectory);
+				}
+				// replace "%cmdtext" with the text in the console edit box
+				tag = _T("%cmdtext");
+				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+				if (it_begin != commandline.end())
+				{
+					wstring::iterator it_end= it_begin + tag.size();
+					commandline.replace(it_begin, it_end, consoletext);
+				}
+				StartApplication(commandline);
+			}
+
 			FocusChange(false);
 			break;
 		}
@@ -994,58 +989,9 @@ LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lPa
 BOOL CDeskBand::BuildToolbarButtons()
 {
 	m_hotkeys.clear();
-	m_commands.clear();
 	m_enablestates.clear();
 	m_tooltips.clear();
 	m_bCmdEditEnabled = true;
-	// now fill in our own hotkeys and enabled states
-	m_enablestates[0] = ENABLED_VIEWPATH;
-
-	hotkey modifiers;
-	modifiers.keycode = WPARAM('K');
-	modifiers.alt = false;
-	modifiers.shift = false;
-	modifiers.control = true;
-	m_hotkeys[modifiers] = 0;	// edit box : ctrl-K
-
-	m_enablestates[1] = ENABLED_ALWAYS;
-	
-	modifiers.keycode = WPARAM('H');
-	modifiers.alt = false;
-	modifiers.shift = true;
-	modifiers.control = true;
-	m_hotkeys[modifiers] = 2;	// show/hide system files: ctrl-shift-H
-	m_enablestates[2] = ENABLED_ALWAYS;
-
-	modifiers.keycode = WPARAM('M');
-	modifiers.alt = false;
-	modifiers.shift = false;
-	modifiers.control = true;
-	m_hotkeys[modifiers] = 3;	// console : ctrl-M
-	m_enablestates[3] = ENABLED_VIEWPATH;
-
-	m_enablestates[4] = ENABLED_SELECTED | ENABLED_VIEWPATH;
-	
-	modifiers.keycode = WPARAM('C');
-	modifiers.alt = false;
-	modifiers.shift = true;
-	modifiers.control = true;
-	m_hotkeys[modifiers] = 5;	// copy paths : ctrl-shift-C
-	m_enablestates[5] = ENABLED_SELECTED | ENABLED_VIEWPATH;
-
-	modifiers.keycode = WPARAM('N');
-	modifiers.alt = false;
-	modifiers.shift = true;
-	modifiers.control = true;
-	m_hotkeys[modifiers] = 6;	// new folder : ctrl-shift-N
-	m_enablestates[6] = ENABLED_VIEWPATH;
-
-	modifiers.keycode = WPARAM('R');
-	modifiers.alt = false;
-	modifiers.shift = true;
-	modifiers.control = true;
-	m_hotkeys[modifiers] = 7;	// Rename : ctrl-shift-R
-	m_enablestates[7] = ENABLED_SELECTED;
 
 	if (m_hWndToolbar == NULL)
 		return FALSE;
@@ -1062,27 +1008,11 @@ BOOL CDeskBand::BuildToolbarButtons()
 		ImageList_Destroy(m_hToolbarImgList);
 	}
 
-	// find custom commands
-	TCHAR szPath[MAX_PATH] = {0};
-	if (SUCCEEDED(SHGetFolderPath(NULL, 
-		CSIDL_APPDATA|CSIDL_FLAG_CREATE, 
-		NULL, 
-		SHGFP_TYPE_CURRENT, 
-		szPath))) 
-	{
-		PathAppend(szPath, TEXT("StExBar"));
-		CreateDirectory(szPath, NULL);
-		PathAppend(szPath, TEXT("CustomCommands.ini"));
-	}
+	m_commands.LoadFromFile();
 
-	CSimpleIni inifile;
-	inifile.LoadFile(szPath);
-	CSimpleIni::TNamesDepend sections;
-	inifile.GetAllSections(sections);
-	TBBUTTON * tb = new TBBUTTON[sections.size()+NUMINTERNALCOMMANDS];
-
+	TBBUTTON * tb = new TBBUTTON[m_commands.GetCount()];
 	// create an image list containing the icons for the toolbar
-	m_hToolbarImgList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, sections.size()+NUMINTERNALCOMMANDS, 1);
+	m_hToolbarImgList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, m_commands.GetCount(), 1);
 	if (m_hToolbarImgList == NULL)
 	{
 		delete [] tb;
@@ -1092,295 +1022,89 @@ BOOL CDeskBand::BuildToolbarButtons()
 	if (DWORD(m_regShowBtnText))
 		fsStyle |= BTNS_SHOWTEXT;
 
-	int customindex = 0;
-
-	// now add the default command buttons
-	HICON hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_OPTIONS));
-	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 1;
-	tb[customindex].fsState = TBSTATE_ENABLED;
-	tb[customindex].fsStyle = fsStyle;
-	tb[customindex].iString = (INT_PTR)_T("Options");
-	m_tooltips[tb[customindex].idCommand] = _T("Options");
-	DestroyIcon(hIcon);
-
-	customindex++;
-
-	tb[customindex].iBitmap = 0;
-	tb[customindex].idCommand = 0;
-	tb[customindex].fsState = 0;
-	tb[customindex].fsStyle = BTNS_SEP;
-	tb[customindex].dwData = 0;
-	tb[customindex].iString = 0;
-
-	customindex++;
-
-	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_SHOWHIDE));
-	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 2;
-	tb[customindex].fsState = TBSTATE_ENABLED;
-	tb[customindex].fsStyle = fsStyle;
-	tb[customindex].iString = (INT_PTR)_T("Show system files");
-	m_tooltips[tb[customindex].idCommand] = _T("Show/Hide system files");
-	DestroyIcon(hIcon);
-
-	customindex++;
-
-	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_CMD));
-	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 3;
-	tb[customindex].fsState = TBSTATE_ENABLED;
-	tb[customindex].fsStyle = fsStyle;
-	tb[customindex].iString = (INT_PTR)_T("Console");
-	m_tooltips[tb[customindex].idCommand] = _T("Console");
-	DestroyIcon(hIcon);
-
-	customindex++;
-
-	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_COPYNAME));
-	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 4;
-	tb[customindex].fsState = TBSTATE_ENABLED;
-	tb[customindex].fsStyle = fsStyle;
-	tb[customindex].iString = (INT_PTR)_T("Copy Names");
-	m_tooltips[tb[customindex].idCommand] = _T("Copy Names to clipboard");
-	DestroyIcon(hIcon);
-
-	customindex++;
-
-	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_COPYPATH));
-	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 5;
-	tb[customindex].fsState = TBSTATE_ENABLED;
-	tb[customindex].fsStyle = fsStyle;
-	tb[customindex].iString = (INT_PTR)_T("Copy Paths");
-	m_tooltips[tb[customindex].idCommand] = _T("Copy Paths to clipboard");
-	DestroyIcon(hIcon);
-
-	customindex++;
-
-	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_NEWFOLDER));
-	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 6;
-	tb[customindex].fsState = TBSTATE_ENABLED;
-	tb[customindex].fsStyle = fsStyle;
-	tb[customindex].iString = (INT_PTR)_T("New Folder");
-	m_tooltips[tb[customindex].idCommand] = _T("Create new folder");
-	DestroyIcon(hIcon);
-
-	customindex++;
-
-	tb[customindex].iBitmap = 0;
-	tb[customindex].idCommand = 0;
-	tb[customindex].fsState = 0;
-	tb[customindex].fsStyle = BTNS_SEP;
-	tb[customindex].dwData = 0;
-	tb[customindex].iString = 0;
-
-	customindex++;
-
-	hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_RENAME));
-	tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-	tb[customindex].idCommand = 7;
-	tb[customindex].fsState = TBSTATE_ENABLED;
-	tb[customindex].fsStyle = fsStyle;
-	tb[customindex].iString = (INT_PTR)_T("Rename");
-	m_tooltips[tb[customindex].idCommand] = _T("Rename selected items");
-	DestroyIcon(hIcon);
-
-	vector<int> hidelist;
-	int scount = 0;
-	for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
+	int index = 0;
+	for (int j = 0; j < m_commands.GetCount(); ++j)
 	{
-		wstring value = inifile.GetValue(*it, _T("internalcommand"), _T(""));
-		if (!value.empty())
+		Command cmd = m_commands.GetCommand(j);
+		m_hotkeys[cmd.key] = j;
+		if (cmd.name.compare(_T("StexBar Internal Edit Box")) == 0)
 		{
-			// some internal commands are overwritten
-			WCHAR * stop;
-			long command = wcstol(value.c_str(), &stop, 0);
-			if (command <= NUMINTERNALCOMMANDS)
+			continue;
+		}
+		DWORD es = 0;
+		es |= cmd.enabled_viewpath ? ENABLED_VIEWPATH : 0;
+		es |= cmd.enabled_noviewpath ? ENABLED_NOVIEWPATH : 0;
+		es |= cmd.enabled_fileselected ? ENABLED_FILESELECTED : 0;
+		es |= cmd.enabled_folderselected ? ENABLED_FOLDERSELECTED : 0;
+		es |= cmd.enabled_selected ? ENABLED_SELECTED : 0;
+		es |= cmd.enabled_noselection ? ENABLED_NOSELECTION : 0;
+		es |= cmd.enabled_fileselected ? ENABLED_FILESELECTED : 0;
+		m_enablestates[j] = es;
+
+		HICON hIcon = NULL;
+		if (cmd.nIconID)
+			hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(cmd.nIconID));
+		else if (!cmd.separator)
+		{
+			hIcon = LoadIcon(g_hInst, cmd.icon.c_str());
+			if (hIcon)
+				tb[index].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
+			else 
 			{
-				// we have to find the existing hotkey for that command
-				// and remove it from the map first, but only if the user
-				// has specified a new hotkey or set it to 0
-				if (_tcslen(inifile.GetValue(*it, _T("hotkey"), _T(""))))
+				// icon loading failed. Let's try to load it differently:
+				// the user might have specified a module path and an icon index
+				// like this: c:\windows\explorer.exe,3 (the icon with ID 3 in explorer.exe)
+				hIcon = NULL;
+				if (cmd.icon.find(',')>=0)
 				{
-					for (map<hotkey, int>::iterator hk = m_hotkeys.begin(); hk != m_hotkeys.end(); ++hk)
+					size_t pos = cmd.icon.find_last_of(',');
+					wstring resourcefile, iconid;
+					if (pos >= 0)
 					{
-						if (hk->second == command)
-						{
-							m_hotkeys.erase(hk);
-							break;
-						}
+						resourcefile = cmd.icon.substr(0, pos);
+						iconid = cmd.icon.substr(pos+1);
+						hIcon = ExtractIcon(g_hInst, resourcefile.c_str(), _ttoi(iconid.c_str()));
 					}
 				}
-
-				hotkey modifiers;
-				value = inifile.GetValue(*it, _T("hotkey_alt"), _T(""));
-				modifiers.alt = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
-				value = inifile.GetValue(*it, _T("hotkey_shift"), _T(""));
-				modifiers.shift = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
-				value = inifile.GetValue(*it, _T("hotkey_control"), _T(""));
-				modifiers.control = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
-				value = inifile.GetValue(*it, _T("hotkey"), _T(""));
-				long val = 0;
-				if (!value.empty())
+				if (hIcon == NULL)
 				{
-					val = wcstol(value.c_str(), &stop, 0);
+					// loading the icon with an index didn't work either
+					// next we try to use the icon of the application defined in the commandline
+					wstring appname;
+					if (cmd.commandline.find(' ')>=0)
+						appname = cmd.commandline.substr(0, cmd.commandline.find(' '));
+					else
+						appname = cmd.commandline;
+					hIcon = ExtractIcon(g_hInst, appname.c_str(), 0);
 				}
-				modifiers.keycode = WPARAM(val);
-				m_hotkeys[modifiers] = command;
-				value = inifile.GetValue(*it, _T("hide"), _T(""));
-				if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
+				if (hIcon == NULL)
 				{
-					hidelist.push_back(command);
+					// if the icon handle is still invalid (no icon found yet),
+					// we use a default icon
+					hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_DEFAULT));
 				}
 			}
-			continue;
 		}
-		scount++;
-		customindex++;
-		// check if this entry is a separator
-		value = inifile.GetValue(*it, _T("separator"), _T(""));
-		if (((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0)))
-		{
-			tb[customindex].iBitmap = 0;
-			tb[customindex].idCommand = 0;
-			tb[customindex].fsState = 0;
-			tb[customindex].fsStyle = BTNS_SEP;
-			tb[customindex].dwData = 0;
-			tb[customindex].iString = 0;
-			continue;
-		}
-		wstring cl = inifile.GetValue(*it, _T("commandline"), _T(""));
-		if (cl.empty())
-		{
-			// if no command line is specified, just get out of here
-			customindex--;
-			continue;
-		}
-		value = inifile.GetValue(*it, _T("icon"), _T(""));
-		hIcon = LoadIcon(g_hInst, value.c_str());
 		if (hIcon)
-			tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-		else
 		{
-			// icon loading failed. Let's try to load it differently:
-			// the user might have specified a module path and an icon index
-			// like this: c:\windows\explorer.exe,3 (the icon with ID 3 in explorer.exe)
-			hIcon = NULL;
-			if (value.find(',')>=0)
-			{
-				size_t pos = value.find_last_of(',');
-				wstring resourcefile, iconid;
-				if (pos >= 0)
-				{
-					resourcefile = value.substr(0, pos);
-					iconid = value.substr(pos+1);
-					hIcon = ExtractIcon(g_hInst, resourcefile.c_str(), _ttoi(iconid.c_str()));
-				}
-			}
-			if (hIcon == NULL)
-			{
-				// loading the icon with an index didn't work either
-				// next we try to use the icon of the application defined in the commandline
-				wstring appname;
-				if (cl.find(' ')>=0)
-					appname = cl.substr(0, cl.find(' '));
-				else
-					appname = cl;
-				hIcon = ExtractIcon(g_hInst, appname.c_str(), 0);
-			}
-			if (hIcon == NULL)
-			{
-				// if the icon handle is still invalid (no icon found yet),
-				// we use a default icon
-				hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_DEFAULT));
-			}
-			tb[customindex].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
+			tb[index].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
+			DestroyIcon(hIcon);
 		}
-		tb[customindex].idCommand = customindex+1;
-		tb[customindex].fsState = TBSTATE_ENABLED;
-		tb[customindex].fsStyle = fsStyle;
-		tb[customindex].iString = (INT_PTR)inifile.GetValue(*it, _T("name"), _T(""));
-		DestroyIcon(hIcon);
-		// now add the hotkey if it's present
-		hotkey modifiers;
-		value = inifile.GetValue(*it, _T("hotkey_alt"), _T(""));
-		modifiers.alt = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
-		value = inifile.GetValue(*it, _T("hotkey_shift"), _T(""));
-		modifiers.shift = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
-		value = inifile.GetValue(*it, _T("hotkey_control"), _T(""));
-		modifiers.control = ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0));
-		value = inifile.GetValue(*it, _T("hotkey"), _T(""));
-		if ((!value.empty())&&(!cl.empty()))
-		{
-			// the hotkey value could be a simple char or something more complicated like VK_F9
-			WCHAR * stop;
-			long val = wcstol(value.c_str(), &stop, 0);
-			if (val)
-			{
-				modifiers.keycode = WPARAM(val);
-				m_hotkeys[modifiers] = customindex+1;
-			}
-		}
-		if (!cl.empty())
-			m_commands[WORD(customindex+1)] = cl;
-		// now parse the enabled states
-		DWORD state = 0;
-		value = inifile.GetValue(*it, _T("enabled_selected"), _T(""));
-		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
-			state |= ENABLED_SELECTED;
-		value = inifile.GetValue(*it, _T("enabled_fileselected"), _T(""));
-		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
-			state |= ENABLED_FILESELECTED;
-		value = inifile.GetValue(*it, _T("enabled_folderselected"), _T(""));
-		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
-			state |= ENABLED_FOLDERSELECTED;
-		value = inifile.GetValue(*it, _T("enabled_noselection"), _T(""));
-		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
-			state |= ENABLED_NOSELECTION;
-		value = inifile.GetValue(*it, _T("enabled_viewpath"), _T(""));
-		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
-			state |= ENABLED_VIEWPATH;
-		value = inifile.GetValue(*it, _T("enabled_noviewpath"), _T(""));
-		if ((value.compare(_T("1"))==0)||(value.compare(_T("yes"))==0))
-			state |= ENABLED_NOVIEWPATH;
-		if (state == 0)
-			state = ENABLED_ALWAYS;
-		value = inifile.GetValue(*it, _T("enabled_numberselected"), _T(""));
-		if (!value.empty())
-		{
-			WCHAR * stop;
-			long val = wcstol(value.c_str(), &stop, 0);
-			if (val)
-				state = MAKELONG(state, val);
-		}
-		m_enablestates[customindex+1] = state;
-		value = inifile.GetValue(*it, _T("tooltip"), _T(""));
-		if (value.empty())
-			value = inifile.GetValue(*it, _T("name"), _T(""));
-		if (!value.empty())
-			m_tooltips[customindex+1] = value.c_str();
+		tb[index].idCommand = j;
+		tb[index].fsState = cmd.separator ? 0 : TBSTATE_ENABLED;
+		tb[index].fsStyle = cmd.separator ? BTNS_SEP : fsStyle;
+		tb[index].iString = cmd.separator ? NULL : (INT_PTR)cmd.name.c_str();
+		if (!cmd.separator)
+			m_tooltips[tb[index].idCommand] = cmd.name.c_str();
+		index++;
 	}
 
 	SendMessage(m_hWndToolbar, TB_SETIMAGELIST, 0, (LPARAM)m_hToolbarImgList);
-	SendMessage(m_hWndToolbar, TB_ADDBUTTONS, scount+NUMINTERNALCOMMANDS, (LPARAM)tb);
+	SendMessage(m_hWndToolbar, TB_ADDBUTTONS, index, (LPARAM)tb);
 	SendMessage(m_hWndToolbar, TB_SETEXTENDEDSTYLE, 0,(LPARAM)TBSTYLE_EX_MIXEDBUTTONS|TBSTYLE_EX_HIDECLIPPEDBUTTONS);
 	SendMessage(m_hWndToolbar, TB_AUTOSIZE, 0, 0);
 	SendMessage(m_hWndToolbar, TB_GETMAXSIZE, 0,(LPARAM)&m_tbSize);
 	delete [] tb;
-	// now hide the internal commands which the user configured to be hidden:
-	for (vector<int>::iterator it = hidelist.begin(); it != hidelist.end(); ++it)
-	{
-		if (*it == 0)
-		{
-			m_bCmdEditEnabled = false;
-		}
-		else
-			::SendMessage(m_hWndToolbar, TB_HIDEBUTTON, *it, (LPARAM)TRUE);
-	}
-	::ShowWindow(m_hWndEdit, m_bCmdEditEnabled ? SW_SHOW : SW_HIDE);
 
 	// now inform our parent that the size of the deskband has changed
 	if (m_pSite)
