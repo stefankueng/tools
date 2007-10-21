@@ -102,7 +102,7 @@ STDAPI DllRegisterServer(void)
 		return result;
 
 	// Register the desk band object.
-	if (!RegisterServer(CLSID_StExBand, TEXT("S&tExBand")))
+	if (!RegisterServer(CLSID_StExBand, TEXT("S&tExBar")))
 		return result;
 
 	// Register the component categories for the desk band object.
@@ -136,7 +136,7 @@ STDAPI DllRegisterServer(void)
 											szCLSID,
 											0,
 											REG_SZ,
-											(LPBYTE)TEXT("StExBand"),
+											(LPBYTE)TEXT("StExBar"),
 											8 * sizeof(TCHAR));
 					if (NOERROR == lResult)
 						result = S_OK;
@@ -168,7 +168,7 @@ STDAPI DllUnregisterServer(void)
 		res = SELFREG_E_CLASS;
 
 	// UnRegister the desk band object.
-	if (!UnRegisterServer(CLSID_StExBand, TEXT("S&tExBand")))
+	if (!UnRegisterServer(CLSID_StExBand, TEXT("S&tExBar")))
 		res = SELFREG_E_CLASS;
 
 	LPWSTR   pwsz;
