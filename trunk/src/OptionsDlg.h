@@ -20,6 +20,7 @@ protected:
 
 	void					InitCustomCommandsList();
 	void					OnSelectListItem(LPNMLISTVIEW lpNMListView);
+	LRESULT					OnCustomDrawListItem(LPNMLVCUSTOMDRAW lpNMCustomDraw);
 	void					EditSelectedItem();
 	void					RemoveSelectedItem();
 	void					MoveSelectedUp();

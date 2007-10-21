@@ -50,7 +50,7 @@ bool CCommands::LoadFromFile()
 	m_commands.push_back(c);
 
 	c.name = _T("");
-	c.commandline = _T("");
+	c.commandline = INTERNALCOMMAND;
 	c.separator = true;
 	c.nIconID = 0;
 	c.enabled_viewpath = true;
@@ -150,7 +150,7 @@ bool CCommands::LoadFromFile()
 	m_commands.push_back(c);
 
 	c.name = _T("");
-	c.commandline = _T("");
+	c.commandline = INTERNALCOMMAND;
 	c.separator = true;
 	c.nIconID = 0;
 	c.enabled_viewpath = true;
@@ -180,8 +180,6 @@ bool CCommands::LoadFromFile()
 	key.keycode = WPARAM('R');
 	c.key = key;
 	m_commands.push_back(c);
-
-	int nInternals = m_commands.size();
 
 	TCHAR szPath[MAX_PATH] = {0};
 	if (SUCCEEDED(SHGetFolderPath(NULL, 
@@ -236,11 +234,12 @@ bool CCommands::LoadFromFile()
 					alreadyexists = true;
 					// for normal commands, we simply ignore duplicate entries.
 					// but for internal commands, we overwrite the default settings.
-					if (cit->commandline.compare(INTERNALCOMMAND)==0)
+					if ((cit->commandline.compare(INTERNALCOMMAND)==0)||(cit->commandline.compare(INTERNALCOMMANDHIDDEN)==0))
 					{
 						// the icon for internal commands isn't saved to the ini file, so
 						// we copy it from the existing one
 						cmd.nIconID = cit->nIconID;
+						*cit = cmd;
 						// swap the commands in their order
 						Command c1 = m_commands[loopcounter];
 						m_commands[loopcounter] = cmd;
@@ -250,7 +249,12 @@ bool CCommands::LoadFromFile()
 				}
 			}
 		}
-		if ((!alreadyexists)&&(loopcounter >= nInternals))
+		else
+		{
+			if (cmd.commandline.compare(INTERNALCOMMAND) == 0)
+				alreadyexists = true;
+		}
+		if (!alreadyexists)
 		{
 			m_commands.push_back(cmd);
 		}

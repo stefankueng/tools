@@ -97,8 +97,11 @@ void CEditCmdDlg::SetupControls()
 	SetDlgItemText(*this, IDC_SELECTEDCOUNT, buf);
 
 	// disable controls which must not be changed for internal commands
-	if (m_command.commandline.compare(INTERNALCOMMAND) == 0)
+	if ((m_command.commandline.compare(INTERNALCOMMAND) == 0)||(m_command.commandline.compare(INTERNALCOMMANDHIDDEN) == 0))
 	{
+		ShowWindow(GetDlgItem(*this, IDC_INTERNALHIDE), SW_SHOW);
+		SendMessage(GetDlgItem(*this, IDC_INTERNALHIDE), BM_SETCHECK, (m_command.commandline.compare(INTERNALCOMMANDHIDDEN) == 0) ? BST_CHECKED : BST_UNCHECKED, 0);
+		
 		EnableWindow(GetDlgItem(*this, IDC_SEPARATOR), FALSE);
 		EnableWindow(GetDlgItem(*this, IDC_NAME), FALSE);
 		EnableWindow(GetDlgItem(*this, IDC_ICONPATH), FALSE);
@@ -113,6 +116,7 @@ void CEditCmdDlg::SetupControls()
 	}
 	else
 	{
+		ShowWindow(GetDlgItem(*this, IDC_INTERNALHIDE), SW_HIDE);
 		EnableWindow(GetDlgItem(*this, IDC_SEPARATOR), TRUE);
 	}
 }
@@ -146,4 +150,16 @@ void CEditCmdDlg::SetupCommand()
 
 	GetDlgItemText(*this, IDC_SELECTEDCOUNT, buf, EDITCMDDLG_MAXBUF);
 	m_command.enabled_selectedcount = _ttol(buf);
+
+	if ((m_command.commandline.compare(INTERNALCOMMAND) == 0)||(m_command.commandline.compare(INTERNALCOMMANDHIDDEN) == 0))
+	{
+		if (SendMessage(GetDlgItem(*this, IDC_INTERNALHIDE), BM_GETCHECK, 0, 0) == BST_CHECKED)
+		{
+			m_command.commandline = INTERNALCOMMANDHIDDEN;
+		}
+		else
+		{
+			m_command.commandline = INTERNALCOMMAND;
+		}
+	}
 }
