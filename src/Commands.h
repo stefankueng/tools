@@ -6,6 +6,7 @@
 using namespace std;
 
 #define INTERNALCOMMAND _T("INTERNALCOMMAND")
+#define INTERNALCOMMANDHIDDEN _T("INTERNALCOMMANDHIDDEN")
 
 class hotkey
 {

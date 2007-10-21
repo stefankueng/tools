@@ -119,6 +119,10 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			{
 				EditSelectedItem();
 			}
+			if ((lpnmhdr->code == NM_CUSTOMDRAW)&&(lpnmhdr->hwndFrom == m_hListControl))
+			{
+				return OnCustomDrawListItem((LPNMLVCUSTOMDRAW)lParam);
+			}
 			return FALSE;
 		}
 		break;
@@ -278,4 +282,27 @@ void COptionsDlg::EditSelectedItem()
 
 		}
 	}
+}
+
+LRESULT COptionsDlg::OnCustomDrawListItem(LPNMLVCUSTOMDRAW lpNMCustomDraw)
+{
+	// First thing - check the draw stage. If it's the control's prepaint
+	// stage, then tell Windows we want messages for every item.
+	LRESULT result =  CDRF_DODEFAULT;
+	switch (lpNMCustomDraw->nmcd.dwDrawStage)
+	{
+	case CDDS_PREPAINT:
+		result = CDRF_NOTIFYITEMDRAW;
+		break;
+	case CDDS_ITEMPREPAINT:
+		{
+			COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
+			if (m_commands.GetCommand(lpNMCustomDraw->nmcd.dwItemSpec+1).commandline.compare(INTERNALCOMMANDHIDDEN) == 0)
+				crText = GetSysColor(COLOR_GRAYTEXT);
+			lpNMCustomDraw->clrText = crText;
+			result = CDRF_NOTIFYSUBITEMDRAW;
+		}
+		break;
+	}
+	return result;
 }
