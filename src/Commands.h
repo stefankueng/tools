@@ -29,8 +29,18 @@ public:
 };
 
 
-struct Command
+class Command
 {
+public:
+	Command() : nIconID(0), separator(false), enabled_viewpath(true), enabled_noviewpath(true)
+		, enabled_fileselected(true)
+		, enabled_folderselected(true)
+		, enabled_selected(true)
+		, enabled_noselection(true)
+		, enabled_selectedcount(0)
+	{
+	}
+
 	wstring			name;
 	wstring			icon;
 	WORD			nIconID;
