@@ -29,6 +29,25 @@ LRESULT CEditCmdDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM /*lP
 			InitDialog(hwndDlg, IDI_OPTIONS);
 
 			SetupControls();
+
+			AddToolTip(IDC_SEPARATOR, _T("When enabled, the entry is made a separator"));
+			AddToolTip(IDC_INTERNALHIDE, _T("Hides an internal command, the command won't show up in the toolbar"));
+			AddToolTip(IDC_NAME, _T("The name for the command.\r\nEach command must have a unique name."));
+			AddToolTip(IDC_ICONPATH, _T("Path to an icon file to use for the toolbar button.\r\nLeave this empty to use the default icon"));
+			AddToolTip(IDC_COMMANDLINE, _T("Command line to execute. Environment variables are expanded properly.\r\n\
+Special placeholders are available:\r\n\
+%selpaths\t: will be replaced with the paths of the selected items\r\n\
+%selnames\t: will be replaced with the names of the selected items\r\n\
+%curdir\t\t: will be replaced with the path of the currently shown directory\r\n"));
+
+			AddToolTip(IDC_VIEWPATH, _T("Enables the command when the explorer shows a file system path"));
+			AddToolTip(IDC_NOVIEWPATH, _T("Enables the command when the explorer shows a non file system path, e.g., the printers view"));
+			AddToolTip(IDC_FILESELECTED, _T("Enables the command when one or more files in the explorer are selected"));
+			AddToolTip(IDC_FOLDERSELECTED, _T("Enables the command when one or more directories in the explorer are selected"));
+			AddToolTip(IDC_SELECTED, _T("Enables the command when one or more items in the explorer are selected"));
+			AddToolTip(IDC_NOSELECTION, _T("Enables the command when no item in the explorer is selected"));
+			AddToolTip(IDC_SELECTEDCOUNT, _T("Enables the command when nothing or the amount of items set in this box are selected"));
+
 		}
 		return (INT_PTR)TRUE;
 	case WM_COMMAND:

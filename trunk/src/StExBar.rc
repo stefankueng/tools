@@ -101,23 +101,23 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,251,241,50,14
     LTEXT           "Name:",IDC_STATIC,7,34,22,8
     EDITTEXT        IDC_NAME,90,31,211,14,ES_AUTOHSCROLL
-    LTEXT           "Icon:",IDC_STATIC,7,52,18,8
+    LTEXT           "Icon:",IDC_STATIC,7,53,18,8
     EDITTEXT        IDC_ICONPATH,90,50,211,14,ES_AUTOHSCROLL
-    LTEXT           "Command line:",IDC_STATIC,7,71,48,8
+    LTEXT           "Command line:",IDC_STATIC,7,72,48,8
     EDITTEXT        IDC_COMMANDLINE,90,69,211,14,ES_AUTOHSCROLL
-    CONTROL         "",IDC_HOTKEY,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,90,90,211,14
-    LTEXT           "Hotkey:",IDC_STATIC,7,93,26,8
+    CONTROL         "",IDC_HOTKEY,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,90,88,211,14
+    LTEXT           "Hotkey:",IDC_STATIC,7,91,26,8
     CONTROL         "Enabled when showing file system folders",IDC_VIEWPATH,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,125,149,10
     CONTROL         "Enabled when showing system folders (e.g. Printers view)",IDC_NOVIEWPATH,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,141,201,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,140,201,10
     CONTROL         "Enabled when files are selected",IDC_FILESELECTED,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,157,117,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,155,117,10
     CONTROL         "Enabled when directories are selected",IDC_FOLDERSELECTED,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,173,137,10
-    CONTROL         "Enabled when anything is selected",IDC_SELECTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,188,126,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,170,137,10
+    CONTROL         "Enabled when anything is selected",IDC_SELECTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,185,126,10
     CONTROL         "Enabled when nothing is selected",IDC_NOSELECTION,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,202,122,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,200,122,10
     LTEXT           "Enabled when exactly",IDC_STATIC,7,218,71,8
     EDITTEXT        IDC_SELECTEDCOUNT,90,215,40,14,ES_AUTOHSCROLL
     LTEXT           "items are selected",IDC_STATIC,137,218,59,8
