@@ -1067,9 +1067,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 		else if (!cmd.separator)
 		{
 			hIcon = LoadIcon(g_hInst, cmd.icon.c_str());
-			if (hIcon)
-				tb[index].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
-			else 
+			if (hIcon == NULL)
 			{
 				// icon loading failed. Let's try to load it differently:
 				// the user might have specified a module path and an icon index
@@ -1110,10 +1108,13 @@ BOOL CDeskBand::BuildToolbarButtons()
 			tb[index].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
 			DestroyIcon(hIcon);
 		}
+		else
+			tb[index].iBitmap = NULL;
 		tb[index].idCommand = j;
 		tb[index].fsState = cmd.separator ? 0 : TBSTATE_ENABLED;
 		tb[index].fsStyle = cmd.separator ? BTNS_SEP : fsStyle;
 		tb[index].iString = cmd.separator ? NULL : (INT_PTR)m_commands.GetCommandPtr(j)->name.c_str();
+		tb[index].dwData = NULL;
 		if (!cmd.separator)
 			m_tooltips[tb[index].idCommand] = cmd.name.c_str();
 		index++;
