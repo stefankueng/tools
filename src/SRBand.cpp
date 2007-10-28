@@ -475,7 +475,14 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 			// hidden files are shown
 			SHELLSTATE shellstate = {0};
 			SHGetSetSettings(&shellstate, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, FALSE);
-			::SendMessage(pThis->m_hWndToolbar, TB_CHECKBUTTON, 2, (LPARAM)shellstate.fShowAllObjects);
+			for (int i=0; i<pThis->m_commands.GetCount(); ++i)
+			{
+				if (pThis->m_commands.GetCommandPtr(i)->name.compare(_T("Show system files")) == 0)
+				{
+					::SendMessage(pThis->m_hWndToolbar, TB_CHECKBUTTON, i, (LPARAM)shellstate.fShowAllObjects);
+					break;
+				}
+			}
 		}
 		break;
 	case WM_COMMAND:
