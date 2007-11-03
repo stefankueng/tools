@@ -166,6 +166,7 @@ void CEditCmdDlg::SetupCommand()
 	m_command.enabled_fileselected = SendMessage(GetDlgItem(*this, IDC_FILESELECTED), BM_GETCHECK, 0, 0) == BST_CHECKED;
 	m_command.enabled_folderselected = SendMessage(GetDlgItem(*this, IDC_FOLDERSELECTED), BM_GETCHECK, 0, 0) == BST_CHECKED;
 	m_command.enabled_selected = SendMessage(GetDlgItem(*this, IDC_SELECTED), BM_GETCHECK, 0, 0) == BST_CHECKED;
+	m_command.enabled_noselection = SendMessage(GetDlgItem(*this, IDC_NOSELECTION), BM_GETCHECK, 0, 0) == BST_CHECKED;
 
 	GetDlgItemText(*this, IDC_SELECTEDCOUNT, buf, EDITCMDDLG_MAXBUF);
 	m_command.enabled_selectedcount = _ttol(buf);
