@@ -252,7 +252,13 @@ void COptionsDlg::RemoveSelectedItem()
 		ListView_GetItem(m_hListControl, &item);
 		if (item.state & LVIS_SELECTED)
 		{
-			m_commands.RemoveCommand(i+1);
+			Command * pCmd = m_commands.GetCommandPtr(i+1);
+			if ((pCmd)&&((pCmd->commandline.compare(INTERNALCOMMAND)==0)||(pCmd->commandline.compare(INTERNALCOMMANDHIDDEN)==0)))
+			{
+				pCmd->commandline = INTERNALCOMMANDHIDDEN;
+			}
+			else
+				m_commands.RemoveCommand(i+1);
 			InitCustomCommandsList();
 			ListView_EnsureVisible(m_hListControl, i-1, FALSE);
 			return;
