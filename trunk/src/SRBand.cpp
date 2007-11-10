@@ -1066,6 +1066,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 		es |= cmd.enabled_selected ? ENABLED_SELECTED : 0;
 		es |= cmd.enabled_noselection ? ENABLED_NOSELECTION : 0;
 		es |= cmd.enabled_fileselected ? ENABLED_FILESELECTED : 0;
+		es |= (cmd.enabled_selectedcount << 16);
 		m_enablestates[j] = es;
 
 		HICON hIcon = NULL;
