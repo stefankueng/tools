@@ -21,6 +21,7 @@ void CDeskBand::Rename()
 	}
 
 	// show the rename dialog
+	m_bDialogShown = TRUE;
 	CRenameDlg dlg(m_hWnd);
 	dlg.SetFileList(m_filelist);
 	if (dlg.DoModal(g_hInst, IDD_RENAMEDLG, m_hWnd) == IDOK)
@@ -118,4 +119,5 @@ void CDeskBand::Rename()
 		{
 		}
 	}
+	m_bDialogShown = FALSE;
 }
