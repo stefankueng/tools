@@ -108,6 +108,7 @@ private:
 	HIMAGELIST		m_hToolbarImgList;	///< image list of the toolbar
 	SIZE			m_tbSize;			///< the max size of the toolbar
 	BOOL			m_bCompositionState;///< the composition state
+	BOOL			m_bDialogShown;		///< true if a dialog is currently shown to deactivate the keyboard accelerators
 
 	static std::map<DWORD, CDeskBand*> m_desklist;	///< map of thread-ID's and CDeskBand objects which use the keyboard hook
 	HHOOK			m_hook;				///< handle of the keyboard hook procedure

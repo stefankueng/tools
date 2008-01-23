@@ -29,6 +29,7 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
 	, m_regHideEditBox(_T("Software\\StefansTools\\StExBar\\HideEditBox"), 0)
 	, m_hToolbarImgList(NULL)
+	, m_bDialogShown(FALSE)
 {
 	m_ObjRefCount = 1;
 	g_DllRefCount++;
@@ -678,14 +679,17 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 				else if (cmd.name.compare(_T("Options")) == 0)
 				{
 					COptionsDlg dlg(m_hWnd);
+					m_bDialogShown = TRUE;
 					if (dlg.DoModal(g_hInst, IDD_OPTIONS, m_hWnd) == IDOK)
 					{
+						m_bDialogShown = FALSE;
 						m_regUseSelector.read();
 						m_regUseUNCPaths.read();
 						m_regShowBtnText.read();
 						BuildToolbarButtons();
 						OnMove(0);
 					}
+					m_bDialogShown = FALSE;
 				}
 				else if (cmd.name.compare(_T("Show system files")) == 0)
 				{
@@ -1015,7 +1019,7 @@ LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lPa
 	map<DWORD, CDeskBand*>::iterator it = m_desklist.find(threadID);
 	if (it != m_desklist.end())
 	{
-		if ((code >= 0)&&((lParam & 0xc0000000) == 0))//key went from 'up' to 'down' state
+		if ((!it->second->m_bDialogShown)&&(code >= 0)&&((lParam & 0xc0000000) == 0))//key went from 'up' to 'down' state
 		{
 			hotkey realhk;
 			realhk.keycode = wParam;
