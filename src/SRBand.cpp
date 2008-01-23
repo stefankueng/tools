@@ -105,6 +105,12 @@ STDMETHODIMP CDeskBand::QueryInterface(REFIID riid, LPVOID *ppReturn)
 		*ppReturn = (IDeskBand*)this;
 	}   
 
+	// IDeskBand2
+	else if (IsEqualIID(riid, IID_IDeskBand2))
+	{
+		*ppReturn = (IDeskBand2*)this;
+	}   
+
 	// IPersist
 	else if (IsEqualIID(riid, IID_IPersist))
 	{
@@ -388,6 +394,29 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 	}
 
 	return E_INVALIDARG;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// IDeskBand methods
+//////////////////////////////////////////////////////////////////////////
+STDMETHODIMP CDeskBand::CanRenderComposited(BOOL * pfCanRenderComposited)
+{
+	if (pfCanRenderComposited)
+		*pfCanRenderComposited = TRUE;
+	return S_OK;
+}
+
+STDMETHODIMP CDeskBand::GetCompositionState(BOOL * pfCompositionState)
+{
+	if (pfCompositionState)
+		*pfCompositionState = m_bCompositionState;
+	return S_OK;
+}
+
+STDMETHODIMP CDeskBand::SetCompositionState(BOOL CompositionState)
+{
+	m_bCompositionState = CompositionState;
+	return S_OK;
 }
 
 //////////////////////////////////////////////////////////////////////////
