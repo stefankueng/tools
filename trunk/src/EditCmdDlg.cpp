@@ -36,7 +36,8 @@ LRESULT CEditCmdDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM /*lP
 			AddToolTip(IDC_ICONPATH, _T("Path to an icon file to use for the toolbar button.\r\nLeave this empty to use the default icon"));
 			AddToolTip(IDC_COMMANDLINE, _T("Command line to execute. Environment variables are expanded properly.\r\n\
 Special placeholders are available:\r\n\
-%selpaths\t: will be replaced with the paths of the selected items\r\n\
+%selpaths\t: will be replaced with the paths of the selected items, separated by a space\r\n\
+%sel*paths\t: will be replaced with the paths of the selected items, separated by '*' char\r\n\
 %selnames\t: will be replaced with the names of the selected items\r\n\
 %curdir\t\t: will be replaced with the path of the currently shown directory\r\n"));
 
