@@ -16,6 +16,8 @@
 #define IDI_RENAME                      112
 #define IDI_SHOWHIDE                    113
 #define IDD_EDITCMD                     114
+#define IDR_OPTIONSHELP                 115
+#define IDR_COMMANDSHELP                116
 #define IDC_LIST1                       1001
 #define IDC_FILELIST                    1001
 #define IDC_CUSTCOMMANDS                1001
@@ -49,14 +51,17 @@
 #define IDC_HIDEEDITBOX                 1034
 #define IDC_CHECK1                      1035
 #define IDC_INTERNALHIDE                1035
+#define IDC_OPTIONSHELP                 1036
+#define IDC_BUTTON1                     1037
+#define IDC_COMMANDSHELP                1037
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        115
+#define _APS_NEXT_RESOURCE_VALUE        117
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1036
+#define _APS_NEXT_CONTROL_VALUE         1038
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
