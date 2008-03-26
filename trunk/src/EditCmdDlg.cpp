@@ -22,6 +22,7 @@
 #include "version.h"
 #include <algorithm>
 #include "EditCmdDlg.h"
+#include "InfoDlg.h"
 #include <string>
 
 #include <boost/regex.hpp>
@@ -83,6 +84,9 @@ Special placeholders are available:\r\n\
 		case IDC_SEPARATOR:
 			m_command.separator = SendMessage(GetDlgItem(*this, IDC_SEPARATOR), BM_GETCHECK, 0, 0) == BST_CHECKED;
 			SetSeparator(m_command.separator);
+			break;
+		case IDC_COMMANDSHELP:
+			CInfoDlg::ShowDialog(IDR_COMMANDSHELP, hResource);
 			break;
 		}
 		break;

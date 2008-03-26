@@ -242,6 +242,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\InfoDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NewFolder.cpp"
 				>
 			</File>
@@ -384,6 +388,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\InfoDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OptionsDlg.h"
 				>
 			</File>
@@ -470,6 +478,16 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\CommandHelp.htm"
+			DeploymentContent="true"
+			>
+		</File>
+		<File
+			RelativePath=".\OptionsHelp.htm"
+			DeploymentContent="true"
+			>
+		</File>
 		<File
 			RelativePath=".\Setup.wxs"
 			>

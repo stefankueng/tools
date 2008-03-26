@@ -23,6 +23,7 @@
 #include <algorithm>
 #include "OptionsDlg.h"
 #include "EditCmdDlg.h"
+#include "InfoDlg.h"
 #include <string>
 
 #include <boost/regex.hpp>
@@ -88,6 +89,9 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 		case IDCANCEL:
 			EndDialog(*this, LOWORD(wParam));
 			return (INT_PTR)TRUE;
+		case IDC_OPTIONSHELP:
+			CInfoDlg::ShowDialog(IDR_OPTIONSHELP, hResource);
+			break;
 		case IDC_HIDEEDITBOX:
 			EnableWindow(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), !SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_GETCHECK, 0, 0));
 			break;
