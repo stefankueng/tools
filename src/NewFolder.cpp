@@ -45,24 +45,37 @@ bool CDeskBand::CreateNewFolder()
 					{
 						if (SUCCEEDED(pContextMenu->QueryContextMenu(hMenu, 0, 0, 1000, CMF_CANRENAME|CMF_EXPLORE|CMF_NORMAL)))
 						{
-							CMINVOKECOMMANDINFOEX cici = {0};
-							cici.cbSize = sizeof(CMINVOKECOMMANDINFOEX);
-							cici.lpVerb = CMDSTR_NEWFOLDERA;
-							cici.lpVerbW = CMDSTR_NEWFOLDER;
-							cici.nShow = SW_SHOWNORMAL;
-							cici.hwnd = m_hwndParent;
-							cici.fMask = CMIC_MASK_UNICODE | CMIC_MASK_FLAG_NO_UI;
-							if (SUCCEEDED(pContextMenu->InvokeCommand((CMINVOKECOMMANDINFO*)&cici)))
+							IFolderView * pFolderView;
+							if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView)))
 							{
-								IFolderView * pFolderView;
-								if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView)))
+								int nCount = 0;
+								if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
 								{
-									int nCount = 0;
-									if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
+									// de-select all entries
+									for (int i=0; i<nCount; ++i)
 									{
-										// since we just created the new folder, it is the last
-										// item in the list
-										pFolderView->SelectItem(nCount-1, SVSI_EDIT);
+										pFolderView->SelectItem(i, SVSI_DESELECT);
+									}
+									CMINVOKECOMMANDINFOEX cici = {0};
+									cici.cbSize = sizeof(CMINVOKECOMMANDINFOEX);
+									cici.lpVerb = CMDSTR_NEWFOLDERA;
+									cici.lpVerbW = CMDSTR_NEWFOLDER;
+									cici.nShow = SW_SHOWNORMAL;
+									cici.hwnd = m_hwndParent;
+									cici.fMask = CMIC_MASK_UNICODE | CMIC_MASK_FLAG_NO_UI;
+									if (SUCCEEDED(pContextMenu->InvokeCommand((CMINVOKECOMMANDINFO*)&cici)))
+									{
+										IFolderView * pFolderView;
+										if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView)))
+										{
+											int nCount = 0;
+											if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
+											{
+												// since we just created the new folder, it is the last
+												// item in the list
+												pFolderView->SelectItem(nCount-1, SVSI_EDIT);
+											}
+										}
 									}
 									pFolderView->Release();
 								}
