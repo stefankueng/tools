@@ -21,6 +21,7 @@
 #include "resource.h"
 #include <regex>
 #include "RenameDlg.h"
+#include "Pidl.h"
 
 void CDeskBand::Rename()
 {
@@ -35,6 +36,105 @@ void CDeskBand::Rename()
 			{
 				m_filelist.insert(it->first.substr(pos+1));
 			}
+		}
+	}
+	else
+	{
+		// no files were selected.
+		// use all files and folders in the current folder instead
+		if (m_pSite == NULL)
+			return;
+		IServiceProvider * pServiceProvider;
+		if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
+		{
+			IShellBrowser * pShellBrowser;
+			if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
+			{
+				IShellView * pShellView;
+				if (SUCCEEDED(pShellBrowser->QueryActiveShellView(&pShellView)))
+				{
+					IFolderView * pFolderView;
+					if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView)))
+					{
+						// hooray! we got the IFolderView interface!
+						// that means the explorer is active and well :)
+
+						// but we also need the IShellFolder interface because
+						// we need its GetCurFolder() method
+						IPersistFolder2 * pPersistFolder;
+						if (SUCCEEDED(pFolderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&pPersistFolder)))
+						{
+							LPITEMIDLIST folderpidl;
+							if (SUCCEEDED(pPersistFolder->GetCurFolder(&folderpidl)))
+							{
+								// we have the current folder
+								TCHAR buf[MAX_PATH] = {0};
+								// find the path of the folder
+								if (SHGetPathFromIDList(folderpidl, buf))
+									m_currentDirectory = buf;
+								// if m_currentDirectory is empty here, that means
+								// the current directory is a virtual path
+
+								IShellFolder * pShellFolder;
+								if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
+								{
+									// find all selected items
+									IEnumIDList * pEnum;
+									if (SUCCEEDED(pFolderView->Items(SVGIO_ALLVIEW, IID_IEnumIDList, (LPVOID*)&pEnum)))
+									{
+										LPITEMIDLIST pidl;
+										WCHAR buf[MAX_PATH] = {0};
+										ULONG fetched = 0;
+										ULONG attribs = 0;
+										do 
+										{
+											pidl = NULL;
+											if (SUCCEEDED(pEnum->Next(1, &pidl, &fetched)))
+											{
+												if (fetched)
+												{
+													// the pidl we get here is relative!
+													attribs = SFGAO_FILESYSTEM|SFGAO_FOLDER;
+													if (SUCCEEDED(pShellFolder->GetAttributesOf(1, (LPCITEMIDLIST*)&pidl, &attribs)))
+													{
+														if (attribs & SFGAO_FILESYSTEM)
+														{
+															// create an absolute pidl with the pidl we got above
+															LPITEMIDLIST abspidl = CPidl::Append(folderpidl, pidl);
+															if (abspidl)
+															{
+																if (SHGetPathFromIDList(abspidl, buf))
+																{
+																	wstring p = buf;
+																	size_t pos = p.find_last_of('\\');
+																	if (pos >= 0)
+																	{
+																		m_filelist.insert(p.substr(pos+1));
+																	}
+																}
+																CoTaskMemFree(abspidl);
+															}
+														}
+													}
+												}
+												CoTaskMemFree(pidl);
+											}
+										} while(fetched);
+										pEnum->Release();
+									}
+									pShellFolder->Release();
+								}
+								CoTaskMemFree(folderpidl);
+							}
+							pPersistFolder->Release();
+						}
+						pFolderView->Release();
+					}
+					pShellView->Release();
+				}
+				pShellBrowser->Release();
+			}
+			pServiceProvider->Release();
 		}
 	}
 
