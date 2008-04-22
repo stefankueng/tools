@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "SRBand.h"
 #include "StringUtils.h"
-#include <boost\regex.hpp>
+#include <regex>
 
 bool CDeskBand::Select(LPTSTR filter)
 {
@@ -56,12 +56,11 @@ bool CDeskBand::Select(LPTSTR filter)
 
 							bool bUseRegex = (filter[0] == '\\');
 
-							boost::wregex e;
 							try
 							{
-								e = boost::wregex(&filter[1], boost::regex::icase);
+								const tr1::wregex regCheck(&filter[1], tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
 							}
-							catch (boost::bad_expression e)
+							catch (exception) 
 							{
 								bUseRegex = false;
 							}
@@ -97,10 +96,12 @@ bool CDeskBand::Select(LPTSTR filter)
 
 											if (bUseRegex)
 											{
+
 												try
 												{
-													boost::wcmatch what;
-													if (boost::regex_match(dispname, what, e))
+													const tr1::wregex regCheck(&filter[1], tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
+													wstring s = dispname;
+													if (tr1::regex_search(s, regCheck))
 													{
 														// yes, we have a match!
 														// now select that match
@@ -116,10 +117,7 @@ bool CDeskBand::Select(LPTSTR filter)
 														pFolderView->SelectItem(i, dwFlags);
 													}
 												}
-												catch (std::runtime_error e)
-												{
-
-												}
+												catch (exception) {}
 											}
 											else
 											{
