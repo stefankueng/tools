@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "SRBand.h"
 #include "resource.h"
-#include <boost\regex.hpp>
+#include <regex>
 #include "RenameDlg.h"
 
 void CDeskBand::Rename()
@@ -44,10 +44,9 @@ void CDeskBand::Rename()
 	dlg.SetFileList(m_filelist);
 	if (dlg.DoModal(g_hInst, IDD_RENAMEDLG, m_hWnd) == IDOK)
 	{
-		boost::wregex e1;
 		try
 		{
-			e1 = boost::wregex(dlg.GetMatchString(), boost::regex::icase);
+			const tr1::wregex regCheck(dlg.GetMatchString(), tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
 
 			// start renaming the files
 			IServiceProvider * pServiceProvider;
@@ -101,7 +100,7 @@ void CDeskBand::Rename()
 														// check if the item is in the list of selected items
 														if (m_filelist.find(sDispName) != m_filelist.end())
 														{
-															replaced = boost::regex_replace(sDispName, e1, dlg.GetReplaceString());
+															replaced = tr1::regex_replace(sDispName, regCheck, dlg.GetReplaceString());
 															if (replaced.compare(sDispName))
 															{
 																ITEMIDLIST * pidlrenamed;
@@ -112,7 +111,7 @@ void CDeskBand::Rename()
 															}
 														}
 													}
-													catch (runtime_error x)
+													catch (exception)
 													{
 													}
 												}
@@ -133,7 +132,7 @@ void CDeskBand::Rename()
 				pServiceProvider->Release();
 			}
 		}
-		catch (boost::bad_expression e)
+		catch (exception)
 		{
 		}
 	}

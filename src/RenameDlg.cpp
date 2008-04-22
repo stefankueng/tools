@@ -24,8 +24,7 @@
 #include "RenameDlg.h"
 #include <string>
 
-#include <boost/regex.hpp>
-using namespace boost;
+#include <regex>
 using namespace std;
 
 
@@ -179,16 +178,15 @@ void CRenameDlg::FillRenamedList()
 	ListView_DeleteAllItems(hListCtrl);
 	// we also need a map which assigns each file its renamed equivalent
 	map<wstring, wstring> renamedmap;
-	// create the regex
-	boost::wregex e1;
+
 	try
 	{
-		e1 = boost::wregex(m_sMatch, boost::regex::icase);
+		const tr1::wregex regCheck(m_sMatch, tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
 
 		wstring replaced;
 		for (set<wstring>::iterator it = m_filelist.begin(); it != m_filelist.end(); ++it)
 		{
-			replaced = boost::regex_replace(*it, e1, m_sReplace);
+			replaced = tr1::regex_replace(*it, regCheck, m_sReplace);
 			renamedmap[*it] = replaced;
 		}
 		// now fill in the list of files which got renamed
