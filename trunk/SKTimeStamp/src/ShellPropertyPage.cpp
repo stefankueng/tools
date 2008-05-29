@@ -7,6 +7,9 @@
 // Nonmember function prototypes
 BOOL CALLBACK PageProc (HWND, UINT, WPARAM, LPARAM);
 UINT CALLBACK PropPageCallbackProc ( HWND hwnd, UINT uMsg, LPPROPSHEETPAGE ppsp );
+// Misc utility functins.
+void ReadDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pFiletime);
+void SetDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, const FILETIME* pFiletime);
 
 // CShellExt member functions (needed for IShellPropSheetExt)
 STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
@@ -207,6 +210,45 @@ BOOL CShellPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, 
 
 void CShellPropertyPage::InitWorkfileView()
 {
+	WIN32_FILE_ATTRIBUTE_DATA fdata = {0};
+	if (GetFileAttributesEx(filenames[0].c_str(), GetFileExInfoStandard, &fdata))
+	{
+		SetDTPCtrl(m_hwnd, IDC_DATECREATED, IDC_TIMECREATED, &fdata.ftCreationTime);
+		SetDTPCtrl(m_hwnd, IDC_DATEMODIFIED, IDC_TIMEMODIFIED, &fdata.ftLastWriteTime);
+		SetDTPCtrl(m_hwnd, IDC_DATEACCESSED, IDC_TIMEACCESSED, &fdata.ftLastAccessTime);
+	}
+}
+
+void ReadDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pFiletime)
+{
+	SYSTEMTIME st = {0}, stDate = {0}, stTime = {0};
+	FILETIME   ftLocal;
+
+	SendDlgItemMessage(hwnd, idcDatePicker, DTM_GETSYSTEMTIME, 0, (LPARAM)&stDate);
+	SendDlgItemMessage(hwnd, idcTimePicker, DTM_GETSYSTEMTIME, 0, (LPARAM)&stTime);
+
+	st.wMonth  = stDate.wMonth;
+	st.wDay    = stDate.wDay;
+	st.wYear   = stDate.wYear;
+	st.wHour   = stTime.wHour;
+	st.wMinute = stTime.wMinute;
+	st.wSecond = stTime.wSecond;
+
+	SystemTimeToFileTime(&st, &ftLocal);
+	LocalFileTimeToFileTime(&ftLocal, pFiletime);
+}
+
+
+void SetDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, const FILETIME* pFiletime)
+{
+	SYSTEMTIME st;
+	FILETIME   ftLocal;
+
+	FileTimeToLocalFileTime(pFiletime, &ftLocal);
+	FileTimeToSystemTime(&ftLocal, &st);
+
+	SendDlgItemMessage(hwnd, idcDatePicker, DTM_SETSYSTEMTIME, 0, (LPARAM)&st);
+	SendDlgItemMessage(hwnd, idcTimePicker, DTM_SETSYSTEMTIME, 0, (LPARAM)&st);
 }
 
 
