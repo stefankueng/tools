@@ -25,7 +25,7 @@ STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
 	psp.hInstance = g_hmodThisDll;
 	psp.pszTemplate = MAKEINTRESOURCE(IDD_PROPPAGE);
     //psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
-    psp.pszTitle = _T("Subversion");
+    psp.pszTitle = _T("TimeStamps");
     psp.pfnDlgProc = (DLGPROC) PageProc;
     psp.lParam = (LPARAM) sheetpage;
     psp.pfnCallback = PropPageCallbackProc;
