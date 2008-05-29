@@ -285,5 +285,9 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="SKTimeStamp.rc"
+		/>
 	</Globals>
 </VisualStudioProject>
