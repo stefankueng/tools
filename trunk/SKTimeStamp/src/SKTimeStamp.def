@@ -5,3 +5,7 @@ LIBRARY      SKTIMESTAMP
 EXPORTS
     DllCanUnloadNow private
     DllGetClassObject private
+    DllRegisterServer private
+    DllUnregisterServer private
+	DllInstall private
+	
