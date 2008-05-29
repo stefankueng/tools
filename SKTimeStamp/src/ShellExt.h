@@ -10,7 +10,7 @@ extern	HINSTANCE			g_hmodThisDll;			// Instance handle for this DLL
 // {01D8AD1E-46C9-4882-925C-CC29D9A99858}
 DEFINE_GUID(CLSID_SKTIMESTAMP, 
 			0x1d8ad1e, 0x46c9, 0x4882, 0x92, 0x5c, 0xcc, 0x29, 0xd9, 0xa9, 0x98, 0x58);
-
+#define SKTIMESTAMP_GUID "{01D8AD1E-46C9-4882-925C-CC29D9A99858}"
 
 // The actual OLE Shell context menu handler
 /**
