@@ -32,15 +32,15 @@ CAPTION "Property Page"
 FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
     PUSHBUTTON      "Touch",IDC_TOUCH,178,232,50,14
-    CONTROL         "",IDC_DATECREATED,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,64,20,70,15
+    CONTROL         "",IDC_DATECREATED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,20,79,15
     LTEXT           "Created:",IDC_STATIC,7,22,30,8
-    CONTROL         "",IDC_TIMECREATED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,147,20,81,15
-    CONTROL         "",IDC_DATEMODIFIED,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,64,49,70,15
+    CONTROL         "",IDC_TIMECREATED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,20,61,15
+    CONTROL         "",IDC_DATEMODIFIED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,49,79,15
     LTEXT           "Last modified:",IDC_STATIC,7,51,46,8
-    CONTROL         "",IDC_TIMEMODIFIED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,147,49,81,15
-    CONTROL         "",IDC_DATEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,64,84,70,15
+    CONTROL         "",IDC_TIMEMODIFIED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,49,61,15
+    CONTROL         "",IDC_DATEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,84,79,15
     LTEXT           "Last accessed:",IDC_STATIC,7,86,48,8
-    CONTROL         "",IDC_TIMEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,147,84,81,15
+    CONTROL         "",IDC_TIMEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,84,61,15
 END
 
 
@@ -56,9 +56,9 @@ BEGIN
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 228
-        VERTGUIDE, 64
-        VERTGUIDE, 134
-        VERTGUIDE, 147
+        VERTGUIDE, 75
+        VERTGUIDE, 154
+        VERTGUIDE, 167
         TOPMARGIN, 7
         BOTTOMMARGIN, 246
     END
@@ -102,6 +102,17 @@ BEGIN
 END
 
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ERR_FILEDATES       "Could not set the date/time for the following files:"
+END
 
 #endif    // German (Switzerland) resources
 /////////////////////////////////////////////////////////////////////////////
