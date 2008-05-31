@@ -76,8 +76,8 @@ BOOL CALLBACK PageProc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 
     if (sheetpage != 0L)
         return sheetpage->PageProc(hwnd, uMessage, wParam, lParam);
-    else
-        return FALSE;
+
+	return FALSE;
 }
 
 UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE ppsp )
