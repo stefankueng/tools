@@ -239,6 +239,25 @@ void CShellPropertyPage::InitWorkfileView()
 	{
 		SetDTPCtrl(m_hwnd, IDC_DATEACCESSED, IDC_TIMEACCESSED, 0);
 	}
+	if (filenames.size() == 1)
+	{
+		// only one file/folder selected, show the full path
+		SetDlgItemText(m_hwnd, IDC_FILEINFO, filenames[0].c_str());
+	}
+	else if (filenames.size() > 1)
+	{
+		// more than one file/folder selected, show only the number of
+		// selected items as info text
+		TCHAR buf[50] = {0};
+		TCHAR buf2[50] = {0};
+		if (LoadString(g_hmodThisDll, IDS_FILEINFO, buf, sizeof(buf)/sizeof(TCHAR)) == 0)
+		{
+			// load string failed, use hard coded string
+			_tcscpy_s(buf, 50, _T("Selected %ld files/folders"));
+		}
+		_stprintf_s(buf2, 50, buf, filenames.size());
+		SetDlgItemText(m_hwnd, IDC_FILEINFO, buf2);
+	}
 }
 
 void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteTime, FILETIME ftLastAccessTime)
