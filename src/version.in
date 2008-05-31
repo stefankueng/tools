@@ -1,0 +1,5 @@
+#define FILEVER        1,1,0,$WCREV$
+#define PRODUCTVER     1,1,0,$WCREV$
+#define STRFILEVER     "1, 1, 0, $WCREV$\0"
+#define STRPRODUCTVER  "1, 1, 0, $WCREV$\0"
+
