@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="SKTimeStamp" default="build">
+<project name="StExBar" default="build">
 
 	<include buildfile="default.build.user" />
 
@@ -12,12 +12,12 @@
 		</exec>
 
 		<exec program="devenv.com" >
-			<arg value="SKTimeStamp.sln" />
+			<arg value="StExBar.sln" />
 			<arg value="/rebuild" />
 			<arg value="debug|win32" />
 		</exec>
 		<exec program="devenv.com" >
-			<arg value="SKTimeStamp.sln" />
+			<arg value="StExBar.sln" />
 			<arg value="/rebuild" />
 			<arg value="release|win32" />
 		</exec>
@@ -26,15 +26,13 @@
 			<arg value="-nologo" />
 			<arg value="-out" />
 			<arg value="bin\" />
-			<arg value="src/setup/Setup.wxs" />
-			<arg value="src/setup/WixUI_Custom.wxs" />
+			<arg value="src/Setup.wxs" />
 		</exec>
 		<exec program="light">
 			<arg value="-nologo" />
 			<arg value="-out" />
-			<arg value="bin\SKTimeStamp.msi" />
+			<arg value="bin\StExBar.msi" />
 			<arg value="bin\Setup.wixobj" />
-			<arg value="bin\WixUI_Custom.wixobj" />
 			<arg value="${environment::get-variable('WIXUI')}\WixUI.wixlib" />
 			<arg value="-loc" />
 			<arg value="${environment::get-variable('WIXUI')}\WixUI_en-us.wxl" />
