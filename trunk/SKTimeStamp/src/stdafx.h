@@ -7,8 +7,6 @@
 
 #include "targetver.h"
 
-#define _BIND_TO_CURRENT_CRT_VERSION 1
-
 #define ISOLATION_AWARE_ENABLED 1
 
 
