@@ -2,36 +2,6 @@
 #include <vector>
 #include "ShellExt.h"
 
-#define ListView_GetItemTextEx(hwndLV, i, iSubItem_, __buf) \
-{ \
-  int nLen = 1024;\
-  int nRes;\
-  LV_ITEM _ms_lvi;\
-  _ms_lvi.iSubItem = iSubItem_;\
-  do\
-  {\
-	nLen += 2;\
-	_ms_lvi.cchTextMax = nLen;\
-    if (__buf)\
-		delete[] __buf;\
-	__buf = new TCHAR[nLen];\
-	_ms_lvi.pszText = __buf;\
-    nRes  = (int)::SendMessage((hwndLV), LVM_GETITEMTEXT, (WPARAM)(i), (LPARAM)(LV_ITEM *)&_ms_lvi);\
-  } while (nRes == nLen-1);\
-}
-#define GetDlgItemTextEx(hwndDlg, _id, __buf) \
-{\
-	int nLen = 1024;\
-	int nRes;\
-	do\
-	{\
-		nLen *= 2;\
-		if (__buf)\
-			delete [] __buf;\
-		__buf = new TCHAR[nLen];\
-		nRes = GetDlgItemText(hwndDlg, _id, __buf, nLen);\
-	} while (nRes == nLen-1);\
-}
 
 /**
  * Displays and updates all controls on the property page. The property
@@ -59,6 +29,11 @@ protected:
 	 * Initializes the property page.
 	 */
 	virtual void InitWorkfileView();
+	/**
+	 * Sets the dates on the selected files and folders.
+	 * If a filetime is zero, the original date of the file/folder is used, i.e., the filedate is not changed.
+	 */
+	void SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteTime, FILETIME ftLastAccessTime);
 	
 	HWND m_hwnd;
 	std::vector<std::wstring> filenames;

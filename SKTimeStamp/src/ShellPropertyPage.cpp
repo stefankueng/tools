@@ -127,76 +127,12 @@ BOOL CShellPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, 
 			case PSN_APPLY:
 				{
 					FILETIME ftLastWriteTime, ftLastAccessTime, ftCreationTime;
-					FILETIME ftLastWriteTime2, ftLastAccessTime2, ftCreationTime2;
 					// Retrieve the dates/times from the DTP controls.
 					ReadDTPCtrl(m_hwnd, IDC_DATECREATED, IDC_TIMECREATED, &ftCreationTime);
 					ReadDTPCtrl(m_hwnd, IDC_DATEMODIFIED, IDC_TIMEMODIFIED, &ftLastWriteTime);
 					ReadDTPCtrl(m_hwnd, IDC_DATEACCESSED, IDC_TIMEACCESSED, &ftLastAccessTime);
 
-					std::vector<std::wstring> failedFiles;
-					for (std::vector<std::wstring>::iterator it = filenames.begin(); it != filenames.end(); ++it)
-					{
-						HANDLE hFile = CreateFile(it->c_str(), GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
-						if (hFile != INVALID_HANDLE_VALUE)
-						{
-							if ((ftCreationTime.dwHighDateTime == 0 && ftCreationTime.dwLowDateTime == 0) ||
-								(ftLastAccessTime.dwHighDateTime == 0 && ftLastAccessTime.dwLowDateTime == 0) ||
-								(ftLastWriteTime.dwHighDateTime == 0 && ftLastWriteTime.dwLowDateTime == 0))
-							{
-								ftCreationTime2 = ftCreationTime;
-								ftLastAccessTime2 = ftLastAccessTime;
-								ftLastWriteTime2 = ftLastWriteTime;
-								BY_HANDLE_FILE_INFORMATION fi = {0};
-								if (GetFileInformationByHandle(hFile, &fi))
-								{
-									if (ftCreationTime.dwHighDateTime == 0 && ftCreationTime.dwLowDateTime == 0)
-										ftCreationTime2 = fi.ftCreationTime;
-									if (ftLastAccessTime.dwHighDateTime == 0 && ftLastAccessTime.dwLowDateTime == 0)
-										ftLastAccessTime2 = fi.ftLastAccessTime;
-									if (ftLastWriteTime.dwHighDateTime == 0 && ftLastWriteTime.dwLowDateTime == 0)
-										ftLastWriteTime2 = fi.ftLastWriteTime;
-									if (SetFileTime(hFile, &ftCreationTime2, &ftLastAccessTime2, &ftLastWriteTime2) == FALSE)
-										failedFiles.push_back(*it);
-								}
-								else
-								{
-									// could not open the file
-									failedFiles.push_back(*it);
-								}
-							}
-							else
-							{
-								if (SetFileTime(hFile, &ftCreationTime, &ftLastAccessTime, &ftLastWriteTime) == FALSE)
-									failedFiles.push_back(*it);
-							}
-							CloseHandle(hFile);
-						}
-						else
-						{
-							// could not open the file
-							failedFiles.push_back(*it);
-						}
-					}
-					if (failedFiles.size() > 0)
-					{
-						// could not set the dates for one or more files
-						// show an error message
-						TCHAR buf[4096] = {0};
-						if (LoadString(g_hmodThisDll, IDS_ERR_FILEDATES, buf, sizeof(buf)/sizeof(TCHAR)) == 0)
-						{
-							// load string failed, use hard coded string
-							_tcscpy_s(buf, 4096, _T("Could not set the date/time for the following files:"));
-						}
-
-						std::wstringstream strMsg;
-						strMsg << buf;
-						for (std::vector<std::wstring>::iterator it = failedFiles.begin(); it != failedFiles.end(); ++it)
-						{
-							strMsg << _T("\n\"") << it->c_str() << _T("\"");
-						}
-
-						MessageBox(m_hwnd, strMsg.str().c_str(), _T("SKTimeStamp"), MB_ICONERROR);
-					}
+					SetDates(ftCreationTime, ftLastWriteTime, ftLastAccessTime);
 
 					// Return PSNRET_NOERROR to allow the sheet to close if the user clicked OK.
 					SetWindowLong(m_hwnd, DWL_MSGRESULT, PSNRET_NOERROR);
@@ -228,71 +164,19 @@ BOOL CShellPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, 
 			switch (HIWORD(wParam))
 			{
 				case BN_CLICKED:
-					//if (LOWORD(wParam) == IDC_SHOWLOG)
-					//{
-					//	STARTUPINFO startup;
-					//	PROCESS_INFORMATION process;
-					//	memset(&startup, 0, sizeof(startup));
-					//	startup.cb = sizeof(startup);
-					//	memset(&process, 0, sizeof(process));
-					//	CRegStdString tortoiseProcPath(_T("Software\\TortoiseSVN\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
-					//	stdstring svnCmd = _T(" /command:");
-					//	svnCmd += _T("log /path:\"");
-					//	svnCmd += filenames.front().c_str();
-					//	svnCmd += _T("\"");
-					//	if (CreateProcess(tortoiseProcPath, const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-					//	{
-					//		CloseHandle(process.hThread);
-					//		CloseHandle(process.hProcess);
-					//	}
-					//}
-					//if (LOWORD(wParam) == IDC_EDITPROPERTIES)
-					//{
-					//	DWORD pathlength = GetTempPath(0, NULL);
-					//	TCHAR * path = new TCHAR[pathlength+1];
-					//	TCHAR * tempFile = new TCHAR[pathlength + 100];
-					//	GetTempPath (pathlength+1, path);
-					//	GetTempFileName (path, _T("svn"), 0, tempFile);
-					//	stdstring retFilePath = stdstring(tempFile);
-
-					//	HANDLE file = ::CreateFile (tempFile,
-					//		GENERIC_WRITE, 
-					//		FILE_SHARE_READ, 
-					//		0, 
-					//		CREATE_ALWAYS, 
-					//		FILE_ATTRIBUTE_TEMPORARY,
-					//		0);
-
-					//	delete path;
-					//	delete tempFile;
-					//	if (file != INVALID_HANDLE_VALUE)
-					//	{
-					//		DWORD written = 0;
-					//		for (std::vector<stdstring>::iterator I = filenames.begin(); I != filenames.end(); ++I)
-					//		{
-					//			::WriteFile (file, I->c_str(), I->size()*sizeof(TCHAR), &written, 0);
-					//			::WriteFile (file, _T("\n"), 2, &written, 0);
-					//		}
-					//		::CloseHandle(file);
-
-					//		STARTUPINFO startup;
-					//		PROCESS_INFORMATION process;
-					//		memset(&startup, 0, sizeof(startup));
-					//		startup.cb = sizeof(startup);
-					//		memset(&process, 0, sizeof(process));
-					//		CRegStdString tortoiseProcPath(_T("Software\\TortoiseSVN\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
-					//		stdstring svnCmd = _T(" /command:");
-					//		svnCmd += _T("properties /pathfile:\"");
-					//		svnCmd += retFilePath.c_str();
-					//		svnCmd += _T("\"");
-					//		svnCmd += _T(" /deletepathfile");
-					//		if (CreateProcess(tortoiseProcPath, const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-					//		{
-					//			CloseHandle(process.hThread);
-					//			CloseHandle(process.hProcess);
-					//		}
-					//	}
-					//}
+					if (LOWORD(wParam) == IDC_TOUCH)
+					{
+						FILETIME ftLocal, ft;
+						FILETIME ftNULL = {0};
+						SYSTEMTIME st;
+						GetSystemTime(&st);
+						SystemTimeToFileTime(&st, &ftLocal);
+						LocalFileTimeToFileTime(&ftLocal, &ft);
+						// 'touch' means to set the last modification time to the current time
+						SetDates(ftNULL, ft, ftNULL);
+						InitWorkfileView();	// update the controls
+						return TRUE;
+					}
 					break;
 			}
 	}
@@ -354,6 +238,75 @@ void CShellPropertyPage::InitWorkfileView()
 	else
 	{
 		SetDTPCtrl(m_hwnd, IDC_DATEACCESSED, IDC_TIMEACCESSED, 0);
+	}
+}
+
+void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteTime, FILETIME ftLastAccessTime)
+{
+	FILETIME ftLastWriteTime2, ftLastAccessTime2, ftCreationTime2;
+	std::vector<std::wstring> failedFiles;
+	for (std::vector<std::wstring>::iterator it = filenames.begin(); it != filenames.end(); ++it)
+	{
+		HANDLE hFile = CreateFile(it->c_str(), GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
+		if (hFile != INVALID_HANDLE_VALUE)
+		{
+			if ((ftCreationTime.dwHighDateTime == 0 && ftCreationTime.dwLowDateTime == 0) ||
+				(ftLastAccessTime.dwHighDateTime == 0 && ftLastAccessTime.dwLowDateTime == 0) ||
+				(ftLastWriteTime.dwHighDateTime == 0 && ftLastWriteTime.dwLowDateTime == 0))
+			{
+				ftCreationTime2 = ftCreationTime;
+				ftLastAccessTime2 = ftLastAccessTime;
+				ftLastWriteTime2 = ftLastWriteTime;
+				BY_HANDLE_FILE_INFORMATION fi = {0};
+				if (GetFileInformationByHandle(hFile, &fi))
+				{
+					if (ftCreationTime.dwHighDateTime == 0 && ftCreationTime.dwLowDateTime == 0)
+						ftCreationTime2 = fi.ftCreationTime;
+					if (ftLastAccessTime.dwHighDateTime == 0 && ftLastAccessTime.dwLowDateTime == 0)
+						ftLastAccessTime2 = fi.ftLastAccessTime;
+					if (ftLastWriteTime.dwHighDateTime == 0 && ftLastWriteTime.dwLowDateTime == 0)
+						ftLastWriteTime2 = fi.ftLastWriteTime;
+					if (SetFileTime(hFile, &ftCreationTime2, &ftLastAccessTime2, &ftLastWriteTime2) == FALSE)
+						failedFiles.push_back(*it);
+				}
+				else
+				{
+					// could not open the file
+					failedFiles.push_back(*it);
+				}
+			}
+			else
+			{
+				if (SetFileTime(hFile, &ftCreationTime, &ftLastAccessTime, &ftLastWriteTime) == FALSE)
+					failedFiles.push_back(*it);
+			}
+			CloseHandle(hFile);
+		}
+		else
+		{
+			// could not open the file
+			failedFiles.push_back(*it);
+		}
+	}
+	if (failedFiles.size() > 0)
+	{
+		// could not set the dates for one or more files
+		// show an error message
+		TCHAR buf[4096] = {0};
+		if (LoadString(g_hmodThisDll, IDS_ERR_FILEDATES, buf, sizeof(buf)/sizeof(TCHAR)) == 0)
+		{
+			// load string failed, use hard coded string
+			_tcscpy_s(buf, 4096, _T("Could not set the date/time for the following files:"));
+		}
+
+		std::wstringstream strMsg;
+		strMsg << buf;
+		for (std::vector<std::wstring>::iterator it = failedFiles.begin(); it != failedFiles.end(); ++it)
+		{
+			strMsg << _T("\n\"") << it->c_str() << _T("\"");
+		}
+
+		MessageBox(m_hwnd, strMsg.str().c_str(), _T("SKTimeStamp"), MB_ICONERROR);
 	}
 }
 
