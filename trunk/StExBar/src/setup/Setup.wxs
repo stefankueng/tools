@@ -56,7 +56,7 @@
       </Feature>
     </Feature>
 
-    <UIRef Id="WixUI_InstallDir" />
+    <UIRef Id="WixUI_Custom" />
     <UIRef Id="WixUI_ErrorProgressText" />
     
     <InstallExecuteSequence>
