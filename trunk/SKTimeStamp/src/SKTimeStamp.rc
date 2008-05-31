@@ -31,16 +31,17 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Property Page"
 FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
-    PUSHBUTTON      "Touch",IDC_TOUCH,178,232,50,14
-    CONTROL         "",IDC_DATECREATED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,20,79,15
-    LTEXT           "Created:",IDC_STATIC,7,22,30,8
-    CONTROL         "",IDC_TIMECREATED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,20,61,15
-    CONTROL         "",IDC_DATEMODIFIED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,49,79,15
-    LTEXT           "Last modified:",IDC_STATIC,7,51,46,8
-    CONTROL         "",IDC_TIMEMODIFIED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,49,61,15
-    CONTROL         "",IDC_DATEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,84,79,15
-    LTEXT           "Last accessed:",IDC_STATIC,7,86,48,8
-    CONTROL         "",IDC_TIMEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,84,61,15
+    PUSHBUTTON      "Touch",IDC_TOUCH,178,134,50,14
+    CONTROL         "",IDC_DATECREATED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,40,79,15
+    LTEXT           "Created:",IDC_STATIC,7,42,30,8
+    CONTROL         "",IDC_TIMECREATED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,40,61,15
+    CONTROL         "",IDC_DATEMODIFIED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,69,79,15
+    LTEXT           "Last modified:",IDC_STATIC,7,71,46,8
+    CONTROL         "",IDC_TIMEMODIFIED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,69,61,15
+    CONTROL         "",IDC_DATEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,104,79,15
+    LTEXT           "Last accessed:",IDC_STATIC,7,106,48,8
+    CONTROL         "",IDC_TIMEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,104,61,15
+    EDITTEXT        IDC_FILEINFO,7,7,221,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
 END
 
 
@@ -97,8 +98,7 @@ END
 
 3 TEXTINCLUDE 
 BEGIN
-    "\r\n"
-    "\0"
+    "#include ""SKTimeStamp.rc2""\0"
 END
 
 #endif    // APSTUDIO_INVOKED
@@ -114,6 +114,11 @@ BEGIN
     IDS_ERR_FILEDATES       "Could not set the date/time for the following files:"
 END
 
+STRINGTABLE 
+BEGIN
+    IDS_FILEINFO            "Selected %ld files/folders"
+END
+
 #endif    // German (Switzerland) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -124,8 +129,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
-
+#include "SKTimeStamp.rc2"
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
