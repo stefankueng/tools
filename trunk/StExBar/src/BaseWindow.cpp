@@ -125,13 +125,13 @@ void CWindow::SetTransparency(BYTE alpha, COLORREF color /* = 0xFF000000 */)
 {
 	if (alpha == 255)
 	{
-		LONG exstyle = GetWindowLongPtr(*this, GWL_EXSTYLE);
+		LONG_PTR exstyle = GetWindowLongPtr(*this, GWL_EXSTYLE);
 		exstyle &= ~WS_EX_LAYERED;
 		SetWindowLongPtr(*this, GWL_EXSTYLE, exstyle);
 	}
 	else
 	{
-		LONG exstyle = GetWindowLongPtr(*this, GWL_EXSTYLE);
+		LONG_PTR exstyle = GetWindowLongPtr(*this, GWL_EXSTYLE);
 		exstyle |= WS_EX_LAYERED;
 		SetWindowLongPtr(*this, GWL_EXSTYLE, exstyle);
 	}
