@@ -48,6 +48,20 @@ HINSTANCE   g_hInst;
 UINT        g_DllRefCount;
 HRESULT     hr;
 
+
+void my_invalid_parameter(const wchar_t * expression,
+						const wchar_t * function, 
+						const wchar_t * file, 
+						unsigned int line,
+						uintptr_t pReserved)
+{
+	UNREFERENCED_PARAMETER(expression);
+	UNREFERENCED_PARAMETER(function);
+	UNREFERENCED_PARAMETER(file);
+	UNREFERENCED_PARAMETER(line);
+	UNREFERENCED_PARAMETER(pReserved);
+}
+
 extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, 
 							   DWORD dwReason, 
 							   LPVOID /*lpReserved*/)
@@ -56,6 +70,7 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance,
 	{
 	case DLL_PROCESS_ATTACH:
 		g_hInst = hInstance;
+		_set_invalid_parameter_handler(my_invalid_parameter);
 		break;
 	case DLL_PROCESS_DETACH:
 		UnregisterClass(DB_CLASS_NAME, g_hInst);
