@@ -99,6 +99,8 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
 		::SendMessage(hHiddenToolbar, TB_AUTOSIZE, 0, 0);
 		SIZE tbsize;
 		::SendMessage(hHiddenToolbar, TB_GETMAXSIZE, 0, (LPARAM)&tbsize);
+		RECT tbRect;
+		::GetWindowRect(m_hwndToolbar, &tbRect);
 		// position the toolbar left-aligned with the chevron
 		// but first we need to convert the chevron coordinates into screen coordinates
 		POINT chevronxy;
@@ -113,12 +115,12 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
 		::ShowWindow(*this, SW_SHOW);
 		::SetWindowPos(*this, HWND_TOP, 
 			chevronxy.x, chevronxy.y, 
-			tbsize.cx, tbsize.cy, 
+			tbsize.cx+10, tbsize.cy+10, 
 			0);
 		::ShowWindow(hHiddenToolbar, SW_SHOW);
 		::SetWindowPos(hHiddenToolbar, HWND_TOP, 
 			0, 0,
-			tbsize.cx, tbsize.cy,
+			tbsize.cx+10, tbsize.cy+10,
 			0);
 
 		m_uMsg = 0;
