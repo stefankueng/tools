@@ -78,10 +78,10 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 		{
 		case IDOK:
 			{
-				m_regShowBtnText = SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_GETCHECK, 0, 0);
-				m_regUseUNCPaths = SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_GETCHECK, 0, 0);
-				m_regUseSelector = SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_GETCHECK, 0, 0);
-				m_regHideEditBox = SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_GETCHECK, 0, 0);
+				m_regShowBtnText = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_GETCHECK, 0, 0);
+				m_regUseUNCPaths = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_GETCHECK, 0, 0);
+				m_regUseSelector = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_GETCHECK, 0, 0);
+				m_regHideEditBox = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_GETCHECK, 0, 0);
 				m_commands.SaveToFile();
 			}
 			// fall through
@@ -199,8 +199,31 @@ void COptionsDlg::InitCustomCommandsList()
 
 void COptionsDlg::OnSelectListItem(LPNMLISTVIEW /*lpNMListView*/)
 {
+	LVITEM item = {0};
 	UINT nCount = ListView_GetSelectedCount(m_hListControl);
-	EnableWindow(GetDlgItem(*this, IDC_EDITCMD), nCount == 1);
+	bool bIsSeparator = false;
+	bool bIsInternal = false;
+	bool bIsHidden = false;
+	for (int i=0; i<ListView_GetItemCount(m_hListControl); ++i)
+	{
+		item.mask = LVIF_PARAM|LVIF_STATE;
+		item.stateMask = LVIS_SELECTED;
+		item.iItem = i;
+		ListView_GetItem(m_hListControl, &item);
+		if (item.state & LVIS_SELECTED)
+		{
+			Command * pCmd = m_commands.GetCommandPtr(i+1);
+			bIsSeparator = pCmd->separator;
+			bIsHidden = pCmd->commandline.compare(INTERNALCOMMANDHIDDEN)==0;
+			bIsInternal = (pCmd->commandline.compare(INTERNALCOMMAND) || bIsHidden);
+		}
+	}
+
+	if (bIsHidden)
+		::SetWindowText(GetDlgItem(*this, IDC_REMOVE), _T("Activate"));
+	else
+		::SetWindowText(GetDlgItem(*this, IDC_REMOVE), _T("Remove"));
+	EnableWindow(GetDlgItem(*this, IDC_EDITCMD), nCount == 1 && !bIsSeparator);
 	EnableWindow(GetDlgItem(*this, IDC_REMOVE), nCount == 1);
 	EnableWindow(GetDlgItem(*this, IDC_MOVEUP), nCount == 1);
 	EnableWindow(GetDlgItem(*this, IDC_MOVEDOWN), nCount == 1);
@@ -274,9 +297,13 @@ void COptionsDlg::RemoveSelectedItem()
 		if (item.state & LVIS_SELECTED)
 		{
 			Command * pCmd = m_commands.GetCommandPtr(i+1);
-			if ((pCmd)&&((pCmd->commandline.compare(INTERNALCOMMAND)==0)||(pCmd->commandline.compare(INTERNALCOMMANDHIDDEN)==0)))
+			if ((pCmd)&&(pCmd->commandline.compare(INTERNALCOMMAND)==0))
 			{
 				pCmd->commandline = INTERNALCOMMANDHIDDEN;
+			}
+			else if ((pCmd)&&(pCmd->commandline.compare(INTERNALCOMMANDHIDDEN)==0))
+			{
+				pCmd->commandline = INTERNALCOMMAND;
 			}
 			else
 				m_commands.RemoveCommand(i+1);
@@ -299,6 +326,8 @@ void COptionsDlg::EditSelectedItem()
 		if (item.state & LVIS_SELECTED)
 		{
 			Command cmd = m_commands.GetCommand(i+1);
+			if (cmd.separator)
+				continue;
 			CEditCmdDlg dlg(*this);
 			dlg.SetCommand(cmd);
 			if (dlg.DoModal(hResource, IDD_EDITCMD, *this) == IDOK)

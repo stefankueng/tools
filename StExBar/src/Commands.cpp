@@ -259,9 +259,12 @@ bool CCommands::LoadFromFile()
 						cmd.nIconID = cit->nIconID;
 						*cit = cmd;
 						// swap the commands in their order
-						Command c1 = m_commands[loopcounter];
-						m_commands[loopcounter] = cmd;
-						*cit = c1;
+						if (loopcounter < (int)m_commands.size())
+						{
+							Command c1 = m_commands[loopcounter];
+							m_commands[loopcounter] = cmd;
+							*cit = c1;
+						}
 					}
 					break;
 				}
@@ -271,6 +274,11 @@ bool CCommands::LoadFromFile()
 		{
 			if (cmd.commandline.compare(INTERNALCOMMAND) == 0)
 				alreadyexists = true;
+			else if (cmd.commandline.compare(INTERNALCOMMANDHIDDEN) == 0)
+			{
+				alreadyexists = true;
+				m_commands[loopcounter].commandline = cmd.commandline;
+			}
 		}
 		if (!alreadyexists)
 		{
