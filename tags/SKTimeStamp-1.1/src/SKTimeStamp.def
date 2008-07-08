@@ -1,0 +1,11 @@
+;SKTimeStamp.def : Declares the module parameters for the DLL.
+
+LIBRARY      SKTIMESTAMP
+
+EXPORTS
+    DllCanUnloadNow private
+    DllGetClassObject private
+    DllRegisterServer private
+    DllUnregisterServer private
+	DllInstall private
+	
