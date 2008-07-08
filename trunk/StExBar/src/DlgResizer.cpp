@@ -91,7 +91,7 @@ void CDlgResizer::DoResize(int width, int height)
 	if (m_controls.size() == 0)
 		return;
 
-	HDWP hdwp = BeginDeferWindowPos(m_controls.size());
+	HDWP hdwp = BeginDeferWindowPos((int)m_controls.size());
 	for (size_t i=0; i<m_controls.size(); ++i)
 	{
 		RECT newpos = m_controls[i].origSize;

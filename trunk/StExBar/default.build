@@ -22,6 +22,17 @@
 			<arg value="release|win32" />
 		</exec>
 
+		<exec program="devenv.com" >
+			<arg value="StExBar.sln" />
+			<arg value="/rebuild" />
+			<arg value="debug|x64" />
+		</exec>
+		<exec program="devenv.com" >
+			<arg value="StExBar.sln" />
+			<arg value="/rebuild" />
+			<arg value="release|x64" />
+		</exec>
+
 		<exec program="candle">
 			<arg value="-nologo" />
 			<arg value="-out" />
@@ -39,6 +50,25 @@
 			<arg value="-loc" />
 			<arg value="${environment::get-variable('WIXUI')}\WixUI_en-us.wxl" />
 		</exec>
+
+		<exec program="candle">
+			<arg value="-nologo" />
+			<arg value="-out" />
+			<arg value="bin\" />
+			<arg value="src/setup/Setup64.wxs" />
+			<arg value="src/setup/WixUI_Custom.wxs" />
+		</exec>
+		<exec program="light">
+			<arg value="-nologo" />
+			<arg value="-out" />
+			<arg value="bin\StExBar64.msi" />
+			<arg value="bin\Setup64.wixobj" />
+			<arg value="bin\WixUI_Custom.wixobj" />
+			<arg value="${environment::get-variable('WIXUI')}\WixUI.wixlib" />
+			<arg value="-loc" />
+			<arg value="${environment::get-variable('WIXUI')}\WixUI_en-us.wxl" />
+		</exec>
+
 		<delete>
 			<fileset>
 				<include name="bin\*.wixobj" />
