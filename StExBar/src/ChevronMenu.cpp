@@ -35,7 +35,7 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
 	::MapWindowPoints(lpRebarChevron->hdr.hwndFrom, NULL, (LPPOINT)&rebarrect, 2);
 	rebarrect.right -= (lpRebarChevron->rc.right-lpRebarChevron->rc.left);
 	// Retrieve the total number of buttons
-	int nButtons = ::SendMessage(hToolbar, TB_BUTTONCOUNT, 0, 0);
+	int nButtons = (int)::SendMessage(hToolbar, TB_BUTTONCOUNT, 0, 0);
 	// check for every button if it's completely visible
 	int iFirstHidden = -1;
 	for (int i=0; i<nButtons; ++i)

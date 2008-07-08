@@ -76,7 +76,7 @@ CDeskBand::~CDeskBand()
 	if (it != m_desklist.end())
 		m_desklist.erase(it);
 	// un-subclass
-	SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_WNDPROC, (LONG)m_oldDeskBandProc);
+	SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_WNDPROC, (LONG_PTR)m_oldDeskBandProc);
 
 	g_DllRefCount--;
 }
@@ -486,7 +486,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 		{
 			LPCREATESTRUCT lpcs = (LPCREATESTRUCT)lParam;
 			pThis = (CDeskBand*)(lpcs->lpCreateParams);
-			SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG)pThis);
+			SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)pThis);
 
 			//set the window handle
 			pThis->m_hWnd = hWnd;
@@ -965,8 +965,8 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		GetClientRect(m_hwndParent, &rc);
 
 		// subclass the parent deskbar control to intercept the RBN_CHEVRONPUSHED messages
-		m_oldDeskBandProc = (WNDPROC)SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_WNDPROC, (LONG)DeskBandProc);
-		SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_USERDATA, (LONG)this);
+		m_oldDeskBandProc = (WNDPROC)SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_WNDPROC, (LONG_PTR)DeskBandProc);
+		SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_USERDATA, (LONG_PTR)this);
 
 		//Create the window. The WndProc will set m_hWnd.
 		CreateWindowEx(WS_EX_CONTROLPARENT,
@@ -1001,12 +1001,13 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		if (m_hWndEdit == NULL)
 			return FALSE;
 
-		// subclass the edit control to intercept the WM_SETFOCUS messages
-		m_oldEditWndProc = (WNDPROC)SetWindowLongPtr(m_hWndEdit, GWLP_WNDPROC, (LONG)EditProc);
-		SetWindowLongPtr(m_hWndEdit, GWLP_USERDATA, (LONG)this);
 
 		// set the font for the edit control
-		SendMessage(m_hWndEdit, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), 0);
+		HGDIOBJ hFont = GetStockObject(DEFAULT_GUI_FONT);
+		SendMessage(m_hWndEdit, WM_SETFONT, (WPARAM)hFont, 0);
+		// subclass the edit control to intercept the WM_SETFOCUS messages
+		m_oldEditWndProc = (WNDPROC)SetWindowLongPtr(m_hWndEdit, GWLP_WNDPROC, (LONG_PTR)EditProc);
+		SetWindowLongPtr(m_hWndEdit, GWLP_USERDATA, (LONG_PTR)this);
 
 		// create a toolbar which will hold our button
 		m_hWndToolbar = CreateWindowEx(TBSTYLE_EX_MIXEDBUTTONS|TBSTYLE_EX_HIDECLIPPEDBUTTONS,

@@ -57,7 +57,7 @@ BOOL CInfoDlg::ShowDialog(UINT idAboutHTMLID, HINSTANCE hInstance)
 				//Add the IE Res protocol
 				TCHAR strResourceURL[MAX_PATH*4];
 				_stprintf_s(strResourceURL, MAX_PATH*4, _T("res://%s/%d"), lpszModule, idAboutHTMLID);
-				int iLength = _tcslen(strResourceURL);
+				size_t iLength = _tcslen(strResourceURL);
 			    LPWSTR lpWideCharStr = NULL;
 				lpWideCharStr =  new wchar_t[iLength+1];
 				//Attempt to Create the URL Moniker to the specified in the URL String
