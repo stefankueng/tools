@@ -135,7 +135,7 @@ BOOL CShellPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, 
 					SetDates(ftCreationTime, ftLastWriteTime, ftLastAccessTime);
 
 					// Return PSNRET_NOERROR to allow the sheet to close if the user clicked OK.
-					SetWindowLong(m_hwnd, DWL_MSGRESULT, PSNRET_NOERROR);
+					SetWindowLongPtr(m_hwnd, DWLP_MSGRESULT, PSNRET_NOERROR);
 				}
 				break;
 			case DTN_DATETIMECHANGE:
