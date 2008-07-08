@@ -1,0 +1,227 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_CMD                 ICON                    "icons\\cmd.ico"
+IDI_COPYNAME            ICON                    "icons\\copyname.ico"
+IDI_COPYPATH            ICON                    "icons\\copypath.ico"
+IDI_OPTIONS             ICON                    "icons\\options.ico"
+IDI_DEFAULT             ICON                    "icons\\default.ico"
+IDI_NEWFOLDER           ICON                    "icons\\newfolder.ico"
+IDI_RENAME              ICON                    "icons\\rename.ico"
+IDI_SHOWHIDE            ICON                    "icons\\showhide.ico"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_OPTIONS DIALOGEX 0, 0, 329, 294
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Settings"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,150,273,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,211,273,50,14
+    CONTROL         "Show button text on toolbar",IDC_SHOWTEXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,57,107,10
+    GROUPBOX        "Misc",IDC_STATIC,7,44,315,81
+    GROUPBOX        "Custom Commands",IDC_STATIC,7,134,315,134
+    LTEXT           "Stefan's Tools - tools.tortoisesvn.net",IDC_LINK,7,28,120,8
+    LTEXT           "StExBar v1.1.1",IDC_VERSIONSTRING,7,7,315,8
+    LTEXT           "Copyright 2006-2007 Stefan Küng",IDC_STATIC,7,17,110,8
+    CONTROL         "Copy UNC paths",IDC_USEUNCCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,74,69,10
+    CONTROL         "Use selector instead of cmd replacement",IDC_SELECTORCHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,108,145,10
+    CONTROL         "",IDC_CUSTCOMMANDS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,14,146,272,96
+    PUSHBUTTON      "Edit",IDC_EDITCMD,120,249,50,14
+    PUSHBUTTON      "Add",IDC_ADD,178,249,50,14
+    PUSHBUTTON      "Remove",IDC_REMOVE,236,249,50,14
+    PUSHBUTTON      "Up",IDC_MOVEUP,290,170,24,14
+    PUSHBUTTON      "down",IDC_MOVEDOWN,290,194,24,14
+    CONTROL         "Hide edit box",IDC_HIDEEDITBOX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,91,58,10
+    PUSHBUTTON      "&Help",IDC_OPTIONSHELP,272,273,50,14
+END
+
+IDD_RENAMEDLG DIALOGEX 0, 0, 391, 190
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Rename"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Match:",IDC_MATCHLABEL,7,9,23,8
+    EDITTEXT        IDC_MATCHSTRING,60,7,324,14,ES_AUTOHSCROLL
+    LTEXT           "Replace:",IDC_REPLACELABEL,7,25,29,8
+    EDITTEXT        IDC_REPLACESTRING,60,23,324,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_FILELIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,44,377,119
+    DEFPUSHBUTTON   "&Rename",IDOK,275,169,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,334,169,50,14
+END
+
+IDD_EDITCMD DIALOGEX 0, 0, 308, 262
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Command"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,141,241,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,196,241,50,14
+    LTEXT           "Name:",IDC_STATIC,7,34,22,8
+    EDITTEXT        IDC_NAME,90,31,211,14,ES_AUTOHSCROLL
+    LTEXT           "Icon:",IDC_STATIC,7,53,18,8
+    EDITTEXT        IDC_ICONPATH,90,50,211,14,ES_AUTOHSCROLL
+    LTEXT           "Command line:",IDC_STATIC,7,72,48,8
+    EDITTEXT        IDC_COMMANDLINE,90,69,211,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_HOTKEY,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,90,88,211,14
+    LTEXT           "Hotkey:",IDC_STATIC,7,91,26,8
+    CONTROL         "Enabled when showing file system folders",IDC_VIEWPATH,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,125,149,10
+    CONTROL         "Enabled when showing system folders (e.g. Printers view)",IDC_NOVIEWPATH,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,140,201,10
+    CONTROL         "Enabled when files are selected",IDC_FILESELECTED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,155,117,10
+    CONTROL         "Enabled when directories are selected",IDC_FOLDERSELECTED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,170,137,10
+    CONTROL         "Enabled when anything is selected",IDC_SELECTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,185,126,10
+    CONTROL         "Enabled when nothing is selected",IDC_NOSELECTION,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,200,122,10
+    LTEXT           "Enabled when exactly",IDC_STATIC,7,218,71,8
+    EDITTEXT        IDC_SELECTEDCOUNT,90,215,40,14,ES_AUTOHSCROLL
+    LTEXT           "items are selected",IDC_STATIC,137,218,59,8
+    CONTROL         "Separator",IDC_SEPARATOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,48,10
+    CONTROL         "Hide internal command",IDC_INTERNALHIDE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,18,88,10
+    PUSHBUTTON      "&Help",IDC_COMMANDSHELP,251,241,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 322
+        VERTGUIDE, 14
+        VERTGUIDE, 286
+        VERTGUIDE, 314
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 287
+    END
+
+    IDD_RENAMEDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 384
+        VERTGUIDE, 60
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 183
+    END
+
+    IDD_EDITCMD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 301
+        VERTGUIDE, 90
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 255
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+IDR_OPTIONSHELP         HTML                    "OptionsHelp.htm"
+IDR_COMMANDSHELP        HTML                    "CommandHelp.htm"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Switzerland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""StExBar.rc2""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // German (Switzerland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "StExBar.rc2"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
