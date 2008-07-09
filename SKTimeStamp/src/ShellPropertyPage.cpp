@@ -166,14 +166,13 @@ BOOL CShellPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, 
 				case BN_CLICKED:
 					if (LOWORD(wParam) == IDC_TOUCH)
 					{
-						FILETIME ftLocal, ft;
+						FILETIME ftLocal;
 						FILETIME ftNULL = {0};
 						SYSTEMTIME st;
 						GetSystemTime(&st);
 						SystemTimeToFileTime(&st, &ftLocal);
-						LocalFileTimeToFileTime(&ftLocal, &ft);
 						// 'touch' means to set the last modification time to the current time
-						SetDates(ftNULL, ft, ftNULL);
+						SetDates(ftNULL, ftLocal, ftNULL);
 						InitWorkfileView();	// update the controls
 						return TRUE;
 					}
