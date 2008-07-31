@@ -31,12 +31,12 @@
 			  <File Id='SKTIMESTAMP.DLL' Name='SKTimeSt.dll' LongName='SKTimeStamp.dll' DiskId='1'
 				Source='bin/SKTimeStamp/Release/SKTimeStamp.dll' Vital='yes'>
 			  </File>
-				<Registry Root="HKMU" Key="Software\Classes\*\shellex\PropertySheetHandlers\SKTimeStamp" Value="{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Type="string" />
-				<Registry Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\SKTimeStamp" Value="{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Type="string" />
-				<Registry Root="HKMU" Key="Software\Classes\CLSID\{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Value="SKTimeStamp" Type="string" />
-				<Registry Root="HKMU" Key="Software\Classes\CLSID\{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Action="createKeyAndRemoveKeyOnUninstall" />
-				<Registry Root="HKMU" Key="Software\Classes\CLSID\{01D8AD1E-46C9-4882-925C-CC29D9A99858}\InProcServer32" Value="[INSTALLDIR]SKTimeStamp.dll" Type="string" />
-				<Registry Root="HKMU" Key="Software\Classes\CLSID\{01D8AD1E-46C9-4882-925C-CC29D9A99858}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<Registry Root="HKLM" Key="Software\Classes\*\shellex\PropertySheetHandlers\SKTimeStamp" Value="{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Type="string" />
+				<Registry Root="HKLM" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\SKTimeStamp" Value="{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Type="string" />
+				<Registry Root="HKLM" Key="Software\Classes\CLSID\{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Value="SKTimeStamp" Type="string" />
+				<Registry Root="HKLM" Key="Software\Classes\CLSID\{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Action="createKeyAndRemoveKeyOnUninstall" />
+				<Registry Root="HKLM" Key="Software\Classes\CLSID\{01D8AD1E-46C9-4882-925C-CC29D9A99858}\InProcServer32" Value="[INSTALLDIR]SKTimeStamp.dll" Type="string" />
+				<Registry Root="HKLM" Key="Software\Classes\CLSID\{01D8AD1E-46C9-4882-925C-CC29D9A99858}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 
 				<Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Value="SKTimeStamp" Type="string" />
 			</Component>

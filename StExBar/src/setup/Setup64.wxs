@@ -31,11 +31,11 @@
 			  <File Id='StExBar.DLL' Name='StExBar.dll' LongName='StExBar.dll' DiskId='1'
 				Source='bin/release_x64/StExBar.dll' Vital='yes'>
 			  </File>
-				<Registry Root="HKMU" Key="Software\Classes\CLSID\{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}" Value="StExBar" Type="string" />
-				<Registry Root="HKMU" Key="Software\Classes\CLSID\{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}" Action="createKeyAndRemoveKeyOnUninstall" />
-				<Registry Root="HKMU" Key="Software\Classes\CLSID\{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}\InProcServer32" Value="[INSTALLDIR]StExBar.dll" Type="string" />
-				<Registry Root="HKMU" Key="Software\Classes\CLSID\{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-				<Registry Root="HKMU" Key="Software\Classes\CLSID\{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}\Implemented Categories\{00021492-0000-0000-C000-000000000046}" Action="createKeyAndRemoveKeyOnUninstall" />
+				<Registry Root="HKLM" Key="Software\Classes\CLSID\{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}" Value="StExBar" Type="string" />
+				<Registry Root="HKLM" Key="Software\Classes\CLSID\{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}" Action="createKeyAndRemoveKeyOnUninstall" />
+				<Registry Root="HKLM" Key="Software\Classes\CLSID\{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}\InProcServer32" Value="[INSTALLDIR]StExBar.dll" Type="string" />
+				<Registry Root="HKLM" Key="Software\Classes\CLSID\{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<Registry Root="HKLM" Key="Software\Classes\CLSID\{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}\Implemented Categories\{00021492-0000-0000-C000-000000000046}" Action="createKeyAndRemoveKeyOnUninstall" />
 				<Registry Root="HKLM" Key="Software\Microsoft\Internet Explorer\Toolbar" Name="{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}" Value="StExBar" Type="string" />
 
 				<!-- clear the toolband cache to make sure the toolband appears in the context menu -->
