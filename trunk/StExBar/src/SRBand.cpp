@@ -1106,7 +1106,8 @@ BOOL CDeskBand::BuildToolbarButtons()
 	{
 		Command cmd = m_commands.GetCommand(j);
 		m_hotkeys[cmd.key] = j;
-		if ((cmd.name.compare(_T("StexBar Internal Edit Box")) == 0)||(cmd.commandline.compare(INTERNALCOMMANDHIDDEN)==0))
+		if ((cmd.name.compare(_T("StexBar Internal Edit Box")) == 0)||
+			((cmd.commandline.compare(INTERNALCOMMANDHIDDEN)==0))&&(cmd.name.compare(_T("Options"))))
 		{
 			continue;
 		}
