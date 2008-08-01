@@ -140,7 +140,7 @@ void CEditCmdDlg::SetupControls()
 	// disable controls which must not be changed for internal commands
 	if ((m_command.commandline.compare(INTERNALCOMMAND) == 0)||(m_command.commandline.compare(INTERNALCOMMANDHIDDEN) == 0))
 	{
-		ShowWindow(GetDlgItem(*this, IDC_INTERNALHIDE), SW_SHOW);
+		ShowWindow(GetDlgItem(*this, IDC_INTERNALHIDE), m_command.name.compare(_T("Options")) ? SW_SHOW : SW_HIDE);
 		SendMessage(GetDlgItem(*this, IDC_INTERNALHIDE), BM_SETCHECK, (m_command.commandline.compare(INTERNALCOMMANDHIDDEN) == 0) ? BST_CHECKED : BST_UNCHECKED, 0);
 		
 		EnableWindow(GetDlgItem(*this, IDC_SEPARATOR), FALSE);
