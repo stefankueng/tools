@@ -63,7 +63,7 @@ Special placeholders are available:\r\n\
 			AddToolTip(IDC_NOVIEWPATH, _T("Enables the command when the explorer shows a non file system path, e.g., the printers view"));
 			AddToolTip(IDC_FILESELECTED, _T("Enables the command when one or more files in the explorer are selected"));
 			AddToolTip(IDC_FOLDERSELECTED, _T("Enables the command when one or more directories in the explorer are selected"));
-			AddToolTip(IDC_SELECTED, _T("Enables the command when one or more items in the explorer are selected"));
+			AddToolTip(IDC_SELECTED, _T("Enables the command when one or more items (files, folders or other items, e.g. printers) in the explorer are selected"));
 			AddToolTip(IDC_NOSELECTION, _T("Enables the command when no item in the explorer is selected"));
 			AddToolTip(IDC_SELECTEDCOUNT, _T("Enables the command when nothing or the amount of items set in this box are selected"));
 
