@@ -93,7 +93,7 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,334,169,50,14
 END
 
-IDD_EDITCMD DIALOGEX 0, 0, 308, 262
+IDD_EDITCMD DIALOGEX 0, 0, 308, 270
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Command"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -110,6 +110,7 @@ BEGIN
     PUSHBUTTON      "...",IDC_BROWSECOMMAND,283,68,18,14
     LTEXT           "Hotkey:",IDC_STATIC,7,91,26,8
     CONTROL         "",IDC_HOTKEY,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,90,88,211,14
+    LTEXT           "The conditions below are ORed together:",IDC_STATIC,7,111,294,8
     CONTROL         "Enabled when showing file system folders",IDC_VIEWPATH,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,125,149,10
     CONTROL         "Enabled when showing system folders (e.g. Printers view)",IDC_NOVIEWPATH,
@@ -123,10 +124,10 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,200,122,10
     LTEXT           "Enabled when exactly",IDC_STATIC,7,218,71,8
     EDITTEXT        IDC_SELECTEDCOUNT,90,215,40,14,ES_AUTOHSCROLL
-    LTEXT           "items are selected",IDC_STATIC,137,218,59,8
-    DEFPUSHBUTTON   "OK",IDOK,141,241,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,196,241,50,14
-    PUSHBUTTON      "&Help",IDC_COMMANDSHELP,251,241,50,14
+    LTEXT           "items are selected (ANDed to the other conditions)",IDC_STATIC,135,218,166,8
+    DEFPUSHBUTTON   "OK",IDOK,141,249,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,196,249,50,14
+    PUSHBUTTON      "&Help",IDC_COMMANDSHELP,251,249,50,14
 END
 
 
@@ -166,7 +167,7 @@ BEGIN
         VERTGUIDE, 277
         VERTGUIDE, 283
         TOPMARGIN, 7
-        BOTTOMMARGIN, 255
+        BOTTOMMARGIN, 263
     END
 END
 #endif    // APSTUDIO_INVOKED
