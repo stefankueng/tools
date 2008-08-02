@@ -80,6 +80,54 @@ Special placeholders are available:\r\n\
 		case IDCANCEL:
 			EndDialog(*this, LOWORD(wParam));
 			return (INT_PTR)TRUE;
+		case IDC_BROWSEICON:
+			{
+				OPENFILENAME ofn = {0};				// common dialog box structure
+				TCHAR szFile[MAX_PATH] = {0};		// buffer for file name. Explorer can't handle paths longer than MAX_PATH.
+				ofn.lStructSize = sizeof(OPENFILENAME);
+				ofn.hwndOwner = *this;
+				ofn.lpstrFile = szFile;
+				ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+				ofn.lpstrFilter = _T("Icons (*.ico, *.dll)\0*.ico;*.dll\0All files (*.*)\0*.*\0\0");
+				ofn.nFilterIndex = 1;
+				ofn.lpstrFileTitle = NULL;
+				ofn.nMaxFileTitle = 0;
+				ofn.lpstrInitialDir = NULL;
+				ofn.lpstrTitle = _T("Select icon");
+				ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER;
+
+				// Display the Open dialog box. 
+				bool bRet = !!GetOpenFileName(&ofn);
+				if (bRet)
+				{
+					SetDlgItemText(*this, IDC_ICONPATH, ofn.lpstrFile);
+				}
+			}
+			break;
+		case IDC_BROWSECOMMAND:
+			{
+				OPENFILENAME ofn = {0};				// common dialog box structure
+				TCHAR szFile[MAX_PATH] = {0};		// buffer for file name. Explorer can't handle paths longer than MAX_PATH.
+				ofn.lStructSize = sizeof(OPENFILENAME);
+				ofn.hwndOwner = *this;
+				ofn.lpstrFile = szFile;
+				ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+				ofn.lpstrFilter = _T("Executables\0*.exe;*.dll;*.cmd;*.vbs;*.js;*.bat\0All files (*.*)\0*.*\0\0");
+				ofn.nFilterIndex = 1;
+				ofn.lpstrFileTitle = NULL;
+				ofn.nMaxFileTitle = 0;
+				ofn.lpstrInitialDir = NULL;
+				ofn.lpstrTitle = _T("Select Application");
+				ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER;
+
+				// Display the Open dialog box. 
+				bool bRet = !!GetOpenFileName(&ofn);
+				if (bRet)
+				{
+					SetDlgItemText(*this, IDC_COMMANDLINE, ofn.lpstrFile);
+				}
+			}
+			break;
 		case IDC_SEPARATOR:
 			m_command.separator = SendMessage(GetDlgItem(*this, IDC_SEPARATOR), BM_GETCHECK, 0, 0) == BST_CHECKED;
 			SetSeparator(m_command.separator);
