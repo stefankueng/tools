@@ -1,3 +1,11 @@
+// attrib.js
+// this script toggles the readonly file attribute of the file
+// specified in the path.
+//
+// to use this in the StExBar, add the command line:
+// wscript.exe "path/to/attrib.js" //E:javascript %selpaths
+//
+
 var objArgs,num;
 
 objArgs = WScript.Arguments;
