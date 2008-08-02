@@ -891,7 +891,7 @@ wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const wstring& paths)
 	TCHAR * path = new TCHAR[pathlength+1];
 	TCHAR * tempFile = new TCHAR[pathlength + 100];
 	GetTempPath (pathlength+1, path);
-	GetTempFileName (path, _T("svn"), 0, tempFile);
+	GetTempFileName (path, _T("stx"), 0, tempFile);
 	wstring retFilePath = wstring(tempFile);
 
 	HANDLE file = ::CreateFile (tempFile,
