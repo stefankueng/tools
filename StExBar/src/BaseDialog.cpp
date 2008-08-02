@@ -139,7 +139,7 @@ INT_PTR CALLBACK CDialog::stDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 
 		SetWindowPos(pWnd->m_hToolTips, HWND_TOPMOST,0, 0, 0, 0,
 			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-		SendMessage(pWnd->m_hToolTips, TTM_SETMAXTIPWIDTH, 0, 600);  
+		SendMessage(pWnd->m_hToolTips, TTM_SETMAXTIPWIDTH, 0, 800);  
 		SendMessage(pWnd->m_hToolTips, TTM_ACTIVATE, TRUE, 0);
 	}
 	// get the pointer to the window

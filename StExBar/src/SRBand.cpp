@@ -27,6 +27,7 @@
 #include "uxtheme.h"
 #include "ChevronMenu.h"
 #include "OptionsDlg.h"
+#include "UnicodeUtils.h"
 
 #pragma comment(lib, "uxtheme.lib")
 
@@ -848,6 +849,30 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					wstring::iterator it_end= it_begin + tag.size();
 					commandline.replace(it_begin, it_end, consoletext);
 				}
+				// replace "%selafile" with path to file containing all the selected files separated by newlines
+				tag = _T("%selafile");
+				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+				if (it_begin != commandline.end())
+				{
+					wstring selpaths = GetFilePaths(_T("\r\n"), false, true, true, false);
+					if (selpaths.empty())
+						selpaths = m_currentDirectory;
+					wstring tempFilePath = WriteFileListToTempFile(false, selpaths);
+					wstring::iterator it_end= it_begin + tag.size();
+					commandline.replace(it_begin, it_end, tempFilePath);
+				}
+				// replace "%selufile" with path to file containing all the selected files separated by newlines in utf-16 format
+				tag = _T("%selufile");
+				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+				if (it_begin != commandline.end())
+				{
+					wstring selpaths = GetFilePaths(_T("\r\n"), false, true, true, false);
+					if (selpaths.empty())
+						selpaths = m_currentDirectory;
+					wstring tempFilePath = WriteFileListToTempFile(true, selpaths);
+					wstring::iterator it_end= it_begin + tag.size();
+					commandline.replace(it_begin, it_end, tempFilePath);
+				}
 				StartApplication(commandline);
 			}
 
@@ -856,6 +881,45 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 		}
 	}
 	return 0;
+}
+
+wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const wstring& paths)
+{
+	//write all selected files and paths to a temporary file
+	//for TortoiseProc.exe to read out again.
+	DWORD pathlength = GetTempPath(0, NULL);
+	TCHAR * path = new TCHAR[pathlength+1];
+	TCHAR * tempFile = new TCHAR[pathlength + 100];
+	GetTempPath (pathlength+1, path);
+	GetTempFileName (path, _T("svn"), 0, tempFile);
+	wstring retFilePath = wstring(tempFile);
+
+	HANDLE file = ::CreateFile (tempFile,
+		GENERIC_WRITE, 
+		FILE_SHARE_READ, 
+		0, 
+		CREATE_ALWAYS, 
+		FILE_ATTRIBUTE_TEMPORARY,
+		0);
+
+	delete path;
+	delete tempFile;
+	if (file == INVALID_HANDLE_VALUE)
+		return stdstring();
+
+	DWORD written = 0;
+	if (bUnicode)
+	{
+		::WriteFile (file, paths.c_str(), paths.size()*sizeof(TCHAR), &written, 0);
+	}
+	else
+	{
+		string p = WideToMultibyte(paths);
+		::WriteFile (file, p.c_str(), p.size()*sizeof(char), &written, 0);
+	}
+
+	::CloseHandle(file);
+	return retFilePath;
 }
 
 LRESULT CDeskBand::OnSize(LPARAM /*lParam*/)

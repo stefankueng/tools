@@ -564,6 +564,10 @@
 				RelativePath=".\StringUtils.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\UnicodeUtils.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -648,6 +652,10 @@
 			</File>
 			<File
 				RelativePath=".\StringUtils.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UnicodeUtils.h"
 				>
 			</File>
 		</Filter>
