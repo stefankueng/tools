@@ -200,7 +200,8 @@ private:
 	wstring					ConvertToUNC(wstring sPath);
 	/// selects all the items which match the filter string
 	bool					Select(LPTSTR filter);
-
+	/// writes the string \a paths to a tempfile, either in unicode or ascii. The path to the tempfile is returned
+	wstring					WriteFileListToTempFile(bool bUnicode, const wstring& paths);
 
 };
 

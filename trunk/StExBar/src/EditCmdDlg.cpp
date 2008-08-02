@@ -54,10 +54,13 @@ LRESULT CEditCmdDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM /*lP
 			AddToolTip(IDC_ICONPATH, _T("Path to an icon file to use for the toolbar button.\r\nLeave this empty to use the default icon"));
 			AddToolTip(IDC_COMMANDLINE, _T("Command line to execute. Environment variables are expanded properly.\r\n\
 Special placeholders are available:\r\n\
-%selpaths\t: will be replaced with the paths of the selected items, separated by a space\r\n\
-%sel*paths\t: will be replaced with the paths of the selected items, separated by '*' char\r\n\
-%selnames\t: will be replaced with the names of the selected items\r\n\
-%curdir\t\t: will be replaced with the path of the currently shown directory\r\n"));
+%selpaths\t: replaced with the paths of the selected items, separated by a space\r\n\
+%sel*paths\t: replaced with the paths of the selected items, separated by '*' char\r\n\
+%selafile\t\t: replaced with the path to a file containing the paths in ANSI of the selected items separated by a newline char\r\n\
+%selufile\t\t: replaced with the path to a file containing the paths in UNICODE of the selected items separated by a newline char\r\n\
+%selnames\t: replaced with the names of the selected items\r\n\
+%curdir\t\t: replaced with the path of the currently shown directory\r\n\
+%cmdtext\t: replaced with the content of the edit box\r\n"));
 
 			AddToolTip(IDC_VIEWPATH, _T("Enables the command when the explorer shows a file system path"));
 			AddToolTip(IDC_NOVIEWPATH, _T("Enables the command when the explorer shows a non file system path, e.g., the printers view"));
