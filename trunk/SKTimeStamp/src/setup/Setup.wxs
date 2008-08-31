@@ -21,6 +21,7 @@
 
     <Media Id='1' Cabinet='SKTimeStamp.cab' EmbedCab='yes' />
 	<Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+	<Property Id="ALLUSERS">1</Property>
 	<Condition Message='This application only runs on Windows 2000 and later.'>VersionNT &gt;= 500</Condition>
 	
     <Directory Id='TARGETDIR' Name='SourceDir'>
