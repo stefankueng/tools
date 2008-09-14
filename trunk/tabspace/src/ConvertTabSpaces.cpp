@@ -75,6 +75,9 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
 							*pBuf++ = *pOldBuf++;
 					}
 					file.ContentsModified(pBufStart, newfilelen);
+					TCHAR outbuf[MAX_PATH*2];
+					_stprintf_s(outbuf, MAX_PATH*2, _T("converted spaces to tabs in file'%s'\n"), file.GetFileName().c_str());
+					_fputts(outbuf, stdout);
 					return true;
 				}
 				else if (file.GetEncoding() != CTextFile::BINARY)
@@ -106,6 +109,9 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
 							*pBuf++ = *pOldBuf++;
 					}
 					file.ContentsModified(pBufStart, newfilelen);
+					TCHAR outbuf[MAX_PATH*2];
+					_stprintf_s(outbuf, MAX_PATH*2, _T("converted spaces to tabs in file'%s'\n"), file.GetFileName().c_str());
+					_fputts(outbuf, stdout);
 					return true;
 				}
 			}
@@ -161,6 +167,9 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
 							*pBuf++ = *pOldBuf++;
 					}
 					file.ContentsModified(pBufStart, newfilelen);
+					TCHAR outbuf[MAX_PATH*2];
+					_stprintf_s(outbuf, MAX_PATH*2, _T("converted tabs to spaces in file'%s'\n"), file.GetFileName().c_str());
+					_fputts(outbuf, stdout);
 					return true;
 				}
 				else if (file.GetEncoding() != CTextFile::BINARY)
@@ -190,6 +199,9 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
 							*pBuf++ = *pOldBuf++;
 					}
 					file.ContentsModified(pBufStart, newfilelen);
+					TCHAR outbuf[MAX_PATH*2];
+					_stprintf_s(outbuf, MAX_PATH*2, _T("converted tabs to spaces in file'%s'\n"), file.GetFileName().c_str());
+					_fputts(outbuf, stdout);
 					return true;
 				}
 			}
