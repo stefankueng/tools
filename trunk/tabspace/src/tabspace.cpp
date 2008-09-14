@@ -112,7 +112,10 @@ int _tmain(int argc, _TCHAR* argv[])
 				}
 				if (bRemoveEOLWhitespaces)
 				{
-					ConvertTabSpaces::RemoveEndSpaces(file, bCheckOnly);
+					if (ConvertTabSpaces::RemoveEndSpaces(file, bCheckOnly))
+					{
+						file.Save(filepath.c_str());
+					}
 				}
 			}
 			else
