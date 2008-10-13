@@ -27,7 +27,7 @@ void CDeskBand::Rename()
 {
 	// fill the list of selected file/foldernames
 	m_filelist.clear();
-	if (m_selectedItems.size())
+	if (m_selectedItems.size() > 1)
 	{
 		for (map<wstring, ULONG>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
 		{
@@ -40,7 +40,7 @@ void CDeskBand::Rename()
 	}
 	else
 	{
-		// no files were selected.
+		// no files or only one file were selected.
 		// use all files and folders in the current folder instead
 		if (m_pSite == NULL)
 			return;
