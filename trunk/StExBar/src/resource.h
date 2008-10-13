@@ -51,11 +51,11 @@
 #define IDC_HIDEEDITBOX                 1034
 #define IDC_CHECK1                      1035
 #define IDC_INTERNALHIDE                1035
+#define IDC_CASEINSENSITIVE             1035
 #define IDC_OPTIONSHELP                 1036
 #define IDC_BUTTON1                     1037
 #define IDC_COMMANDSHELP                1037
 #define IDC_BROWSEICON                  1038
-#define IDC_BROWSEICON2                 1039
 #define IDC_BROWSECOMMAND               1039
 
 // Next default values for new objects

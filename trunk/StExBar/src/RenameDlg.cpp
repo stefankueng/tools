@@ -24,7 +24,6 @@
 #include "RenameDlg.h"
 #include <string>
 
-#include <regex>
 using namespace std;
 
 
@@ -48,6 +47,7 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			m_resizer.Init(hwndDlg);
 			m_resizer.AddControl(hwndDlg, IDC_MATCHLABEL, RESIZER_TOPLEFT);
 			m_resizer.AddControl(hwndDlg, IDC_REPLACELABEL, RESIZER_TOPLEFT);
+			m_resizer.AddControl(hwndDlg, IDC_CASEINSENSITIVE, RESIZER_TOPLEFT);
 			m_resizer.AddControl(hwndDlg, IDC_MATCHSTRING, RESIZER_TOPLEFTRIGHT);
 			m_resizer.AddControl(hwndDlg, IDC_REPLACESTRING, RESIZER_TOPLEFTRIGHT);
 			m_resizer.AddControl(hwndDlg, IDC_FILELIST, RESIZER_TOPLEFTBOTTOMRIGHT);
@@ -72,6 +72,7 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			}
 			FillRenamedList();
 
+			SendDlgItemMessage(hwndDlg, IDC_CASEINSENSITIVE, BM_SETCHECK, BST_CHECKED, 0);
 			::SetFocus(::GetDlgItem(hwndDlg, IDC_MATCHSTRING));
 		}
 		return (INT_PTR)TRUE;
@@ -102,6 +103,9 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 					return (INT_PTR)TRUE;
 				GetWindowText(hReplaceString, buf, MAX_PATH);
 				m_sReplace = buf;
+				m_fl = tr1::regex_constants::ECMAScript;
+				if (SendDlgItemMessage(*this, IDC_CASEINSENSITIVE, BM_GETCHECK, 0, 0) == BST_CHECKED)
+					m_fl |= tr1::regex_constants::icase;
 			}
 			// fall through
 		case IDCANCEL:
@@ -181,7 +185,10 @@ void CRenameDlg::FillRenamedList()
 
 	try
 	{
-		const tr1::wregex regCheck(m_sMatch, tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
+		m_fl = tr1::regex_constants::ECMAScript;
+		if (SendDlgItemMessage(*this, IDC_CASEINSENSITIVE, BM_GETCHECK, 0, 0) == BST_CHECKED)
+			m_fl |= tr1::regex_constants::icase;
+		const tr1::wregex regCheck(m_sMatch, m_fl);
 
 		wstring replaced;
 		for (set<wstring>::iterator it = m_filelist.begin(); it != m_filelist.end(); ++it)

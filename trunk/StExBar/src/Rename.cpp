@@ -146,7 +146,7 @@ void CDeskBand::Rename()
 	{
 		try
 		{
-			const tr1::wregex regCheck(dlg.GetMatchString(), tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
+			const tr1::wregex regCheck(dlg.GetMatchString(), dlg.GetRegexFlags());
 
 			// start renaming the files
 			IServiceProvider * pServiceProvider;
