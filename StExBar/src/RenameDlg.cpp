@@ -127,16 +127,17 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			{
 			case NM_CUSTOMDRAW:
 				{
-					if (pnmhdr->hwndFrom == GetDlgItem(*this, IDC_FILELIST))
+					if (pnmhdr->idFrom == IDC_FILELIST)
 					{
 						LPNMLVCUSTOMDRAW lpcd = (LPNMLVCUSTOMDRAW)lParam;
 						// use the default processing if not otherwise specified
 						SetWindowLongPtr(*this, DWLP_MSGRESULT, CDRF_DODEFAULT); 
 						if (lpcd->nmcd.dwDrawStage == CDDS_PREPAINT)
 						{
-							SetWindowLongPtr(*this, DWLP_MSGRESULT, CDRF_NOTIFYITEMDRAW); 
+							SetWindowLongPtr(*this, DWLP_MSGRESULT, CDRF_NOTIFYITEMDRAW);
+							return CDRF_NOTIFYITEMDRAW;
 						}
-						else if (lpcd->nmcd.dwDrawStage == CDDS_ITEMPREPAINT)
+						if (lpcd->nmcd.dwDrawStage == CDDS_ITEMPREPAINT)
 						{
 							// This is the prepaint stage for an item. Here's where we set the
 							// item's text color. Our return value will tell Windows to draw the
@@ -150,10 +151,10 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 							lpcd->clrText = crText;
 
 							// Tell Windows to paint the control itself.
-							SetWindowLongPtr(*this, DWLP_MSGRESULT, CDRF_DODEFAULT); 
+							SetWindowLongPtr(*this, DWLP_MSGRESULT, CDRF_DODEFAULT);
+							return CDRF_DODEFAULT;
 						}
 					}
-					return TRUE;
 				}
 			}
 		}
