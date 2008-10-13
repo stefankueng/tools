@@ -20,6 +20,7 @@
 #include "basedialog.h"
 #include "DlgResizer.h"
 #include <string>
+#include <regex>
 
 using namespace std;
 
@@ -33,6 +34,7 @@ public:
 	~CRenameDlg(void);
 
 	wstring					GetMatchString() {return m_sMatch;}
+	tr1::regex_constants::syntax_option_type GetRegexFlags() {return m_fl;}
 	wstring					GetReplaceString() {return m_sReplace;}
 	void					SetFileList(const set<wstring>& list) {m_filelist = list;}
 
@@ -45,4 +47,5 @@ private:
 	wstring					m_sMatch;			///< the match string of the rename
 	wstring					m_sReplace;			///< the replace string of the rename
 	set<wstring>			m_filelist;			///< the list of selected file/folder names
+	tr1::regex_constants::syntax_option_type m_fl;
 };
