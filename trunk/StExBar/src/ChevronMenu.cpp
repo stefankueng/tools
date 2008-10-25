@@ -116,6 +116,8 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
 		testrect = mi.rcWork;
 		if (chevronxy.x + tbsize.cx > (testrect.right))
 			chevronxy.x = testrect.right - tbsize.cx;
+		if (chevronxy.y + tbsize.cy > (testrect.bottom))
+			chevronxy.y = testrect.bottom - tbsize.cy;
 		::ShowWindow(*this, SW_SHOW);
 		::SetWindowPos(*this, HWND_TOP, 
 			chevronxy.x, chevronxy.y, 
