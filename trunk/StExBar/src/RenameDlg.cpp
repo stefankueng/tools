@@ -26,6 +26,7 @@
 
 using namespace std;
 
+#define IDT_RENAME 101
 
 CRenameDlg::CRenameDlg(HWND hParent)
 {
@@ -115,9 +116,15 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		case IDC_REPLACESTRING:
 			if (HIWORD(wParam)==EN_CHANGE)
 			{
-				FillRenamedList();
+				::SetTimer(*this, IDT_RENAME, 500, NULL);
 			}
 			return (INT_PTR)TRUE;
+		}
+		break;
+	case WM_TIMER:
+		{
+			::KillTimer(*this, IDT_RENAME);
+			FillRenamedList();
 		}
 		break;
 	case WM_NOTIFY:
