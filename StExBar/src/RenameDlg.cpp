@@ -72,6 +72,32 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				ListView_InsertColumn(hListCtrl, 1, &lvc);
 			}
 			FillRenamedList();
+			CRegStdWORD dlgWidth = CRegStdWORD(_T("Software\\StExBar\\renameWidth"), 0);
+			CRegStdWORD dlgHeight = CRegStdWORD(_T("Software\\StExBar\\renameHeight"), 0);
+
+			if (DWORD(dlgWidth) && DWORD(dlgHeight))
+			{
+				// change the width and height of the dialog to the saved size
+				::SetWindowPos(*this, NULL, 0, 0, DWORD(dlgWidth), DWORD(dlgHeight), SWP_NOMOVE|SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
+
+				// and center the dialog again on the parent window (usually the explorer)
+				HWND hwndOwner = ::GetParent(hwndDlg);
+				if (hwndOwner == NULL)
+					hwndOwner = ::GetDesktopWindow();
+
+				RECT rcOwner;
+				RECT rcDlg;
+				RECT rc;
+				GetWindowRect(hwndOwner, &rcOwner); 
+				GetWindowRect(hwndDlg, &rcDlg); 
+				CopyRect(&rc, &rcOwner); 
+
+				OffsetRect(&rcDlg, -rcDlg.left, -rcDlg.top); 
+				OffsetRect(&rc, -rc.left, -rc.top); 
+				OffsetRect(&rc, -rcDlg.right, -rcDlg.bottom); 
+
+				SetWindowPos(hwndDlg, HWND_TOP, rcOwner.left + (rc.right / 2), rcOwner.top + (rc.bottom / 2), 0, 0,	SWP_NOSIZE); 
+			}
 
 			SendDlgItemMessage(hwndDlg, IDC_CASEINSENSITIVE, BM_SETCHECK, BST_CHECKED, 0);
 			::SetFocus(::GetDlgItem(hwndDlg, IDC_MATCHSTRING));
@@ -110,7 +136,15 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			}
 			// fall through
 		case IDCANCEL:
-			EndDialog(*this, LOWORD(wParam));
+			{
+				CRegStdWORD dlgWidth = CRegStdWORD(_T("Software\\StExBar\\renameWidth"), 0);
+				CRegStdWORD dlgHeight = CRegStdWORD(_T("Software\\StExBar\\renameHeight"), 0);
+				RECT rc;
+				::GetWindowRect(*this, &rc);
+				dlgWidth = rc.right-rc.left;
+				dlgHeight = rc.bottom-rc.top;
+					EndDialog(*this, LOWORD(wParam));
+			}
 			return (INT_PTR)TRUE;
 		case IDC_MATCHSTRING:
 		case IDC_REPLACESTRING:
