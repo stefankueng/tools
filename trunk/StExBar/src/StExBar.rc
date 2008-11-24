@@ -88,10 +88,11 @@ BEGIN
     EDITTEXT        IDC_MATCHSTRING,60,7,324,14,ES_AUTOHSCROLL
     LTEXT           "Replace:",IDC_REPLACELABEL,7,25,29,8
     EDITTEXT        IDC_REPLACESTRING,60,23,324,14,ES_AUTOHSCROLL
+    CONTROL         "Match case insensitive",IDC_CASEINSENSITIVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,42,87,10
+    PUSHBUTTON      "&Help",IDHELP,334,40,50,14
     CONTROL         "",IDC_FILELIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,76,377,119
     DEFPUSHBUTTON   "&Rename",IDOK,275,199,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,334,199,50,14
-    CONTROL         "Match case insensitive",IDC_CASEINSENSITIVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,42,87,10
 END
 
 IDD_EDITCMD DIALOGEX 0, 0, 308, 270
@@ -181,6 +182,7 @@ END
 
 IDR_OPTIONSHELP         HTML                    "OptionsHelp.htm"
 IDR_COMMANDSHELP        HTML                    "CommandHelp.htm"
+IDR_REGEXHELP           HTML                    "regexhelp.htm"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
