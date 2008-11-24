@@ -99,6 +99,15 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				SetWindowPos(hwndDlg, HWND_TOP, rcOwner.left + (rc.right / 2), rcOwner.top + (rc.bottom / 2), 0, 0,	SWP_NOSIZE); 
 			}
 
+			CRegStdString ren1Reg = CRegStdString(_T("Software\\StExBar\\ren1Text"));
+			CRegStdString ren2Reg = CRegStdString(_T("Software\\StExBar\\ren2Text"));
+			wstring ren1Text = ren1Reg;
+			wstring ren2Text = ren2Reg;
+			if (ren1Text.size())
+				SetDlgItemText(*this, IDC_MATCHSTRING, ren1Text.c_str());
+			if (ren2Text.size())
+				SetDlgItemText(*this, IDC_REPLACESTRING, ren2Text.c_str());
+
 			SendDlgItemMessage(hwndDlg, IDC_CASEINSENSITIVE, BM_SETCHECK, BST_CHECKED, 0);
 			::SetFocus(::GetDlgItem(hwndDlg, IDC_MATCHSTRING));
 		}
@@ -130,6 +139,10 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 					return (INT_PTR)TRUE;
 				GetWindowText(hReplaceString, buf, MAX_PATH);
 				m_sReplace = buf;
+				CRegStdString ren1Reg = CRegStdString(_T("Software\\StExBar\\ren1Text"));
+				CRegStdString ren2Reg = CRegStdString(_T("Software\\StExBar\\ren2Text"));
+				ren1Reg = m_sMatch;
+				ren2Reg = m_sReplace;
 				m_fl = tr1::regex_constants::ECMAScript;
 				if (SendDlgItemMessage(*this, IDC_CASEINSENSITIVE, BM_GETCHECK, 0, 0) == BST_CHECKED)
 					m_fl |= tr1::regex_constants::icase;
@@ -143,7 +156,8 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				::GetWindowRect(*this, &rc);
 				dlgWidth = rc.right-rc.left;
 				dlgHeight = rc.bottom-rc.top;
-					EndDialog(*this, LOWORD(wParam));
+				
+				EndDialog(*this, LOWORD(wParam));
 			}
 			return (INT_PTR)TRUE;
 		case IDC_MATCHSTRING:
