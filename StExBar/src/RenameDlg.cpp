@@ -22,6 +22,7 @@
 #include "version.h"
 #include <algorithm>
 #include "RenameDlg.h"
+#include "InfoDlg.h"
 #include <string>
 
 using namespace std;
@@ -49,6 +50,7 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			m_resizer.AddControl(hwndDlg, IDC_MATCHLABEL, RESIZER_TOPLEFT);
 			m_resizer.AddControl(hwndDlg, IDC_REPLACELABEL, RESIZER_TOPLEFT);
 			m_resizer.AddControl(hwndDlg, IDC_CASEINSENSITIVE, RESIZER_TOPLEFT);
+			m_resizer.AddControl(hwndDlg, IDHELP, RESIZER_TOPRIGHT);
 			m_resizer.AddControl(hwndDlg, IDC_MATCHSTRING, RESIZER_TOPLEFTRIGHT);
 			m_resizer.AddControl(hwndDlg, IDC_REPLACESTRING, RESIZER_TOPLEFTRIGHT);
 			m_resizer.AddControl(hwndDlg, IDC_FILELIST, RESIZER_TOPLEFTBOTTOMRIGHT);
@@ -167,6 +169,9 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				::SetTimer(*this, IDT_RENAME, 500, NULL);
 			}
 			return (INT_PTR)TRUE;
+		case IDHELP:
+			CInfoDlg::ShowDialog(IDR_REGEXHELP, hResource);
+			return (INT_PTR)TRUE;
 		}
 		break;
 	case WM_TIMER:
@@ -212,6 +217,12 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 					}
 				}
 			}
+		}
+		break;
+	case WM_HELP:
+		{
+			CInfoDlg::ShowDialog(IDR_REGEXHELP, hResource);
+			return (INT_PTR)TRUE;
 		}
 		break;
 	}

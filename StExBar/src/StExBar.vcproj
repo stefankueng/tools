@@ -715,12 +715,26 @@
 			>
 		</File>
 		<File
+			RelativePath=".\icons\html1.htm"
+			DeploymentContent="true"
+			>
+		</File>
+		<File
 			RelativePath=".\OptionsHelp.htm"
 			DeploymentContent="true"
 			>
 		</File>
 		<File
-			RelativePath=".\Setup.wxs"
+			RelativePath=".\regexhelp.htm"
+			DeploymentContent="true"
+			>
+		</File>
+		<File
+			RelativePath=".\setup\Setup.wxs"
+			>
+		</File>
+		<File
+			RelativePath=".\setup\Setup64.wxs"
 			>
 		</File>
 		<File
