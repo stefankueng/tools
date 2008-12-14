@@ -202,8 +202,8 @@ private:
 	void					FillRenamedList(HWND hDlg);
 	/// convert a path to an UNC path (if it points to a network share)
 	wstring					ConvertToUNC(wstring sPath);
-	/// selects all the items which match the filter string
-	bool					Select(LPTSTR filter);
+	/// filters out any file/folder in the current view which don't match the filter string
+	bool					Filter(LPTSTR filter);
 	/// writes the string \a paths to a tempfile, either in unicode or ascii. The path to the tempfile is returned
 	wstring					WriteFileListToTempFile(bool bUnicode, const wstring& paths);
 	/// returns true if the pidl matches the filter string

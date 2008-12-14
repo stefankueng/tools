@@ -26,7 +26,7 @@
 
 MIDL_DEFINE_GUID(IID, IID_IShellFolderView,0x37A378C0, 0xF82D, 0x11CE,0xAE,0x65,0x08,0x00,0x2B,0x2E,0x12,0x62);
 
-bool CDeskBand::Select(LPTSTR filter)
+bool CDeskBand::Filter(LPTSTR filter)
 {
 	bool bReturn = false;
 	IServiceProvider * pServiceProvider;

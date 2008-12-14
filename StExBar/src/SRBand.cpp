@@ -569,7 +569,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 					buf = new TCHAR[count+1];
 				}
 				// select the files which match the filter string
-				pThis->Select(buf);
+				pThis->Filter(buf);
 			}
 		}
 		break;
@@ -644,7 +644,7 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
 		if (DWORD(pThis->m_regUseSelector))
 		{
 			// select the files which match the filter string
-			pThis->Select(_T(""));
+			pThis->Filter(_T(""));
 		}
 	}
 	return CallWindowProc(pThis->m_oldEditWndProc, hWnd, uMessage, wParam, lParam);
@@ -728,7 +728,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					if (DWORD(m_regUseSelector))
 					{
 						// select the files which match the filter string
-						Select(buf);
+						Filter(buf);
 					}
 					else
 					{

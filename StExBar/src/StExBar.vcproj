@@ -413,6 +413,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Filter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hyperlink.cpp"
 				>
 			</File>
@@ -442,10 +446,6 @@
 			</File>
 			<File
 				RelativePath=".\RenameDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Select.cpp"
 				>
 			</File>
 			<File
