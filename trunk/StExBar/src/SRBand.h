@@ -44,6 +44,7 @@ using namespace std;
 
 // the timer ID
 #define TID_IDLE 100
+#define TID_FILTER 101
 
 // the enabled states
 #define ENABLED_VIEWPATH			0x00000001

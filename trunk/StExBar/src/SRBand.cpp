@@ -554,6 +554,24 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 				}
 			}
 		}
+		if (wParam == TID_FILTER)
+		{
+			KillTimer(pThis->m_hWnd, TID_FILTER);
+			if (DWORD(pThis->m_regUseSelector))
+			{
+				// get the command entered in the edit box
+				int count = MAX_PATH;
+				TCHAR * buf = new TCHAR[count+1];
+				while (::GetWindowText(pThis->m_hWndEdit, buf, count)>=count)
+				{
+					delete [] buf;
+					count += MAX_PATH;
+					buf = new TCHAR[count+1];
+				}
+				// select the files which match the filter string
+				pThis->Select(buf);
+			}
+		}
 		break;
 	case WM_COMMAND:
 		return pThis->OnCommand(wParam, lParam);
@@ -623,6 +641,11 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
 	if (uMessage == WM_LBUTTONDBLCLK)
 	{
 		::SetWindowText(pThis->m_hWndEdit, _T(""));
+		if (DWORD(pThis->m_regUseSelector))
+		{
+			// select the files which match the filter string
+			pThis->Select(_T(""));
+		}
 	}
 	return CallWindowProc(pThis->m_oldEditWndProc, hWnd, uMessage, wParam, lParam);
 }
@@ -647,6 +670,11 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 {
 	switch (HIWORD(wParam))
 	{
+	case EN_CHANGE:
+		{
+			SetTimer(m_hWnd, TID_FILTER, 500, NULL);
+		}
+		break;
 	case BN_CLICKED:
 		{
 			// button was pressed
@@ -1137,15 +1165,15 @@ LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lPa
 			map<hotkey, int>::iterator hk = it->second->m_hotkeys.find(realhk);
 			if (hk != it->second->m_hotkeys.end())
 			{
-					// special handling of command 0: just set the focus!
-					if ((hk->second==0)&&(it->second->m_pSite))
-					{
-						if (it->second->m_bCmdEditEnabled)
-							it->second->OnSetFocus();
-						return 1;//we processed it
-					}
-					it->second->OnCommand(MAKEWORD(hk->second, BN_CLICKED), 0);
-					return 1; // we processed it
+				// special handling of command 0: just set the focus!
+				if ((hk->second==0)&&(it->second->m_pSite))
+				{
+					if (it->second->m_bCmdEditEnabled)
+						it->second->OnSetFocus();
+					return 1;//we processed it
+				}
+				it->second->OnCommand(MAKEWORD(hk->second, BN_CLICKED), 0);
+				return 1; // we processed it
 			}
 		}
 		return CallNextHookEx(it->second->m_hook, code, wParam, lParam);
