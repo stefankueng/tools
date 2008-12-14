@@ -49,6 +49,7 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_regHideEditBox(_T("Software\\StefansTools\\StExBar\\HideEditBox"), 0)
 	, m_hToolbarImgList(NULL)
 	, m_bDialogShown(FALSE)
+	, m_currentFolder(NULL)
 {
 	m_ObjRefCount = 1;
 	g_DllRefCount++;
@@ -76,6 +77,15 @@ CDeskBand::~CDeskBand()
 	map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
 	if (it != m_desklist.end())
 		m_desklist.erase(it);
+	for (size_t i=0; i<m_noShows.size(); ++i)
+	{
+		CoTaskMemFree(m_noShows[i]);
+	}
+	m_noShows.clear();
+
+	if (m_currentFolder)
+		CoTaskMemFree(m_currentFolder);
+
 	// un-subclass
 	SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_WNDPROC, (LONG_PTR)m_oldDeskBandProc);
 
@@ -225,6 +235,12 @@ STDMETHODIMP CDeskBand::CloseDW(DWORD /*dwReserved*/)
 	}
 	m_hWnd = NULL;
 
+	for (size_t i=0; i<m_noShows.size(); ++i)
+	{
+		CoTaskMemFree(m_noShows[i]);
+	}
+	m_noShows.clear();
+
 	return S_OK;
 }
 
@@ -296,6 +312,11 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
 		map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
 		if (it != m_desklist.end())
 			m_desklist.erase(it);
+		for (size_t i=0; i<m_noShows.size(); ++i)
+		{
+			CoTaskMemFree(m_noShows[i]);
+		}
+		m_noShows.clear();
 	}
 
 	m_tbSize.cx = 0;
@@ -1266,5 +1287,32 @@ BOOL CDeskBand::BuildToolbarButtons()
 			pOleCommandTarget->Release();
 		}
 	}
+	return TRUE;
+}
+
+HWND CDeskBand::GetListView32(IShellView * shellView)
+{
+	HWND parent = NULL;
+	if (SUCCEEDED(shellView->GetWindow(&parent)))
+	{
+		EnumChildWindows(parent, EnumChildProc, (LPARAM)this);
+		return m_hwndListView;
+	}
+	return NULL;
+}
+
+BOOL CDeskBand::EnumChildProc(HWND hwnd, LPARAM lParam)
+{
+	TCHAR cName[100];
+	CDeskBand * pTHIS = (CDeskBand*)lParam;
+	if (GetClassName(hwnd, cName, 100))
+	{
+		if (_tcscmp(cName, _T("SysListView32")) == 0)
+		{
+			pTHIS->m_hwndListView = hwnd;
+			return FALSE;
+		}
+	}
+	pTHIS->m_hwndListView = NULL;
 	return TRUE;
 }

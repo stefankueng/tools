@@ -21,6 +21,11 @@
 #include "StringUtils.h"
 #include <regex>
 
+#define MIDL_DEFINE_GUID(type,name,l,w1,w2,b1,b2,b3,b4,b5,b6,b7,b8) \
+	const type name = {l,w1,w2,{b1,b2,b3,b4,b5,b6,b7,b8}}
+
+MIDL_DEFINE_GUID(IID, IID_IShellFolderView,0x37A378C0, 0xF82D, 0x11CE,0xAE,0x65,0x08,0x00,0x2B,0x2E,0x12,0x62);
+
 bool CDeskBand::Select(LPTSTR filter)
 {
 	bool bReturn = false;
@@ -38,126 +43,116 @@ bool CDeskBand::Select(LPTSTR filter)
 				{
 					// hooray! we got the IFolderView interface!
 					// that means the explorer is active and well :)
-
-					// the first thing we do is to deselect all already selected entries
-					pFolderView->SelectItem(NULL, SVSI_DESELECTOTHERS);
-
-					// but we also need the IShellFolder interface because
-					// we need its GetDisplayNameOf() method
-					IPersistFolder2 * pPersistFolder;
-					if (SUCCEEDED(pFolderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&pPersistFolder)))
+					IShellFolderView * pShellFolderView;
+					if (SUCCEEDED(pShellView->QueryInterface(IID_IShellFolderView, (LPVOID*)&pShellFolderView)))
 					{
-						IShellFolder * pShellFolder;
-						if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
+						// the first thing we do is to deselect all already selected entries
+						pFolderView->SelectItem(NULL, SVSI_DESELECTOTHERS);
+
+						// but we also need the IShellFolder interface because
+						// we need its GetDisplayNameOf() method
+						IPersistFolder2 * pPersistFolder;
+						if (SUCCEEDED(pFolderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&pPersistFolder)))
 						{
-							// our next task is to enumerate all the
-							// items in the folder view and select those
-							// which match the text in the edit control
-
-							bool bUseRegex = (filter[0] == '\\');
-
-							try
+							LPITEMIDLIST curFolder;
+							pPersistFolder->GetCurFolder(&curFolder);
+							if (ILIsEqual(m_currentFolder, curFolder))
 							{
-								const tr1::wregex regCheck(&filter[1], tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
+								CoTaskMemFree(curFolder);
 							}
-							catch (exception) 
+							else
 							{
-								bUseRegex = false;
-							}
-
-							if (!bUseRegex)
-							{
-								// force the filter to lowercase
-								TCHAR * pString = filter;
-								while (*pString)
+								CoTaskMemFree(m_currentFolder);
+								m_currentFolder = curFolder;
+								for (size_t i=0; i<m_noShows.size(); ++i)
 								{
-									*pString = _totlower(*pString);
-									pString++;
+									CoTaskMemFree(m_noShows[i]);
 								}
+								m_noShows.clear();
 							}
-
-							int nCount = 0;
-							if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
+							IShellFolder * pShellFolder;
+							if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
 							{
-								bool bFirstMatch = true;
-								for (int i=0; i<nCount; ++i)
+								// our next task is to enumerate all the
+								// items in the folder view and select those
+								// which match the text in the edit control
+
+								bool bUseRegex = (filter[0] == '\\');
+
+								try
 								{
-									LPITEMIDLIST pidl;
-									if (SUCCEEDED(pFolderView->Item(i, &pidl)))
+									const tr1::wregex regCheck(&filter[1], tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
+								}
+								catch (exception) 
+								{
+									bUseRegex = false;
+								}
+
+								if (!bUseRegex)
+								{
+									// force the filter to lowercase
+									TCHAR * pString = filter;
+									while (*pString)
 									{
-										STRRET str;
-										if (SUCCEEDED(pShellFolder->GetDisplayNameOf(pidl, 
-											// SHGDN_FORPARSING needed to get the extensions even if they're not shown
-											SHGDN_INFOLDER|SHGDN_FORPARSING,
-											&str)))
+										*pString = _totlower(*pString);
+										pString++;
+									}
+								}
+
+								int nCount = 0;
+								if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
+								{
+									HWND listView = GetListView32(pShellView);
+									if (listView)
+										SendMessage(listView, WM_SETREDRAW, FALSE, 0);
+									std::vector<LPITEMIDLIST> noShows;
+									for (int i=0; i<nCount; ++i)
+									{
+										LPITEMIDLIST pidl;
+										if (SUCCEEDED(pFolderView->Item(i, &pidl)))
 										{
-											TCHAR dispname[MAX_PATH];
-											StrRetToBuf(&str, pidl, dispname, MAX_PATH);
-
-											if (bUseRegex)
+											if (CheckDisplayName(pShellFolder, pidl, filter, bUseRegex))
 											{
-
-												try
-												{
-													const tr1::wregex regCheck(&filter[1], tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
-													wstring s = dispname;
-													if (tr1::regex_search(s, regCheck))
-													{
-														// yes, we have a match!
-														// now select that match
-														DWORD dwFlags = SVSI_CHECK|SVSI_SELECT|SVSI_ENSUREVISIBLE;
-														if (bFirstMatch)
-														{
-															// if this is the first item we have to select,
-															// deselect all previously selected items
-															// and make this one the first in the selection
-															dwFlags |= SVSI_SELECTIONMARK|SVSI_DESELECTOTHERS;
-															bFirstMatch = false;
-														}
-														pFolderView->SelectItem(i, dwFlags);
-													}
-												}
-												catch (exception) {}
+												CoTaskMemFree(pidl);
 											}
 											else
 											{
-												// we now have the display name of the item
-												// i.e. the way the item is shown
-												// since the windows filesystem is case-insensitive
-												// we have to force the display name to lowercase
-												// so the filter matches case-insensitive too
-												TCHAR * pString = dispname;
-												while (*pString)
+												UINT puItem = 0;
+												if (pShellFolderView->RemoveObject(pidl, &puItem) == S_OK)
 												{
-													*pString = _totlower(*pString);
-													pString++;
-												}
-												// check if the item name matches the wildcard of the edit control
-												if (CStringUtils::wcswildcmp(filter, dispname))
-												{
-													// yes, we have a match!
-													// now select that match
-													DWORD dwFlags = SVSI_CHECK|SVSI_SELECT|SVSI_ENSUREVISIBLE|SVSI_POSITIONITEM;
-													if (bFirstMatch)
-													{
-														// if this is the first item we have to select,
-														// deselect all previously selected items
-														// and make this one the first in the selection
-														dwFlags |= SVSI_SELECTIONMARK|SVSI_DESELECTOTHERS;
-														bFirstMatch = false;
-													}
-													pFolderView->SelectItem(i, dwFlags);
+													i--;
+													nCount--;
+													noShows.push_back(pidl);
 												}
 											}
-											bReturn = true;
 										}
-										CoTaskMemFree(pidl);
 									}
+									// now add all those items again which were removed by a previous filter string
+									// but don't match this new one
+									for (size_t i=0; i<m_noShows.size(); ++i)
+									{
+										LPITEMIDLIST pidlNoShow = m_noShows[i];
+										if (CheckDisplayName(pShellFolder, pidlNoShow, filter, bUseRegex))
+										{
+											m_noShows.erase(m_noShows.begin() + i);
+											i--;
+											UINT puItem = 0;
+											pShellFolderView->AddObject(pidlNoShow, &puItem);
+											CoTaskMemFree(pidlNoShow);
+										}
+									}
+									for (size_t i=0; i<noShows.size(); ++i)
+									{
+										m_noShows.push_back(noShows[i]);
+									}
+									if (listView)
+										SendMessage(listView, WM_SETREDRAW, TRUE, 0);
 								}
+								pShellFolder->Release();
 							}
-							pShellFolder->Release();
+							pPersistFolder->Release();
 						}
-						pPersistFolder->Release();
+						pShellFolderView->Release();
 					}
 					pFolderView->Release();
 				}
@@ -168,4 +163,49 @@ bool CDeskBand::Select(LPTSTR filter)
 		pServiceProvider->Release();
 	}
 	return bReturn;
+}
+
+bool CDeskBand::CheckDisplayName(IShellFolder * shellFolder, LPITEMIDLIST pidl, LPCTSTR filter, bool bUseRegex)
+{
+	STRRET str;
+	if (SUCCEEDED(shellFolder->GetDisplayNameOf(pidl, 
+		// SHGDN_FORPARSING needed to get the extensions even if they're not shown
+		SHGDN_INFOLDER|SHGDN_FORPARSING,
+		&str)))
+	{
+		TCHAR dispname[MAX_PATH];
+		StrRetToBuf(&str, pidl, dispname, MAX_PATH);
+
+		if (bUseRegex)
+		{
+
+			try
+			{
+				const tr1::wregex regCheck(&filter[1], tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
+				wstring s = dispname;
+
+				return tr1::regex_search(s, regCheck);
+			}
+			catch (exception) 
+			{
+			}
+		}
+		else
+		{
+			// we now have the display name of the item
+			// i.e. the way the item is shown
+			// since the windows file system is case-insensitive
+			// we have to force the display name to lowercase
+			// so the filter matches case-insensitive too
+			TCHAR * pString = dispname;
+			while (*pString)
+			{
+				*pString = _totlower(*pString);
+				pString++;
+			}
+			// check if the item name matches the text of the edit control
+			return (_tcsstr(dispname, filter) != NULL);
+		}
+	}
+	return false;
 }
