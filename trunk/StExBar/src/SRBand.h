@@ -148,6 +148,9 @@ private:
 	CRegStdWORD		m_regUseSelector;	///< config setting whether to use the selector or the cmd.exe replacement
 	CRegStdWORD		m_regHideEditBox;	///< config setting whether to show the edit box or not
 
+	std::vector<LPITEMIDLIST>	m_noShows;	///< list of pidls which didn't match a filter
+	LPITEMIDLIST	m_currentFolder;	///< pidl of the current folder
+	HWND			m_hwndListView;		///< handle of the list view control
 private:
 	/// window procedure of the sub classed desk band control
 	static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
@@ -202,6 +205,11 @@ private:
 	bool					Select(LPTSTR filter);
 	/// writes the string \a paths to a tempfile, either in unicode or ascii. The path to the tempfile is returned
 	wstring					WriteFileListToTempFile(bool bUnicode, const wstring& paths);
+	/// returns true if the pidl matches the filter string
+	bool					CheckDisplayName(IShellFolder * shellFolder, LPITEMIDLIST pidl, LPCTSTR filter, bool bUseRegex);
+	/// returns the list view control
+	HWND					GetListView32(IShellView * shellView);
+	static BOOL CALLBACK	EnumChildProc(HWND hwnd, LPARAM lParam);
 
 };
 
