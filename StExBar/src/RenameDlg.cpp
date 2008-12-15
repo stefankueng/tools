@@ -27,6 +27,14 @@
 
 using namespace std;
 
+struct __lesscasecmp
+{
+	bool operator() (const wstring& a, const wstring& b) const
+	{
+		return (_wcsicmp(a.c_str(), b.c_str()) < 0);
+	}
+};
+
 #define IDT_RENAME 101
 
 CRenameDlg::CRenameDlg(HWND hParent)
@@ -248,7 +256,7 @@ void CRenameDlg::FillRenamedList()
 
 	ListView_DeleteAllItems(hListCtrl);
 	// we also need a map which assigns each file its renamed equivalent
-	map<wstring, wstring> renamedmap;
+	map<wstring, wstring, __lesscasecmp> renamedmap;
 
 	try
 	{
@@ -266,7 +274,7 @@ void CRenameDlg::FillRenamedList()
 		// now fill in the list of files which got renamed
 		int iItem = 0;
 		TCHAR textbuf[MAX_PATH] = {0};
-		for (map<wstring, wstring>::iterator it = renamedmap.begin(); it != renamedmap.end(); ++it)
+		for (map<wstring, wstring, __lesscasecmp>::iterator it = renamedmap.begin(); it != renamedmap.end(); ++it)
 		{
 			LVITEM lvi = {0};
 			lvi.mask = LVIF_TEXT|LVIF_PARAM;
