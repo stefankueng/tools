@@ -67,8 +67,8 @@ BEGIN
     LTEXT           "StExBar v1.1.1",IDC_VERSIONSTRING,7,7,315,8
     LTEXT           "Copyright 2006-2007 Stefan Küng",IDC_STATIC,7,17,110,8
     CONTROL         "Copy UNC paths",IDC_USEUNCCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,74,69,10
-    CONTROL         "Use selector instead of cmd replacement",IDC_SELECTORCHECK,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,108,145,10
+    CONTROL         "Use filter instead of cmd replacement",IDC_SELECTORCHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,108,135,10
     CONTROL         "",IDC_CUSTCOMMANDS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,14,146,272,96
     PUSHBUTTON      "Edit",IDC_EDITCMD,120,249,50,14
     PUSHBUTTON      "Add",IDC_ADD,178,249,50,14
