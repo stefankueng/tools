@@ -62,7 +62,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 			AddToolTip(IDC_SHOWTEXT, _T("shows the name of the button below the icon"));
 			AddToolTip(IDC_USEUNCCHECK, _T("For mounted network drives, copies the UNC path for files/folders\r\ninstead of the path with the mounted drive letter"));
-			AddToolTip(IDC_SELECTORCHECK, _T("Determines whether the edit box on the right behaves as a shortcut for the console\r\nor whether it selects items according to the entered mask"));
+			AddToolTip(IDC_SELECTORCHECK, _T("Determines whether the edit box on the right behaves as a shortcut for the console\r\nor whether it filters items according to the entered mask"));
 			AddToolTip(IDC_HIDEEDITBOX, _T("Hides the edit box on the right of the toolbar"));
 
 			TCHAR buf[MAX_PATH] = {0};
