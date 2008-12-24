@@ -4,7 +4,7 @@
   UpgradeCode="705E17CC-A9E9-4082-96C6-EC08249B63A8"  
   Name='SKTimeStamp' 
   Id='????????-????-????-????-????????????'
-  Language='1031' 
+  Language='1033' 
   Codepage='1252' 
   Version='1.0.0' 
   Manufacturer='Stefans Tools'>
@@ -12,7 +12,7 @@
     <Package Id='????????-????-????-????-????????????' Keywords='Installer'
       Description="File/Folder Time Stamp Changer"
       Comments='http://tools.tortoisesvn.net' Manufacturer='Stefans Tools'
-      InstallerVersion='100' Languages='1031' Compressed='yes' SummaryCodepage='1252' />
+      InstallerVersion='100' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
       
     <Upgrade Id="705E17CC-A9E9-4082-96C6-EC08249B63A8" >
       <!-- flag is set if the install will trigger an upgrade of an existing install -->
