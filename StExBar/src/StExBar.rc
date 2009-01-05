@@ -7,7 +7,8 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "afxres.h"
+#include "afxres.h"
+
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -65,7 +66,7 @@ BEGIN
     GROUPBOX        "Custom Commands",IDC_STATIC,7,134,315,134
     LTEXT           "Stefan's Tools - tools.tortoisesvn.net",IDC_LINK,7,28,120,8
     LTEXT           "StExBar v1.1.1",IDC_VERSIONSTRING,7,7,315,8
-    LTEXT           "Copyright 2006-2007 Stefan Küng",IDC_STATIC,7,17,110,8
+    LTEXT           "Copyright 2007-2009 Stefan Küng",IDC_STATIC,7,17,110,8
     CONTROL         "Copy UNC paths",IDC_USEUNCCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,74,69,10
     CONTROL         "Use filter instead of cmd replacement",IDC_SELECTORCHECK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,108,135,10
