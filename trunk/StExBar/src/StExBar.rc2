@@ -35,7 +35,7 @@ BEGIN
             VALUE "FileDescription", "tools bar shell extension"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "StExBar.dll"
-            VALUE "LegalCopyright", "Copyright (C) 2006"
+            VALUE "LegalCopyright", "Copyright (C) 2007-2009"
             VALUE "OriginalFilename", "StExBar.dll"
             VALUE "ProductName", "StExBar"
             VALUE "ProductVersion", STRPRODUCTVER
