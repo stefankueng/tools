@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -204,6 +204,7 @@ void COptionsDlg::OnSelectListItem(LPNMLISTVIEW /*lpNMListView*/)
 	bool bIsSeparator = false;
 	bool bIsInternal = false;
 	bool bIsHidden = false;
+	bool bIsOptions = false;
 	for (int i=0; i<ListView_GetItemCount(m_hListControl); ++i)
 	{
 		item.mask = LVIF_PARAM|LVIF_STATE;
@@ -216,6 +217,7 @@ void COptionsDlg::OnSelectListItem(LPNMLISTVIEW /*lpNMListView*/)
 			bIsSeparator = pCmd->separator;
 			bIsHidden = pCmd->commandline.compare(INTERNALCOMMANDHIDDEN)==0;
 			bIsInternal = (pCmd->commandline.compare(INTERNALCOMMAND) || bIsHidden);
+			bIsOptions = pCmd->name.compare(_T("Options")) == 0;
 		}
 	}
 
@@ -223,10 +225,21 @@ void COptionsDlg::OnSelectListItem(LPNMLISTVIEW /*lpNMListView*/)
 		::SetWindowText(GetDlgItem(*this, IDC_REMOVE), _T("Activate"));
 	else
 		::SetWindowText(GetDlgItem(*this, IDC_REMOVE), _T("Remove"));
-	EnableWindow(GetDlgItem(*this, IDC_EDITCMD), nCount == 1 && !bIsSeparator);
-	EnableWindow(GetDlgItem(*this, IDC_REMOVE), nCount == 1);
-	EnableWindow(GetDlgItem(*this, IDC_MOVEUP), nCount == 1);
-	EnableWindow(GetDlgItem(*this, IDC_MOVEDOWN), nCount == 1);
+
+	if (bIsOptions)
+	{
+		EnableWindow(GetDlgItem(*this, IDC_EDITCMD), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_REMOVE), FALSE);
+		EnableWindow(GetDlgItem(*this, IDC_MOVEUP), nCount == 1);
+		EnableWindow(GetDlgItem(*this, IDC_MOVEDOWN), nCount == 1);
+	}
+	else
+	{
+		EnableWindow(GetDlgItem(*this, IDC_EDITCMD), nCount == 1 && !bIsSeparator);
+		EnableWindow(GetDlgItem(*this, IDC_REMOVE), nCount == 1);
+		EnableWindow(GetDlgItem(*this, IDC_MOVEUP), nCount == 1);
+		EnableWindow(GetDlgItem(*this, IDC_MOVEDOWN), nCount == 1);
+	}
 }
 
 void COptionsDlg::MoveSelectedUp()
