@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1223,8 +1223,13 @@ BOOL CDeskBand::BuildToolbarButtons()
 	{
 		Command cmd = m_commands.GetCommand(j);
 		m_hotkeys[cmd.key] = j;
+		if ((cmd.commandline.compare(INTERNALCOMMANDHIDDEN)==0)&&(cmd.name.compare(_T("Options")) == 0))
+		{
+			cmd.commandline = INTERNALCOMMAND;	// make sure the options button is never hidden.
+			m_commands.SetCommand(j, cmd);
+		}
 		if ((cmd.name.compare(_T("StexBar Internal Edit Box")) == 0)||
-			((cmd.commandline.compare(INTERNALCOMMANDHIDDEN)==0))&&(cmd.name.compare(_T("Options"))))
+			((cmd.commandline.compare(INTERNALCOMMANDHIDDEN)==0))&&(cmd.name.compare(_T("Options")) == 0))
 		{
 			continue;
 		}
