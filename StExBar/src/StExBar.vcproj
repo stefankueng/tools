@@ -714,11 +714,6 @@
 			>
 		</File>
 		<File
-			RelativePath=".\icons\html1.htm"
-			DeploymentContent="true"
-			>
-		</File>
-		<File
 			RelativePath=".\OptionsHelp.htm"
 			DeploymentContent="true"
 			>
