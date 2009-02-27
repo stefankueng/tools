@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -113,6 +113,17 @@ bool CDeskBand::Filter(LPTSTR filter)
 										{
 											if (CheckDisplayName(pShellFolder, pidl, filter, bUseRegex))
 											{
+												// remove now shown items which are in the no-show list
+												// this is necessary since we don't get a notification
+												// if the shell refreshes its view
+												for (std::vector<LPITEMIDLIST>::iterator it = m_noShows.begin(); it != m_noShows.end(); ++it )
+												{
+													if (HRESULT_CODE(pShellFolder->CompareIDs(SHCIDS_CANONICALONLY, *it, pidl))==0)
+													{
+														m_noShows.erase(it);
+														break;
+													}
+												}
 												CoTaskMemFree(pidl);
 											}
 											else

@@ -309,15 +309,15 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
 		UnhookWindowsHookEx(m_hook);
 		m_pSite->Release();
 		m_pSite = NULL;
-		map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
-		if (it != m_desklist.end())
-			m_desklist.erase(it);
-		for (size_t i=0; i<m_noShows.size(); ++i)
-		{
-			CoTaskMemFree(m_noShows[i]);
-		}
-		m_noShows.clear();
 	}
+	map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
+	if (it != m_desklist.end())
+		m_desklist.erase(it);
+	for (size_t i=0; i<m_noShows.size(); ++i)
+	{
+		CoTaskMemFree(m_noShows[i]);
+	}
+	m_noShows.clear();
 
 	m_tbSize.cx = 0;
 	m_tbSize.cy = 0;
