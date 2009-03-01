@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -109,6 +109,11 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				SetWindowPos(hwndDlg, HWND_TOP, rcOwner.left + (rc.right / 2), rcOwner.top + (rc.bottom / 2), 0, 0,	SWP_NOSIZE); 
 			}
 
+			m_AutoCompleteRen1.Load(_T("Software\\StExBar\\History"), _T("Ren1"));
+			m_AutoCompleteRen1.Init(GetDlgItem(hwndDlg, IDC_MATCHSTRING));
+			m_AutoCompleteRen2.Load(_T("Software\\StExBar\\History"), _T("Ren2"));
+			m_AutoCompleteRen2.Init(GetDlgItem(hwndDlg, IDC_REPLACESTRING));
+
 			CRegStdString ren1Reg = CRegStdString(_T("Software\\StExBar\\ren1Text"));
 			CRegStdString ren2Reg = CRegStdString(_T("Software\\StExBar\\ren2Text"));
 			wstring ren1Text = ren1Reg;
@@ -153,6 +158,9 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				CRegStdString ren2Reg = CRegStdString(_T("Software\\StExBar\\ren2Text"));
 				ren1Reg = m_sMatch;
 				ren2Reg = m_sReplace;
+				m_AutoCompleteRen1.AddEntry(m_sMatch.c_str());
+				m_AutoCompleteRen2.AddEntry(m_sReplace.c_str());
+
 				m_fl = tr1::regex_constants::ECMAScript;
 				if (SendDlgItemMessage(*this, IDC_CASEINSENSITIVE, BM_GETCHECK, 0, 0) == BST_CHECKED)
 					m_fl |= tr1::regex_constants::icase;
@@ -166,7 +174,9 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				::GetWindowRect(*this, &rc);
 				dlgWidth = rc.right-rc.left;
 				dlgHeight = rc.bottom-rc.top;
-				
+				m_AutoCompleteRen1.Save();
+				m_AutoCompleteRen2.Save();
+
 				EndDialog(*this, LOWORD(wParam));
 			}
 			return (INT_PTR)TRUE;
@@ -235,6 +245,23 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		break;
 	}
 	return (INT_PTR)FALSE;
+}
+
+bool CRenameDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		switch (pMsg->wParam)
+		{
+		case VK_DELETE:
+			{
+				m_AutoCompleteRen1.RemoveSelected();
+				m_AutoCompleteRen2.RemoveSelected();
+			}
+			break;
+		}
+	}
+	return false;
 }
 
 void CRenameDlg::FillRenamedList()
