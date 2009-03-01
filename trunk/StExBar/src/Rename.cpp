@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -142,7 +142,7 @@ void CDeskBand::Rename()
 	m_bDialogShown = TRUE;
 	CRenameDlg dlg(m_hWnd);
 	dlg.SetFileList(m_filelist);
-	if (dlg.DoModal(g_hInst, IDD_RENAMEDLG, m_hWnd) == IDOK)
+	if (dlg.DoModal(g_hInst, IDD_RENAMEDLG, m_hWnd, NULL) == IDOK)
 	{
 		try
 		{

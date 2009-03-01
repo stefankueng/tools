@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -52,11 +52,14 @@ INT_PTR CDialog::DoModal(HINSTANCE hInstance, int resID, HWND hWndParent, UINT i
 		}
 		else
 		{
-			if (!TranslateAccelerator(m_hwnd, hAccelTable, &msg) && 
-				!IsDialogMessage(m_hwnd, &msg)) 
-			{ 
-				TranslateMessage(&msg); 
-				DispatchMessage(&msg); 
+			if (!PreTranslateMessage(&msg))
+			{
+				if (!TranslateAccelerator(m_hwnd, hAccelTable, &msg) && 
+					!IsDialogMessage(m_hwnd, &msg)) 
+				{ 
+					TranslateMessage(&msg); 
+					DispatchMessage(&msg); 
+				}
 			}
 		}
 	} 
@@ -139,7 +142,7 @@ INT_PTR CALLBACK CDialog::stDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 
 		SetWindowPos(pWnd->m_hToolTips, HWND_TOPMOST,0, 0, 0, 0,
 			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-		SendMessage(pWnd->m_hToolTips, TTM_SETMAXTIPWIDTH, 0, 800);  
+		SendMessage(pWnd->m_hToolTips, TTM_SETMAXTIPWIDTH, 0, 600);  
 		SendMessage(pWnd->m_hToolTips, TTM_ACTIVATE, TRUE, 0);
 	}
 	// get the pointer to the window
@@ -150,9 +153,14 @@ INT_PTR CALLBACK CDialog::stDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 	if (pWnd)
 	{
 		LRESULT lRes = pWnd->DlgFunc(hwndDlg, uMsg, wParam, lParam);
-		SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, lRes);
+		SetWindowLongPtr(hwndDlg, DWL_MSGRESULT, lRes);
 		return lRes;
 	}
 	else
 		return DefWindowProc(hwndDlg, uMsg, wParam, lParam);
+}
+
+bool CDialog::PreTranslateMessage(MSG* /*pMsg*/)
+{
+	return false;
 }

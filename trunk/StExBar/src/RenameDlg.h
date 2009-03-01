@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 #pragma once
 #include "basedialog.h"
 #include "DlgResizer.h"
+#include "AutoComplete.h"
 #include <string>
 #include <regex>
 
@@ -40,6 +41,7 @@ public:
 
 protected:
 	LRESULT CALLBACK		DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	bool					PreTranslateMessage(MSG* pMsg);
 	void					FillRenamedList();
 private:
 	HWND					m_hParent;
@@ -47,5 +49,8 @@ private:
 	wstring					m_sMatch;			///< the match string of the rename
 	wstring					m_sReplace;			///< the replace string of the rename
 	set<wstring>			m_filelist;			///< the list of selected file/folder names
+	CAutoComplete			m_AutoCompleteRen1;
+	CAutoComplete			m_AutoCompleteRen2;
+
 	tr1::regex_constants::syntax_option_type m_fl;
 };
