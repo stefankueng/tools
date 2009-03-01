@@ -340,6 +340,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\AutoComplete.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\BaseDialog.cpp"
 				>
 			</File>
@@ -433,6 +437,10 @@
 			</File>
 			<File
 				RelativePath=".\Pidl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RegHistory.cpp"
 				>
 			</File>
 			<File
@@ -574,6 +582,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\AutoComplete.h"
+				>
+			</File>
+			<File
 				RelativePath=".\BaseDialog.h"
 				>
 			</File>
@@ -623,6 +635,10 @@
 			</File>
 			<File
 				RelativePath=".\Pidl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RegHistory.h"
 				>
 			</File>
 			<File
