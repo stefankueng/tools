@@ -103,6 +103,17 @@ bool CDeskBand::Filter(LPTSTR filter)
 								if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
 								{
 									pShellFolderView->SetRedraw(FALSE);
+									HWND listView = GetListView32(pShellView);
+									LRESULT viewType = 0;
+									if (listView)
+									{
+										// inserting items in the list view if the list view is set to
+										// e.g., LV_VIEW_LIST is painfully slow. So save the current view
+										// and set it to LV_VIEW_DETAILS (which is much faster for inserting)
+										// and restore the view after we're done.
+										viewType = SendMessage(listView, LVM_GETVIEW, 0, 0);
+										SendMessage(listView, LVM_SETVIEW, LV_VIEW_DETAILS, 0);
+									}
 									std::vector<LPITEMIDLIST> noShows;
 									for (int i=0; i<nCount; ++i)
 									{
@@ -155,6 +166,11 @@ bool CDeskBand::Filter(LPTSTR filter)
 									{
 										m_noShows.push_back(noShows[i]);
 									}
+									if (listView)
+									{
+										SendMessage(listView, LVM_SETVIEW, viewType, 0);
+									}
+
 									pShellFolderView->SetRedraw(TRUE);
 								}
 								pShellFolder->Release();
