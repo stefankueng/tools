@@ -102,9 +102,7 @@ bool CDeskBand::Filter(LPTSTR filter)
 								int nCount = 0;
 								if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
 								{
-									HWND listView = GetListView32(pShellView);
-									if (listView)
-										SendMessage(listView, WM_SETREDRAW, FALSE, 0);
+									pShellFolderView->SetRedraw(FALSE);
 									std::vector<LPITEMIDLIST> noShows;
 									for (int i=0; i<nCount; ++i)
 									{
@@ -140,6 +138,7 @@ bool CDeskBand::Filter(LPTSTR filter)
 									}
 									// now add all those items again which were removed by a previous filter string
 									// but don't match this new one
+									//pShellFolderView->SetObjectCount(5000, SFVSOC_INVALIDATE_ALL|SFVSOC_NOSCROLL);
 									for (size_t i=0; i<m_noShows.size(); ++i)
 									{
 										LPITEMIDLIST pidlNoShow = m_noShows[i];
@@ -147,7 +146,7 @@ bool CDeskBand::Filter(LPTSTR filter)
 										{
 											m_noShows.erase(m_noShows.begin() + i);
 											i--;
-											UINT puItem = 0;
+											UINT puItem = i;
 											pShellFolderView->AddObject(pidlNoShow, &puItem);
 											CoTaskMemFree(pidlNoShow);
 										}
@@ -156,8 +155,7 @@ bool CDeskBand::Filter(LPTSTR filter)
 									{
 										m_noShows.push_back(noShows[i]);
 									}
-									if (listView)
-										SendMessage(listView, WM_SETREDRAW, TRUE, 0);
+									pShellFolderView->SetRedraw(TRUE);
 								}
 								pShellFolder->Release();
 							}
