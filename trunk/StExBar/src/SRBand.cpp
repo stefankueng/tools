@@ -822,7 +822,14 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 						// Seems no items are selected
 						// Use the view path instead
 						WCHAR buf[MAX_PATH];
-						_tcscpy_s(buf, MAX_PATH, m_currentDirectory.c_str());
+						if (DWORD(m_regUseUNCPaths))
+						{
+							str = ConvertToUNC(m_currentDirectory);
+							_tcscpy_s(buf, MAX_PATH, str.c_str());
+						}
+						else
+							_tcscpy_s(buf, MAX_PATH, m_currentDirectory.c_str());
+
 						PathQuoteSpaces(buf);
 						str = buf;
 					}
