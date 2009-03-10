@@ -153,7 +153,7 @@ INT_PTR CALLBACK CDialog::stDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 	if (pWnd)
 	{
 		LRESULT lRes = pWnd->DlgFunc(hwndDlg, uMsg, wParam, lParam);
-		SetWindowLongPtr(hwndDlg, DWL_MSGRESULT, lRes);
+		SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, lRes);
 		return lRes;
 	}
 	else
