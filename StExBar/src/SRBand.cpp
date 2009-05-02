@@ -25,6 +25,7 @@
 #include "resource.h"
 #include "SimpleIni.h"
 #include "uxtheme.h"
+#include "Vsstyle.h"
 #include "ChevronMenu.h"
 #include "OptionsDlg.h"
 #include "UnicodeUtils.h"
@@ -618,7 +619,11 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 				{
 					// now draw the themed background of a rebar control, because
 					// that's what we're actually in and should look like.
-					DrawThemeBackground(hTheme, hDC, 0, 0, &rc, NULL);
+					if (IsThemeBackgroundPartiallyTransparent(hTheme, RP_BAND, 0))
+					{
+						DrawThemeParentBackground(pThis->m_hWnd, hDC, &rc);
+					}
+					DrawThemeBackground(hTheme, hDC, RP_BAND, 0, &rc, NULL);
 					return TRUE;	// we've drawn the background
 				}
 			}
