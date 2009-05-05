@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,7 +21,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
 
 #define INTERNALCOMMAND _T("INTERNALCOMMAND")
 #define INTERNALCOMMANDHIDDEN _T("INTERNALCOMMANDHIDDEN")
@@ -59,10 +58,10 @@ public:
 	{
 	}
 
-	wstring			name;
-	wstring			icon;
+	std::wstring	name;
+	std::wstring	icon;
 	WORD			nIconID;
-	wstring			commandline;
+	std::wstring	commandline;
 	bool			separator;
 
 	bool			enabled_viewpath;
@@ -92,5 +91,5 @@ public:
 	void				InsertCommand(int index, Command cmd) {m_commands.insert(m_commands.begin()+index, cmd);}
 	void				SetCommand(int index, Command cmd) {m_commands[index] = cmd;}
 private:
-	vector<Command>		m_commands;
+	std::vector<Command>		m_commands;
 };
