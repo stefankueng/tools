@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,6 +19,8 @@
 #include "StdAfx.h"
 #include "Commands.h"
 #include "resource.h"
+
+using namespace std;
 
 CCommands::CCommands(void)
 {
