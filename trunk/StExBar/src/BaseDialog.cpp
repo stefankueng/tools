@@ -89,9 +89,12 @@ void CDialog::InitDialog(HWND hwndDlg, UINT iconID)
 {
 	HWND hwndOwner; 
 	RECT rc, rcDlg, rcOwner;
+	WINDOWPLACEMENT placement;
+	placement.length = sizeof(WINDOWPLACEMENT);
 
 	hwndOwner = ::GetParent(hwndDlg);
-	if (hwndOwner == NULL)
+	GetWindowPlacement(hwndOwner, &placement);
+	if ((hwndOwner == NULL)||(placement.showCmd == SW_SHOWMINIMIZED)||(placement.showCmd == SW_SHOWMINNOACTIVE))
 		hwndOwner = ::GetDesktopWindow();
 
 	GetWindowRect(hwndOwner, &rcOwner); 
