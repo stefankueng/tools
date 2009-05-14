@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -152,6 +152,7 @@ private:
 	std::vector<LPITEMIDLIST>	m_noShows;	///< list of pidls which didn't match a filter
 	LPITEMIDLIST	m_currentFolder;	///< pidl of the current folder
 	HWND			m_hwndListView;		///< handle of the list view control
+	static const UINT	WM_SHELLHOOKMESSAGE;
 private:
 	/// window procedure of the sub classed desk band control
 	static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
