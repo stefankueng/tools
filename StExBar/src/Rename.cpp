@@ -71,7 +71,11 @@ void CDeskBand::Rename()
 								TCHAR buf[MAX_PATH] = {0};
 								// find the path of the folder
 								if (SHGetPathFromIDList(folderpidl, buf))
+								{
 									m_currentDirectory = buf;
+									PathQuoteSpaces(buf);
+									m_currentDirectoryQuoted = buf;
+								}
 								// if m_currentDirectory is empty here, that means
 								// the current directory is a virtual path
 

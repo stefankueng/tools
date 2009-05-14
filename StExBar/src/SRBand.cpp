@@ -869,7 +869,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 				}
 				else if (cmd.name.compare(_T("Copy Names")) == 0)
 				{
-					wstring str = GetFileNames(_T("\r\n"), false, true, true);
+					wstring str = GetFileNames(_T("\r\n"), true, true, true);
 					if (str.empty())
 					{
 						// Seems no items are selected
@@ -887,7 +887,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 				}
 				else if (cmd.name.compare(_T("Copy Paths")) == 0)
 				{
-					wstring str = GetFilePaths(_T("\r\n"), false, true, true, DWORD(m_regUseUNCPaths) ? true : false);
+					wstring str = GetFilePaths(_T("\r\n"), true, true, true, DWORD(m_regUseUNCPaths) ? true : false);
 					if (str.empty())
 					{
 						// Seems no items are selected
@@ -938,7 +938,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					// prepare the selected paths
 					wstring selpaths = GetFilePaths(_T(" "), true, true, true, false);
 					if (selpaths.empty())
-						selpaths = m_currentDirectory;
+						selpaths = m_currentDirectoryQuoted;
 					wstring::iterator it_end= it_begin + tag.size();
 					commandline.replace(it_begin, it_end, selpaths);
 				}
@@ -947,7 +947,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
 				if (it_begin != commandline.end())
 				{
-					// prepare the selected names
+					// prepare the selected paths
 					wstring selpaths = GetFilePaths(_T("*"), false, true, true, false);
 					if (selpaths.empty())
 						selpaths = m_currentDirectory;
