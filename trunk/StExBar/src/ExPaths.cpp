@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -59,7 +59,11 @@ bool CDeskBand::FindPaths()
 							TCHAR buf[MAX_PATH] = {0};
 							// find the path of the folder
 							if (SHGetPathFromIDList(folderpidl, buf))
+							{
 								m_currentDirectory = buf;
+								PathQuoteSpaces(buf);
+								m_currentDirectoryQuoted = buf;
+							}
 							// if m_currentDirectory is empty here, that means
 							// the current directory is a virtual path
 

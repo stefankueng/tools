@@ -133,6 +133,7 @@ private:
 	HHOOK			m_hook;				///< handle of the keyboard hook procedure
 
 	wstring			m_currentDirectory;	///< the current directory of the explorer view
+	wstring			m_currentDirectoryQuoted; ///< the current directory of the explorer view, but enquoted if necessary
 	map<wstring, ULONG>	m_selectedItems;///< list of items which are selected in the explorer view
 	bool			m_bFilesSelected;	///< at least one file is selected
 	bool			m_bFolderSelected;	///< at least one folder is selected
