@@ -29,11 +29,14 @@
 #include "ChevronMenu.h"
 #include "OptionsDlg.h"
 #include "UnicodeUtils.h"
+#include <dwmapi.h>
 
 #pragma comment(lib, "uxtheme.lib")
 
 
 map<DWORD, CDeskBand*> CDeskBand::m_desklist;	///< set of CDeskBand objects which use the keyboard hook
+
+const UINT CDeskBand::WM_SHELLHOOKMESSAGE = RegisterWindowMessage(_T("SHELLHOOK"));
 
 CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_hwndParent(NULL)
@@ -350,6 +353,8 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
 		m_hook = SetWindowsHookEx(WH_KEYBOARD, KeyboardHookProc, NULL, GetCurrentThreadId());
 		m_desklist[GetCurrentThreadId()] = this;
 
+		RegisterShellHookWindow(m_hWnd);
+
 		// Get and keep the IInputObjectSite pointer.
 		if (SUCCEEDED(punkSite->QueryInterface(IID_IInputObjectSite, 
 			(LPVOID*)&m_pSite)))
@@ -632,6 +637,67 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 
 	}
 
+	if (uMessage == WM_SHELLHOOKMESSAGE)
+	{
+		if (wParam == HSHELL_WINDOWCREATED)
+		{
+			if (DWORD(CRegStdWORD(_T("Software\\StefansTools\\StExBar\\GlassForCmd"), 0)))
+			{
+				DWORD procID = 0;
+
+				GetWindowThreadProcessId((HWND)lParam, &procID);
+
+				HANDLE hProc = 0;
+				if ((hProc = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, procID)) != 0)
+				{
+					DWORD bufsize = 32000;
+					TCHAR exename[32000];
+
+					if (QueryFullProcessImageName(hProc, 0, exename, &bufsize))
+					{
+						bool bProcessIsCommandLine = false;
+						TCHAR buf[MAX_PATH] = {0};
+						if (ExpandEnvironmentStrings(_T("%COMSPEC%"), buf, MAX_PATH)==NULL)
+						{
+							TCHAR * ename = _tcsrchr(exename, '\\');
+							if (ename)
+							{
+								if (_tcsicmp(ename, _T("\\cmd.exe")) == 0)
+									bProcessIsCommandLine = true;
+							}
+						}
+						else
+						{
+							if (_tcsicmp(exename, buf) == 0)
+								bProcessIsCommandLine = true;
+						}
+						if (bProcessIsCommandLine)
+						{
+							// the new window is a cmd.exe window.
+							HMODULE library = ::LoadLibrary(L"dwmapi.dll");
+							if (library)
+							{
+								typedef HRESULT STDAPICALLTYPE DwmEnableBlurBehindWindowFn(HWND hwnd, const DWM_BLURBEHIND *pBlurBehind);
+
+								DwmEnableBlurBehindWindowFn *pfnDwmEnableBlurBehindWindow = (DwmEnableBlurBehindWindowFn*)::GetProcAddress(library, "DwmEnableBlurBehindWindow");
+								if (pfnDwmEnableBlurBehindWindow)
+								{
+									DWM_BLURBEHIND blurBehind = { 0 };
+									blurBehind.dwFlags = DWM_BB_ENABLE | DWM_BB_TRANSITIONONMAXIMIZED;
+									blurBehind.fEnable = true;
+									blurBehind.fTransitionOnMaximized = false;
+									pfnDwmEnableBlurBehindWindow((HWND)lParam, &blurBehind);
+								}
+								::FreeLibrary(library);
+							}
+						}
+					}
+
+					CloseHandle(hProc);
+				}
+			}
+		}
+	}
 	return DefWindowProc(hWnd, uMessage, wParam, lParam);
 }
 

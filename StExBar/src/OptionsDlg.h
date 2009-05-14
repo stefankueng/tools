@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -49,6 +49,7 @@ private:
 	CRegStdWORD				m_regUseUNCPaths;	///< config setting whether to copy the UNC paths of mapped paths or not
 	CRegStdWORD				m_regUseSelector;	///< config setting whether to use the selector or the cmd.exe replacement
 	CRegStdWORD				m_regHideEditBox;	///< config setting whether to show the edit box or not
+	CRegStdWORD				m_regGlassForCmd;	///< config setting whether to enable glass effect for cmd.exe on Vista
 	CHyperLink				m_link;				///< the hyperlink used in the options dialog
 
 	CCommands				m_commands;
