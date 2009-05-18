@@ -652,47 +652,56 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 				{
 					DWORD bufsize = 32000;
 					TCHAR exename[32000];
+					typedef HRESULT STDAPICALLTYPE QueryFullProcessImageNameFn(HANDLE hProcess, DWORD dwFlags, LPTSTR lpExeName, PDWORD lpdwSize);
 
-					if (QueryFullProcessImageName(hProc, 0, exename, &bufsize))
+					HMODULE hKernel = ::LoadLibrary(L"kernel32.dll");
+					if (hKernel)
 					{
-						bool bProcessIsCommandLine = false;
-						TCHAR buf[MAX_PATH] = {0};
-						if (ExpandEnvironmentStrings(_T("%COMSPEC%"), buf, MAX_PATH)==NULL)
+						QueryFullProcessImageNameFn *pfnQueryFullProcessImageName = (QueryFullProcessImageNameFn*)::GetProcAddress(hKernel, "QueryFullProcessImageNameW");
+						if (pfnQueryFullProcessImageName)
 						{
-							TCHAR * ename = _tcsrchr(exename, '\\');
-							if (ename)
+							if (pfnQueryFullProcessImageName(hProc, 0, exename, &bufsize))
 							{
-								if (_tcsicmp(ename, _T("\\cmd.exe")) == 0)
-									bProcessIsCommandLine = true;
-							}
-						}
-						else
-						{
-							if (_tcsicmp(exename, buf) == 0)
-								bProcessIsCommandLine = true;
-						}
-						if (bProcessIsCommandLine)
-						{
-							// the new window is a cmd.exe window.
-							HMODULE library = ::LoadLibrary(L"dwmapi.dll");
-							if (library)
-							{
-								typedef HRESULT STDAPICALLTYPE DwmEnableBlurBehindWindowFn(HWND hwnd, const DWM_BLURBEHIND *pBlurBehind);
-
-								DwmEnableBlurBehindWindowFn *pfnDwmEnableBlurBehindWindow = (DwmEnableBlurBehindWindowFn*)::GetProcAddress(library, "DwmEnableBlurBehindWindow");
-								if (pfnDwmEnableBlurBehindWindow)
+								bool bProcessIsCommandLine = false;
+								TCHAR buf[MAX_PATH] = {0};
+								if (ExpandEnvironmentStrings(_T("%COMSPEC%"), buf, MAX_PATH)==NULL)
 								{
-									DWM_BLURBEHIND blurBehind = { 0 };
-									blurBehind.dwFlags = DWM_BB_ENABLE | DWM_BB_TRANSITIONONMAXIMIZED;
-									blurBehind.fEnable = true;
-									blurBehind.fTransitionOnMaximized = false;
-									pfnDwmEnableBlurBehindWindow((HWND)lParam, &blurBehind);
+									TCHAR * ename = _tcsrchr(exename, '\\');
+									if (ename)
+									{
+										if (_tcsicmp(ename, _T("\\cmd.exe")) == 0)
+											bProcessIsCommandLine = true;
+									}
 								}
-								::FreeLibrary(library);
+								else
+								{
+									if (_tcsicmp(exename, buf) == 0)
+										bProcessIsCommandLine = true;
+								}
+								if (bProcessIsCommandLine)
+								{
+									// the new window is a cmd.exe window.
+									HMODULE library = ::LoadLibrary(L"dwmapi.dll");
+									if (library)
+									{
+										typedef HRESULT STDAPICALLTYPE DwmEnableBlurBehindWindowFn(HWND hwnd, const DWM_BLURBEHIND *pBlurBehind);
+
+										DwmEnableBlurBehindWindowFn *pfnDwmEnableBlurBehindWindow = (DwmEnableBlurBehindWindowFn*)::GetProcAddress(library, "DwmEnableBlurBehindWindow");
+										if (pfnDwmEnableBlurBehindWindow)
+										{
+											DWM_BLURBEHIND blurBehind = { 0 };
+											blurBehind.dwFlags = DWM_BB_ENABLE | DWM_BB_TRANSITIONONMAXIMIZED;
+											blurBehind.fEnable = true;
+											blurBehind.fTransitionOnMaximized = false;
+											pfnDwmEnableBlurBehindWindow((HWND)lParam, &blurBehind);
+										}
+										::FreeLibrary(library);
+									}
+								}
 							}
 						}
+						::FreeLibrary(hKernel);
 					}
-
 					CloseHandle(hProc);
 				}
 			}
