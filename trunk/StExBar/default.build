@@ -4,6 +4,12 @@
 	<include buildfile="default.build.user" />
 
 	<target name="build" depends="VSNET,env">
+		<!-- the signinfo.txt file has to contain one line with parameters for signtool.exe,
+	     for example:
+		 /t "url/to/timestamp/server" /q
+		-->
+		<loadfile file="signinfo.txt" property="signinfo" failonerror="false" />
+
 		<!-- run SubWCRev to get the revision of the working copy -->
 		<exec program="SubWCRev.exe">
 			<arg value="." />
@@ -32,6 +38,21 @@
 			<arg value="/rebuild" />
 			<arg value="release|x64" />
 		</exec>
+
+		<!-- sign all release binaries -->
+		<if test="${file::exists('signinfo.txt')}">
+			<exec program="signtool">
+				<arg value="sign" />
+				<arg value="${signinfo}" />
+				<arg value="bin/release/StExBar.dll" />
+			</exec>
+			<exec program="signtool">
+				<arg value="sign" />
+				<arg value="${signinfo}" />
+				<arg value="bin/release_x64/StExBar.dll" />
+			</exec>
+		</if>
+
 
 		<exec program="candle">
 			<arg value="-nologo" />
@@ -72,8 +93,21 @@
 		<delete>
 			<fileset>
 				<include name="bin\*.wixobj" />
+				<include name="..\..\bin\*.wixpdb" />
 			</fileset>
 		</delete>
+		<if test="${file::exists('signinfo.txt')}">
+			<exec program="signtool">
+				<arg value="sign" />
+				<arg value="${signinfo}" />
+				<arg value="bin\StExBar64.msi" />
+			</exec>
+			<exec program="signtool">
+				<arg value="sign" />
+				<arg value="${signinfo}" />
+				<arg value="bin\StExBar.msi" />
+			</exec>
+		</if>
 
 	</target>
 
