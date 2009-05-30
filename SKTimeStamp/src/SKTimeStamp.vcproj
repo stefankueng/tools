@@ -469,6 +469,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Scripts"
+			>
+			<File
+				RelativePath="..\default.build"
+				>
+			</File>
+			<File
+				RelativePath=".\setup\Setup.wxs"
+				>
+			</File>
+			<File
+				RelativePath=".\setup\Setup64.wxs"
+				>
+			</File>
+			<File
+				RelativePath=".\setup\WixUI_Custom.wxs"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 		<Global

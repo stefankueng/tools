@@ -724,9 +724,25 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="WiX"
+			>
+			<File
+				RelativePath=".\setup\Setup.wxs"
+				>
+			</File>
+			<File
+				RelativePath=".\setup\Setup64.wxs"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\CommandHelp.htm"
 			DeploymentContent="true"
+			>
+		</File>
+		<File
+			RelativePath="..\default.build"
 			>
 		</File>
 		<File
@@ -737,14 +753,6 @@
 		<File
 			RelativePath=".\regexhelp.htm"
 			DeploymentContent="true"
-			>
-		</File>
-		<File
-			RelativePath=".\setup\Setup.wxs"
-			>
-		</File>
-		<File
-			RelativePath=".\setup\Setup64.wxs"
 			>
 		</File>
 		<File
