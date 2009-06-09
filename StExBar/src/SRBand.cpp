@@ -629,6 +629,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 						DrawThemeParentBackground(pThis->m_hWnd, hDC, &rc);
 					}
 					DrawThemeBackground(hTheme, hDC, RP_BAND, 0, &rc, NULL);
+					CloseThemeData(hTheme);
 					return TRUE;	// we've drawn the background
 				}
 			}
