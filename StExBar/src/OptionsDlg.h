@@ -49,7 +49,6 @@ private:
 	CRegStdWORD				m_regUseUNCPaths;	///< config setting whether to copy the UNC paths of mapped paths or not
 	CRegStdWORD				m_regUseSelector;	///< config setting whether to use the selector or the cmd.exe replacement
 	CRegStdWORD				m_regHideEditBox;	///< config setting whether to show the edit box or not
-	CRegStdWORD				m_regGlassForCmd;	///< config setting whether to enable glass effect for cmd.exe on Vista
 	CHyperLink				m_link;				///< the hyperlink used in the options dialog
 
 	CCommands				m_commands;

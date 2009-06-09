@@ -153,7 +153,6 @@ private:
 	std::vector<LPITEMIDLIST>	m_noShows;	///< list of pidls which didn't match a filter
 	LPITEMIDLIST	m_currentFolder;	///< pidl of the current folder
 	HWND			m_hwndListView;		///< handle of the list view control
-	static const UINT	WM_SHELLHOOKMESSAGE;
 private:
 	/// window procedure of the sub classed desk band control
 	static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
