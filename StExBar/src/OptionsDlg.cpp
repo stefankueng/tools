@@ -34,6 +34,7 @@ COptionsDlg::COptionsDlg(HWND hParent) : m_regShowBtnText(_T("Software\\StefansT
 	, m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
 	, m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
 	, m_regHideEditBox(_T("Software\\StefansTools\\StExBar\\HideEditBox"), 0)
+	, m_regContextMenu(_T("Software\\StefansTools\\StExBar\\ContextMenu"), 1)
 {
 	m_hParent = hParent;
 }
@@ -58,12 +59,14 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_SETCHECK, DWORD(m_regUseUNCPaths) ? BST_CHECKED : BST_UNCHECKED, 0);
 			SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_SETCHECK, DWORD(m_regHideEditBox) ? BST_CHECKED : BST_UNCHECKED, 0);
 			SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_SETCHECK, DWORD(m_regUseSelector) ? BST_CHECKED : BST_UNCHECKED, 0);
+			SendMessage(GetDlgItem(hwndDlg, IDC_CONTEXTMENU), BM_SETCHECK, DWORD(m_regContextMenu) ? BST_CHECKED : BST_UNCHECKED, 0);
 			EnableWindow(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), !DWORD(m_regHideEditBox));
 
 			AddToolTip(IDC_SHOWTEXT, _T("shows the name of the button below the icon"));
 			AddToolTip(IDC_USEUNCCHECK, _T("For mounted network drives, copies the UNC path for files/folders\r\ninstead of the path with the mounted drive letter"));
 			AddToolTip(IDC_SELECTORCHECK, _T("Determines whether the edit box on the right behaves as a shortcut for the console\r\nor whether it filters items according to the entered mask"));
 			AddToolTip(IDC_HIDEEDITBOX, _T("Hides the edit box on the right of the toolbar"));
+			AddToolTip(IDC_CONTEXTMENU, _T("Adds the commands also to the right-click context menu"));
 
 			TCHAR buf[MAX_PATH] = {0};
 			_stprintf_s(buf, MAX_PATH, _T("StExBar %ld.%ld.%ld.%ld"), VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
@@ -82,6 +85,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				m_regUseUNCPaths = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_GETCHECK, 0, 0);
 				m_regUseSelector = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_GETCHECK, 0, 0);
 				m_regHideEditBox = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_GETCHECK, 0, 0);
+				m_regContextMenu = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_CONTEXTMENU), BM_GETCHECK, 0, 0);
 				m_commands.SaveToFile();
 			}
 			// fall through

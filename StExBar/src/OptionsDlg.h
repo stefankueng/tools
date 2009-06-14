@@ -49,6 +49,7 @@ private:
 	CRegStdWORD				m_regUseUNCPaths;	///< config setting whether to copy the UNC paths of mapped paths or not
 	CRegStdWORD				m_regUseSelector;	///< config setting whether to use the selector or the cmd.exe replacement
 	CRegStdWORD				m_regHideEditBox;	///< config setting whether to show the edit box or not
+	CRegStdWORD				m_regContextMenu;	///< config setting whether to show the commands in the context menu or not
 	CHyperLink				m_link;				///< the hyperlink used in the options dialog
 
 	CCommands				m_commands;

@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 #include "SRBand.h"
 
 
-void CDeskBand::StartCmd(std::wstring params)
+void CDeskBand::StartCmd(const wstring& cwd, std::wstring params)
 {
 	STARTUPINFO startup;
 	PROCESS_INFORMATION process;
@@ -44,7 +44,7 @@ void CDeskBand::StartCmd(std::wstring params)
 		FALSE, 
 		CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE, 
 		0, 
-		m_currentDirectory.empty() ? NULL : m_currentDirectory.c_str(), 
+		cwd.empty() ? NULL : cwd.c_str(), 
 		&startup, 
 		&process);
 	delete [] nonconstparams;
@@ -52,7 +52,7 @@ void CDeskBand::StartCmd(std::wstring params)
 	CloseHandle(process.hProcess);
 }
 
-void CDeskBand::StartApplication(std::wstring commandline)
+void CDeskBand::StartApplication(const wstring& cwd, std::wstring commandline)
 {
 	STARTUPINFO startup;
 	PROCESS_INFORMATION process;
@@ -72,7 +72,7 @@ void CDeskBand::StartApplication(std::wstring commandline)
 		FALSE, 
 		CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE, 
 		0, 
-		m_currentDirectory.empty() ? NULL : m_currentDirectory.c_str(), 
+		cwd.empty() ? NULL : cwd.c_str(), 
 		&startup, 
 		&process);
 	delete [] nonconst;

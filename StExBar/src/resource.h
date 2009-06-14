@@ -53,6 +53,7 @@
 #define IDC_CHECK1                      1035
 #define IDC_INTERNALHIDE                1035
 #define IDC_CASEINSENSITIVE             1035
+#define IDC_CONTEXTMENU                 1035
 #define IDC_OPTIONSHELP                 1036
 #define IDC_BUTTON1                     1037
 #define IDC_COMMANDSHELP                1037
