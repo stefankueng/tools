@@ -61,8 +61,6 @@ bool CDeskBand::FindPaths()
 							if (SHGetPathFromIDList(folderpidl, buf))
 							{
 								m_currentDirectory = buf;
-								PathQuoteSpaces(buf);
-								m_currentDirectoryQuoted = buf;
 							}
 							// if m_currentDirectory is empty here, that means
 							// the current directory is a virtual path
@@ -128,13 +126,13 @@ bool CDeskBand::FindPaths()
 	return ((!m_currentDirectory.empty()) || (m_selectedItems.size()!=0));
 }
 
-wstring CDeskBand::GetFileNames(wstring separator, bool quotespaces, bool includefiles, bool includefolders)
+wstring CDeskBand::GetFileNames(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders)
 {
 	wstring sRet;
 	WCHAR buf[MAX_PATH+2];
-	if (m_selectedItems.size())
+	if (items.size())
 	{
-		for (map<wstring, ULONG>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
+		for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
 		{
 			if (((it->second & SFGAO_FOLDER)&&(includefolders))||(((it->second & SFGAO_FOLDER)==0)&&(includefiles)))
 			{
@@ -158,13 +156,13 @@ wstring CDeskBand::GetFileNames(wstring separator, bool quotespaces, bool includ
 	return sRet;
 }
 
-wstring CDeskBand::GetFilePaths(wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc)
+wstring CDeskBand::GetFilePaths(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc)
 {
 	WCHAR buf[MAX_PATH+2];
 	wstring sRet;
-	if (m_selectedItems.size())
+	if (items.size())
 	{
-		for (map<wstring, ULONG>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
+		for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
 		{
 			if (((it->second & SFGAO_FOLDER)&&(includefolders))||(((it->second & SFGAO_FOLDER)==0)&&(includefiles)))
 			{

@@ -23,13 +23,13 @@
 #include "RenameDlg.h"
 #include "Pidl.h"
 
-void CDeskBand::Rename()
+void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
 {
 	// fill the list of selected file/foldernames
 	m_filelist.clear();
-	if (m_selectedItems.size() > 1)
+	if (items.size() > 1)
 	{
-		for (map<wstring, ULONG>::iterator it = m_selectedItems.begin(); it != m_selectedItems.end(); ++it)
+		for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
 		{
 			size_t pos = it->first.find_last_of('\\');
 			if (pos >= 0)
@@ -38,12 +38,10 @@ void CDeskBand::Rename()
 			}
 		}
 	}
-	else
+	else if (m_pSite)
 	{
 		// no files or only one file were selected.
 		// use all files and folders in the current folder instead
-		if (m_pSite == NULL)
-			return;
 		IServiceProvider * pServiceProvider;
 		if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
 		{
@@ -73,8 +71,6 @@ void CDeskBand::Rename()
 								if (SHGetPathFromIDList(folderpidl, buf))
 								{
 									m_currentDirectory = buf;
-									PathQuoteSpaces(buf);
-									m_currentDirectoryQuoted = buf;
 								}
 								// if m_currentDirectory is empty here, that means
 								// the current directory is a virtual path
@@ -141,12 +137,23 @@ void CDeskBand::Rename()
 			pServiceProvider->Release();
 		}
 	}
+	else if (items.size() == 1)
+	{
+		for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
+		{
+			size_t pos = it->first.find_last_of('\\');
+			if (pos >= 0)
+			{
+				m_filelist.insert(it->first.substr(pos+1));
+			}
+		}
+	}
 
 	// show the rename dialog
 	m_bDialogShown = TRUE;
-	CRenameDlg dlg(m_hWnd);
+	CRenameDlg dlg(hwnd);
 	dlg.SetFileList(m_filelist);
-	if (dlg.DoModal(g_hInst, IDD_RENAMEDLG, m_hWnd, NULL) == IDOK)
+	if (dlg.DoModal(g_hInst, IDD_RENAMEDLG, hwnd, NULL) == IDOK)
 	{
 		try
 		{

@@ -404,6 +404,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ContextMenu.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DlgResizer.cpp"
 				>
 			</File>
@@ -425,6 +429,10 @@
 			</File>
 			<File
 				RelativePath=".\InfoDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ItemIDList.cpp"
 				>
 			</File>
 			<File
@@ -575,6 +583,10 @@
 				RelativePath=".\UnicodeUtils.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\VistaIcons.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -630,6 +642,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ItemIDList.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OptionsDlg.h"
 				>
 			</File>
@@ -670,7 +686,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tstring.h"
+				>
+			</File>
+			<File
 				RelativePath=".\UnicodeUtils.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VistaIcons.h"
 				>
 			</File>
 		</Filter>

@@ -66,6 +66,8 @@ class CDeskBand : public IDeskBand2
 	, public IInputObject
 	, public IObjectWithSite
 	, public IPersistStream
+	, public IContextMenu3
+	, public IShellExtInit
 {
 protected:
 	DWORD m_ObjRefCount;
@@ -112,6 +114,18 @@ public:
 	STDMETHOD (Save) (LPSTREAM, BOOL);
 	STDMETHOD (GetSizeMax) (ULARGE_INTEGER*);
 
+	// IContextMenu2 members
+	STDMETHOD	(QueryContextMenu) (HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags);
+	STDMETHOD	(InvokeCommand) (LPCMINVOKECOMMANDINFO lpcmi);
+	STDMETHOD	(GetCommandString) (UINT_PTR idCmd, UINT uFlags, UINT FAR *reserved, LPSTR pszName, UINT cchMax);
+	STDMETHOD	(HandleMenuMsg) (UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+	// IContextMenu3 members
+	STDMETHOD	(HandleMenuMsg2) (UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pResult);
+
+	// IShellExtInit methods
+	STDMETHOD	(Initialize) (LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataObj, HKEY hKeyID);
+
 	HWND GetParent(){return m_hwndParent;}
 private:
 	BOOL			m_bFocus;			///< true if the deskband or one of its children has the focus
@@ -133,7 +147,6 @@ private:
 	HHOOK			m_hook;				///< handle of the keyboard hook procedure
 
 	wstring			m_currentDirectory;	///< the current directory of the explorer view
-	wstring			m_currentDirectoryQuoted; ///< the current directory of the explorer view, but enquoted if necessary
 	map<wstring, ULONG>	m_selectedItems;///< list of items which are selected in the explorer view
 	bool			m_bFilesSelected;	///< at least one file is selected
 	bool			m_bFolderSelected;	///< at least one folder is selected
@@ -153,6 +166,11 @@ private:
 	std::vector<LPITEMIDLIST>	m_noShows;	///< list of pidls which didn't match a filter
 	LPITEMIDLIST	m_currentFolder;	///< pidl of the current folder
 	HWND			m_hwndListView;		///< handle of the list view control
+
+	wstring			m_ContextDirectory;	///< the folder background path for the context menu
+	map<wstring, ULONG>	m_ContextItems;	///< list of items which are selected for the context menu
+	std::map<UINT_PTR, UINT_PTR>	myIDMap;	///< maps menu ids to command ids
+
 private:
 	/// window procedure of the sub classed desk band control
 	static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
@@ -179,26 +197,30 @@ private:
 	BOOL					RegisterAndCreateWindow(void);
 	/// set up the toolbar
 	BOOL					BuildToolbarButtons();
+	/// handle a command
+	void					HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd, const map<wstring, ULONG>& items);
+	/// loads the icon for the command. The caller is responsible for destroying the icon after using it.
+	HICON					LoadCommandIcon(const Command& cmd);
 
 	// functions put into separate cpp files
 
 	/// find all the paths of the current explorer view and the selected items
 	bool					FindPaths();
 	/// get a list of filenames in one string, separated by \c separator
-	wstring					GetFileNames(wstring separator, bool quotespaces, bool includefiles, bool includefolders);
+	wstring					GetFileNames(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders);
 	/// get a list of file paths in one string, separated by \c separator
-	wstring					GetFilePaths(wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc);
+	wstring					GetFilePaths(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc);
 	/// get a list of folder paths in one string, separated by \c separator
 	/// put a string on the clipboard
 	bool					WriteStringToClipboard(const wstring& sClipdata, HWND hOwningWnd);
 	/// starts the console program to run a script
-	void					StartCmd(wstring params);
+	void					StartCmd(const wstring& cwd, wstring params);
 	/// start a new process with the specified command line
-	void					StartApplication(std::wstring commandline);
+	void					StartApplication(const wstring& cwd, std::wstring commandline);
 	/// creates a new folder and starts the editing of it
 	bool					CreateNewFolder();
 	/// Opens a rename dialog where the user can rename the selected files
-	void					Rename();
+	void					Rename(HWND hwnd, const map<wstring, ULONG>& items);
 	/// Fills the list with the renamed files in the rename dialog
 	void					FillRenamedList(HWND hDlg);
 	/// convert a path to an UNC path (if it points to a network share)

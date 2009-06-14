@@ -11,7 +11,7 @@
 
     <Package Id='????????-????-????-????-????????????' Keywords='Installer'
       Description="Stefans Shell Extension Bar"
-      Comments='http://tools.tortoisesvn.net' Manufacturer='Stefans Tools'
+      Comments='http://tools.StExBar.net' Manufacturer='Stefans Tools'
       InstallerVersion='200' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
       
     <Upgrade Id="8F75040C-433F-4eab-B1F0-2D8FA4153D92" >
@@ -26,7 +26,7 @@
 	
     <Directory Id='TARGETDIR' Name='SourceDir'>
       <Directory Id='ProgramFilesFolder' Name='PFiles'>
-		  <Directory Id='INSTALLDIR' Name='StExBar' LongName='StExBar'>
+		  <Directory Id='INSTALLDIR' Name='StExBar'>
 	
 			<Component Id='MainDll' Guid='A9818B4B-B626-4455-AA31-588EAFAFA213'>
 			  <File Id='StExBar.DLL' Name='StExBar.dll' LongName='StExBar.dll' DiskId='1'
@@ -38,6 +38,22 @@
 				<Registry Root="HKLM" Key="Software\Classes\CLSID\{367D8B32-F9FD-474b-8E65-9E521F35DE99}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 				<Registry Root="HKLM" Key="Software\Classes\CLSID\{367D8B32-F9FD-474b-8E65-9E521F35DE99}\Implemented Categories\{00021492-0000-0000-C000-000000000046}" Action="createKeyAndRemoveKeyOnUninstall" />
 				<Registry Root="HKLM" Key="Software\Microsoft\Internet Explorer\Toolbar" Name="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Value="StExBar" Type="string" />
+
+				<Registry Root="HKLM" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\StExBar" Action="createKeyAndRemoveKeyOnUninstall"/>
+				<Registry Root="HKLM" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\StExBar" KeyPath="yes" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string"/>
+				<Registry Root="HKLM" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\StExBar" Action="createKeyAndRemoveKeyOnUninstall"/>
+				<Registry Root="HKLM" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string"/>
+				<Registry Root="HKLM" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\StExBar" Action="createKeyAndRemoveKeyOnUninstall"/>
+				<Registry Root="HKLM" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string"/>
+				<Registry Root="HKLM" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\StExBar" Action="createKeyAndRemoveKeyOnUninstall"/>
+				<Registry Root="HKLM" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string"/>
+				<Registry Root="HKLM" Key="Software\Classes\*\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string"/>
+				<Registry Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\StExBar" Action="createKeyAndRemoveKeyOnUninstall" />
+				<Registry Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string" />
+				<Registry Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\StExBar" Action="createKeyAndRemoveKeyOnUninstall" />
+				<Registry Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string" />
+
+				<Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Value="StExBar" Type="string" />
 
 				<!-- clear the toolband cache to make sure the toolband appears in the context menu -->
 				<Registry Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\Component Categories\{00021493-0000-0000-C000-000000000046}\Enum" Action="removeKeyOnInstall" />

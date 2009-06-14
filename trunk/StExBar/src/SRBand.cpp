@@ -51,6 +51,7 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_hToolbarImgList(NULL)
 	, m_bDialogShown(FALSE)
 	, m_currentFolder(NULL)
+	, m_hook(NULL)
 {
 	m_ObjRefCount = 1;
 	g_DllRefCount++;
@@ -74,10 +75,13 @@ CDeskBand::~CDeskBand()
 		m_pSite->Release();
 		m_pSite = NULL;
 	}
-	UnhookWindowsHookEx(m_hook);
-	map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
-	if (it != m_desklist.end())
-		m_desklist.erase(it);
+	if (m_hook)
+	{
+		UnhookWindowsHookEx(m_hook);
+		map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
+		if (it != m_desklist.end())
+			m_desklist.erase(it);
+	}
 	for (size_t i=0; i<m_noShows.size(); ++i)
 	{
 		CoTaskMemFree(m_noShows[i]);
@@ -154,12 +158,29 @@ STDMETHODIMP CDeskBand::QueryInterface(REFIID riid, LPVOID *ppReturn)
 		*ppReturn = (IPersistStream*)this;
 	}   
 
-	// IPersistStream
-	else if (IsEqualIID(riid, IID_IColumnProvider))
+	// IContextMenu
+	else if (IsEqualIID(riid, IID_IContextMenu))
 	{
-		*ppReturn = (IColumnProvider*)this;
+		*ppReturn = (IContextMenu*)this;
 	}
 
+	// IContextMenu2
+	else if (IsEqualIID(riid, IID_IContextMenu2))
+	{
+		*ppReturn = (IContextMenu2*)this;
+	}
+
+	// IContextMenu3
+	else if (IsEqualIID(riid, IID_IContextMenu3))
+	{
+		*ppReturn = (IContextMenu3*)this;
+	}
+
+	// IShellExtInit
+	else if (IsEqualIID(riid, IID_IShellExtInit))
+	{
+		*ppReturn = (IShellExtInit*)this;
+	}
 	if (*ppReturn)
 	{
 		(*(LPUNKNOWN*)ppReturn)->AddRef();
@@ -307,13 +328,16 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
 	// If a site is being held, release it.
 	if (m_pSite)
 	{
-		UnhookWindowsHookEx(m_hook);
 		m_pSite->Release();
 		m_pSite = NULL;
 	}
-	map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
-	if (it != m_desklist.end())
-		m_desklist.erase(it);
+	if (m_hook)
+	{
+		UnhookWindowsHookEx(m_hook);
+		map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
+		if (it != m_desklist.end())
+			m_desklist.erase(it);
+	}
 	for (size_t i=0; i<m_noShows.size(); ++i)
 	{
 		CoTaskMemFree(m_noShows[i]);
@@ -717,236 +741,251 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 			if (LOWORD(wParam) >= m_commands.GetCount())
 				DebugBreak();
 			Command cmd = m_commands.GetCommand(LOWORD(wParam));
-			if (cmd.commandline.compare(INTERNALCOMMAND) == 0)
-			{
-				// an internal command
-				if (cmd.name.compare(_T("StexBar Internal Edit Box")) == 0)
-				{
-					// get the command entered in the edit box
-					int count = MAX_PATH;
-					TCHAR * buf = new TCHAR[count+1];
-					while (::GetWindowText(m_hWndEdit, buf, count)>=count)
-					{
-						delete [] buf;
-						count += MAX_PATH;
-						buf = new TCHAR[count+1];
-					}
-					if (DWORD(m_regUseSelector))
-					{
-						// select the files which match the filter string
-						Filter(buf);
-					}
-					else
-					{
-						// when we start the console with the command the user
-						// has entered in the edit box, we want the console
-						// to execute the command immediately, and *not* quit after
-						// executing the command so the user can see the output.
-						// If however the user enters a '@' char in front of the command
-						// then the console shall quit after executing the command.
-						wstring params;
-						if (buf[0] == '@')
-							params = _T("/c ");
-						else				
-							params = _T("/k ");
-						params += buf;
-						StartCmd(params);
-					}
-					delete [] buf;
-				}
-				else if (cmd.name.compare(_T("Options")) == 0)
-				{
-					COptionsDlg dlg(m_hWnd);
-					m_bDialogShown = TRUE;
-					if (dlg.DoModal(g_hInst, IDD_OPTIONS, m_hWnd) == IDOK)
-					{
-						m_bDialogShown = FALSE;
-						m_regUseSelector.read();
-						m_regUseUNCPaths.read();
-						m_regShowBtnText.read();
-						BuildToolbarButtons();
-						OnMove(0);
-					}
-					m_bDialogShown = FALSE;
-				}
-				else if (cmd.name.compare(_T("Show system files")) == 0)
-				{
-					HCURSOR hCur = GetCursor();
-					SetCursor(LoadCursor(NULL, IDC_WAIT));
-					SHELLSTATE state = {0};
-					SHGetSetSettings(&state, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, FALSE);
-					state.fShowSysFiles = !state.fShowAllObjects;
-					state.fShowAllObjects = !state.fShowAllObjects;
-					state.fShowSuperHidden = !state.fShowAllObjects;
-					SHGetSetSettings(&state, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, TRUE);
-					// now refresh the view
-					IServiceProvider * pServiceProvider;
-					if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
-					{
-						IShellBrowser * pShellBrowser;
-						if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
-						{
-							IShellView * pShellView;
-							if (SUCCEEDED(pShellBrowser->QueryActiveShellView(&pShellView)))
-							{
-								pShellView->Refresh();
-								pShellView->Release();
-							}
-							pShellBrowser->Release();
-						}
-						pServiceProvider->Release();
-					}
-					SetCursor(hCur);
-				}
-				else if (cmd.name.compare(_T("Console")) == 0)
-				{
-					StartCmd(_T(""));
-				}
-				else if (cmd.name.compare(_T("Copy Names")) == 0)
-				{
-					wstring str = GetFileNames(_T("\r\n"), true, true, true);
-					if (str.empty())
-					{
-						// Seems no items are selected
-						// Use the view path instead
-						size_t pos = m_currentDirectory.find_last_of('\\');
-						WCHAR buf[MAX_PATH];
-						if (pos >= 0)
-						{
-							_tcscpy_s(buf, MAX_PATH, m_currentDirectory.substr(pos+1).c_str());
-							PathQuoteSpaces(buf);
-							str = buf;
-						}
-					}
-					WriteStringToClipboard(str, m_hWnd);
-				}
-				else if (cmd.name.compare(_T("Copy Paths")) == 0)
-				{
-					wstring str = GetFilePaths(_T("\r\n"), true, true, true, DWORD(m_regUseUNCPaths) ? true : false);
-					if (str.empty())
-					{
-						// Seems no items are selected
-						// Use the view path instead
-						WCHAR buf[MAX_PATH];
-						if (DWORD(m_regUseUNCPaths))
-						{
-							str = ConvertToUNC(m_currentDirectory);
-							_tcscpy_s(buf, MAX_PATH, str.c_str());
-						}
-						else
-							_tcscpy_s(buf, MAX_PATH, m_currentDirectory.c_str());
 
-						PathQuoteSpaces(buf);
-						str = buf;
-					}
-					WriteStringToClipboard(str, m_hWnd);
-				}
-				else if (cmd.name.compare(_T("New Folder")) == 0)
-				{
-					CreateNewFolder();
-				}
-				else if (cmd.name.compare(_T("Rename")) == 0)
-				{
-					Rename();
-				}
-				else
-					DebugBreak();
-			}
-			else
-			{
-				int count = MAX_PATH;
-				TCHAR * buf = new TCHAR[count+1];
-				while (::GetWindowText(m_hWndEdit, buf, count)>=count)
-				{
-					delete [] buf;
-					count += MAX_PATH;
-					buf = new TCHAR[count+1];
-				}
-				wstring consoletext = buf;
-
-				// replace "%selpaths" with the paths of the selected items
-				wstring tag(_T("%selpaths"));
-				wstring commandline = cmd.commandline;
-				wstring::iterator it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-				if (it_begin != commandline.end())
-				{
-					// prepare the selected paths
-					wstring selpaths = GetFilePaths(_T(" "), true, true, true, false);
-					if (selpaths.empty())
-						selpaths = m_currentDirectoryQuoted;
-					wstring::iterator it_end= it_begin + tag.size();
-					commandline.replace(it_begin, it_end, selpaths);
-				}
-				// replace "%sel*paths" with the paths of the selected items
-				tag = _T("%sel*paths");
-				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-				if (it_begin != commandline.end())
-				{
-					// prepare the selected paths
-					wstring selpaths = GetFilePaths(_T("*"), false, true, true, false);
-					if (selpaths.empty())
-						selpaths = m_currentDirectory;
-					wstring::iterator it_end= it_begin + tag.size();
-					commandline.replace(it_begin, it_end, selpaths);
-				}
-				// replace "%selnames" with the names of the selected items
-				tag = _T("%selnames");
-				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-				if (it_begin != commandline.end())
-				{
-					// prepare the selected names
-					wstring selnames = GetFileNames(_T(" "), true, true, true);
-					wstring::iterator it_end= it_begin + tag.size();
-					commandline.replace(it_begin, it_end, selnames);
-				}
-				// replace "%curdir" with the current directory
-				tag = _T("%curdir");
-				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-				if (it_begin != commandline.end())
-				{
-					wstring::iterator it_end= it_begin + tag.size();
-					commandline.replace(it_begin, it_end, m_currentDirectory);
-				}
-				// replace "%cmdtext" with the text in the console edit box
-				tag = _T("%cmdtext");
-				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-				if (it_begin != commandline.end())
-				{
-					wstring::iterator it_end= it_begin + tag.size();
-					commandline.replace(it_begin, it_end, consoletext);
-				}
-				// replace "%selafile" with path to file containing all the selected files separated by newlines
-				tag = _T("%selafile");
-				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-				if (it_begin != commandline.end())
-				{
-					wstring selpaths = GetFilePaths(_T("\r\n"), false, true, true, false);
-					if (selpaths.empty())
-						selpaths = m_currentDirectory;
-					wstring tempFilePath = WriteFileListToTempFile(false, selpaths);
-					wstring::iterator it_end= it_begin + tag.size();
-					commandline.replace(it_begin, it_end, tempFilePath);
-				}
-				// replace "%selufile" with path to file containing all the selected files separated by newlines in utf-16 format
-				tag = _T("%selufile");
-				it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
-				if (it_begin != commandline.end())
-				{
-					wstring selpaths = GetFilePaths(_T("\r\n"), false, true, true, false);
-					if (selpaths.empty())
-						selpaths = m_currentDirectory;
-					wstring tempFilePath = WriteFileListToTempFile(true, selpaths);
-					wstring::iterator it_end= it_begin + tag.size();
-					commandline.replace(it_begin, it_end, tempFilePath);
-				}
-				StartApplication(commandline);
-			}
+			HandleCommand(m_hWnd, cmd, m_currentDirectory, m_selectedItems);
 
 			FocusChange(false);
 			break;
 		}
 	}
 	return 0;
+}
+
+void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd, const map<wstring, ULONG>& items)
+{
+	if (cmd.commandline.compare(INTERNALCOMMAND) == 0)
+	{
+		// an internal command
+		if (cmd.name.compare(_T("StexBar Internal Edit Box")) == 0)
+		{
+			// get the command entered in the edit box
+			int count = MAX_PATH;
+			TCHAR * buf = new TCHAR[count+1];
+			while (::GetWindowText(m_hWndEdit, buf, count)>=count)
+			{
+				delete [] buf;
+				count += MAX_PATH;
+				buf = new TCHAR[count+1];
+			}
+			if (DWORD(m_regUseSelector))
+			{
+				// select the files which match the filter string
+				Filter(buf);
+			}
+			else
+			{
+				// when we start the console with the command the user
+				// has entered in the edit box, we want the console
+				// to execute the command immediately, and *not* quit after
+				// executing the command so the user can see the output.
+				// If however the user enters a '@' char in front of the command
+				// then the console shall quit after executing the command.
+				wstring params;
+				if (buf[0] == '@')
+					params = _T("/c ");
+				else				
+					params = _T("/k ");
+				params += buf;
+				StartCmd(cwd, params);
+			}
+			delete [] buf;
+		}
+		else if (cmd.name.compare(_T("Options")) == 0)
+		{
+			COptionsDlg dlg(hWnd);
+			m_bDialogShown = TRUE;
+			if (dlg.DoModal(g_hInst, IDD_OPTIONS, hWnd) == IDOK)
+			{
+				m_bDialogShown = FALSE;
+				m_regUseSelector.read();
+				m_regUseUNCPaths.read();
+				m_regShowBtnText.read();
+				BuildToolbarButtons();
+				OnMove(0);
+			}
+			m_bDialogShown = FALSE;
+		}
+		else if (cmd.name.compare(_T("Show system files")) == 0)
+		{
+			HCURSOR hCur = GetCursor();
+			SetCursor(LoadCursor(NULL, IDC_WAIT));
+			SHELLSTATE state = {0};
+			SHGetSetSettings(&state, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, FALSE);
+			state.fShowSysFiles = !state.fShowAllObjects;
+			state.fShowAllObjects = !state.fShowAllObjects;
+			state.fShowSuperHidden = !state.fShowAllObjects;
+			SHGetSetSettings(&state, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, TRUE);
+			// now refresh the view
+			IServiceProvider * pServiceProvider;
+			if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
+			{
+				IShellBrowser * pShellBrowser;
+				if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
+				{
+					IShellView * pShellView;
+					if (SUCCEEDED(pShellBrowser->QueryActiveShellView(&pShellView)))
+					{
+						pShellView->Refresh();
+						pShellView->Release();
+					}
+					pShellBrowser->Release();
+				}
+				pServiceProvider->Release();
+			}
+			SetCursor(hCur);
+		}
+		else if (cmd.name.compare(_T("Console")) == 0)
+		{
+			StartCmd(cwd, _T(""));
+		}
+		else if (cmd.name.compare(_T("Copy Names")) == 0)
+		{
+			wstring str = GetFileNames(items, _T("\r\n"), true, true, true);
+			if (str.empty())
+			{
+				// Seems no items are selected
+				// Use the view path instead
+				size_t pos = cwd.find_last_of('\\');
+				WCHAR buf[MAX_PATH];
+				if (pos >= 0)
+				{
+					_tcscpy_s(buf, MAX_PATH, cwd.substr(pos+1).c_str());
+					PathQuoteSpaces(buf);
+					str = buf;
+				}
+			}
+			WriteStringToClipboard(str, hWnd);
+		}
+		else if (cmd.name.compare(_T("Copy Paths")) == 0)
+		{
+			wstring str = GetFilePaths(items, _T("\r\n"), true, true, true, DWORD(m_regUseUNCPaths) ? true : false);
+			if (str.empty())
+			{
+				// Seems no items are selected
+				// Use the view path instead
+				WCHAR buf[MAX_PATH];
+				if (DWORD(m_regUseUNCPaths))
+				{
+					str = ConvertToUNC(cwd);
+					_tcscpy_s(buf, MAX_PATH, str.c_str());
+				}
+				else
+					_tcscpy_s(buf, MAX_PATH, cwd.c_str());
+
+				PathQuoteSpaces(buf);
+				str = buf;
+			}
+			WriteStringToClipboard(str, hWnd);
+		}
+		else if (cmd.name.compare(_T("New Folder")) == 0)
+		{
+			CreateNewFolder();
+		}
+		else if (cmd.name.compare(_T("Rename")) == 0)
+		{
+			Rename(hWnd, items);
+		}
+		else
+			DebugBreak();
+	}
+	else
+	{
+		int count = MAX_PATH;
+		TCHAR * buf = new TCHAR[count+1];
+		buf[0] = 0;
+		if (::IsWindow(m_hWndEdit))
+		{
+			while (::GetWindowText(m_hWndEdit, buf, count)>=count)
+			{
+				delete [] buf;
+				count += MAX_PATH;
+				buf = new TCHAR[count+1];
+			}
+		}
+		wstring consoletext = buf;
+
+		// replace "%selpaths" with the paths of the selected items
+		wstring tag(_T("%selpaths"));
+		wstring commandline = cmd.commandline;
+		wstring::iterator it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+		if (it_begin != commandline.end())
+		{
+			// prepare the selected paths
+			wstring selpaths = GetFilePaths(items, _T(" "), true, true, true, false);
+			if (selpaths.empty())
+			{
+				TCHAR buf[MAX_PATH] = {0};
+				_tcscpy_s(buf, MAX_PATH, cwd.c_str());
+				PathQuoteSpaces(buf);
+				selpaths = buf;
+			}
+			wstring::iterator it_end= it_begin + tag.size();
+			commandline.replace(it_begin, it_end, selpaths);
+		}
+		// replace "%sel*paths" with the paths of the selected items
+		tag = _T("%sel*paths");
+		it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+		if (it_begin != commandline.end())
+		{
+			// prepare the selected paths
+			wstring selpaths = GetFilePaths(items, _T("*"), false, true, true, false);
+			if (selpaths.empty())
+				selpaths = cwd;
+			wstring::iterator it_end= it_begin + tag.size();
+			commandline.replace(it_begin, it_end, selpaths);
+		}
+		// replace "%selnames" with the names of the selected items
+		tag = _T("%selnames");
+		it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+		if (it_begin != commandline.end())
+		{
+			// prepare the selected names
+			wstring selnames = GetFileNames(items, _T(" "), true, true, true);
+			wstring::iterator it_end= it_begin + tag.size();
+			commandline.replace(it_begin, it_end, selnames);
+		}
+		// replace "%curdir" with the current directory
+		tag = _T("%curdir");
+		it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+		if (it_begin != commandline.end())
+		{
+			wstring::iterator it_end= it_begin + tag.size();
+			commandline.replace(it_begin, it_end, cwd);
+		}
+		// replace "%cmdtext" with the text in the console edit box
+		tag = _T("%cmdtext");
+		it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+		if (it_begin != commandline.end())
+		{
+			wstring::iterator it_end= it_begin + tag.size();
+			commandline.replace(it_begin, it_end, consoletext);
+		}
+		// replace "%selafile" with path to file containing all the selected files separated by newlines
+		tag = _T("%selafile");
+		it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+		if (it_begin != commandline.end())
+		{
+			wstring selpaths = GetFilePaths(items, _T("\r\n"), false, true, true, false);
+			if (selpaths.empty())
+				selpaths = cwd;
+			wstring tempFilePath = WriteFileListToTempFile(false, selpaths);
+			wstring::iterator it_end= it_begin + tag.size();
+			commandline.replace(it_begin, it_end, tempFilePath);
+		}
+		// replace "%selufile" with path to file containing all the selected files separated by newlines in utf-16 format
+		tag = _T("%selufile");
+		it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+		if (it_begin != commandline.end())
+		{
+			wstring selpaths = GetFilePaths(items, _T("\r\n"), false, true, true, false);
+			if (selpaths.empty())
+				selpaths = cwd;
+			wstring tempFilePath = WriteFileListToTempFile(true, selpaths);
+			wstring::iterator it_end= it_begin + tag.size();
+			commandline.replace(it_begin, it_end, tempFilePath);
+		}
+		StartApplication(cwd, commandline);
+	}
 }
 
 wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const wstring& paths)
@@ -1257,48 +1296,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 		es |= (cmd.enabled_selectedcount << 16);
 		m_enablestates[j] = es;
 
-		HICON hIcon = NULL;
-		if (cmd.nIconID)
-			hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(cmd.nIconID));
-		else if (!cmd.separator)
-		{
-			hIcon = LoadIcon(g_hInst, cmd.icon.c_str());
-			if (hIcon == NULL)
-			{
-				// icon loading failed. Let's try to load it differently:
-				// the user might have specified a module path and an icon index
-				// like this: c:\windows\explorer.exe,3 (the icon with ID 3 in explorer.exe)
-				hIcon = NULL;
-				if (cmd.icon.find(',')>=0)
-				{
-					size_t pos = cmd.icon.find_last_of(',');
-					wstring resourcefile, iconid;
-					if (pos >= 0)
-					{
-						resourcefile = cmd.icon.substr(0, pos);
-						iconid = cmd.icon.substr(pos+1);
-						hIcon = ExtractIcon(g_hInst, resourcefile.c_str(), _ttoi(iconid.c_str()));
-					}
-				}
-				if (hIcon == NULL)
-				{
-					// loading the icon with an index didn't work either
-					// next we try to use the icon of the application defined in the commandline
-					wstring appname;
-					if (cmd.commandline.find(' ')>=0)
-						appname = cmd.commandline.substr(0, cmd.commandline.find(' '));
-					else
-						appname = cmd.commandline;
-					hIcon = ExtractIcon(g_hInst, appname.c_str(), 0);
-				}
-				if (hIcon == NULL)
-				{
-					// if the icon handle is still invalid (no icon found yet),
-					// we use a default icon
-					hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_DEFAULT));
-				}
-			}
-		}
+		HICON hIcon = LoadCommandIcon(cmd);
 		if (hIcon)
 		{
 			tb[index].iBitmap = ImageList_AddIcon(m_hToolbarImgList, hIcon);
@@ -1336,6 +1334,52 @@ BOOL CDeskBand::BuildToolbarButtons()
 	return TRUE;
 }
 
+HICON CDeskBand::LoadCommandIcon(const Command& cmd)
+{
+	HICON hIcon = NULL;
+	if (cmd.nIconID)
+		hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(cmd.nIconID));
+	else if (!cmd.separator)
+	{
+		hIcon = LoadIcon(g_hInst, cmd.icon.c_str());
+		if (hIcon == NULL)
+		{
+			// icon loading failed. Let's try to load it differently:
+			// the user might have specified a module path and an icon index
+			// like this: c:\windows\explorer.exe,3 (the icon with ID 3 in explorer.exe)
+			hIcon = NULL;
+			if (cmd.icon.find(',')>=0)
+			{
+				size_t pos = cmd.icon.find_last_of(',');
+				wstring resourcefile, iconid;
+				if (pos >= 0)
+				{
+					resourcefile = cmd.icon.substr(0, pos);
+					iconid = cmd.icon.substr(pos+1);
+					hIcon = ExtractIcon(g_hInst, resourcefile.c_str(), _ttoi(iconid.c_str()));
+				}
+			}
+			if (hIcon == NULL)
+			{
+				// loading the icon with an index didn't work either
+				// next we try to use the icon of the application defined in the commandline
+				wstring appname;
+				if (cmd.commandline.find(' ')>=0)
+					appname = cmd.commandline.substr(0, cmd.commandline.find(' '));
+				else
+					appname = cmd.commandline;
+				hIcon = ExtractIcon(g_hInst, appname.c_str(), 0);
+			}
+			if (hIcon == NULL)
+			{
+				// if the icon handle is still invalid (no icon found yet),
+				// we use a default icon
+				hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_DEFAULT));
+			}
+		}
+	}
+	return hIcon;
+}
 HWND CDeskBand::GetListView32(IShellView * shellView)
 {
 	HWND parent = NULL;

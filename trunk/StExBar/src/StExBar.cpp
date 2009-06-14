@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2009 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -94,7 +94,18 @@ STDAPI DllGetClassObject(REFCLSID rclsid,
 	// if no debugger is present, then don't load the dll.
 	// this prevents other apps from loading the dll and locking
 	// it.
-	if (!::IsDebuggerPresent())
+	bool bInShellTest = false;
+	TCHAR buf[_MAX_PATH + 1];		// MAX_PATH ok, the test really is for debugging anyway.
+	DWORD pathLength = GetModuleFileName(NULL, buf, _MAX_PATH);
+	if(pathLength >= 14)
+	{
+		if ((_tcsicmp(&buf[pathLength-13], _T("\\verclsid.exe"))) == 0)
+		{
+			bInShellTest = true;
+		}
+	}
+
+	if (!::IsDebuggerPresent() && !bInShellTest)
 	{
 		return CLASS_E_CLASSNOTAVAILABLE;
 	}
@@ -119,6 +130,39 @@ STDAPI DllGetClassObject(REFCLSID rclsid,
 
 	// Return the result from QueryInterface.
 	return hResult;
+}
+
+HRESULT CreateRegistryString(LPCTSTR keypath, LPCTSTR name, LPCTSTR value)
+{
+	HRESULT result = SELFREG_E_CLASS;
+	HKEY hKey;
+	LONG lResult = RegCreateKeyEx(HKEY_LOCAL_MACHINE,
+		keypath,
+		0,
+		NULL,
+		REG_OPTION_NON_VOLATILE,
+		KEY_WRITE,
+		NULL,
+		&hKey,
+		NULL);
+
+	if (NOERROR == lResult)
+	{
+		lResult = RegSetValueEx(hKey,
+			name,
+			0,
+			REG_SZ,
+			(LPBYTE)value,
+			_tcslen(value) * sizeof(TCHAR));
+		if (NOERROR == lResult)
+			result = S_OK;
+		else
+			result = SELFREG_E_CLASS;
+		RegCloseKey(hKey);
+	}
+	else
+		result = SELFREG_E_CLASS;
+	return result;
 }
 
 STDAPI DllRegisterServer(void)
@@ -152,33 +196,17 @@ STDAPI DllRegisterServer(void)
 		{
 			if (SUCCEEDED(result = StringCchCopy(szCLSID, MAX_PATH, pwsz)))
 			{
-				HKEY hKey;
-				LONG lResult = RegCreateKeyEx(HKEY_LOCAL_MACHINE,
-					TEXT("Software\\Microsoft\\Internet Explorer\\Toolbar"),
-					0,
-					NULL,
-					REG_OPTION_NON_VOLATILE,
-					KEY_WRITE,
-					NULL,
-					&hKey,
-					NULL);
+				CreateRegistryString(TEXT("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID, TEXT("StExBar"));
 
-				if (NOERROR == lResult)
-				{
-					lResult = RegSetValueEx(hKey,
-											szCLSID,
-											0,
-											REG_SZ,
-											(LPBYTE)TEXT("StExBar"),
-											8 * sizeof(TCHAR));
-					if (NOERROR == lResult)
-						result = S_OK;
-					else
-						result = SELFREG_E_CLASS;
-					RegCloseKey(hKey);
-				}
-				else
-					result = SELFREG_E_CLASS;
+				CreateRegistryString(TEXT("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+				CreateRegistryString(TEXT("Software\\Classes\\Directory\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+				CreateRegistryString(TEXT("Software\\Classes\\Directory\\Background\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+				CreateRegistryString(TEXT("Software\\Classes\\Folder\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+				CreateRegistryString(TEXT("Software\\Classes\\*\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+				CreateRegistryString(TEXT("Software\\Classes\\LibraryLocation\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+				CreateRegistryString(TEXT("Software\\Classes\\LibraryFolder\\background\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+
+				CreateRegistryString(TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Approved"), szCLSID, TEXT("StExBar"));
 			}
 			// Free the string.
 			LPMALLOC pMalloc;
@@ -214,6 +242,13 @@ STDAPI DllUnregisterServer(void)
 			if (SUCCEEDED(res = StringCchCopy(szCLSID, MAX_PATH, pwsz)))
 			{
 				SHDeleteValue(HKEY_LOCAL_MACHINE, TEXT("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID);
+				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"));
+				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Directory\\shellex\\ContextMenuHandlers\\StExBar"));
+				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Directory\\Background\\shellex\\ContextMenuHandlers\\StExBar"));
+				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Folder\\shellex\\ContextMenuHandlers\\StExBar"));
+				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\*\\shellex\\ContextMenuHandlers\\StExBar"));
+				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\LibraryLocation\\shellex\\ContextMenuHandlers\\StExBar"));
+				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\LibraryFolder\\background\\shellex\\ContextMenuHandlers\\StExBar"));
 				res = S_OK;
 			}
 			// Free the string.
