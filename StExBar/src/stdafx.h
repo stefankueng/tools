@@ -35,4 +35,6 @@
 #include <comcat.h>
 #include <olectl.h>
 
+#include "tstring.h"
+
 
