@@ -30,6 +30,7 @@ INT_PTR CDialog::DoModal(HINSTANCE hInstance, int resID, HWND hWndParent)
 INT_PTR CDialog::DoModal(HINSTANCE hInstance, int resID, HWND hWndParent, UINT idAccel)
 {
 	m_bPseudoModal = true;
+	m_bPseudoEnded = false;
 	hResource = hInstance;
 	m_hwnd = CreateDialogParam(hInstance, MAKEINTRESOURCE(resID), hWndParent, &CDialog::stDlgFunc, (LPARAM)this);
 
@@ -40,10 +41,10 @@ INT_PTR CDialog::DoModal(HINSTANCE hInstance, int resID, HWND hWndParent, UINT i
 	ShowWindow(m_hwnd, SW_SHOW);
 
 	// Main message loop:
-	MSG msg;
+	MSG msg = {0};
 	HACCEL hAccelTable = LoadAccelerators(hResource, MAKEINTRESOURCE(idAccel));
 	BOOL bRet = TRUE;
-	while ((bRet = GetMessage(&msg, NULL, 0, 0)) != 0)
+	while (!m_bPseudoEnded && ((bRet = GetMessage(&msg, NULL, 0, 0)) != 0))
 	{ 
 		if (bRet == -1)
 		{
@@ -63,17 +64,24 @@ INT_PTR CDialog::DoModal(HINSTANCE hInstance, int resID, HWND hWndParent, UINT i
 			}
 		}
 	} 
+	if (msg.message == WM_QUIT)
+		PostQuitMessage((int)msg.wParam);
 	// re-enable the parent window
 	if (hWndParent)
 		::EnableWindow(hWndParent, TRUE);
 	DestroyWindow(m_hwnd);
+	if (m_bPseudoModal)
+		return m_iPseudoRet;
 	return msg.wParam;
 }
 
 BOOL CDialog::EndDialog(HWND hDlg, INT_PTR nResult)
 {
 	if (m_bPseudoModal)
-		::PostQuitMessage(nResult);
+	{
+		m_bPseudoEnded = true;
+		m_iPseudoRet = nResult;
+	}
 	return ::EndDialog(hDlg, nResult);
 }
 
@@ -105,7 +113,7 @@ void CDialog::InitDialog(HWND hwndDlg, UINT iconID)
 	OffsetRect(&rc, -rc.left, -rc.top); 
 	OffsetRect(&rc, -rcDlg.right, -rcDlg.bottom); 
 
-	SetWindowPos(hwndDlg, HWND_TOP, rcOwner.left + (rc.right / 2), rcOwner.top + (rc.bottom / 2), 0, 0,	SWP_NOSIZE); 
+	SetWindowPos(hwndDlg, HWND_TOP, rcOwner.left + (rc.right / 2), rcOwner.top + (rc.bottom / 2), 0, 0,	SWP_NOSIZE|SWP_SHOWWINDOW); 
 	HICON hIcon = (HICON)::LoadImage(hResource, MAKEINTRESOURCE(iconID), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE|LR_SHARED);
 	::SendMessage(hwndDlg, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
 	::SendMessage(hwndDlg, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
@@ -156,7 +164,7 @@ INT_PTR CALLBACK CDialog::stDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPAR
 	if (pWnd)
 	{
 		LRESULT lRes = pWnd->DlgFunc(hwndDlg, uMsg, wParam, lParam);
-		SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, lRes);
+		SetWindowLongPtr(hwndDlg, DWL_MSGRESULT, lRes);
 		return lRes;
 	}
 	else
