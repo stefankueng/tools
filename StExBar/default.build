@@ -63,13 +63,13 @@
 		</exec>
 		<exec program="light">
 			<arg value="-nologo" />
-			<arg value="-out" />
+      <arg value="-ext" />
+      <arg value="WixUIExtension" />
+      <arg value="-cultures:en-us" />
+      <arg value="-out" />
 			<arg value="bin\StExBar.msi" />
 			<arg value="bin\Setup.wixobj" />
 			<arg value="bin\WixUI_Custom.wixobj" />
-			<arg value="${environment::get-variable('WIXUI')}\WixUI.wixlib" />
-			<arg value="-loc" />
-			<arg value="${environment::get-variable('WIXUI')}\WixUI_en-us.wxl" />
 		</exec>
 
 		<exec program="candle">
@@ -81,13 +81,13 @@
 		</exec>
 		<exec program="light">
 			<arg value="-nologo" />
-			<arg value="-out" />
+      <arg value="-ext" />
+      <arg value="WixUIExtension" />
+      <arg value="-cultures:en-us" />
+      <arg value="-out" />
 			<arg value="bin\StExBar64.msi" />
 			<arg value="bin\Setup64.wixobj" />
 			<arg value="bin\WixUI_Custom.wixobj" />
-			<arg value="${environment::get-variable('WIXUI')}\WixUI.wixlib" />
-			<arg value="-loc" />
-			<arg value="${environment::get-variable('WIXUI')}\WixUI_en-us.wxl" />
 		</exec>
 
 		<delete>
