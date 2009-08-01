@@ -94,7 +94,17 @@ bool CDeskBand::FindPaths()
 														if (abspidl)
 														{
 															if (SHGetPathFromIDList(abspidl, buf))
+															{
 																m_selectedItems[wstring(buf)] = attribs;
+																if (m_currentDirectory.empty())
+																{
+																	// remove the last part of the path of the selected item
+																	WCHAR * pSlash = _tcsrchr(buf, '\\');
+																	if (pSlash)
+																		*pSlash = 0;
+																	m_currentDirectory = wstring(buf);
+																}
+															}
 															CoTaskMemFree(abspidl);
 														}
 														if (attribs & SFGAO_FOLDER)

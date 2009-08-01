@@ -18,7 +18,7 @@
 #endif
 
 #ifndef _WIN32_IE					// Allow use of features specific to IE 4.0 or later.
-#	define _WIN32_IE 0x0501			// Change this to the appropriate value to target IE 5.0 or later.
+#	define _WIN32_IE 0x560			// Change this to the appropriate value to target IE 5.0 or later.
 #endif
 
 // we're a dll loaded by the shell: this define is needed to use the version 6 common controls

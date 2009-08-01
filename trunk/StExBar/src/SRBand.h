@@ -136,8 +136,6 @@ private:
 	DWORD			m_dwViewMode;		///< viewing mode of the deskband
 	DWORD			m_dwBandID;			///< the ID of the deskband
 	IInputObjectSite *m_pSite;			///< the IInputObjectSite of the parent
-	WNDPROC			m_oldEditWndProc;	///< pointer to the original window proc of the edit control
-	WNDPROC			m_oldDeskBandProc;	///< pointer to the original window proc of the parent deskbar control
 	HIMAGELIST		m_hToolbarImgList;	///< image list of the toolbar
 	SIZE			m_tbSize;			///< the max size of the toolbar
 	BOOL			m_bCompositionState;///< the composition state
@@ -173,9 +171,9 @@ private:
 
 private:
 	/// window procedure of the sub classed desk band control
-	static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
 	/// window procedure of the sub classed edit control
-	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK	EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
 
 	static LRESULT CALLBACK KeyboardHookProc(int code, WPARAM wParam, LPARAM lParam);
 

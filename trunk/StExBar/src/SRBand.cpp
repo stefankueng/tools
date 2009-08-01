@@ -29,6 +29,7 @@
 #include "ChevronMenu.h"
 #include "OptionsDlg.h"
 #include "UnicodeUtils.h"
+#include "commctrl.h"
 
 #pragma comment(lib, "uxtheme.lib")
 
@@ -42,7 +43,6 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 	, m_hWndToolbar(NULL)
 	, m_dwViewMode(0)
 	, m_dwBandID(0)
-	, m_oldEditWndProc(NULL)
 	, m_pSite(NULL)
 	, m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
 	, m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
@@ -92,7 +92,8 @@ CDeskBand::~CDeskBand()
 		CoTaskMemFree(m_currentFolder);
 
 	// un-subclass
-	SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_WNDPROC, (LONG_PTR)m_oldDeskBandProc);
+	RemoveWindowSubclass(::GetParent(m_hwndParent), DeskBandProc, (UINT_PTR)this);
+	RemoveWindowSubclass(m_hWndEdit, EditProc, (UINT_PTR)this);
 
 	g_DllRefCount--;
 }
@@ -331,7 +332,7 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
 		m_pSite->Release();
 		m_pSite = NULL;
 	}
-	if (m_hook)
+	if ((m_hook)&&(punkSite))
 	{
 		UnhookWindowsHookEx(m_hook);
 		map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
@@ -365,6 +366,13 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
 		if (!m_hwndParent)
 			return E_FAIL;
 
+		// Get and keep the IInputObjectSite pointer.
+		if (FAILED(punkSite->QueryInterface(IID_IInputObjectSite, 
+			(LPVOID*)&m_pSite)))
+		{
+			return E_FAIL;
+		}
+
 		if (!RegisterAndCreateWindow())
 			return E_FAIL;
 
@@ -374,14 +382,7 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
 		m_hook = SetWindowsHookEx(WH_KEYBOARD, KeyboardHookProc, NULL, GetCurrentThreadId());
 		m_desklist[GetCurrentThreadId()] = this;
 
-		// Get and keep the IInputObjectSite pointer.
-		if (SUCCEEDED(punkSite->QueryInterface(IID_IInputObjectSite, 
-			(LPVOID*)&m_pSite)))
-		{
-			return S_OK;
-		}
-
-		return E_FAIL;
+		return S_OK;
 	}
 
 	return S_OK;
@@ -660,9 +661,11 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 	return DefWindowProc(hWnd, uMessage, wParam, lParam);
 }
 
-LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam, UINT_PTR /*uIdSubclass*/, DWORD_PTR dwRefData)
 {
-	CDeskBand *pThis = (CDeskBand*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+	CDeskBand *pThis = (CDeskBand*)dwRefData;
+	if (pThis == NULL)
+		return 0;
 	if (uMessage == WM_SETFOCUS)
 	{
 		pThis->OnSetFocus();
@@ -677,12 +680,14 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
 			pThis->Filter(_T(""));
 		}
 	}
-	return CallWindowProc(pThis->m_oldEditWndProc, hWnd, uMessage, wParam, lParam);
+	return DefSubclassProc(hWnd, uMessage, wParam, lParam);
 }
 
-LRESULT CALLBACK CDeskBand::DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK  CDeskBand::DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam, UINT_PTR /*uIdSubclass*/, DWORD_PTR dwRefData)
 {
-	CDeskBand *pThis = (CDeskBand*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+	CDeskBand *pThis = (CDeskBand*)dwRefData;
+	if (pThis == NULL)
+		return 0;
 	LPNMREBARCHEVRON pnmh = (LPNMREBARCHEVRON)lParam;
 	if ((uMessage == WM_NOTIFY)&&(pnmh->hdr.code == RBN_CHEVRONPUSHED)&&(pnmh->wID == pThis->m_dwBandID))
 	{
@@ -693,7 +698,7 @@ LRESULT CALLBACK CDeskBand::DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam
 		}
 		return 0;
 	}
-	return CallWindowProc(pThis->m_oldDeskBandProc, hWnd, uMessage, wParam, lParam);
+	return DefSubclassProc(hWnd, uMessage, wParam, lParam);
 }
 
 LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
@@ -1134,8 +1139,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		GetClientRect(m_hwndParent, &rc);
 
 		// subclass the parent deskbar control to intercept the RBN_CHEVRONPUSHED messages
-		m_oldDeskBandProc = (WNDPROC)SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_WNDPROC, (LONG_PTR)DeskBandProc);
-		SetWindowLongPtr(::GetParent(m_hwndParent), GWLP_USERDATA, (LONG_PTR)this);
+		SetWindowSubclass(::GetParent(m_hwndParent), DeskBandProc, (UINT_PTR)this, (DWORD_PTR)this);
 
 		//Create the window. The WndProc will set m_hWnd.
 		CreateWindowEx(WS_EX_CONTROLPARENT,
@@ -1175,8 +1179,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 		HGDIOBJ hFont = GetStockObject(DEFAULT_GUI_FONT);
 		SendMessage(m_hWndEdit, WM_SETFONT, (WPARAM)hFont, 0);
 		// subclass the edit control to intercept the WM_SETFOCUS messages
-		m_oldEditWndProc = (WNDPROC)SetWindowLongPtr(m_hWndEdit, GWLP_WNDPROC, (LONG_PTR)EditProc);
-		SetWindowLongPtr(m_hWndEdit, GWLP_USERDATA, (LONG_PTR)this);
+		SetWindowSubclass(m_hWndEdit, EditProc, (UINT_PTR)this, (DWORD_PTR)this);
 
 		// create a toolbar which will hold our button
 		m_hWndToolbar = CreateWindowEx(TBSTYLE_EX_MIXEDBUTTONS|TBSTYLE_EX_HIDECLIPPEDBUTTONS,
