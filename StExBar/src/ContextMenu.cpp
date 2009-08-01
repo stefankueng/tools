@@ -91,10 +91,10 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
 	if ((uFlags & CMF_DEFAULTONLY)!=0)
 		return S_OK;					//we don't change the default action
 
-	if ((m_ContextDirectory.size() == 0)&&(m_ContextItems.size() == 0))
+	if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
 		return S_OK;
 
-	if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
+	if ((m_ContextDirectory.size() == 0)&&(m_ContextItems.size() == 0))
 		return S_OK;
 
 
