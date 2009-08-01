@@ -38,12 +38,23 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
 			}
 		}
 	}
-	else if (m_pSite)
+	else if (items.size() == 1)
+	{
+		for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
+		{
+			size_t pos = it->first.find_last_of('\\');
+			if (pos >= 0)
+			{
+				m_filelist.insert(it->first.substr(pos+1));
+			}
+		}
+	}
+	else
 	{
 		// no files or only one file were selected.
 		// use all files and folders in the current folder instead
-		IServiceProvider * pServiceProvider;
-		if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
+		IServiceProvider * pServiceProvider = NULL;
+		if (SUCCEEDED(GetIServiceProvider(hwnd, pServiceProvider)))
 		{
 			IShellBrowser * pShellBrowser;
 			if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
@@ -137,17 +148,6 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
 			pServiceProvider->Release();
 		}
 	}
-	else if (items.size() == 1)
-	{
-		for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
-		{
-			size_t pos = it->first.find_last_of('\\');
-			if (pos >= 0)
-			{
-				m_filelist.insert(it->first.substr(pos+1));
-			}
-		}
-	}
 
 	// show the rename dialog
 	m_bDialogShown = TRUE;
@@ -160,8 +160,8 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
 			const tr1::wregex regCheck(dlg.GetMatchString(), dlg.GetRegexFlags());
 
 			// start renaming the files
-			IServiceProvider * pServiceProvider;
-			if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
+			IServiceProvider * pServiceProvider = NULL;
+			if (SUCCEEDED(GetIServiceProvider(hwnd, pServiceProvider)))
 			{
 				IShellBrowser * pShellBrowser;
 				if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
@@ -248,4 +248,51 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
 		}
 	}
 	m_bDialogShown = FALSE;
+}
+
+HRESULT CDeskBand::GetIServiceProvider(HWND hwnd, IServiceProvider * pServiceProvider)
+{
+	HRESULT hr = E_FAIL;
+	if (m_pSite)
+		hr = m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider);
+	else
+	{
+		// we don't have a site, so we try finding the explorer window by enumerating
+		// all explorer instances and compare that to the parent of hwnd.
+		IShellWindows *psw;
+		if (SUCCEEDED(CoCreateInstance(CLSID_ShellWindows, NULL, CLSCTX_ALL, IID_IShellWindows, (LPVOID*)&psw))) 
+		{
+			VARIANT v;
+			V_VT(&v) = VT_I4;
+			IDispatch  *pdisp;
+			BOOL fFound = FALSE;
+			long count = -1;
+			if (SUCCEEDED(psw->get_Count(&count)))
+			{
+				for (V_I4(&v) = 0; !fFound && (V_I4(&v) < count) && SUCCEEDED(psw->Item(v, &pdisp)); V_I4(&v)++) 
+				{
+					if (pdisp)
+					{
+						IWebBrowserApp *pwba;
+						if (SUCCEEDED(pdisp->QueryInterface(IID_IWebBrowserApp, (LPVOID*)&pwba))) 
+						{
+							HWND hwndWBA;
+							if (SUCCEEDED(pwba->get_HWND((LONG_PTR*)&hwndWBA))) 
+							{
+								if ((hwndWBA == hwnd)||(hwndWBA == ::GetParent(hwnd)))
+								{
+									fFound = TRUE;
+									hr = pwba->QueryInterface(IID_IServiceProvider, (void**)&pServiceProvider);
+								}
+							}
+							pwba->Release();
+						}
+						pdisp->Release();
+					}
+				}
+			}
+			psw->Release();
+		}
+	}
+	return hr;
 }

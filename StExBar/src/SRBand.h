@@ -219,6 +219,8 @@ private:
 	bool					CreateNewFolder();
 	/// Opens a rename dialog where the user can rename the selected files
 	void					Rename(HWND hwnd, const map<wstring, ULONG>& items);
+	/// helper function to find the IServiceProvider
+	HRESULT					GetIServiceProvider(HWND hwnd, IServiceProvider * pServiceProvider);
 	/// Fills the list with the renamed files in the rename dialog
 	void					FillRenamedList(HWND hDlg);
 	/// convert a path to an UNC path (if it points to a network share)
