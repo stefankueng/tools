@@ -54,7 +54,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
 		// no files or only one file were selected.
 		// use all files and folders in the current folder instead
 		IServiceProvider * pServiceProvider = NULL;
-		if (SUCCEEDED(GetIServiceProvider(hwnd, pServiceProvider)))
+		if (SUCCEEDED(GetIServiceProvider(hwnd, &pServiceProvider)))
 		{
 			IShellBrowser * pShellBrowser;
 			if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
@@ -161,7 +161,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
 
 			// start renaming the files
 			IServiceProvider * pServiceProvider = NULL;
-			if (SUCCEEDED(GetIServiceProvider(hwnd, pServiceProvider)))
+			if (SUCCEEDED(GetIServiceProvider(hwnd, &pServiceProvider)))
 			{
 				IShellBrowser * pShellBrowser;
 				if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
@@ -250,7 +250,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
 	m_bDialogShown = FALSE;
 }
 
-HRESULT CDeskBand::GetIServiceProvider(HWND hwnd, IServiceProvider * pServiceProvider)
+HRESULT CDeskBand::GetIServiceProvider(HWND hwnd, IServiceProvider ** pServiceProvider)
 {
 	HRESULT hr = E_FAIL;
 	if (m_pSite)
@@ -282,7 +282,7 @@ HRESULT CDeskBand::GetIServiceProvider(HWND hwnd, IServiceProvider * pServicePro
 								if ((hwndWBA == hwnd)||(hwndWBA == ::GetParent(hwnd)))
 								{
 									fFound = TRUE;
-									hr = pwba->QueryInterface(IID_IServiceProvider, (void**)&pServiceProvider);
+									hr = pwba->QueryInterface(IID_IServiceProvider, (void**)pServiceProvider);
 								}
 							}
 							pwba->Release();
