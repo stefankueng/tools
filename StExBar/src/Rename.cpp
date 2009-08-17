@@ -254,7 +254,7 @@ HRESULT CDeskBand::GetIServiceProvider(HWND hwnd, IServiceProvider ** pServicePr
 {
 	HRESULT hr = E_FAIL;
 	if (m_pSite)
-		hr = m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider);
+		hr = m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)pServiceProvider);
 	else
 	{
 		// we don't have a site, so we try finding the explorer window by enumerating
