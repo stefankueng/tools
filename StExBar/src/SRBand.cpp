@@ -64,6 +64,12 @@ CDeskBand::CDeskBand() : m_bFocus(false)
 		ICC_STANDARD_CLASSES | ICC_BAR_CLASSES | ICC_COOL_CLASSES
 	};
 	InitCommonControlsEx(&used);
+
+	OSVERSIONINFOEX inf;
+	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
+	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	GetVersionEx((OSVERSIONINFO *)&inf);
+	fullWinver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
 }
 
 CDeskBand::~CDeskBand()
@@ -583,7 +589,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 		if (wParam == TID_FILTER)
 		{
 			KillTimer(pThis->m_hWnd, TID_FILTER);
-			if (DWORD(pThis->m_regUseSelector))
+			if (DWORD(pThis->m_regUseSelector) && (pThis->fullWinver < 0x0601))
 			{
 				// get the command entered in the edit box
 				int count = MAX_PATH;
@@ -674,7 +680,7 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
 	if (uMessage == WM_LBUTTONDBLCLK)
 	{
 		::SetWindowText(pThis->m_hWndEdit, _T(""));
-		if (DWORD(pThis->m_regUseSelector))
+		if (DWORD(pThis->m_regUseSelector)&&(pThis->fullWinver < 0x0601))
 		{
 			// select the files which match the filter string
 			pThis->Filter(_T(""));
@@ -772,7 +778,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
 				count += MAX_PATH;
 				buf = new TCHAR[count+1];
 			}
-			if (DWORD(m_regUseSelector))
+			if (DWORD(m_regUseSelector)&&(fullWinver < 0x0601))
 			{
 				// select the files which match the filter string
 				Filter(buf);
