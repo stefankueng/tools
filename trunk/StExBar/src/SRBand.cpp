@@ -828,20 +828,23 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
 			SHGetSetSettings(&state, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, TRUE);
 			// now refresh the view
 			IServiceProvider * pServiceProvider;
-			if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
+			if (m_pSite)
 			{
-				IShellBrowser * pShellBrowser;
-				if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
+				if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
 				{
-					IShellView * pShellView;
-					if (SUCCEEDED(pShellBrowser->QueryActiveShellView(&pShellView)))
+					IShellBrowser * pShellBrowser;
+					if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
 					{
-						pShellView->Refresh();
-						pShellView->Release();
+						IShellView * pShellView;
+						if (SUCCEEDED(pShellBrowser->QueryActiveShellView(&pShellView)))
+						{
+							pShellView->Refresh();
+							pShellView->Release();
+						}
+						pShellBrowser->Release();
 					}
-					pShellBrowser->Release();
+					pServiceProvider->Release();
 				}
-				pServiceProvider->Release();
 			}
 			SetCursor(hCur);
 		}
