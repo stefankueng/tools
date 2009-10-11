@@ -372,18 +372,18 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
 		if (!m_hwndParent)
 			return E_FAIL;
 
+		if (!RegisterAndCreateWindow())
+			return E_FAIL;
+
+		if (!BuildToolbarButtons())
+			return E_FAIL;
+
 		// Get and keep the IInputObjectSite pointer.
 		if (FAILED(punkSite->QueryInterface(IID_IInputObjectSite, 
 			(LPVOID*)&m_pSite)))
 		{
 			return E_FAIL;
 		}
-
-		if (!RegisterAndCreateWindow())
-			return E_FAIL;
-
-		if (!BuildToolbarButtons())
-			return E_FAIL;
 
 		m_hook = SetWindowsHookEx(WH_KEYBOARD, KeyboardHookProc, NULL, GetCurrentThreadId());
 		m_desklist[GetCurrentThreadId()] = this;
