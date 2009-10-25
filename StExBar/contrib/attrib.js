@@ -3,14 +3,14 @@
 // specified in the path.
 //
 // to use this in the StExBar, add the command line:
-// wscript.exe "path/to/attrib.js" //E:javascript %selpaths
+// wscript.exe "path/to/attrib.js" //E:javascript %sel*paths
 //
 
 var objArgs,num;
 
 objArgs = WScript.Arguments;
 num = objArgs.length;
-if (num != 1)
+if (num < 1)
 {
     WScript.Echo("Usage: [CScript | WScript] attrib.js path/to/file");
     WScript.Quit(1);
