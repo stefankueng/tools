@@ -18,7 +18,7 @@
 //
 #include "stdafx.h"
 #include "BaseDialog.h"
-
+#include "commctrl.h"
 
 INT_PTR CDialog::DoModal(HINSTANCE hInstance, int resID, HWND hWndParent)
 {

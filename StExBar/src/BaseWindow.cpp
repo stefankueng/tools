@@ -18,13 +18,15 @@
 //
 #include "stdafx.h"
 #include "BaseWindow.h"
+#include "shlwapi.h"
 
+#pragma comment(lib, "shlwapi.lib")
 
 ResString::ResString (HINSTANCE hInst, int resId)
 {
 	if (!::LoadString (hInst, resId, _buf, MAX_RESSTRING + 1))
 	{
-		ZeroMemory(_buf, sizeof(_buf));
+		SecureZeroMemory(_buf, sizeof(_buf));
 	}
 }
 
@@ -75,7 +77,7 @@ LRESULT CALLBACK CWindow::stWinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, L
 	if (uMsg == WM_NCCREATE)
 	{
 		// get the pointer to the window from lpCreateParams which was set in CreateWindow
-		SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)((LPCREATESTRUCT(lParam))->lpCreateParams));
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, (long)((LPCREATESTRUCT(lParam))->lpCreateParams));
 	}
 
 	// get the pointer to the window
@@ -84,7 +86,33 @@ LRESULT CALLBACK CWindow::stWinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, L
 	// if we have the pointer, go to the message handler of the window
 	// else, use DefWindowProc
 	if (pWnd)
+	{
+		switch (uMsg)
+		{
+		case WM_ACTIVATE:
+			if ((wParam == WA_ACTIVE)&&(!pWnd->bWindowRestored)&&(!pWnd->sRegistryPath.empty()))
+			{
+				WINDOWPLACEMENT wpl = {0};
+				DWORD size = sizeof(wpl);
+				if (SHGetValue(HKEY_CURRENT_USER, pWnd->sRegistryPath.c_str(), pWnd->sRegistryValue.c_str(), REG_NONE, &wpl, &size) == ERROR_SUCCESS)
+					SetWindowPlacement(hwnd, &wpl);
+				else
+					ShowWindow(hwnd, SW_SHOW);
+				pWnd->bWindowRestored = true;
+			}
+			break;
+		case WM_CLOSE:
+			if (!pWnd->sRegistryPath.empty())
+			{
+				WINDOWPLACEMENT wpl = {0};
+				wpl.length = sizeof(WINDOWPLACEMENT);
+				GetWindowPlacement(hwnd, &wpl);
+				SHSetValue(HKEY_CURRENT_USER, pWnd->sRegistryPath.c_str(), pWnd->sRegistryValue.c_str(), REG_NONE, &wpl, sizeof(wpl));
+			}
+			break;
+		}
 		return pWnd->WinMsgHandler(hwnd, uMsg, wParam, lParam);
+	}
 	else
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
