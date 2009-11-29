@@ -32,6 +32,12 @@ CCommands::~CCommands(void)
 
 bool CCommands::LoadFromFile()
 {
+	OSVERSIONINFOEX inf;
+	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
+	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	GetVersionEx((OSVERSIONINFO *)&inf);
+	WORD fullWinver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
+
 	m_commands.clear();
 	// fill in the default commands first
 	Command c;
@@ -162,11 +168,17 @@ bool CCommands::LoadFromFile()
 	c.enabled_selected = true;
 	c.enabled_noselection = true;
 	c.enabled_selectedcount = 0;
-	key.control = true;
-	key.shift = true;
-	key.alt = false;
-	key.keycode = WPARAM('N');
-	c.key = key;
+	if (fullWinver < 0x601)
+	{
+		// Win7 already does create a new folder with Ctrl-Shift-N
+		key.control = true;
+		key.shift = true;
+		key.alt = false;
+		key.keycode = WPARAM('N');
+		c.key = key;
+	}
+	else
+		c.key = nokey;
 	m_commands.push_back(c);
 
 	c.name = _T("");
