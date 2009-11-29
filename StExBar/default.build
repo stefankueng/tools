@@ -59,7 +59,6 @@
 			<arg value="-out" />
 			<arg value="bin\" />
 			<arg value="src/setup/Setup.wxs" />
-			<arg value="src/setup/WixUI_Custom.wxs" />
 		</exec>
 		<exec program="light">
 			<arg value="-nologo" />
@@ -69,7 +68,6 @@
       <arg value="-out" />
 			<arg value="bin\StExBar.msi" />
 			<arg value="bin\Setup.wixobj" />
-			<arg value="bin\WixUI_Custom.wixobj" />
 		</exec>
 
 		<exec program="candle">
@@ -77,7 +75,6 @@
 			<arg value="-out" />
 			<arg value="bin\" />
 			<arg value="src/setup/Setup64.wxs" />
-			<arg value="src/setup/WixUI_Custom.wxs" />
 		</exec>
 		<exec program="light">
 			<arg value="-nologo" />
@@ -87,13 +84,12 @@
       <arg value="-out" />
 			<arg value="bin\StExBar64.msi" />
 			<arg value="bin\Setup64.wixobj" />
-			<arg value="bin\WixUI_Custom.wixobj" />
 		</exec>
 
 		<delete>
 			<fileset>
 				<include name="bin\*.wixobj" />
-				<include name="..\..\bin\*.wixpdb" />
+				<include name="bin\*.wixpdb" />
 			</fileset>
 		</delete>
 		<if test="${file::exists('signinfo.txt')}">
