@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorServer", "MonitorServer\MonitorServer.csproj", "{FFE0B8D5-0642-4459-94C4-CD347FAD4CB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorClient", "MonitorClient\MonitorClient.csproj", "{CF55DEAD-6456-40A1-9144-DE28E5F456F2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFE0B8D5-0642-4459-94C4-CD347FAD4CB1}.Debug|x86.ActiveCfg = Debug|x86
+		{FFE0B8D5-0642-4459-94C4-CD347FAD4CB1}.Debug|x86.Build.0 = Debug|x86
+		{FFE0B8D5-0642-4459-94C4-CD347FAD4CB1}.Release|x86.ActiveCfg = Release|x86
+		{FFE0B8D5-0642-4459-94C4-CD347FAD4CB1}.Release|x86.Build.0 = Release|x86
+		{CF55DEAD-6456-40A1-9144-DE28E5F456F2}.Debug|x86.ActiveCfg = Debug|x86
+		{CF55DEAD-6456-40A1-9144-DE28E5F456F2}.Debug|x86.Build.0 = Debug|x86
+		{CF55DEAD-6456-40A1-9144-DE28E5F456F2}.Release|x86.ActiveCfg = Release|x86
+		{CF55DEAD-6456-40A1-9144-DE28E5F456F2}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
