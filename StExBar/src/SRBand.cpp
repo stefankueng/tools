@@ -101,6 +101,12 @@ CDeskBand::~CDeskBand()
 	RemoveWindowSubclass(::GetParent(m_hwndParent), DeskBandProc, (UINT_PTR)this);
 	RemoveWindowSubclass(m_hWndEdit, EditProc, (UINT_PTR)this);
 
+	if (m_hWnd)
+	{
+		DestroyWindow(m_hWnd); 
+		m_hWnd = NULL;
+	}
+
 	g_DllRefCount--;
 }
 
