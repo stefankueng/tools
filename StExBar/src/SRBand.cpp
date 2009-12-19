@@ -881,6 +881,24 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
 			}
 			SetCursor(hCur);
 		}
+		else if (cmd.name.compare(_T("Up")) == 0)
+		{
+			IServiceProvider * pServiceProvider;
+			if (m_pSite)
+			{
+				if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
+				{
+					IShellBrowser * pShellBrowser;
+					if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
+					{
+						if (pShellBrowser)
+							pShellBrowser->BrowseObject(NULL,(GetKeyState(VK_CONTROL)<0?SBSP_NEWBROWSER:SBSP_SAMEBROWSER)|SBSP_DEFMODE|SBSP_PARENT);
+						pShellBrowser->Release();
+					}
+					pServiceProvider->Release();
+				}
+			}
+		}
 		else if (cmd.name.compare(_T("Console")) == 0)
 		{
 			StartCmd(cwd, _T(""));

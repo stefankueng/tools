@@ -743,6 +743,10 @@
 				RelativePath=".\StExBar.rc"
 				>
 			</File>
+			<File
+				RelativePath=".\icons\up.ico"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="WiX"
