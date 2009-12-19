@@ -704,10 +704,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\button.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\icons\cmd.ico"
 				>
 			</File>
@@ -736,7 +732,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rendlg.ico"
+				RelativePath=".\icons\showexts.ico"
 				>
 			</File>
 			<File
