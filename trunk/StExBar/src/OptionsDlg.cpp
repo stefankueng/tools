@@ -49,12 +49,6 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 	{
 	case WM_INITDIALOG:
 		{
-			OSVERSIONINFOEX inf;
-			SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
-			inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-			GetVersionEx((OSVERSIONINFO *)&inf);
-			WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
-
 			InitDialog(hwndDlg, IDI_OPTIONS);
 
 			m_hListControl = GetDlgItem(*this, IDC_CUSTCOMMANDS);
@@ -66,11 +60,11 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_SETCHECK, DWORD(m_regHideEditBox) ? BST_CHECKED : BST_UNCHECKED, 0);
 			SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_SETCHECK, DWORD(m_regUseSelector) ? BST_CHECKED : BST_UNCHECKED, 0);
 			SendMessage(GetDlgItem(hwndDlg, IDC_CONTEXTMENU), BM_SETCHECK, DWORD(m_regContextMenu) ? BST_CHECKED : BST_UNCHECKED, 0);
-			EnableWindow(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), (!DWORD(m_regHideEditBox)) && (fullver < 0x0601));	// no filter on Win7 anymore
+			EnableWindow(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), !DWORD(m_regHideEditBox));
 
 			AddToolTip(IDC_SHOWTEXT, _T("shows the name of the button below the icon"));
 			AddToolTip(IDC_USEUNCCHECK, _T("For mounted network drives, copies the UNC path for files/folders\r\ninstead of the path with the mounted drive letter"));
-			AddToolTip(IDC_SELECTORCHECK, _T("Determines whether the edit box on the right behaves as a shortcut for the console\r\nor whether it filters items according to the entered mask"));
+			AddToolTip(IDC_SELECTORCHECK, _T("Determines whether the edit box on the right behaves as a shortcut for the console\r\nor whether it filters items according to the entered mask.\r\nDoes not work on Win7 for folders in a library and\r\ncan be very slow if not in detailed view!"));
 			AddToolTip(IDC_HIDEEDITBOX, _T("Hides the edit box on the right of the toolbar"));
 			AddToolTip(IDC_CONTEXTMENU, _T("Adds the commands also to the right-click context menu"));
 
