@@ -576,13 +576,16 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 			// the "show/hide system files" button is special: it has a pressed state if the
 			// hidden files are shown
 			SHELLSTATE shellstate = {0};
-			SHGetSetSettings(&shellstate, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, FALSE);
+			SHGetSetSettings(&shellstate, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS|SSF_SHOWEXTENSIONS, FALSE);
 			for (int i=0; i<pThis->m_commands.GetCount(); ++i)
 			{
 				if (pThis->m_commands.GetCommandPtr(i)->name.compare(_T("Show system files")) == 0)
 				{
 					::SendMessage(pThis->m_hWndToolbar, TB_CHECKBUTTON, i, (LPARAM)shellstate.fShowAllObjects);
-					break;
+				}
+				if (pThis->m_commands.GetCommandPtr(i)->name.compare(_T("Show extensions")) == 0)
+				{
+					::SendMessage(pThis->m_hWndToolbar, TB_CHECKBUTTON, i, (LPARAM)shellstate.fShowExtensions);
 				}
 			}
 		}
@@ -826,6 +829,36 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
 			state.fShowAllObjects = !state.fShowAllObjects;
 			state.fShowSuperHidden = !state.fShowAllObjects;
 			SHGetSetSettings(&state, SSF_SHOWSYSFILES|SSF_SHOWSUPERHIDDEN|SSF_SHOWALLOBJECTS, TRUE);
+			// now refresh the view
+			IServiceProvider * pServiceProvider;
+			if (m_pSite)
+			{
+				if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
+				{
+					IShellBrowser * pShellBrowser;
+					if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
+					{
+						IShellView * pShellView;
+						if (SUCCEEDED(pShellBrowser->QueryActiveShellView(&pShellView)))
+						{
+							pShellView->Refresh();
+							pShellView->Release();
+						}
+						pShellBrowser->Release();
+					}
+					pServiceProvider->Release();
+				}
+			}
+			SetCursor(hCur);
+		}
+		else if (cmd.name.compare(_T("Show extensions")) == 0)
+		{
+			HCURSOR hCur = GetCursor();
+			SetCursor(LoadCursor(NULL, IDC_WAIT));
+			SHELLSTATE state = {0};
+			SHGetSetSettings(&state, SSF_SHOWEXTENSIONS, FALSE);
+			state.fShowExtensions = !state.fShowExtensions;
+			SHGetSetSettings(&state, SSF_SHOWEXTENSIONS, TRUE);
 			// now refresh the view
 			IServiceProvider * pServiceProvider;
 			if (m_pSite)

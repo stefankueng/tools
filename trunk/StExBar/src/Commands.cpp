@@ -107,6 +107,20 @@ bool CCommands::LoadFromFile()
 	c.key = key;
 	m_commands.push_back(c);
 
+	c.name = _T("Show extensions");
+	c.commandline = INTERNALCOMMAND;
+	c.separator = false;
+	c.nIconID = IDI_SHOWEXTS;
+	c.enabled_viewpath = true;
+	c.enabled_noviewpath = false;
+	c.enabled_fileselected = true;
+	c.enabled_folderselected = true;
+	c.enabled_selected = true;
+	c.enabled_noselection = true;
+	c.enabled_selectedcount = 0;
+	c.key = nokey;
+	m_commands.push_back(c);
+
 	c.name = _T("Console");
 	c.commandline = INTERNALCOMMAND;
 	c.separator = false;
