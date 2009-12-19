@@ -1355,7 +1355,22 @@ BOOL CDeskBand::BuildToolbarButtons()
 		tb[index].iString = cmd.separator ? NULL : (INT_PTR)m_commands.GetCommandPtr(j)->name.c_str();
 		tb[index].dwData = NULL;
 		if (!cmd.separator)
-			m_tooltips[tb[index].idCommand] = cmd.name.c_str();
+		{
+			wstring sTip = cmd.name;
+			if (cmd.key.keycode)
+			{
+				sTip += _T(" (");
+				if (cmd.key.control)
+					sTip += _T("Ctrl+");
+				if (cmd.key.shift)
+					sTip += _T("Shift+");
+				if (cmd.key.alt)
+					sTip += _T("Alt+");
+				sTip += (wchar_t)cmd.key.keycode;
+				sTip += _T(")");
+			}
+			m_tooltips[tb[index].idCommand] = sTip;
+		}
 		index++;
 	}
 
