@@ -168,7 +168,6 @@ private:
 	wstring			m_ContextDirectory;	///< the folder background path for the context menu
 	map<wstring, ULONG>	m_ContextItems;	///< list of items which are selected for the context menu
 	std::map<UINT_PTR, UINT_PTR>	myIDMap;	///< maps menu ids to command ids
-	WORD fullWinver;					///< the windows version
 
 private:
 	/// window procedure of the sub classed desk band control
