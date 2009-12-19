@@ -175,9 +175,12 @@ void COptionsDlg::InitCustomCommandsList()
 	lvc.cx = -1;
 	lvc.pszText = _T("Command");
 	ListView_InsertColumn(m_hListControl, 0, &lvc);
+	lvc.pszText = _T("Hotkey");
+	ListView_InsertColumn(m_hListControl, 1, &lvc);
 
 	LVITEM item = {0};
 	TCHAR buf[1024];
+	TCHAR buf2[1024];
 	for (int i = 0; i < m_commands.GetCount()-1; ++i)
 	{
 		Command cmd = m_commands.GetCommand(i+1);
@@ -190,8 +193,22 @@ void COptionsDlg::InitCustomCommandsList()
 			_tcscpy_s(buf, 1024, cmd.name.c_str());
 		item.pszText = buf;
 		ListView_InsertItem(m_hListControl, &item);
+		if ((!cmd.separator)&&(cmd.key.keycode))
+		{
+			wstring sKeyText;
+			if (cmd.key.control)
+				sKeyText += _T("Ctrl+");
+			if (cmd.key.shift)
+				sKeyText += _T("Shift+");
+			if (cmd.key.alt)
+				sKeyText += _T("Alt+");
+			sKeyText += (wchar_t)cmd.key.keycode;
+			_tcscpy_s(buf2, 1024, sKeyText.c_str());
+			ListView_SetItemText(m_hListControl, i, 1, buf2);
+		}
 	}
 	ListView_SetColumnWidth(m_hListControl, 0, LVSCW_AUTOSIZE_USEHEADER);
+	ListView_SetColumnWidth(m_hListControl, 1, LVSCW_AUTOSIZE_USEHEADER);
 
 	// disable the edit and remove button since nothing is selected now
 	EnableWindow(GetDlgItem(*this, IDC_EDITCMD), FALSE);
@@ -370,7 +387,7 @@ LRESULT COptionsDlg::OnCustomDrawListItem(LPNMLVCUSTOMDRAW lpNMCustomDraw)
 	case CDDS_ITEMPREPAINT:
 		{
 			COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
-			if (m_commands.GetCommand(lpNMCustomDraw->nmcd.dwItemSpec+1).commandline.compare(INTERNALCOMMANDHIDDEN) == 0)
+			if (m_commands.GetCommand((int)lpNMCustomDraw->nmcd.dwItemSpec+1).commandline.compare(INTERNALCOMMANDHIDDEN) == 0)
 				crText = GetSysColor(COLOR_GRAYTEXT);
 			lpNMCustomDraw->clrText = crText;
 			result = CDRF_NOTIFYSUBITEMDRAW;
