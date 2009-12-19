@@ -36,6 +36,7 @@ IDI_NEWFOLDER           ICON                    "icons\\newfolder.ico"
 IDI_RENAME              ICON                    "icons\\rename.ico"
 IDI_SHOWHIDE            ICON                    "icons\\showhide.ico"
 IDI_SHOWEXTS            ICON                    "icons\\showexts.ico"
+IDI_GOUP                ICON                    "icons\\up.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
