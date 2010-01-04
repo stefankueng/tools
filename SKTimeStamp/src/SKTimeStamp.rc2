@@ -35,7 +35,7 @@ BEGIN
             VALUE "FileDescription", "file/directory time stamp changer"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "SKTimeStamp.dll"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2009"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2010"
             VALUE "OriginalFilename", "SKTimeStamp.dll"
             VALUE "ProductName", "SKTimeStamp"
             VALUE "ProductVersion", STRPRODUCTVER
