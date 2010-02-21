@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2010 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -257,7 +257,6 @@ bool CCommands::LoadFromFile()
 	inifile.LoadFile(szPath);
 	CSimpleIni::TNamesDepend sections;
 	inifile.GetAllSections(sections);
-	int loopcounter = 0;
 	for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
 	{
 		hotkey key;
@@ -283,7 +282,6 @@ bool CCommands::LoadFromFile()
 		cmd.key = key;
 
 		// check if that command already exists
-		bool alreadyexists = false;
 		if (!cmd.separator)
 		{
 			for (vector<Command>::iterator cit = m_commands.begin(); cit != m_commands.end(); ++cit)
@@ -291,7 +289,6 @@ bool CCommands::LoadFromFile()
 				if (cit->name.compare(cmd.name) == 0)
 				{
 					// found the command
-					alreadyexists = true;
 					// for normal commands, we simply ignore duplicate entries.
 					// but for internal commands, we overwrite the default settings.
 					if ((cit->commandline.compare(INTERNALCOMMAND)==0)||(cit->commandline.compare(INTERNALCOMMANDHIDDEN)==0))
@@ -299,35 +296,17 @@ bool CCommands::LoadFromFile()
 						// the icon for internal commands isn't saved to the ini file, so
 						// we copy it from the existing one
 						cmd.nIconID = cit->nIconID;
-						*cit = cmd;
-						// swap the commands in their order
-						if (loopcounter < (int)m_commands.size())
-						{
-							Command c1 = m_commands[loopcounter];
-							m_commands[loopcounter] = cmd;
-							*cit = c1;
-						}
+						m_commands.erase(cit);
 					}
 					break;
 				}
 			}
 		}
-		else
-		{
-			if (cmd.commandline.compare(INTERNALCOMMAND) == 0)
-				alreadyexists = true;
-			else if (cmd.commandline.compare(INTERNALCOMMANDHIDDEN) == 0)
-			{
-				alreadyexists = true;
-				m_commands[loopcounter].commandline = cmd.commandline;
-			}
-		}
-		if (!alreadyexists)
-		{
-			m_commands.push_back(cmd);
-		}
-		loopcounter++;
+		m_commands.push_back(cmd);
 	}
+	// remove leftover separators
+	while (m_commands[0].separator)
+		m_commands.erase(m_commands.begin());
 	return false;
 }
 
