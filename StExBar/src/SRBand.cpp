@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2010 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -630,7 +630,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
 			{
 				// tooltips requested...
 				LPNMTTDISPINFO lpnmtdi = (LPNMTTDISPINFO) lParam;
-				map<int, wstring>::iterator it = pThis->m_tooltips.find(pnmh->idFrom);
+				map<int, wstring>::iterator it = pThis->m_tooltips.find((int)pnmh->idFrom);
 				if (it != pThis->m_tooltips.end())
 				{
 					_tcsncpy_s(lpnmtdi->lpszText, 80, it->second.c_str(), 79);
@@ -795,10 +795,20 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
 				// If however the user enters a '@' char in front of the command
 				// then the console shall quit after executing the command.
 				wstring params;
-				if (buf[0] == '@')
-					params = _T("/c ");
-				else				
-					params = _T("/k ");
+				if (DWORD(CRegStdWORD(_T("Software\\StefansTools\\StExBar\\UsePowershell"), FALSE)))
+				{
+					if (buf[0] == '@')
+						params = _T("-Command ");
+					else				
+						params = _T("-NoExit -Command ");
+				}
+				else
+				{
+					if (buf[0] == '@')
+						params = _T("/c ");
+					else				
+						params = _T("/k ");
+				}
 				params += buf;
 				StartCmd(cwd, params);
 			}
@@ -1080,12 +1090,12 @@ wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const wstring& paths)
 	DWORD written = 0;
 	if (bUnicode)
 	{
-		::WriteFile (file, paths.c_str(), paths.size()*sizeof(TCHAR), &written, 0);
+		::WriteFile (file, paths.c_str(), (DWORD)paths.size()*sizeof(TCHAR), &written, 0);
 	}
 	else
 	{
 		string p = WideToMultibyte(paths);
-		::WriteFile (file, p.c_str(), p.size()*sizeof(char), &written, 0);
+		::WriteFile (file, p.c_str(), (DWORD)p.size()*sizeof(char), &written, 0);
 	}
 
 	::CloseHandle(file);
