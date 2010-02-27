@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2010 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -133,7 +133,7 @@ HRESULT CreateRegistryString(LPCTSTR keypath, LPCTSTR name, LPCTSTR value)
 			0,
 			REG_SZ,
 			(LPBYTE)value,
-			_tcslen(value) * sizeof(TCHAR));
+			(DWORD)_tcslen(value) * sizeof(TCHAR));
 		if (NOERROR == lResult)
 			result = S_OK;
 		else
@@ -341,7 +341,7 @@ BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
 						0,
 						REG_SZ,
 						(LPBYTE)szData,
-						(length + 1) * sizeof(TCHAR));
+						(DWORD)(length + 1) * sizeof(TCHAR));
 					if (NOERROR != lResult)
 					{
 						RegCloseKey(hKey);
