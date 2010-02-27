@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2010 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -245,7 +245,7 @@ STDMETHODIMP CDeskBand::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 		{
 			if (id_it->second >= (UINT_PTR)m_commands.GetCount())
 				DebugBreak();
-			Command cmd = m_commands.GetCommand(id_it->second);
+			Command cmd = m_commands.GetCommand((int)id_it->second);
 
 			if (m_ContextDirectory.empty())
 			{
@@ -285,11 +285,11 @@ STDMETHODIMP CDeskBand::GetCommandString(UINT_PTR idCmd,
 		return hr;		//no, we don't
 	}
 
-	if (m_tooltips.find(id_it->first) == m_tooltips.end())
+	if (m_tooltips.find((int)id_it->first) == m_tooltips.end())
 		return hr;
 
 
-	const TCHAR * desc = m_tooltips[id_it->first].c_str();
+	const TCHAR * desc = m_tooltips[(int)id_it->first].c_str();
 	switch(uFlags)
 	{
 	case GCS_HELPTEXTW: 
@@ -336,7 +336,7 @@ STDMETHODIMP CDeskBand::HandleMenuMsg2(UINT uMsg, WPARAM /*wParam*/, LPARAM lPar
 			if ((lpdis==NULL)||(lpdis->CtlType != ODT_MENU))
 				return S_OK;		//not for a menu
 
-			int cmdID = myIDMap[lpdis->itemID];
+			int cmdID = (int)myIDMap[lpdis->itemID];
 			if (m_commands.GetCount() <= cmdID)
 				return S_OK;
 
@@ -362,4 +362,3 @@ STDMETHODIMP CDeskBand::HandleMenuMsg2(UINT uMsg, WPARAM /*wParam*/, LPARAM lPar
 
 	return S_OK;
 }
-
