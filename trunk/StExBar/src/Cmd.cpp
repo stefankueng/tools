@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2010 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,7 +30,43 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params)
 
 	// find the cmd program
 	TCHAR buf[MAX_PATH] = {0};
-	if (ExpandEnvironmentStrings(_T("%COMSPEC%"), buf, MAX_PATH)==NULL)
+	if (DWORD(CRegStdWORD(_T("Software\\StefansTools\\StExBar\\UsePowershell"), FALSE)))
+	{
+		if (ExpandEnvironmentStrings(_T("%systemroot%"), buf, MAX_PATH))
+		{
+			_tcscat_s(buf, MAX_PATH, _T("\\system32\\windowspowershell\\v1.0\\powershell.exe"));
+		}
+		else
+			_tcscpy_s(buf, MAX_PATH, _T("c:\\windows\\system32\\windowspowershell\\v1.0\\powershell.exe"));
+
+		// the powershell ignores the '-noexit' parameter completely if it's not the first
+		// parameter. Problem is, it also ignores it if we split the path to the exe and its parameters
+		// in the CreateProcess() call. The only way it recognizes the parameter is if
+		// we call CreateProcess with NULL as the first parameter and put everything in the buffer
+		// of the second parameter. Really, really stupid.
+
+		TCHAR * nonconstparams = new TCHAR[params.size()+MAX_PATH];
+		_tcscpy_s(nonconstparams, params.size()+MAX_PATH, _T("\""));
+		_tcscat_s(nonconstparams, params.size()+MAX_PATH, buf);
+		_tcscat_s(nonconstparams, params.size()+MAX_PATH, _T("\" "));
+		_tcscat_s(nonconstparams, params.size()+MAX_PATH, params.c_str());
+
+		CreateProcess(NULL, 
+			nonconstparams, 
+			NULL, 
+			NULL, 
+			FALSE, 
+			CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE, 
+			0, 
+			cwd.empty() ? NULL : cwd.c_str(), 
+			&startup, 
+			&process);
+		delete [] nonconstparams;
+		CloseHandle(process.hThread);
+		CloseHandle(process.hProcess);
+		return;
+	}
+	else if (ExpandEnvironmentStrings(_T("%COMSPEC%"), buf, MAX_PATH)==NULL)
 	{
 		_tcscpy_s(buf, MAX_PATH, _T("cmd.exe"));
 	}

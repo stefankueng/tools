@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2010 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,6 +35,7 @@ COptionsDlg::COptionsDlg(HWND hParent) : m_regShowBtnText(_T("Software\\StefansT
 	, m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
 	, m_regHideEditBox(_T("Software\\StefansTools\\StExBar\\HideEditBox"), 0)
 	, m_regContextMenu(_T("Software\\StefansTools\\StExBar\\ContextMenu"), 1)
+	, m_regPowershell (_T("Software\\StefansTools\\StExBar\\UsePowershell"), 0)
 {
 	m_hParent = hParent;
 }
@@ -60,6 +61,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_SETCHECK, DWORD(m_regHideEditBox) ? BST_CHECKED : BST_UNCHECKED, 0);
 			SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_SETCHECK, DWORD(m_regUseSelector) ? BST_CHECKED : BST_UNCHECKED, 0);
 			SendMessage(GetDlgItem(hwndDlg, IDC_CONTEXTMENU), BM_SETCHECK, DWORD(m_regContextMenu) ? BST_CHECKED : BST_UNCHECKED, 0);
+			SendMessage(GetDlgItem(hwndDlg, IDC_POWERSHELL), BM_SETCHECK, DWORD(m_regPowershell) ? BST_CHECKED : BST_UNCHECKED, 0);
 			EnableWindow(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), !DWORD(m_regHideEditBox));
 
 			AddToolTip(IDC_SHOWTEXT, _T("shows the name of the button below the icon"));
@@ -67,6 +69,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			AddToolTip(IDC_SELECTORCHECK, _T("Determines whether the edit box on the right behaves as a shortcut for the console\r\nor whether it filters items according to the entered mask.\r\nDoes not work on Win7 for folders in a library and\r\ncan be very slow if not in detailed view!"));
 			AddToolTip(IDC_HIDEEDITBOX, _T("Hides the edit box on the right of the toolbar"));
 			AddToolTip(IDC_CONTEXTMENU, _T("Adds the commands also to the right-click context menu"));
+			AddToolTip(IDC_POWERSHELL, _T("If enabled, the edit box text is sent to the Powershell instead of the cmd.exe"));
 
 			TCHAR buf[MAX_PATH] = {0};
 			_stprintf_s(buf, MAX_PATH, _T("StExBar %ld.%ld.%ld.%ld"), VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
@@ -86,6 +89,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				m_regUseSelector = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_GETCHECK, 0, 0);
 				m_regHideEditBox = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_GETCHECK, 0, 0);
 				m_regContextMenu = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_CONTEXTMENU), BM_GETCHECK, 0, 0);
+				m_regPowershell  = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_POWERSHELL), BM_GETCHECK, 0, 0);
 				m_commands.SaveToFile();
 			}
 			// fall through

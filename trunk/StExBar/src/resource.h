@@ -21,7 +21,6 @@
 #define IDR_REGEXHELP                   117
 #define IDI_ICON1                       118
 #define IDI_SHOWEXTS                    118
-#define IDI_ICON3                       119
 #define IDI_GOUP                        119
 #define IDC_LIST1                       1001
 #define IDC_FILELIST                    1001
@@ -63,6 +62,8 @@
 #define IDC_COMMANDSHELP                1037
 #define IDC_BROWSEICON                  1038
 #define IDC_BROWSECOMMAND               1039
+#define IDC_                            1039
+#define IDC_POWERSHELL                  1039
 
 // Next default values for new objects
 // 
@@ -70,7 +71,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        120
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1039
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

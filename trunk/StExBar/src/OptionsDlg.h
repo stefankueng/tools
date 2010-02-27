@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2010 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,6 +50,7 @@ private:
 	CRegStdWORD				m_regUseSelector;	///< config setting whether to use the selector or the cmd.exe replacement
 	CRegStdWORD				m_regHideEditBox;	///< config setting whether to show the edit box or not
 	CRegStdWORD				m_regContextMenu;	///< config setting whether to show the commands in the context menu or not
+	CRegStdWORD				m_regPowershell;	///< config setting whether to use the powershell or Console
 	CHyperLink				m_link;				///< the hyperlink used in the options dialog
 
 	CCommands				m_commands;
