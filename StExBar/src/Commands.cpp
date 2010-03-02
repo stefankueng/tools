@@ -122,7 +122,7 @@ bool CCommands::LoadFromFile()
 	m_commands.push_back(c);
 
 	c.name = _T("Up");
-	c.commandline = INTERNALCOMMAND;
+	c.commandline = fullWinver <= 0x501 ? INTERNALCOMMAND : INTERNALCOMMANDHIDDEN;
 	c.separator = false;
 	c.nIconID = IDI_GOUP;
 	c.enabled_viewpath = true;
