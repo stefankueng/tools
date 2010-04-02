@@ -1004,8 +1004,13 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
 		{
 			// prepare the selected paths
 			wstring selpaths = GetFilePaths(items, _T("*"), false, true, true, false);
-			if (selpaths.empty())
-				selpaths = cwd;
+            if (selpaths.empty())
+            {
+                TCHAR buf[MAX_PATH] = {0};
+                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
+                PathQuoteSpaces(buf);
+                selpaths = buf;
+            }
 			wstring::iterator it_end= it_begin + tag.size();
 			commandline.replace(it_begin, it_end, selpaths);
 		}
@@ -1024,8 +1029,13 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
 		it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
 		if (it_begin != commandline.end())
 		{
+            TCHAR buf[MAX_PATH] = {0};
+            _tcscpy_s(buf, MAX_PATH, cwd.c_str());
+            PathQuoteSpaces(buf);
+            wstring cwdquoted = buf;
+
 			wstring::iterator it_end= it_begin + tag.size();
-			commandline.replace(it_begin, it_end, cwd);
+			commandline.replace(it_begin, it_end, cwdquoted);
 		}
 		// replace "%cmdtext" with the text in the console edit box
 		tag = _T("%cmdtext");
@@ -1041,8 +1051,13 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
 		if (it_begin != commandline.end())
 		{
 			wstring selpaths = GetFilePaths(items, _T("\r\n"), false, true, true, false);
-			if (selpaths.empty())
-				selpaths = cwd;
+            if (selpaths.empty())
+            {
+                TCHAR buf[MAX_PATH] = {0};
+                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
+                PathQuoteSpaces(buf);
+                selpaths = buf;
+            }
 			wstring tempFilePath = WriteFileListToTempFile(false, selpaths);
 			wstring::iterator it_end= it_begin + tag.size();
 			commandline.replace(it_begin, it_end, tempFilePath);
@@ -1053,8 +1068,13 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
 		if (it_begin != commandline.end())
 		{
 			wstring selpaths = GetFilePaths(items, _T("\r\n"), false, true, true, false);
-			if (selpaths.empty())
-				selpaths = cwd;
+            if (selpaths.empty())
+            {
+                TCHAR buf[MAX_PATH] = {0};
+                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
+                PathQuoteSpaces(buf);
+                selpaths = buf;
+            }
 			wstring tempFilePath = WriteFileListToTempFile(true, selpaths);
 			wstring::iterator it_end= it_begin + tag.size();
 			commandline.replace(it_begin, it_end, tempFilePath);
