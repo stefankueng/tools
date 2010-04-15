@@ -337,7 +337,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
 				char * pBufStart = pBuf;
 				char * pOldBuf = (char*)file.GetFileContent();
 				vector<long>::iterator it = spacepositions.begin();
-				for (long i=0; i<long(file.GetFileLength()); ++i)
+				for (long i=0; i<long(newfilelen); ++i)
 				{
 					++pos;
 					if ((it != spacepositions.end())&&(pos == *it))
