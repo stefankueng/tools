@@ -15,8 +15,11 @@ set<wstring> g_allowedPatterns;
 
 bool FileExtensionInPattern(const wstring& filepath)
 {
-	wstring ext = _tcsrchr(filepath.c_str(), '.')+1;
-	return (g_allowedPatterns.find(ext) != g_allowedPatterns.end());
+    const TCHAR * pFound = _tcsrchr(filepath.c_str(), '.');
+    wstring ext;
+    if (pFound)
+        ext = pFound+1;
+    return (g_allowedPatterns.find(ext) != g_allowedPatterns.end());
 }
 
 int _tmain(int argc, _TCHAR* argv[])
