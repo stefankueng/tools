@@ -88,7 +88,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
 					char * pBufStart = pBuf;
 					char * pOldBuf = (char*)file.GetFileContent();
 					vector<long>::iterator it = spacegrouppositions.begin();
-					for (long i=0; i<(file.GetFileLength()); ++i)
+					for (long i=0; i<(newfilelen); ++i)
 					{
 						if ((it != spacegrouppositions.end())&&(*it == i))
 						{
