@@ -4,10 +4,10 @@
 class ConvertTabSpaces
 {
 public:
-	ConvertTabSpaces(void);
-	~ConvertTabSpaces(void);
+    ConvertTabSpaces(void);
+    ~ConvertTabSpaces(void);
 
 public:
-	static bool			Convert(CTextFile& file, bool useSpaces, int tabsize, bool checkonly);
-	static bool			RemoveEndSpaces(CTextFile& file, bool checkonly);
+    static bool         Convert(CTextFile& file, bool useSpaces, int tabsize, bool checkonly);
+    static bool         RemoveEndSpaces(CTextFile& file, bool checkonly);
 };

@@ -48,7 +48,7 @@ protected:
     * ("C:" is different from "C:\", and "C:filename" is
     * legal anyway.)
     */
-	wstring m_sPathPrefix;
+    wstring m_sPathPrefix;
 
    /**
     * The file data returned by FindFirstFile()/FindNextFile().
@@ -63,7 +63,7 @@ public:
     * \param sPath    The path to search in.
     * \param sPattern The filename pattern - default all files.
     */
-	CSimpleFileFind(const wstring &sPath, LPCTSTR pPattern = _T("*.*"));
+    CSimpleFileFind(const wstring &sPath, LPCTSTR pPattern = _T("*.*"));
    ~CSimpleFileFind();
 
    /**
@@ -172,8 +172,8 @@ public:
     */
    inline wstring GetFilePath() const
    {
-	   if (m_bFile)
-		   return m_sPathPrefix;
+       if (m_bFile)
+           return m_sPathPrefix;
       return m_sPathPrefix + m_FindFileData.cFileName;
    }
 
@@ -184,7 +184,7 @@ public:
     * \return TRUE iff the current file is the "." or ".."
     * pseudo-directory.
     */
-   inline bool IsDots() const 
+   inline bool IsDots() const
    {
       return IsDirectory()
           && m_FindFileData.cFileName[0] == _T('.')
@@ -203,7 +203,7 @@ private:
 
    class CDirStackEntry : public CSimpleFileFind {
    public:
-	   CDirStackEntry(CDirStackEntry * seNext, const wstring& sDirName);
+       CDirStackEntry(CDirStackEntry * seNext, const wstring& sDirName);
       ~CDirStackEntry();
 
       CDirStackEntry * m_seNext;
@@ -225,7 +225,7 @@ public:
     *
     * @param dirName The directory to search in.
     */
-	CDirFileEnum(const wstring& dirName);
+    CDirFileEnum(const wstring& dirName);
 
    /**
     * Destructor.  Frees all resources.
@@ -238,10 +238,10 @@ public:
     * \param  result On successful return, holds the full path to the found
     *                file. (If this function returns FALSE, the value of
     *                result is unspecified).
-	* \param  pbIsDirectory Pointer to a bool variable which will hold
-	*                TRUE if the \c result path is a directory, FALSE
-	*				 if it's a file. Pass NULL if you don't need that information.
-	* \param  recurse true if recursing into subdirectories is requested.
+    * \param  pbIsDirectory Pointer to a bool variable which will hold
+    *                TRUE if the \c result path is a directory, FALSE
+    *                if it's a file. Pass NULL if you don't need that information.
+    * \param  recurse true if recursing into subdirectories is requested.
     * \return TRUE iff a file was found, false at end of the iteration.
     */
    bool NextFile(wstring &result, bool* pbIsDirectory, bool recurse = true);
