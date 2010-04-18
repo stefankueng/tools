@@ -22,24 +22,48 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             int spacecount = 0;
             vector<long> spacegrouppositions;
             long pos = 0;
-            for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
+            if (file.GetEncoding() == CTextFile::UNICODE_LE)
             {
-                // we have to convert all spaces in groups of more than the tabsize
-                // a space followed by a tab may lead to just removing the space
-                if ((*it == ' ')||(*it == '\t'))
+                for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
                 {
-                    spacecount++;
-                    if ((spacecount == tabsize)||((*it == '\t')&&(spacecount > 1)))
+                    // we have to convert all spaces in groups of more than the tabsize
+                    // a space followed by a tab may lead to just removing the space
+                    if ((*it == ' ')||(*it == '\t'))
                     {
-                        spacegrouppositions.push_back(pos-spacecount+1);
-                        count += (spacecount-1);
-                        spacecount = 0;
+                        spacecount++;
+                        if ((spacecount == tabsize)||((*it == '\t')&&(spacecount > 1)))
+                        {
+                            spacegrouppositions.push_back(pos-spacecount+1);
+                            count += (spacecount-1);
+                            spacecount = 0;
+                        }
+                        if (*it == '\t')
+                            spacecount = 0;
                     }
-                    if (*it == '\t')
+                    else
                         spacecount = 0;
                 }
-                else
-                    spacecount = 0;
+            }
+            else
+            {
+                char * pBuf = (char*)file.GetFileContent();
+                for (int i = 0; i < file.GetFileLength(); ++i, ++pos, ++pBuf)
+                {
+                    if ((*pBuf == ' ')||(*pBuf == '\t'))
+                    {
+                        spacecount++;
+                        if ((spacecount == tabsize)||((*pBuf == '\t')&&(spacecount > 1)))
+                        {
+                            spacegrouppositions.push_back(pos-spacecount+1);
+                            count += (spacecount-1);
+                            spacecount = 0;
+                        }
+                        if (*pBuf == '\t')
+                            spacecount = 0;
+                    }
+                    else
+                        spacecount = 0;
+                }
             }
             // now we have the number of space groups we have to convert to tabs
             // create a new file buffer and copy everything over there, replacing those space
@@ -123,20 +147,43 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             long pos = 0;
             long inlinepos = 0;
             long spacestoinsert = 0;
-            for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
+            if (file.GetEncoding() == CTextFile::UNICODE_LE)
             {
-                ++inlinepos;
-                if ((*it == '\r')||(*it == '\n'))
-                    inlinepos = 0;
-                // we have to convert all tabs
-                if (*it == '\t')
+                for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
                 {
-                    inlinepos += tabsize-1;
-                    long inlinepostemp = tabsize - ((inlinepos + tabsize)%tabsize);
-                    if (inlinepostemp == 0)
-                        inlinepostemp = tabsize;
-                    spacestoinsert += (inlinepostemp - 1);      // minus one because the tab itself gets replaced
-                    inlinepos += inlinepostemp;
+                    ++inlinepos;
+                    if ((*it == '\r')||(*it == '\n'))
+                        inlinepos = 0;
+                    // we have to convert all tabs
+                    if (*it == '\t')
+                    {
+                        inlinepos += tabsize-1;
+                        long inlinepostemp = tabsize - ((inlinepos + tabsize)%tabsize);
+                        if (inlinepostemp == 0)
+                            inlinepostemp = tabsize;
+                        spacestoinsert += (inlinepostemp - 1);      // minus one because the tab itself gets replaced
+                        inlinepos += inlinepostemp;
+                    }
+                }
+            }
+            else
+            {
+                char * pBuf = (char*)file.GetFileContent();
+                for (int i = 0; i < file.GetFileLength(); ++i, ++pos, ++pBuf)
+                {
+                    ++inlinepos;
+                    if ((*pBuf == '\r')||(*pBuf == '\n'))
+                        inlinepos = 0;
+                    // we have to convert all tabs
+                    if (*pBuf == '\t')
+                    {
+                        inlinepos += tabsize-1;
+                        long inlinepostemp = tabsize - ((inlinepos + tabsize)%tabsize);
+                        if (inlinepostemp == 0)
+                            inlinepostemp = tabsize;
+                        spacestoinsert += (inlinepostemp - 1);      // minus one because the tab itself gets replaced
+                        inlinepos += inlinepostemp;
+                    }
                 }
             }
             if (spacestoinsert)
@@ -276,24 +323,50 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
         int totalwhitespaces = 0;
         int pos = 0;
         vector<long> spacepositions;
-        for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it)
+        if (file.GetEncoding() == CTextFile::UNICODE_LE)
         {
-            ++inlinepos;
-            ++pos;
-            if ((*it == '\r')||(*it == '\n'))
+            for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it)
             {
-                if (whitespaces)
+                ++inlinepos;
+                ++pos;
+                if ((*it == '\r')||(*it == '\n'))
                 {
-                    spacepositions.push_back(pos - whitespaces);
-                    totalwhitespaces += whitespaces;
+                    if (whitespaces)
+                    {
+                        spacepositions.push_back(pos - whitespaces);
+                        totalwhitespaces += whitespaces;
+                    }
+                    whitespaces = 0;
+                    inlinepos = 0;
                 }
-                whitespaces = 0;
-                inlinepos = 0;
+                if ((*it == ' ')||(*it == '\t'))
+                    whitespaces++;
+                else
+                    whitespaces = 0;
             }
-            if ((*it == ' ')||(*it == '\t'))
-                whitespaces++;
-            else
-                whitespaces = 0;
+        }
+        else
+        {
+            char * pBuf = (char*)file.GetFileContent();
+            for (int i = 0; i < file.GetFileLength(); ++i, ++pBuf)
+            {
+                ++inlinepos;
+                ++pos;
+                if ((*pBuf == '\r')||(*pBuf == '\n'))
+                {
+                    if (whitespaces)
+                    {
+                        spacepositions.push_back(pos - whitespaces);
+                        totalwhitespaces += whitespaces;
+                    }
+                    whitespaces = 0;
+                    inlinepos = 0;
+                }
+                if ((*pBuf == ' ')||(*pBuf == '\t'))
+                    whitespaces++;
+                else
+                    whitespaces = 0;
+            }
         }
         // now we have the amount of whitespaces we have to remove
         if (totalwhitespaces)
