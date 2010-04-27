@@ -206,7 +206,6 @@ LRESULT CMainWindow::DoCommand(int id)
 {
     switch (id) 
     {
-
     case IDM_EXIT:
         Shell_NotifyIcon(NIM_DELETE,&niData);
         ::PostQuitMessage(0);

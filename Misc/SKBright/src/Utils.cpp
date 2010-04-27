@@ -125,7 +125,6 @@ int CUtils::GetBrightness()
 
         ULONG ulReturned;
         IWbemClassObject *pObj;
-        DWORD retVal = 0;
 
         //Get the Next Object from the collection
         hr = pEnum->Next(WBEM_INFINITE, //Timeout
@@ -269,7 +268,6 @@ bool CUtils::SetBrightness(int val)
 
         ULONG ulReturned;
         IWbemClassObject *pObj;
-        DWORD retVal = 0;
 
         //Get the Next Object from the collection
         hr = pEnum->Next(WBEM_INFINITE, //Timeout
