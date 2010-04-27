@@ -19,6 +19,7 @@
 #include "StdAfx.h"
 #include "MainWindow.h"
 #include "NotifySlider.h"
+#include "AboutDlg.h"
 
 #include <WindowsX.h>
 
@@ -42,7 +43,7 @@ DWORD CMainWindow::GetDllVersion(LPCTSTR lpszDllName)
     if (hinstDll)
     {
         DLLGETVERSIONPROC pDllGetVersion;
-        pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hinstDll, 
+        pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hinstDll,
             "DllGetVersion");
 
         if (pDllGetVersion)
@@ -68,9 +69,9 @@ DWORD CMainWindow::GetDllVersion(LPCTSTR lpszDllName)
 
 bool CMainWindow::RegisterAndCreateWindow()
 {
-    WNDCLASSEX wcx; 
+    WNDCLASSEX wcx;
 
-    // Fill in the window class structure with default parameters 
+    // Fill in the window class structure with default parameters
     wcx.cbSize = sizeof(WNDCLASSEX);
     wcx.style = CS_HREDRAW | CS_VREDRAW;
     wcx.lpfnWndProc = CWindow::stWinMsgHandler;
@@ -168,7 +169,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
                     HMENU hMenu = LoadMenu(hResource, MAKEINTRESOURCE(IDC_SKBRIGHT));
                     HMENU hPopMenu = GetSubMenu(hMenu, 0);
                     SetForegroundWindow(*this);
-                    TrackPopupMenu(hPopMenu, TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, 0, *this, NULL); 
+                    TrackPopupMenu(hPopMenu, TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, 0, *this, NULL);
                     DestroyMenu(hMenu);
                 }
                 break;
@@ -204,7 +205,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 
 LRESULT CMainWindow::DoCommand(int id)
 {
-    switch (id) 
+    switch (id)
     {
     case IDM_EXIT:
         Shell_NotifyIcon(NIM_DELETE,&niData);
@@ -213,8 +214,8 @@ LRESULT CMainWindow::DoCommand(int id)
         break;
     case IDM_ABOUT:
         {
-            //CAboutDlg dlg(NULL);
-            //dlg.DoModal(hResource, IDD_ABOUTBOX, NULL);
+            CAboutDlg dlg(NULL);
+            dlg.DoModal(hResource, IDD_ABOUTBOX, NULL);
         }
         break;
     //case IDM_OPTIONS:

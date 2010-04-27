@@ -74,16 +74,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\default.build" />
+    <None Include="..\default.build.user" />
+    <None Include="..\version.build.in" />
+    <None Include="..\versioninfo.build" />
     <None Include="ReadMe.txt" />
     <None Include="SKBright.ico" />
     <None Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="AeroControls.h" />
     <ClInclude Include="AeroGlass.h" />
     <ClInclude Include="BaseDialog.h" />
     <ClInclude Include="BaseWindow.h" />
     <ClInclude Include="CmdLineParser.h" />
+    <ClInclude Include="hyperlink.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="NotifySlider.h" />
     <ClInclude Include="Registry.h" />
@@ -94,11 +100,13 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="AeroControls.cpp" />
     <ClCompile Include="AeroGlass.cpp" />
     <ClCompile Include="BaseDialog.cpp" />
     <ClCompile Include="BaseWindow.cpp" />
     <ClCompile Include="CmdLineParser.cpp" />
+    <ClCompile Include="hyperlink.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NotifySlider.cpp" />
     <ClCompile Include="Registry.cpp" />

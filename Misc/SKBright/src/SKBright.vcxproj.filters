@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="buildscripts">
+      <UniqueIdentifier>{3ebb6a3b-ed7a-4d00-9ecc-5d76a5ab62e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -21,6 +24,18 @@
     </None>
     <None Include="SKBright.ico">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\version.build.in">
+      <Filter>buildscripts</Filter>
+    </None>
+    <None Include="..\versioninfo.build">
+      <Filter>buildscripts</Filter>
+    </None>
+    <None Include="..\default.build">
+      <Filter>buildscripts</Filter>
+    </None>
+    <None Include="..\default.build.user">
+      <Filter>buildscripts</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +78,12 @@
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AboutDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hyperlink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -96,6 +117,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hyperlink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
