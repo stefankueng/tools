@@ -92,6 +92,7 @@
     <ClInclude Include="hyperlink.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="NotifySlider.h" />
+    <ClInclude Include="OptionsDlg.h" />
     <ClInclude Include="Registry.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SKBright.h" />
@@ -109,6 +110,7 @@
     <ClCompile Include="hyperlink.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NotifySlider.cpp" />
+    <ClCompile Include="OptionsDlg.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="SKBright.cpp" />
     <ClCompile Include="stdafx.cpp">

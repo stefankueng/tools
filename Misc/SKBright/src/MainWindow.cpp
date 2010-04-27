@@ -20,6 +20,7 @@
 #include "MainWindow.h"
 #include "NotifySlider.h"
 #include "AboutDlg.h"
+#include "OptionsDlg.h"
 
 #include <WindowsX.h>
 
@@ -218,12 +219,12 @@ LRESULT CMainWindow::DoCommand(int id)
             dlg.DoModal(hResource, IDD_ABOUTBOX, NULL);
         }
         break;
-    //case IDM_OPTIONS:
-    //    {
-    //        COptionsDlg dlg(NULL);
-    //        dlg.DoModal(hResource, IDD_OPTIONS, NULL);
-    //    }
-    //    break;
+    case IDM_OPTIONS:
+        {
+            COptionsDlg dlg(NULL);
+            dlg.DoModal(hResource, IDD_OPTIONS, NULL);
+        }
+        break;
     default:
         break;
     };
