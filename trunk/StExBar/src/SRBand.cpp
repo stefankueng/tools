@@ -1414,7 +1414,7 @@ BOOL CDeskBand::BuildToolbarButtons()
                     sTip += _T("Shift+");
                 if (cmd.key.alt)
                     sTip += _T("Alt+");
-                LONG scanCode = MapVirtualKey(cmd.key.keycode, MAPVK_VK_TO_VSC);
+                LONG scanCode = MapVirtualKey((UINT)cmd.key.keycode, MAPVK_VK_TO_VSC);
                 WCHAR buf[50];
                 GetKeyNameText(((LONG)(scanCode)<<16), buf, _countof(buf));
                 sTip += buf;
