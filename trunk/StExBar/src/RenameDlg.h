@@ -31,26 +31,26 @@ using namespace std;
 class CRenameDlg : public CDialog
 {
 public:
-	CRenameDlg(HWND hParent);
-	~CRenameDlg(void);
+    CRenameDlg(HWND hParent);
+    ~CRenameDlg(void);
 
-	wstring					GetMatchString() {return m_sMatch;}
-	tr1::regex_constants::syntax_option_type GetRegexFlags() {return m_fl;}
-	wstring					GetReplaceString() {return m_sReplace;}
-	void					SetFileList(const set<wstring>& list) {m_filelist = list;}
+    wstring                 GetMatchString() {return m_sMatch;}
+    tr1::regex_constants::syntax_option_type GetRegexFlags() {return m_fl;}
+    wstring                 GetReplaceString() {return m_sReplace;}
+    void                    SetFileList(const set<wstring>& list) {m_filelist = list;}
 
 protected:
-	LRESULT CALLBACK		DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	bool					PreTranslateMessage(MSG* pMsg);
-	void					FillRenamedList();
+    LRESULT CALLBACK        DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    bool                    PreTranslateMessage(MSG* pMsg);
+    void                    FillRenamedList();
 private:
-	HWND					m_hParent;
-	CDlgResizer				m_resizer;
-	wstring					m_sMatch;			///< the match string of the rename
-	wstring					m_sReplace;			///< the replace string of the rename
-	set<wstring>			m_filelist;			///< the list of selected file/folder names
-	CAutoComplete			m_AutoCompleteRen1;
-	CAutoComplete			m_AutoCompleteRen2;
+    HWND                    m_hParent;
+    CDlgResizer             m_resizer;
+    wstring                 m_sMatch;           ///< the match string of the rename
+    wstring                 m_sReplace;         ///< the replace string of the rename
+    set<wstring>            m_filelist;         ///< the list of selected file/folder names
+    CAutoComplete           m_AutoCompleteRen1;
+    CAutoComplete           m_AutoCompleteRen2;
 
-	tr1::regex_constants::syntax_option_type m_fl;
+    tr1::regex_constants::syntax_option_type m_fl;
 };

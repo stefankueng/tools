@@ -21,9 +21,9 @@
 
 
 ItemIDList::ItemIDList(LPCITEMIDLIST item, LPCITEMIDLIST parent) :
-	  item_ (item)
-	, parent_ (parent)
-	, count_ (-1)
+      item_ (item)
+    , parent_ (parent)
+    , count_ (-1)
 {
 }
 
@@ -33,94 +33,94 @@ ItemIDList::~ItemIDList()
 
 int ItemIDList::size() const
 {
-	if (count_ == -1)
-	{
-		count_ = 0;
-		if (item_)
-		{
-			LPCSHITEMID ptr = &item_->mkid;
-			while (ptr != 0 && ptr->cb != 0)
-			{
-				++count_;
-				LPBYTE byte = (LPBYTE) ptr;
-				byte += ptr->cb;
-				ptr = (LPCSHITEMID) byte;
-			}
-		}
-	}
-	return count_;
+    if (count_ == -1)
+    {
+        count_ = 0;
+        if (item_)
+        {
+            LPCSHITEMID ptr = &item_->mkid;
+            while (ptr != 0 && ptr->cb != 0)
+            {
+                ++count_;
+                LPBYTE byte = (LPBYTE) ptr;
+                byte += ptr->cb;
+                ptr = (LPCSHITEMID) byte;
+            }
+        }
+    }
+    return count_;
 }
 
 LPCSHITEMID ItemIDList::get(int index) const
 {
-	int count = 0;
+    int count = 0;
 
-	if (item_ == NULL)
-		return NULL;
-	LPCSHITEMID ptr = &item_->mkid;
-	if (ptr == NULL)
-		return NULL;
-	while (ptr->cb != 0)
-	{
-		if (count == index)
-			break;
+    if (item_ == NULL)
+        return NULL;
+    LPCSHITEMID ptr = &item_->mkid;
+    if (ptr == NULL)
+        return NULL;
+    while (ptr->cb != 0)
+    {
+        if (count == index)
+            break;
 
-		++count;
-		LPBYTE byte = (LPBYTE) ptr;
-		byte += ptr->cb;
-		ptr = (LPCSHITEMID) byte;
-	}
-	return ptr;
+        ++count;
+        LPBYTE byte = (LPBYTE) ptr;
+        byte += ptr->cb;
+        ptr = (LPCSHITEMID) byte;
+    }
+    return ptr;
 
 }
 
 tstring ItemIDList::toString()
 {
-	IShellFolder *shellFolder = NULL;
-	IShellFolder *parentFolder = NULL;
-	STRRET name;
-	TCHAR * szDisplayName = NULL;
-	tstring ret;
-	HRESULT hr;
+    IShellFolder *shellFolder = NULL;
+    IShellFolder *parentFolder = NULL;
+    STRRET name;
+    TCHAR * szDisplayName = NULL;
+    tstring ret;
+    HRESULT hr;
 
-	hr = ::SHGetDesktopFolder(&shellFolder);
-	if (!SUCCEEDED(hr))
-		return ret;
-	if (parent_)
-	{
-		hr = shellFolder->BindToObject(parent_, 0, IID_IShellFolder, (void**) &parentFolder);
-		if (!SUCCEEDED(hr))
-			parentFolder = shellFolder;
-	} 
-	else 
-	{
-		parentFolder = shellFolder;
-	}
+    hr = ::SHGetDesktopFolder(&shellFolder);
+    if (!SUCCEEDED(hr))
+        return ret;
+    if (parent_)
+    {
+        hr = shellFolder->BindToObject(parent_, 0, IID_IShellFolder, (void**) &parentFolder);
+        if (!SUCCEEDED(hr))
+            parentFolder = shellFolder;
+    }
+    else
+    {
+        parentFolder = shellFolder;
+    }
 
-	if ((parentFolder != 0)&&(item_ != 0))
-	{
-		hr = parentFolder->GetDisplayNameOf(item_, SHGDN_NORMAL | SHGDN_FORPARSING, &name);
-		if (!SUCCEEDED(hr))
-		{
-			parentFolder->Release();
-			return ret;
-		}
-		hr = StrRetToStr (&name, item_, &szDisplayName);
-		if (!SUCCEEDED(hr))
-			return ret;
-	}
-	parentFolder->Release();
-	if (szDisplayName == NULL)
-	{
-		CoTaskMemFree(szDisplayName);
-		return ret;			//to avoid a crash!
-	}
-	ret = szDisplayName;
-	CoTaskMemFree(szDisplayName);
-	return ret;
+    if ((parentFolder != 0)&&(item_ != 0))
+    {
+        hr = parentFolder->GetDisplayNameOf(item_, SHGDN_NORMAL | SHGDN_FORPARSING, &name);
+        if (!SUCCEEDED(hr))
+        {
+            parentFolder->Release();
+            return ret;
+        }
+        hr = StrRetToStr (&name, item_, &szDisplayName);
+        if (!SUCCEEDED(hr))
+            return ret;
+    }
+    parentFolder->Release();
+    if (szDisplayName == NULL)
+    {
+        CoTaskMemFree(szDisplayName);
+        return ret;         //to avoid a crash!
+    }
+    ret = szDisplayName;
+    CoTaskMemFree(szDisplayName);
+    return ret;
 }
 
 LPCITEMIDLIST ItemIDList::operator& ()
 {
-	return item_;
+    return item_;
 }

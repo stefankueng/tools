@@ -26,10 +26,10 @@
 class CInfoDlg  
 {
 public:
-	CInfoDlg();
-	virtual ~CInfoDlg();
+    CInfoDlg();
+    virtual ~CInfoDlg();
 public:
-	static BOOL ShowDialog(UINT idAboutHTMLID, HINSTANCE hInstance);
+    static BOOL ShowDialog(UINT idAboutHTMLID, HINSTANCE hInstance);
 
 };
 
