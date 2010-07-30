@@ -756,6 +756,13 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 DebugBreak();
             Command cmd = m_commands.GetCommand(LOWORD(wParam));
 
+            if (m_currentDirectory.empty())
+            {
+                WCHAR buf[MAX_PATH] = {0};
+                GetCurrentDirectory(MAX_PATH, buf);
+                m_currentDirectory = buf;
+            }
+
             HandleCommand(m_hWnd, cmd, m_currentDirectory, m_selectedItems);
 
             FocusChange(false);
@@ -810,7 +817,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
                         params = _T("/k ");
                 }
                 params += buf;
-                StartCmd(cwd, params);
+                StartCmd(cwd, params, (GetKeyState(VK_LWIN)&0x8000)!=0);
             }
             delete [] buf;
         }
@@ -911,7 +918,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
         }
         else if (cmd.name.compare(_T("Console")) == 0)
         {
-            StartCmd(cwd, _T(""));
+            StartCmd(cwd, _T(""), (GetKeyState(VK_LWIN)&0x8000)!=0);
         }
         else if (cmd.name.compare(_T("Copy Names")) == 0)
         {
@@ -1079,7 +1086,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             wstring::iterator it_end= it_begin + tag.size();
             commandline.replace(it_begin, it_end, tempFilePath);
         }
-        StartApplication(cwd, commandline);
+        StartApplication(cwd, commandline, (GetKeyState(VK_LWIN)&0x8000)!=0);
     }
 }
 

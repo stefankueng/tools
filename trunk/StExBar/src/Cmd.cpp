@@ -20,7 +20,7 @@
 #include "SRBand.h"
 
 
-void CDeskBand::StartCmd(const wstring& cwd, std::wstring params)
+void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
 {
     STARTUPINFO startup;
     PROCESS_INFORMATION process;
@@ -51,19 +51,39 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params)
         _tcscat_s(nonconstparams, params.size()+MAX_PATH, _T("\" "));
         _tcscat_s(nonconstparams, params.size()+MAX_PATH, params.c_str());
 
-        CreateProcess(NULL,
-            nonconstparams,
-            NULL,
-            NULL,
-            FALSE,
-            CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE,
-            0,
-            cwd.empty() ? NULL : cwd.c_str(),
-            &startup,
-            &process);
+        if (elevated)
+        {
+            SHELLEXECUTEINFO shExecInfo;
+
+            shExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+
+            shExecInfo.fMask = NULL;
+            shExecInfo.hwnd = m_hWnd;
+            shExecInfo.lpVerb = L"runas";
+            shExecInfo.lpFile = nonconstparams;
+            shExecInfo.lpParameters = NULL;
+            shExecInfo.lpDirectory = cwd.empty() ? NULL : cwd.c_str();
+            shExecInfo.nShow = SW_NORMAL;
+            shExecInfo.hInstApp = NULL;
+
+            ShellExecuteEx(&shExecInfo);
+        }
+        else
+        {
+            CreateProcess(NULL,
+                nonconstparams,
+                NULL,
+                NULL,
+                FALSE,
+                CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE,
+                0,
+                cwd.empty() ? NULL : cwd.c_str(),
+                &startup,
+                &process);
+            CloseHandle(process.hThread);
+            CloseHandle(process.hProcess);
+        }
         delete [] nonconstparams;
-        CloseHandle(process.hThread);
-        CloseHandle(process.hProcess);
         return;
     }
     else if (ExpandEnvironmentStrings(_T("%COMSPEC%"), buf, MAX_PATH)==NULL)
@@ -73,22 +93,50 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params)
     TCHAR * nonconstparams = new TCHAR[params.size()+1];
     _tcscpy_s(nonconstparams, params.size()+1, params.c_str());
 
-    CreateProcess(buf,
-        nonconstparams,
-        NULL,
-        NULL,
-        FALSE,
-        CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE,
-        0,
-        cwd.empty() ? NULL : cwd.c_str(),
-        &startup,
-        &process);
+    if (elevated)
+    {
+        delete [] nonconstparams;
+        size_t psize = params.size()+ 20 + cwd.size();
+        nonconstparams = new TCHAR[psize];
+        _tcscpy_s(nonconstparams, psize, L"/k cd /d \"");
+        _tcscat_s(nonconstparams, psize, cwd.c_str());
+        _tcscat_s(nonconstparams, psize, L"\" ");
+        _tcscat_s(nonconstparams, psize, params.c_str());
+
+        SHELLEXECUTEINFO shExecInfo;
+
+        shExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+
+        shExecInfo.fMask = NULL;
+        shExecInfo.hwnd = m_hWnd;
+        shExecInfo.lpVerb = L"runas";
+        shExecInfo.lpFile = buf;
+        shExecInfo.lpParameters = nonconstparams;
+        shExecInfo.lpDirectory = cwd.empty() ? NULL : cwd.c_str();
+        shExecInfo.nShow = SW_NORMAL;
+        shExecInfo.hInstApp = NULL;
+
+        ShellExecuteEx(&shExecInfo);
+    }
+    else
+    {
+        CreateProcess(buf,
+            nonconstparams,
+            NULL,
+            NULL,
+            FALSE,
+            CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE,
+            0,
+            cwd.empty() ? NULL : cwd.c_str(),
+            &startup,
+            &process);
+        CloseHandle(process.hThread);
+        CloseHandle(process.hProcess);
+    }
     delete [] nonconstparams;
-    CloseHandle(process.hThread);
-    CloseHandle(process.hProcess);
 }
 
-void CDeskBand::StartApplication(const wstring& cwd, std::wstring commandline)
+void CDeskBand::StartApplication(const wstring& cwd, std::wstring commandline, bool elevated)
 {
     STARTUPINFO startup;
     PROCESS_INFORMATION process;
@@ -101,17 +149,52 @@ void CDeskBand::StartApplication(const wstring& cwd, std::wstring commandline)
     if (ExpandEnvironmentStrings(commandline.c_str(), nonconst, len)==0)
         _tcscpy_s(nonconst, commandline.size()+1, commandline.c_str());
 
-    CreateProcess(NULL,
-        nonconst,
-        NULL,
-        NULL,
-        FALSE,
-        CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE,
-        0,
-        cwd.empty() ? NULL : cwd.c_str(),
-        &startup,
-        &process);
+    if (elevated)
+    {
+        TCHAR * params = nonconst;
+        // try to separate the command from its params
+        if (params[0] == '"')
+        {
+            params = _tcschr(nonconst, '"');
+            params++;
+            *params = 0;
+            params++;
+        }
+        else
+        {
+            params = _tcschr(nonconst, ' ');
+            *params = 0;
+            params++;
+        }
+        SHELLEXECUTEINFO shExecInfo;
+
+        shExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+
+        shExecInfo.fMask = NULL;
+        shExecInfo.hwnd = m_hWnd;
+        shExecInfo.lpVerb = L"runas";
+        shExecInfo.lpFile = nonconst;
+        shExecInfo.lpParameters = params;
+        shExecInfo.lpDirectory = cwd.empty() ? NULL : cwd.c_str();
+        shExecInfo.nShow = SW_NORMAL;
+        shExecInfo.hInstApp = NULL;
+
+        ShellExecuteEx(&shExecInfo);
+    }
+    else
+    {
+        CreateProcess(NULL,
+            nonconst,
+            NULL,
+            NULL,
+            FALSE,
+            CREATE_NEW_CONSOLE|CREATE_DEFAULT_ERROR_MODE,
+            0,
+            cwd.empty() ? NULL : cwd.c_str(),
+            &startup,
+            &process);
+        CloseHandle(process.hThread);
+        CloseHandle(process.hProcess);
+    }
     delete [] nonconst;
-    CloseHandle(process.hThread);
-    CloseHandle(process.hProcess);
 }
