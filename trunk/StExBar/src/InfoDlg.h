@@ -23,7 +23,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CInfoDlg  
+class CInfoDlg
 {
 public:
     CInfoDlg();
