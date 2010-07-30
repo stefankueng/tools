@@ -22,21 +22,21 @@
  * \ingroup TortoiseShell
  * Represents a list of directory elements like folders and files.
  */
-class ItemIDList  
+class ItemIDList
 {
 public:
-	ItemIDList(LPCITEMIDLIST item, LPCITEMIDLIST parent = 0);
+    ItemIDList(LPCITEMIDLIST item, LPCITEMIDLIST parent = 0);
 
-	int size() const;
-	LPCSHITEMID get(int index) const;
-	virtual ~ItemIDList();
+    int size() const;
+    LPCSHITEMID get(int index) const;
+    virtual ~ItemIDList();
 
-	tstring toString();
+    tstring toString();
 
-	LPCITEMIDLIST operator& ();
+    LPCITEMIDLIST operator& ();
 private:
-	LPCITEMIDLIST item_;
-	LPCITEMIDLIST parent_;
-	mutable int count_;
+    LPCITEMIDLIST item_;
+    LPCITEMIDLIST parent_;
+    mutable int count_;
 };
 

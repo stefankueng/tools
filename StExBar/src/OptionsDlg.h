@@ -30,29 +30,29 @@ using namespace std;
 class COptionsDlg : public CDialog
 {
 public:
-	COptionsDlg(HWND hParent);
-	~COptionsDlg(void);
+    COptionsDlg(HWND hParent);
+    ~COptionsDlg(void);
 
 protected:
-	LRESULT CALLBACK		DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    LRESULT CALLBACK        DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	void					InitCustomCommandsList();
-	void					OnSelectListItem(LPNMLISTVIEW lpNMListView);
-	LRESULT					OnCustomDrawListItem(LPNMLVCUSTOMDRAW lpNMCustomDraw);
-	void					EditSelectedItem();
-	void					RemoveSelectedItem();
-	void					MoveSelectedUp();
-	void					MoveSelectedDown();
+    void                    InitCustomCommandsList();
+    void                    OnSelectListItem(LPNMLISTVIEW lpNMListView);
+    LRESULT                 OnCustomDrawListItem(LPNMLVCUSTOMDRAW lpNMCustomDraw);
+    void                    EditSelectedItem();
+    void                    RemoveSelectedItem();
+    void                    MoveSelectedUp();
+    void                    MoveSelectedDown();
 private:
-	HWND					m_hParent;
-	CRegStdWORD				m_regShowBtnText;	///< config setting whether to show the text for the toolbar buttons or not
-	CRegStdWORD				m_regUseUNCPaths;	///< config setting whether to copy the UNC paths of mapped paths or not
-	CRegStdWORD				m_regUseSelector;	///< config setting whether to use the selector or the cmd.exe replacement
-	CRegStdWORD				m_regHideEditBox;	///< config setting whether to show the edit box or not
-	CRegStdWORD				m_regContextMenu;	///< config setting whether to show the commands in the context menu or not
-	CRegStdWORD				m_regPowershell;	///< config setting whether to use the powershell or Console
-	CHyperLink				m_link;				///< the hyperlink used in the options dialog
+    HWND                    m_hParent;
+    CRegStdWORD             m_regShowBtnText;   ///< config setting whether to show the text for the toolbar buttons or not
+    CRegStdWORD             m_regUseUNCPaths;   ///< config setting whether to copy the UNC paths of mapped paths or not
+    CRegStdWORD             m_regUseSelector;   ///< config setting whether to use the selector or the cmd.exe replacement
+    CRegStdWORD             m_regHideEditBox;   ///< config setting whether to show the edit box or not
+    CRegStdWORD             m_regContextMenu;   ///< config setting whether to show the commands in the context menu or not
+    CRegStdWORD             m_regPowershell;    ///< config setting whether to use the powershell or Console
+    CHyperLink              m_link;             ///< the hyperlink used in the options dialog
 
-	CCommands				m_commands;
-	HWND					m_hListControl;
+    CCommands               m_commands;
+    HWND                    m_hListControl;
 };

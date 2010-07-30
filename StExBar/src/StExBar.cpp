@@ -26,9 +26,9 @@
 
 // include the manifest required to use the version 6 common controls
 #ifndef WIN64
-#	pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='X86' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#   pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='X86' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #else
-#	pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"") 
+#   pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 
 // This part is only done once.
@@ -50,385 +50,385 @@ HRESULT     hr;
 
 
 void my_invalid_parameter(const wchar_t * expression,
-						const wchar_t * function, 
-						const wchar_t * file, 
-						unsigned int line,
-						uintptr_t pReserved)
+                        const wchar_t * function,
+                        const wchar_t * file,
+                        unsigned int line,
+                        uintptr_t pReserved)
 {
-	UNREFERENCED_PARAMETER(expression);
-	UNREFERENCED_PARAMETER(function);
-	UNREFERENCED_PARAMETER(file);
-	UNREFERENCED_PARAMETER(line);
-	UNREFERENCED_PARAMETER(pReserved);
+    UNREFERENCED_PARAMETER(expression);
+    UNREFERENCED_PARAMETER(function);
+    UNREFERENCED_PARAMETER(file);
+    UNREFERENCED_PARAMETER(line);
+    UNREFERENCED_PARAMETER(pReserved);
 }
 
-extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, 
-							   DWORD dwReason, 
-							   LPVOID /*lpReserved*/)
+extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance,
+                               DWORD dwReason,
+                               LPVOID /*lpReserved*/)
 {
-	switch(dwReason)
-	{
-	case DLL_PROCESS_ATTACH:
-		g_hInst = hInstance;
-		_set_invalid_parameter_handler(my_invalid_parameter);
-		break;
-	case DLL_PROCESS_DETACH:
-		UnregisterClass(DB_CLASS_NAME, g_hInst);
-		break;
-	}
+    switch(dwReason)
+    {
+    case DLL_PROCESS_ATTACH:
+        g_hInst = hInstance;
+        _set_invalid_parameter_handler(my_invalid_parameter);
+        break;
+    case DLL_PROCESS_DETACH:
+        UnregisterClass(DB_CLASS_NAME, g_hInst);
+        break;
+    }
 
-	return TRUE;
-}                                 
+    return TRUE;
+}
 
 STDAPI DllCanUnloadNow(void)
 {
-	return (g_DllRefCount ? S_FALSE : S_OK);
+    return (g_DllRefCount ? S_FALSE : S_OK);
 }
 
-STDAPI DllGetClassObject(REFCLSID rclsid, 
-						 REFIID riid, 
-						 LPVOID *ppReturn)
+STDAPI DllGetClassObject(REFCLSID rclsid,
+                         REFIID riid,
+                         LPVOID *ppReturn)
 {
-	*ppReturn = NULL;
+    *ppReturn = NULL;
 
-	// If this classid is not supported, return the proper error code.
-	if (!IsEqualCLSID(rclsid, CLSID_StExBand))
-		return CLASS_E_CLASSNOTAVAILABLE;
+    // If this classid is not supported, return the proper error code.
+    if (!IsEqualCLSID(rclsid, CLSID_StExBand))
+        return CLASS_E_CLASSNOTAVAILABLE;
 
-	// Create a CClassFactory object and check it for validity.
-	CClassFactory *pClassFactory = new CClassFactory(rclsid);
-	if (NULL == pClassFactory)
-		return E_OUTOFMEMORY;
+    // Create a CClassFactory object and check it for validity.
+    CClassFactory *pClassFactory = new CClassFactory(rclsid);
+    if (NULL == pClassFactory)
+        return E_OUTOFMEMORY;
 
-	// Get the QueryInterface return for our return value
-	HRESULT hResult = pClassFactory->QueryInterface(riid, ppReturn);
+    // Get the QueryInterface return for our return value
+    HRESULT hResult = pClassFactory->QueryInterface(riid, ppReturn);
 
-	// Call Release to decrement the ref count - creating the object set the ref
-	// count to 1 and QueryInterface incremented it. Since it's only being used
-	// externally, the ref count should only be 1.
-	pClassFactory->Release();
+    // Call Release to decrement the ref count - creating the object set the ref
+    // count to 1 and QueryInterface incremented it. Since it's only being used
+    // externally, the ref count should only be 1.
+    pClassFactory->Release();
 
-	// Return the result from QueryInterface.
-	return hResult;
+    // Return the result from QueryInterface.
+    return hResult;
 }
 
 HRESULT CreateRegistryString(LPCTSTR keypath, LPCTSTR name, LPCTSTR value)
 {
-	HRESULT result = SELFREG_E_CLASS;
-	HKEY hKey;
-	LONG lResult = RegCreateKeyEx(HKEY_LOCAL_MACHINE,
-		keypath,
-		0,
-		NULL,
-		REG_OPTION_NON_VOLATILE,
-		KEY_WRITE,
-		NULL,
-		&hKey,
-		NULL);
+    HRESULT result = SELFREG_E_CLASS;
+    HKEY hKey;
+    LONG lResult = RegCreateKeyEx(HKEY_LOCAL_MACHINE,
+        keypath,
+        0,
+        NULL,
+        REG_OPTION_NON_VOLATILE,
+        KEY_WRITE,
+        NULL,
+        &hKey,
+        NULL);
 
-	if (NOERROR == lResult)
-	{
-		lResult = RegSetValueEx(hKey,
-			name,
-			0,
-			REG_SZ,
-			(LPBYTE)value,
-			(DWORD)_tcslen(value) * sizeof(TCHAR));
-		if (NOERROR == lResult)
-			result = S_OK;
-		else
-			result = SELFREG_E_CLASS;
-		RegCloseKey(hKey);
-	}
-	else
-		result = SELFREG_E_CLASS;
-	return result;
+    if (NOERROR == lResult)
+    {
+        lResult = RegSetValueEx(hKey,
+            name,
+            0,
+            REG_SZ,
+            (LPBYTE)value,
+            (DWORD)_tcslen(value) * sizeof(TCHAR));
+        if (NOERROR == lResult)
+            result = S_OK;
+        else
+            result = SELFREG_E_CLASS;
+        RegCloseKey(hKey);
+    }
+    else
+        result = SELFREG_E_CLASS;
+    return result;
 }
 
 STDAPI DllRegisterServer(void)
 {
-	HRESULT result = SELFREG_E_CLASS;
+    HRESULT result = SELFREG_E_CLASS;
 
-	// check if we're on XP or later
-	OSVERSIONINFOEX osex = {0};
-	osex.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	GetVersionEx((OSVERSIONINFO *)&osex);
-	bool bIsWindowsXPorLater = ((osex.dwMajorVersion > 5) || ((osex.dwMajorVersion == 5) && (osex.dwMinorVersion >= 1)));
+    // check if we're on XP or later
+    OSVERSIONINFOEX osex = {0};
+    osex.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+    GetVersionEx((OSVERSIONINFO *)&osex);
+    bool bIsWindowsXPorLater = ((osex.dwMajorVersion > 5) || ((osex.dwMajorVersion == 5) && (osex.dwMinorVersion >= 1)));
 
-	if (!bIsWindowsXPorLater)
-		return result;
+    if (!bIsWindowsXPorLater)
+        return result;
 
-	// Register the desk band object.
-	if (!RegisterServer(CLSID_StExBand, TEXT("S&tExBar")))
-		return result;
+    // Register the desk band object.
+    if (!RegisterServer(CLSID_StExBand, TEXT("S&tExBar")))
+        return result;
 
-	// Register the component categories for the desk band object.
-	if (!RegisterComCat(CLSID_StExBand, CATID_DeskBand))
-		return result;
+    // Register the component categories for the desk band object.
+    if (!RegisterComCat(CLSID_StExBand, CATID_DeskBand))
+        return result;
 
-	// Register the object in explorer
-	LPWSTR   pwsz;
-	TCHAR    szCLSID[MAX_PATH];
-	// Get the CLSID in string form.
-	if (SUCCEEDED(result = StringFromIID(CLSID_StExBand, &pwsz)))
-	{
-		if (pwsz)
-		{
-			if (SUCCEEDED(result = StringCchCopy(szCLSID, MAX_PATH, pwsz)))
-			{
-				CreateRegistryString(TEXT("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID, TEXT("StExBar"));
+    // Register the object in explorer
+    LPWSTR   pwsz;
+    TCHAR    szCLSID[MAX_PATH];
+    // Get the CLSID in string form.
+    if (SUCCEEDED(result = StringFromIID(CLSID_StExBand, &pwsz)))
+    {
+        if (pwsz)
+        {
+            if (SUCCEEDED(result = StringCchCopy(szCLSID, MAX_PATH, pwsz)))
+            {
+                CreateRegistryString(TEXT("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID, TEXT("StExBar"));
 
-				CreateRegistryString(TEXT("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-				CreateRegistryString(TEXT("Software\\Classes\\Directory\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-				CreateRegistryString(TEXT("Software\\Classes\\Directory\\Background\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-				CreateRegistryString(TEXT("Software\\Classes\\Folder\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-				CreateRegistryString(TEXT("Software\\Classes\\*\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-				CreateRegistryString(TEXT("Software\\Classes\\LibraryLocation\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-				CreateRegistryString(TEXT("Software\\Classes\\LibraryFolder\\background\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(TEXT("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(TEXT("Software\\Classes\\Directory\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(TEXT("Software\\Classes\\Directory\\Background\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(TEXT("Software\\Classes\\Folder\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(TEXT("Software\\Classes\\*\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(TEXT("Software\\Classes\\LibraryLocation\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(TEXT("Software\\Classes\\LibraryFolder\\background\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
 
-				CreateRegistryString(TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Approved"), szCLSID, TEXT("StExBar"));
-			}
-			// Free the string.
-			LPMALLOC pMalloc;
-			CoGetMalloc(1, &pMalloc);
-			pMalloc->Free(pwsz);
-			pMalloc->Release();
-		}
-		else
-			result = SELFREG_E_CLASS;
-	}
+                CreateRegistryString(TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Approved"), szCLSID, TEXT("StExBar"));
+            }
+            // Free the string.
+            LPMALLOC pMalloc;
+            CoGetMalloc(1, &pMalloc);
+            pMalloc->Free(pwsz);
+            pMalloc->Release();
+        }
+        else
+            result = SELFREG_E_CLASS;
+    }
 
-	return result;
+    return result;
 }
 
 STDAPI DllUnregisterServer(void)
 {
-	HRESULT res = S_OK;
-	// UnRegister the component categories for the desk band object.
-	if (!UnRegisterComCat(CLSID_StExBand, CATID_DeskBand))
-		res = SELFREG_E_CLASS;
+    HRESULT res = S_OK;
+    // UnRegister the component categories for the desk band object.
+    if (!UnRegisterComCat(CLSID_StExBand, CATID_DeskBand))
+        res = SELFREG_E_CLASS;
 
-	// UnRegister the desk band object.
-	if (!UnRegisterServer(CLSID_StExBand, TEXT("S&tExBar")))
-		res = SELFREG_E_CLASS;
+    // UnRegister the desk band object.
+    if (!UnRegisterServer(CLSID_StExBand, TEXT("S&tExBar")))
+        res = SELFREG_E_CLASS;
 
-	LPWSTR   pwsz;
-	TCHAR    szCLSID[MAX_PATH];
-	// Get the CLSID in string form.
-	if (SUCCEEDED(res = StringFromIID(CLSID_StExBand, &pwsz)))
-	{
-		if (pwsz)
-		{
-			if (SUCCEEDED(res = StringCchCopy(szCLSID, MAX_PATH, pwsz)))
-			{
-				SHDeleteValue(HKEY_LOCAL_MACHINE, TEXT("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID);
-				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"));
-				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Directory\\shellex\\ContextMenuHandlers\\StExBar"));
-				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Directory\\Background\\shellex\\ContextMenuHandlers\\StExBar"));
-				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Folder\\shellex\\ContextMenuHandlers\\StExBar"));
-				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\*\\shellex\\ContextMenuHandlers\\StExBar"));
-				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\LibraryLocation\\shellex\\ContextMenuHandlers\\StExBar"));
-				SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\LibraryFolder\\background\\shellex\\ContextMenuHandlers\\StExBar"));
-				res = S_OK;
-			}
-			// Free the string.
-			LPMALLOC pMalloc;
-			CoGetMalloc(1, &pMalloc);
-			pMalloc->Free(pwsz);
-			pMalloc->Release();
-		}
-		else
-			res = SELFREG_E_CLASS;
-	}
+    LPWSTR   pwsz;
+    TCHAR    szCLSID[MAX_PATH];
+    // Get the CLSID in string form.
+    if (SUCCEEDED(res = StringFromIID(CLSID_StExBand, &pwsz)))
+    {
+        if (pwsz)
+        {
+            if (SUCCEEDED(res = StringCchCopy(szCLSID, MAX_PATH, pwsz)))
+            {
+                SHDeleteValue(HKEY_LOCAL_MACHINE, TEXT("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID);
+                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Directory\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Directory\\Background\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Folder\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\*\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\LibraryLocation\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\LibraryFolder\\background\\shellex\\ContextMenuHandlers\\StExBar"));
+                res = S_OK;
+            }
+            // Free the string.
+            LPMALLOC pMalloc;
+            CoGetMalloc(1, &pMalloc);
+            pMalloc->Free(pwsz);
+            pMalloc->Release();
+        }
+        else
+            res = SELFREG_E_CLASS;
+    }
 
-	return res;
+    return res;
 }
 
 typedef struct{
-	HKEY  hRootKey;
-	LPTSTR szSubKey;        // TCHAR szSubKey[MAX_PATH];
-	LPTSTR lpszValueName;
-	LPTSTR szData;          // TCHAR szData[MAX_PATH];
+    HKEY  hRootKey;
+    LPTSTR szSubKey;        // TCHAR szSubKey[MAX_PATH];
+    LPTSTR lpszValueName;
+    LPTSTR szData;          // TCHAR szData[MAX_PATH];
 }DOREGSTRUCT, *LPDOREGSTRUCT;
 
 BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
 {
-	int      i;
-	HKEY     hKey;
-	LRESULT  lResult;
-	DWORD    dwDisp;
-	TCHAR    szSubKey[MAX_PATH];
-	TCHAR    szCLSID[MAX_PATH];
-	TCHAR    szModule[MAX_PATH];
-	LPWSTR   pwsz;
-	DWORD    retval;
+    int      i;
+    HKEY     hKey;
+    LRESULT  lResult;
+    DWORD    dwDisp;
+    TCHAR    szSubKey[MAX_PATH];
+    TCHAR    szCLSID[MAX_PATH];
+    TCHAR    szModule[MAX_PATH];
+    LPWSTR   pwsz;
+    DWORD    retval;
 
-	// Get the CLSID in string form.
-	StringFromIID(clsid, &pwsz);
+    // Get the CLSID in string form.
+    StringFromIID(clsid, &pwsz);
 
-	if (pwsz)
-	{
-		hr = StringCchCopy(szCLSID, MAX_PATH, pwsz);
+    if (pwsz)
+    {
+        hr = StringCchCopy(szCLSID, MAX_PATH, pwsz);
 
-		// Free the string.
-		LPMALLOC pMalloc;
-		CoGetMalloc(1, &pMalloc);
-		pMalloc->Free(pwsz);
-		pMalloc->Release();
-		if (FAILED(hr))
-			return FALSE;
-	}
+        // Free the string.
+        LPMALLOC pMalloc;
+        CoGetMalloc(1, &pMalloc);
+        pMalloc->Free(pwsz);
+        pMalloc->Release();
+        if (FAILED(hr))
+            return FALSE;
+    }
 
-	// Get this app's path and file name.
-	retval = GetModuleFileName(g_hInst, szModule, MAX_PATH);
-	if (retval == NULL)
-		return FALSE;
+    // Get this app's path and file name.
+    retval = GetModuleFileName(g_hInst, szModule, MAX_PATH);
+    if (retval == NULL)
+        return FALSE;
 
-	DOREGSTRUCT ClsidEntries[ ] = {HKEY_CLASSES_ROOT,      
-		TEXT("CLSID\\%38s"),            
-		NULL,                   
-		lpszTitle,
-		HKEY_CLASSES_ROOT,      
-		TEXT("CLSID\\%38s\\InprocServer32"), 
-		NULL,  
-		szModule,
-		HKEY_CLASSES_ROOT,      
-		TEXT("CLSID\\%38s\\InprocServer32"), 
-		TEXT("ThreadingModel"), 
-		TEXT("Apartment"),
-		NULL,                
-		NULL,
-		NULL,
-		NULL};
+    DOREGSTRUCT ClsidEntries[ ] = {HKEY_CLASSES_ROOT,
+        TEXT("CLSID\\%38s"),
+        NULL,
+        lpszTitle,
+        HKEY_CLASSES_ROOT,
+        TEXT("CLSID\\%38s\\InprocServer32"),
+        NULL,
+        szModule,
+        HKEY_CLASSES_ROOT,
+        TEXT("CLSID\\%38s\\InprocServer32"),
+        TEXT("ThreadingModel"),
+        TEXT("Apartment"),
+        NULL,
+        NULL,
+        NULL,
+        NULL};
 
-	// register the CLSID entries
-	for(i = 0; ClsidEntries[i].hRootKey; i++)
-	{
-		// create the sub key string - for this case, insert the file extension
-		if (FAILED(StringCchPrintf(szSubKey, 
-			MAX_PATH, 
-			ClsidEntries[i].szSubKey, 
-			szCLSID)))
-			return FALSE;
+    // register the CLSID entries
+    for(i = 0; ClsidEntries[i].hRootKey; i++)
+    {
+        // create the sub key string - for this case, insert the file extension
+        if (FAILED(StringCchPrintf(szSubKey,
+            MAX_PATH,
+            ClsidEntries[i].szSubKey,
+            szCLSID)))
+            return FALSE;
 
 
 
-		lResult = RegCreateKeyEx(ClsidEntries[i].hRootKey,
-			szSubKey,
-			0,
-			NULL,
-			REG_OPTION_NON_VOLATILE,
-			KEY_WRITE,
-			NULL,
-			&hKey,
-			&dwDisp);
+        lResult = RegCreateKeyEx(ClsidEntries[i].hRootKey,
+            szSubKey,
+            0,
+            NULL,
+            REG_OPTION_NON_VOLATILE,
+            KEY_WRITE,
+            NULL,
+            &hKey,
+            &dwDisp);
 
-		if (NOERROR == lResult)
-		{
-			TCHAR szData[MAX_PATH];
+        if (NOERROR == lResult)
+        {
+            TCHAR szData[MAX_PATH];
 
-			// If necessary, create the value string.
-			if (SUCCEEDED(StringCchPrintf(szData, 
-				MAX_PATH, 
-				ClsidEntries[i].szData, 
-				szModule)))
-			{
-				size_t length = 0;
-				if (SUCCEEDED(StringCchLength(szData, MAX_PATH, &length)))
-				{
-					lResult = RegSetValueEx(hKey,
-						ClsidEntries[i].lpszValueName,
-						0,
-						REG_SZ,
-						(LPBYTE)szData,
-						(DWORD)(length + 1) * sizeof(TCHAR));
-					if (NOERROR != lResult)
-					{
-						RegCloseKey(hKey);
-						return FALSE;
-					}
-				}
-				else
-				{
-					RegCloseKey(hKey);
-					return FALSE;
-				}
-				RegCloseKey(hKey);
-			}
-			else
-			{
-				RegCloseKey(hKey);
-				return FALSE;
-			}
-		}
-		else
-			return FALSE;
-	}
+            // If necessary, create the value string.
+            if (SUCCEEDED(StringCchPrintf(szData,
+                MAX_PATH,
+                ClsidEntries[i].szData,
+                szModule)))
+            {
+                size_t length = 0;
+                if (SUCCEEDED(StringCchLength(szData, MAX_PATH, &length)))
+                {
+                    lResult = RegSetValueEx(hKey,
+                        ClsidEntries[i].lpszValueName,
+                        0,
+                        REG_SZ,
+                        (LPBYTE)szData,
+                        (DWORD)(length + 1) * sizeof(TCHAR));
+                    if (NOERROR != lResult)
+                    {
+                        RegCloseKey(hKey);
+                        return FALSE;
+                    }
+                }
+                else
+                {
+                    RegCloseKey(hKey);
+                    return FALSE;
+                }
+                RegCloseKey(hKey);
+            }
+            else
+            {
+                RegCloseKey(hKey);
+                return FALSE;
+            }
+        }
+        else
+            return FALSE;
+    }
 
-	return TRUE;
+    return TRUE;
 }
 
 BOOL UnRegisterServer(CLSID clsid, LPTSTR lpszTitle)
 {
-	int      i;
-	TCHAR    szSubKey[MAX_PATH];
-	TCHAR    szCLSID[MAX_PATH];
-	TCHAR    szModule[MAX_PATH];
-	LPWSTR   pwsz;
-	DWORD    retval;
+    int      i;
+    TCHAR    szSubKey[MAX_PATH];
+    TCHAR    szCLSID[MAX_PATH];
+    TCHAR    szModule[MAX_PATH];
+    LPWSTR   pwsz;
+    DWORD    retval;
 
-	// Get the CLSID in string form.
-	if (FAILED(StringFromIID(clsid, &pwsz)))
-		return FALSE;
+    // Get the CLSID in string form.
+    if (FAILED(StringFromIID(clsid, &pwsz)))
+        return FALSE;
 
-	if (pwsz)
-	{
-		hr = StringCchCopy(szCLSID, MAX_PATH, pwsz);
-		// Free the string.
-		LPMALLOC pMalloc;
-		CoGetMalloc(1, &pMalloc);
-		pMalloc->Free(pwsz);
-		pMalloc->Release();
-		if (FAILED(hr))
-			return FALSE;
-	}
+    if (pwsz)
+    {
+        hr = StringCchCopy(szCLSID, MAX_PATH, pwsz);
+        // Free the string.
+        LPMALLOC pMalloc;
+        CoGetMalloc(1, &pMalloc);
+        pMalloc->Free(pwsz);
+        pMalloc->Release();
+        if (FAILED(hr))
+            return FALSE;
+    }
 
-	// Get this app's path and file name.
-	retval = GetModuleFileName(g_hInst, szModule, MAX_PATH);
-	if (retval == NULL)
-		return FALSE;
+    // Get this app's path and file name.
+    retval = GetModuleFileName(g_hInst, szModule, MAX_PATH);
+    if (retval == NULL)
+        return FALSE;
 
-	DOREGSTRUCT ClsidEntries[ ] = {HKEY_CLASSES_ROOT,      
-		TEXT("CLSID\\%38s"),            
-		NULL,                   
-		lpszTitle,
-		HKEY_CLASSES_ROOT,      
-		TEXT("CLSID\\%38s\\InprocServer32"), 
-		NULL,  
-		szModule,
-		HKEY_CLASSES_ROOT,      
-		TEXT("CLSID\\%38s\\InprocServer32"), 
-		TEXT("ThreadingModel"), 
-		TEXT("Apartment"),
-		NULL,                
-		NULL,
-		NULL,
-		NULL};
+    DOREGSTRUCT ClsidEntries[ ] = {HKEY_CLASSES_ROOT,
+        TEXT("CLSID\\%38s"),
+        NULL,
+        lpszTitle,
+        HKEY_CLASSES_ROOT,
+        TEXT("CLSID\\%38s\\InprocServer32"),
+        NULL,
+        szModule,
+        HKEY_CLASSES_ROOT,
+        TEXT("CLSID\\%38s\\InprocServer32"),
+        TEXT("ThreadingModel"),
+        TEXT("Apartment"),
+        NULL,
+        NULL,
+        NULL,
+        NULL};
 
-	// deregister the CLSID entries
-	for(i = 0; ClsidEntries[i].hRootKey; i++)
-	{
-		//create the sub key string - for this case, insert the file extension
-		if (FAILED(StringCchPrintf(szSubKey, 
-			MAX_PATH, 
-			ClsidEntries[i].szSubKey, 
-			szCLSID)))
-			return FALSE;
+    // deregister the CLSID entries
+    for(i = 0; ClsidEntries[i].hRootKey; i++)
+    {
+        //create the sub key string - for this case, insert the file extension
+        if (FAILED(StringCchPrintf(szSubKey,
+            MAX_PATH,
+            ClsidEntries[i].szSubKey,
+            szCLSID)))
+            return FALSE;
 
-		SHDeleteKey(HKEY_CLASSES_ROOT, szSubKey);
-	}
+        SHDeleteKey(HKEY_CLASSES_ROOT, szSubKey);
+    }
 
-	return TRUE;
+    return TRUE;
 }
 
 /**************************************************************************
@@ -439,49 +439,49 @@ RegisterComCat
 
 BOOL RegisterComCat(CLSID clsid, CATID CatID)
 {
-	ICatRegister   *pcr;
-	HRESULT        hr = S_OK ;
+    ICatRegister   *pcr;
+    HRESULT        hr = S_OK ;
 
-	CoInitialize(NULL);
+    CoInitialize(NULL);
 
-	hr = CoCreateInstance(CLSID_StdComponentCategoriesMgr, 
-		NULL, 
-		CLSCTX_INPROC_SERVER, 
-		IID_ICatRegister, 
-		(LPVOID*)&pcr);
+    hr = CoCreateInstance(CLSID_StdComponentCategoriesMgr,
+        NULL,
+        CLSCTX_INPROC_SERVER,
+        IID_ICatRegister,
+        (LPVOID*)&pcr);
 
-	if (SUCCEEDED(hr))
-	{
-		hr = pcr->RegisterClassImplCategories(clsid, 1, &CatID);
-		pcr->Release();
-	}
+    if (SUCCEEDED(hr))
+    {
+        hr = pcr->RegisterClassImplCategories(clsid, 1, &CatID);
+        pcr->Release();
+    }
 
-	CoUninitialize();
+    CoUninitialize();
 
-	return SUCCEEDED(hr);
+    return SUCCEEDED(hr);
 }
 
 BOOL UnRegisterComCat(CLSID clsid, CATID CatID)
 {
-	ICatRegister   *pcr;
-	HRESULT        hr = S_OK ;
+    ICatRegister   *pcr;
+    HRESULT        hr = S_OK ;
 
-	CoInitialize(NULL);
+    CoInitialize(NULL);
 
-	hr = CoCreateInstance(CLSID_StdComponentCategoriesMgr, 
-		NULL, 
-		CLSCTX_INPROC_SERVER, 
-		IID_ICatRegister, 
-		(LPVOID*)&pcr);
+    hr = CoCreateInstance(CLSID_StdComponentCategoriesMgr,
+        NULL,
+        CLSCTX_INPROC_SERVER,
+        IID_ICatRegister,
+        (LPVOID*)&pcr);
 
-	if (SUCCEEDED(hr))
-	{
-		hr = pcr->UnRegisterClassImplCategories(clsid, 1, &CatID);
+    if (SUCCEEDED(hr))
+    {
+        hr = pcr->UnRegisterClassImplCategories(clsid, 1, &CatID);
 
-		pcr->Release();
-	}
+        pcr->Release();
+    }
 
-	CoUninitialize();
+    CoUninitialize();
 
-	return S_OK;
+    return S_OK;
 }
