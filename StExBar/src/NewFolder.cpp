@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2008, 2010 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -65,16 +65,17 @@ bool CDeskBand::CreateNewFolder()
                                     cici.fMask = CMIC_MASK_UNICODE | CMIC_MASK_FLAG_NO_UI;
                                     if (SUCCEEDED(pContextMenu->InvokeCommand((CMINVOKECOMMANDINFO*)&cici)))
                                     {
-                                        IFolderView * pFolderView;
-                                        if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView)))
+                                        IFolderView * pFolderView2;
+                                        if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView2)))
                                         {
                                             int nCount = 0;
-                                            if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
+                                            if (SUCCEEDED(pFolderView2->ItemCount(SVGIO_ALLVIEW, &nCount)))
                                             {
                                                 // since we just created the new folder, it is the last
                                                 // item in the list
-                                                pFolderView->SelectItem(nCount-1, SVSI_EDIT);
+                                                pFolderView2->SelectItem(nCount-1, SVSI_EDIT);
                                             }
+                                            pFolderView2->Release();
                                         }
                                     }
                                     pFolderView->Release();
