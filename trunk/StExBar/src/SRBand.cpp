@@ -1414,7 +1414,10 @@ BOOL CDeskBand::BuildToolbarButtons()
 					sTip += _T("Shift+");
 				if (cmd.key.alt)
 					sTip += _T("Alt+");
-				sTip += (wchar_t)cmd.key.keycode;
+                LONG scanCode = MapVirtualKey(cmd.key.keycode, MAPVK_VK_TO_VSC);
+                WCHAR buf[50];
+                GetKeyNameText(((LONG)(scanCode)<<16), buf, _countof(buf));
+				sTip += buf;
 				sTip += _T(")");
 			}
 			m_tooltips[tb[index].idCommand] = sTip;
