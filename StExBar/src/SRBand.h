@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2010 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -212,9 +212,9 @@ private:
     /// put a string on the clipboard
     bool                    WriteStringToClipboard(const wstring& sClipdata, HWND hOwningWnd);
     /// starts the console program to run a script
-    void                    StartCmd(const wstring& cwd, wstring params);
+    void                    StartCmd(const wstring& cwd, wstring params, bool elevated);
     /// start a new process with the specified command line
-    void                    StartApplication(const wstring& cwd, std::wstring commandline);
+    void                    StartApplication(const wstring& cwd, std::wstring commandline, bool elevated);
     /// creates a new folder and starts the editing of it
     bool                    CreateNewFolder();
     /// Opens a rename dialog where the user can rename the selected files
