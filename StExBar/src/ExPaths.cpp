@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2010 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,6 +68,53 @@ bool CDeskBand::FindPaths()
                             IShellFolder * pShellFolder;
                             if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
                             {
+                                // if there was a new folder created but not found to set into editing mode,
+                                // we try here to do that
+                                if (m_newfolderPidls.size())
+                                {
+                                    int nCount2 = 0;
+                                    IShellFolder * pShellFolder;
+                                    if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
+                                    {
+                                        if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount2)))
+                                        {
+                                            for (int i=0; i<nCount2; ++i)
+                                            {
+                                                LPITEMIDLIST pidl;
+                                                pFolderView->Item(i, &pidl);
+                                                bool bFound = false;
+                                                for (std::vector<LPITEMIDLIST>::iterator it = m_newfolderPidls.begin(); it != m_newfolderPidls.end(); ++it)
+                                                {
+                                                    HRESULT hr = pShellFolder->CompareIDs(0, pidl, *it);
+                                                    if (HRESULT_CODE(hr) == 0)
+                                                    {
+                                                        // this item was there before, so it's not the new folder
+                                                        CoTaskMemFree(*it);
+                                                        m_newfolderPidls.erase(it);
+                                                        bFound = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if (!bFound)
+                                                {
+                                                    pShellView->SelectItem(pidl, SVSI_EDIT);
+                                                }
+                                                CoTaskMemFree(pidl);
+                                            }
+                                        }
+                                        if ((nCount2)||(m_newfolderTimeoutCounter-- <= 0))
+                                        {
+                                            m_newfolderTimeoutCounter = 0;
+                                            for (std::vector<LPITEMIDLIST>::iterator it = m_newfolderPidls.begin(); it != m_newfolderPidls.end(); ++it)
+                                            {
+                                                CoTaskMemFree(*it);
+                                            }
+                                            m_newfolderPidls.clear();
+                                        }
+                                        pShellFolder->Release();
+                                    }
+
+                                }
                                 // find all selected items
                                 IEnumIDList * pEnum;
                                 if (SUCCEEDED(pFolderView->Items(SVGIO_SELECTION, IID_IEnumIDList, (LPVOID*)&pEnum)))
