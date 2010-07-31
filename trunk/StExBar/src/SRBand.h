@@ -169,6 +169,8 @@ private:
     map<wstring, ULONG> m_ContextItems; ///< list of items which are selected for the context menu
     std::map<UINT_PTR, UINT_PTR>    myIDMap;    ///< maps menu ids to command ids
 
+    std::vector<LPITEMIDLIST>   m_newfolderPidls;   ///< PIDLs of all items in a folder *before* the new folder was created
+    int                         m_newfolderTimeoutCounter;   ///< Timeout counter for the timer task to retry setting the new folder into editing mode
 private:
     /// window procedure of the sub classed desk band control
     static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData);

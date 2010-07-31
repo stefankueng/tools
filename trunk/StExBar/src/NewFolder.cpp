@@ -27,6 +27,8 @@ bool CDeskBand::CreateNewFolder()
     if (m_currentDirectory.empty())
         return false;
 
+    bool bFolderCreated = false;
+    // first step: get a list of all folder items, then create the new folder
     IServiceProvider * pServiceProvider;
     if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
     {
@@ -43,7 +45,7 @@ bool CDeskBand::CreateNewFolder()
                     HMENU hMenu = ::CreateMenu();
                     if (hMenu)
                     {
-                        if (SUCCEEDED(pContextMenu->QueryContextMenu(hMenu, 0, 0, 1000, CMF_CANRENAME|CMF_EXPLORE|CMF_NORMAL)))
+                        if (SUCCEEDED(pContextMenu->QueryContextMenu(hMenu, 0, 0, 1000, CMF_NORMAL)))
                         {
                             IFolderView * pFolderView;
                             if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView)))
@@ -55,7 +57,11 @@ bool CDeskBand::CreateNewFolder()
                                     for (int i=0; i<nCount; ++i)
                                     {
                                         pFolderView->SelectItem(i, SVSI_DESELECT);
+                                        LPITEMIDLIST pidl;
+                                        pFolderView->Item(i, &pidl);
+                                        m_newfolderPidls.push_back(pidl);
                                     }
+                                    m_newfolderTimeoutCounter = 20;
                                     CMINVOKECOMMANDINFOEX cici = {0};
                                     cici.cbSize = sizeof(CMINVOKECOMMANDINFOEX);
                                     cici.lpVerb = CMDSTR_NEWFOLDERA;
@@ -63,19 +69,84 @@ bool CDeskBand::CreateNewFolder()
                                     cici.nShow = SW_SHOWNORMAL;
                                     cici.hwnd = m_hwndParent;
                                     cici.fMask = CMIC_MASK_UNICODE | CMIC_MASK_FLAG_NO_UI;
+                                    // create the new folder
                                     if (SUCCEEDED(pContextMenu->InvokeCommand((CMINVOKECOMMANDINFO*)&cici)))
                                     {
-                                        IFolderView * pFolderView2;
-                                        if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView2)))
+                                        // refresh the view
+                                        bFolderCreated = true;
+                                        pShellView->Refresh();
+                                        SHChangeNotify(0, SHCNF_FLUSH, 0, 0);
+                                        // now try to get the new refreshed items. This usually works
+                                        // for local drives where the refresh is fast, but times out
+                                        // on network drives.
+                                        // Note: for network drives, even waiting 10 seconds in the following loop
+                                        // didn't help - seems the window message loop has first to run
+                                        // before such a view really refreshes.
+                                        int nCount2 = 0;
+                                        int timeoutCounter = 100;
+                                        while (((nCount2 == 0)||(nCount2 == nCount)) && (timeoutCounter-- > 0))
                                         {
-                                            int nCount = 0;
-                                            if (SUCCEEDED(pFolderView2->ItemCount(SVGIO_ALLVIEW, &nCount)))
+                                            pFolderView->Release();
+                                            pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView);
+                                            Sleep(10);
+                                            pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount2);
+                                        }
+                                        // but we also need the IShellFolder interface because
+                                        // we need its CompareIDs() method
+                                        bool bEditing = false;
+                                        IPersistFolder2 * pPersistFolder;
+                                        if (SUCCEEDED(pFolderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&pPersistFolder)))
+                                        {
+                                            IShellFolder * pShellFolder;
+                                            if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
                                             {
-                                                // since we just created the new folder, it is the last
-                                                // item in the list
-                                                pFolderView2->SelectItem(nCount-1, SVSI_EDIT);
+                                                // now compare the items of the refreshed view with the items
+                                                // of the view before the new folder was created.
+                                                // The difference should be the new folder...
+                                                nCount2 = 0;
+                                                if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount2)))
+                                                {
+                                                    for (int i=0; i<nCount2; ++i)
+                                                    {
+                                                        LPITEMIDLIST pidl;
+                                                        pFolderView->Item(i, &pidl);
+                                                        bool bFound = false;
+                                                        for (std::vector<LPITEMIDLIST>::iterator it = m_newfolderPidls.begin(); it != m_newfolderPidls.end(); ++it)
+                                                        {
+                                                            HRESULT hr = pShellFolder->CompareIDs(0, pidl, *it);
+                                                            if (HRESULT_CODE(hr) == 0)
+                                                            {
+                                                                // this item was there before, so it's not the new folder
+                                                                CoTaskMemFree(*it);
+                                                                m_newfolderPidls.erase(it);
+                                                                bFound = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (!bFound)
+                                                        {
+                                                            // yes, this item wasn't there before, so we assume
+                                                            // it's the new folder and set it into edit mode
+                                                            pShellView->SelectItem(pidl, SVSI_EDIT);
+                                                            bEditing = true;
+                                                        }
+                                                        CoTaskMemFree(pidl);
+                                                    }
+                                                }
+                                                if (!bEditing)
+                                                {
+                                                    // do nothing for now, since we can't find the new folder
+                                                    // which was created. Just let the timer task try again later
+                                                }
+                                                else
+                                                {
+                                                    for (std::vector<LPITEMIDLIST>::iterator it = m_newfolderPidls.begin(); it != m_newfolderPidls.end(); ++it)
+                                                    {
+                                                        CoTaskMemFree(*it);
+                                                    }
+                                                }
+                                                pShellFolder->Release();
                                             }
-                                            pFolderView2->Release();
                                         }
                                     }
                                     pFolderView->Release();
@@ -92,6 +163,7 @@ bool CDeskBand::CreateNewFolder()
         }
         pServiceProvider->Release();
     }
+
 
     return true;
 }
