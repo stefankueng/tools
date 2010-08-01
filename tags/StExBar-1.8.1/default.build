@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<project name="StExBar" default="build">
+
+	<include buildfile="default.build.user" />
+
+	<target name="build" depends="VSNET,env">
+		<!-- the signinfo.txt file has to contain one line with parameters for signtool.exe,
+	     for example:
+		 /t "url/to/timestamp/server" /q
+		-->
+		<loadfile file="signinfo.txt" property="signinfo" failonerror="false" />
+
+		<!-- run SubWCRev to get the revision of the working copy -->
+		<exec program="SubWCRev.exe">
+			<arg value="." />
+			<arg value="src/version.in" />
+			<arg value="src/version.h" />
+		</exec>
+
+		<exec program="devenv.com" >
+			<arg value="StExBar.sln" />
+			<arg value="/rebuild" />
+			<arg value="debug|win32" />
+		</exec>
+		<exec program="devenv.com" >
+			<arg value="StExBar.sln" />
+			<arg value="/rebuild" />
+			<arg value="release|win32" />
+		</exec>
+
+		<exec program="devenv.com" >
+			<arg value="StExBar.sln" />
+			<arg value="/rebuild" />
+			<arg value="debug|x64" />
+		</exec>
+		<exec program="devenv.com" >
+			<arg value="StExBar.sln" />
+			<arg value="/rebuild" />
+			<arg value="release|x64" />
+		</exec>
+
+		<!-- sign all release binaries -->
+		<if test="${file::exists('signinfo.txt')}">
+			<exec program="signtool">
+				<arg value="sign" />
+				<arg value="${signinfo}" />
+				<arg value="bin/release/StExBar.dll" />
+			</exec>
+			<exec program="signtool">
+				<arg value="sign" />
+				<arg value="${signinfo}" />
+				<arg value="bin/release_x64/StExBar.dll" />
+			</exec>
+		</if>
+
+
+		<exec program="candle">
+			<arg value="-nologo" />
+			<arg value="-out" />
+			<arg value="bin\" />
+			<arg value="src/setup/Setup.wxs" />
+		</exec>
+		<exec program="light">
+			<arg value="-nologo" />
+      <arg value="-ext" />
+      <arg value="WixUIExtension" />
+      <arg value="-cultures:en-us" />
+      <arg value="-out" />
+			<arg value="bin\StExBar.msi" />
+			<arg value="bin\Setup.wixobj" />
+		</exec>
+
+		<exec program="candle">
+			<arg value="-nologo" />
+			<arg value="-out" />
+			<arg value="bin\" />
+			<arg value="src/setup/Setup64.wxs" />
+		</exec>
+		<exec program="light">
+			<arg value="-nologo" />
+      <arg value="-ext" />
+      <arg value="WixUIExtension" />
+      <arg value="-cultures:en-us" />
+      <arg value="-out" />
+			<arg value="bin\StExBar64.msi" />
+			<arg value="bin\Setup64.wixobj" />
+		</exec>
+
+		<delete>
+			<fileset>
+				<include name="bin\*.wixobj" />
+				<include name="bin\*.wixpdb" />
+			</fileset>
+		</delete>
+		<if test="${file::exists('signinfo.txt')}">
+			<exec program="signtool">
+				<arg value="sign" />
+				<arg value="${signinfo}" />
+				<arg value="bin\StExBar64.msi" />
+			</exec>
+			<exec program="signtool">
+				<arg value="sign" />
+				<arg value="${signinfo}" />
+				<arg value="bin\StExBar.msi" />
+			</exec>
+		</if>
+
+	</target>
+
+</project>
+
