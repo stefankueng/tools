@@ -155,7 +155,7 @@ void CDeskBand::StartApplication(const wstring& cwd, std::wstring commandline, b
         // try to separate the command from its params
         if (params[0] == '"')
         {
-            params = _tcschr(nonconst, '"');
+            params = _tcschr(nonconst+1, '"');
             params++;
             *params = 0;
             params++;
