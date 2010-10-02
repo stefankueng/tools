@@ -6,7 +6,7 @@
   Id='*'
   Language='1033'
   Codepage='1252'
-  Version='1.3.0'
+  Version='1.3.1'
   Manufacturer='Stefans Tools'>
 
     <Package Id='*' Keywords='Installer'
@@ -16,7 +16,7 @@
 
     <Upgrade Id="705E17CC-A9E9-4082-96C6-EC08249B63A8" >
       <!-- flag is set if the install will trigger an upgrade of an existing install -->
-      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="1.3.0" IncludeMaximum="no" />
+      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="1.3.1" IncludeMaximum="no" />
     </Upgrade>
 
     <Media Id='1' Cabinet='SKTimeStamp.cab' EmbedCab='yes' />
