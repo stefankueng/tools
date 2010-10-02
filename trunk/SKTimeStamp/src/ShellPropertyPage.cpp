@@ -25,7 +25,7 @@ STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
     CShellPropertyPage *sheetpage = new CShellPropertyPage(files_);
 
     psp.dwSize = sizeof (psp);
-    psp.dwFlags = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;	
+    psp.dwFlags = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;
     psp.hInstance = g_hmodThisDll;
     psp.pszTemplate = MAKEINTRESOURCE(IDD_PROPPAGE);
     //psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
@@ -173,7 +173,7 @@ BOOL CShellPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, 
                 SystemTimeToFileTime(&st, &ftLocal);
                 // 'touch' means to set the last modification time to the current time
                 SetDates(ftNULL, ftLocal, ftNULL);
-                InitWorkfileView();	// update the controls
+                InitWorkfileView(); // update the controls
                 return TRUE;
             }
             break;
