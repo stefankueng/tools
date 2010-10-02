@@ -8,6 +8,8 @@
 #include "ConvertTabSpaces.h"
 #include <string>
 #include <set>
+#include <algorithm>
+#include <cctype>
 
 using namespace std;
 
@@ -19,6 +21,9 @@ bool FileExtensionInPattern(const wstring& filepath)
     wstring ext;
     if (pFound)
         ext = pFound+1;
+
+    std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower);
+
     return (g_allowedPatterns.find(ext) != g_allowedPatterns.end());
 }
 
@@ -83,7 +88,9 @@ int _tmain(int argc, _TCHAR* argv[])
         while (string::npos != pos || string::npos != lastPos)
         {
             // found a token, add it to the set.
-            g_allowedPatterns.insert(filepattern.substr(lastPos, pos - lastPos));
+            wstring ext = filepattern.substr(lastPos, pos - lastPos);
+            std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower);
+            g_allowedPatterns.insert(ext);
 
             // skip delimiters. Note the "not_of"
             lastPos = filepattern.find_first_not_of(_T(";"), pos);
