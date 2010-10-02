@@ -14,27 +14,6 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance,
 							   DWORD dwReason, 
 							   LPVOID /*lpReserved*/)
 {
-#ifdef _DEBUG
-	// if no debugger is present, then don't load the dll.
-	// this prevents other apps from loading the dll and locking
-	// it.
-	bool bInShellTest = false;
-	TCHAR buf[_MAX_PATH + 1];		// MAX_PATH ok, the test really is for debugging anyway.
-	DWORD pathLength = GetModuleFileName(NULL, buf, _MAX_PATH);
-	if(pathLength >= 14)
-	{
-		if ((_tcsicmp(&buf[pathLength-13], _T("\\verclsid.exe"))) == 0)
-		{
-			bInShellTest = true;
-		}
-	}
-
-	if (!::IsDebuggerPresent() && !bInShellTest)
-	{
-		return FALSE;
-	}
-#endif
-
 	switch (dwReason)
 	{
 	case DLL_PROCESS_ATTACH:
