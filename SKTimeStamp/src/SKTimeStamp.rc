@@ -64,6 +64,22 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_ERR_FILEDATES       "Could not set the date/time for the following files:"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_FILEINFO            "Selected %ld files/folders"
+END
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -120,6 +136,22 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_ERR_FILEDATES       "Impossibile modificare la data/ora dei seguenti file"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_FILEINFO            "Selezionati %ld file/cartelle"
+END
+
 #endif    // Italian (Italy) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -154,22 +186,6 @@ BEGIN
 END
 
 #endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// String Table
-//
-
-STRINGTABLE
-BEGIN
-    IDS_ERR_FILEDATES       "Could not set the date/time for the following files:"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_FILEINFO            "Selected %ld files/folders"
-END
 
 #endif    // German (Switzerland) resources
 /////////////////////////////////////////////////////////////////////////////
