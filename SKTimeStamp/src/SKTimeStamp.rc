@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -51,7 +49,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_PROPPAGE, DIALOG
     BEGIN
@@ -66,7 +64,63 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Italian (Italy) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
+LANGUAGE LANG_ITALIAN, SUBLANG_ITALIAN
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROPPAGE DIALOGEX 0, 0, 235, 253
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    PUSHBUTTON      "Touch",IDC_TOUCH,178,134,50,14
+    CONTROL         "",IDC_DATECREATED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,40,79,15
+    LTEXT           "Data creazione:",IDC_STATIC,7,42,52,8
+    CONTROL         "",IDC_TIMECREATED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,40,61,15
+    CONTROL         "",IDC_DATEMODIFIED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,69,79,15
+    LTEXT           "Ultima modifica:",IDC_STATIC,7,71,51,8
+    CONTROL         "",IDC_TIMEMODIFIED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,69,61,15
+    CONTROL         "",IDC_DATEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,104,79,15
+    LTEXT           "Ultimo accesso:",IDC_STATIC,7,106,50,8
+    CONTROL         "",IDC_TIMEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,104,61,15
+    EDITTEXT        IDC_FILEINFO,7,7,221,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_PROPPAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        VERTGUIDE, 75
+        VERTGUIDE, 154
+        VERTGUIDE, 167
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 246
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Italian (Italy) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -74,10 +128,8 @@ END
 // German (Switzerland) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
-#ifdef _WIN32
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -109,12 +161,12 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ERR_FILEDATES       "Could not set the date/time for the following files:"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILEINFO            "Selected %ld files/folders"
 END
