@@ -331,7 +331,6 @@ void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteT
 void ReadDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pFiletime)
 {
     SYSTEMTIME st = {0}, stDate = {0}, stTime = {0}, stAdjusted = {0};
-    FILETIME   ftLocal;
 
     if (pFiletime)
     {
@@ -350,21 +349,19 @@ void ReadDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pF
     st.wMinute = stTime.wMinute;
     st.wSecond = stTime.wSecond;
 
-    SystemTimeToTzSpecificLocalTime(NULL, &st, &stAdjusted);
-    SystemTimeToFileTime(&stAdjusted, &ftLocal);
-    LocalFileTimeToFileTime(&ftLocal, pFiletime);
+    TzSpecificLocalTimeToSystemTime (NULL, &st, &stAdjusted);
+    SystemTimeToFileTime(&stAdjusted, pFiletime);
 }
 
 
 void SetDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, const FILETIME* pFiletime)
 {
-    SYSTEMTIME st;
-    FILETIME   ftLocal;
+    SYSTEMTIME st, sttemp;
     DWORD flag = GDT_VALID;
     if (pFiletime)
     {
-        FileTimeToLocalFileTime(pFiletime, &ftLocal);
-        FileTimeToSystemTime(&ftLocal, &st);
+        FileTimeToSystemTime(pFiletime, &sttemp);
+        SystemTimeToTzSpecificLocalTime(NULL, &sttemp, &st);
     }
     else
     {
