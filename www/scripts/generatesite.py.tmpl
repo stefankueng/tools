@@ -1,0 +1,54 @@
+import os, string, shutil
+
+searchfor = [ '$TSVNSHORTVERSION$', '$TSVNVERSION$', '$SVNVERSION$' ]
+replacewith = [ '1.6.11', '1.6.11.20210', '1.6.13' ]
+setpath = 'D:\\Development\\toolssite'
+
+for root, dirs, files in os.walk(setpath, topdown=False):
+    for name in files:
+        os.remove(os.path.join(root, name))
+    for name in dirs:
+        os.rmdir(os.path.join(root, name))
+if os.path.exists(setpath):
+    os.rmdir(setpath)
+shutil.copytree(os.path.abspath('..'), setpath)
+
+footerFile = file(os.path.join(setpath, 'footer.html'), 'r')
+menuFile = file(os.path.join(setpath, 'menu.html'), 'r')
+adtopFile = file(os.path.join(setpath, 'files/adsense_top.txt'), 'r')
+adinpageFile = file(os.path.join(setpath, 'files/adsense_inpage.txt'), 'r')
+
+footerText = footerFile.read()
+footerFile.close()
+
+menuText = menuFile.read()
+menuFile.close()
+
+adtopText = adtopFile.read()
+adtopFile.close()
+
+adinpageText = adinpageFile.read()
+adinpageFile.close()
+
+searchfor.extend( [ '<!--#include FILE="menu.html" -->', '<!--#include FILE="footer.html" -->', '$ADSENSE_TOP$', '$ADSENSE_INPAGE$' ] )
+replacewith.extend( [ menuText, footerText, adtopText, adinpageText ] )
+
+for root, dirs, files in os.walk(setpath):
+    fname = files
+    for fname in files:
+        if fname.endswith('.html'):
+            inputFile = file(os.path.join(root,fname), 'r')
+            data = inputFile.read()
+            inputFile.close()
+            for i in range(len(searchfor)):
+                x = searchfor[i]
+                y = replacewith[i]
+                search = string.find(data, x)
+                if search >=1:
+                    data = data.replace(x, y)
+
+            outputFile = file(os.path.join(root,fname), 'w')
+            outputFile.write(data)
+            outputFile.close()
+
+        
