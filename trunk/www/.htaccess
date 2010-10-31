@@ -1,0 +1,59 @@
+# Protect files and directories from prying eyes.
+<FilesMatch "(\.(engine|inc|install|module|sh|.*sql|theme|tpl(\.php)?|xtmpl)|code-style\.pl|Entries.*|Repository|Root)$">
+  Order deny,allow
+  Deny from all
+</FilesMatch>
+
+# Set some options.
+Options -Indexes
+Options +FollowSymLinks
+
+# Customized error messages.
+ErrorDocument 404 /404.html
+
+# Set the default handler.
+DirectoryIndex index.html
+
+
+# Reduce the time dynamically generated pages are cache-able.
+<IfModule mod_expires.c>
+  ExpiresByType text/html A1
+</IfModule>
+
+Options -Indexes
+IndexIgnore *
+
+# Various rewrite rules.
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+
+  # If your site can be accessed both with and without the prefix www.
+  # you can use one of the following settings to force user to use only one option:
+  #
+  # If you want the site to be accessed WITH the www. only, adapt and uncomment the following:
+  # RewriteCond %{HTTP_HOST} !^www\.example\.com$ [NC]
+  # RewriteRule .* http://www.example.com/ [L,R=301]
+  #
+  # If you want the site to be accessed only WITHOUT the www. , adapt and uncomment the following:
+  # RewriteCond %{HTTP_HOST} !^example\.com$ [NC]
+  # RewriteRule .* http://example.com/ [L,R=301]
+
+  RewriteRule ^FavIconizer$ FavIconizer.html [R,NC]
+  RewriteRule ^CommitMonitor$ CommitMonitor.html [R,NC]
+  RewriteRule ^svnrobots$ svnrobots.html [R,NC]
+  RewriteRule ^grepWin$ grepWin.html [R,NC]
+  RewriteRule ^DemoHelper$ DemoHelper.html [R,NC]
+  RewriteRule ^SendMessage$ SendMessage.html [R,NC]
+  RewriteRule ^SKTimeStamp$ SKTimeStamp.html [R,NC]
+  RewriteRule ^StExBar$ StExBar.html [R,NC]
+  RewriteRule ^MailNoter$ MailNoter.html [R,NC]
+  RewriteRule ^trafficWatcher$ trafficWatcher.html [R,NC]
+
+  RewriteBase /
+
+  # prevent hotlinking
+  RewriteCond %{HTTP_REFERER} !^http://(.+\.)?tortoisesvn\.net/ [NC]
+  RewriteCond %{HTTP_REFERER} !^$
+  RewriteRule .*\.(jpe?g|gif|bmp|png)$ - [F]
+</IfModule>
+
