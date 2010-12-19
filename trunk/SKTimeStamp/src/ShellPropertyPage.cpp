@@ -189,7 +189,6 @@ void CShellPropertyPage::InitWorkfileView()
     bool bValidCreate = true;
     bool bValidWrite = true;
     bool bValidAccessed = true;
-    int count = 0;
 
     for (std::vector<std::wstring>::iterator it = filenames.begin(); it != filenames.end() && (bValidCreate || bValidWrite || bValidAccessed); ++it)
     {
@@ -200,19 +199,8 @@ void CShellPropertyPage::InitWorkfileView()
             bValidWrite = false;
             bValidAccessed = false;
         }
-        if (count > 0)
-        {
-            if ((fdata.ftCreationTime.dwHighDateTime != fdata2.ftCreationTime.dwHighDateTime) ||
-                (fdata2.ftCreationTime.dwLowDateTime != fdata2.ftCreationTime.dwLowDateTime))
-                bValidCreate = false;
-            if ((fdata.ftLastWriteTime.dwHighDateTime != fdata2.ftLastWriteTime.dwHighDateTime) ||
-                (fdata2.ftLastWriteTime.dwLowDateTime != fdata2.ftLastWriteTime.dwLowDateTime))
-                bValidWrite = false;
-            if ((fdata.ftLastAccessTime.dwHighDateTime != fdata2.ftLastAccessTime.dwHighDateTime) ||
-                (fdata2.ftLastAccessTime.dwLowDateTime != fdata2.ftLastAccessTime.dwLowDateTime))
-                bValidAccessed = false;
-        }
-        count++;
+        else
+            break;
     }
     if (bValidCreate)
     {
