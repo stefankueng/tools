@@ -680,7 +680,8 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
         pThis->OnSetFocus();
         ::SendMessage(pThis->m_hWndEdit, EM_SETSEL, 0, (LPARAM)-1);
     }
-    if (uMessage == WM_LBUTTONDBLCLK)
+    if ((uMessage == WM_LBUTTONDBLCLK)||
+        ((uMessage == WM_KEYDOWN) && (wParam == VK_ESCAPE)))
     {
         ::SetWindowText(pThis->m_hWndEdit, _T(""));
         if (DWORD(pThis->m_regEditBoxUsage) == IDC_USEFILTER)
