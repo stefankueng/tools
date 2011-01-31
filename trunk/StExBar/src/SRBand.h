@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010 - Stefan Kueng
+// Copyright (C) 2007-2011 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -158,7 +158,7 @@ private:
     map<int, wstring> m_tooltips;       ///< maps command/button ids against the tooltips to show for them
     CRegStdWORD     m_regShowBtnText;   ///< config setting whether to show the text for the toolbar buttons or not
     CRegStdWORD     m_regUseUNCPaths;   ///< config setting whether to copy the UNC paths of mapped paths or not
-    CRegStdWORD     m_regUseSelector;   ///< config setting whether to use the selector or the cmd.exe replacement
+    CRegStdWORD     m_regEditBoxUsage;  ///< config setting whether to use the selector or the cmd.exe replacement
     CRegStdWORD     m_regHideEditBox;   ///< config setting whether to show the edit box or not
 
     std::vector<LPITEMIDLIST>   m_noShows;  ///< list of pidls which didn't match a filter
