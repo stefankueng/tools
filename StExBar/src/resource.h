@@ -62,16 +62,18 @@
 #define IDC_COMMANDSHELP                1037
 #define IDC_BROWSEICON                  1038
 #define IDC_BROWSECOMMAND               1039
-#define IDC_                            1039
-#define IDC_POWERSHELL                  1039
+#define IDC_USECONSOLE                  1040
+#define IDC_USEPOWERSHELL               1041
+#define IDC_USEGREPWIN                  1042
+#define IDC_USEFILTER                   1043
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        120
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1040
+#define _APS_NEXT_CONTROL_VALUE         1044
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

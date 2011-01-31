@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010 - Stefan Kueng
+// Copyright (C) 2007-2011 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ CDeskBand::CDeskBand() : m_bFocus(false)
     , m_pSite(NULL)
     , m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
     , m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
-    , m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
+    , m_regEditBoxUsage(_T("Software\\StefansTools\\StExBar\\EditBoxUsage"), IDC_USECONSOLE)
     , m_regHideEditBox(_T("Software\\StefansTools\\StExBar\\HideEditBox"), 0)
     , m_hToolbarImgList(NULL)
     , m_bDialogShown(FALSE)
@@ -592,7 +592,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
         if (wParam == TID_FILTER)
         {
             KillTimer(pThis->m_hWnd, TID_FILTER);
-            if (DWORD(pThis->m_regUseSelector))
+            if (DWORD(pThis->m_regEditBoxUsage) == IDC_USEFILTER)
             {
                 // get the command entered in the edit box
                 int count = MAX_PATH;
@@ -683,7 +683,7 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
     if (uMessage == WM_LBUTTONDBLCLK)
     {
         ::SetWindowText(pThis->m_hWndEdit, _T(""));
-        if (DWORD(pThis->m_regUseSelector))
+        if (DWORD(pThis->m_regEditBoxUsage) == IDC_USEFILTER)
         {
             // select the files which match the filter string
             pThis->Filter(_T(""));
@@ -788,36 +788,54 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
                 count += MAX_PATH;
                 buf = new TCHAR[count+1];
             }
-            if (DWORD(m_regUseSelector))
+            switch (DWORD(m_regEditBoxUsage))
             {
+            case IDC_USEFILTER:
                 // select the files which match the filter string
                 Filter(buf);
-            }
-            else
-            {
+                break;
+            case IDC_USEPOWERSHELL:
                 // when we start the console with the command the user
                 // has entered in the edit box, we want the console
                 // to execute the command immediately, and *not* quit after
                 // executing the command so the user can see the output.
                 // If however the user enters a '@' char in front of the command
                 // then the console shall quit after executing the command.
-                wstring params;
-                if (DWORD(CRegStdWORD(_T("Software\\StefansTools\\StExBar\\UsePowershell"), FALSE)))
                 {
+                    wstring params;
                     if (buf[0] == '@')
                         params = _T("-Command ");
                     else
                         params = _T("-NoExit -Command ");
+                    params += buf;
+                    StartCmd(cwd, params, (GetKeyState(VK_LWIN)&0x8000)!=0);
                 }
-                else
+                break;
+            case IDC_USECONSOLE:
                 {
+                    wstring params;
                     if (buf[0] == '@')
                         params = _T("/c ");
                     else
                         params = _T("/k ");
+                    params += buf;
+                    StartCmd(cwd, params, (GetKeyState(VK_LWIN)&0x8000)!=0);
                 }
-                params += buf;
-                StartCmd(cwd, params, (GetKeyState(VK_LWIN)&0x8000)!=0);
+                break;
+            case IDC_USEGREPWIN:
+                {
+                    CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin...\\command\\", L"", 0, HKEY_CLASSES_ROOT);
+                    wstring grepWinPath = regGrepWinPath;
+                    grepWinPath = grepWinPath.substr(0, grepWinPath.find_last_of('/'));
+                    wstring params = grepWinPath;
+                    params += L" /searchpath:\"";
+                    params += cwd;
+                    params += L"\" /searchfor:\"";
+                    params += buf;
+                    params += L"\"";
+                    StartApplication(cwd, params, (GetKeyState(VK_LWIN)&0x8000)!=0);
+                }
+                break;
             }
             delete [] buf;
         }
@@ -828,7 +846,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             if (dlg.DoModal(g_hInst, IDD_OPTIONS, hWnd) == IDOK)
             {
                 m_bDialogShown = FALSE;
-                m_regUseSelector.read();
+                m_regEditBoxUsage.read();
                 m_regUseUNCPaths.read();
                 m_regShowBtnText.read();
                 BuildToolbarButtons();
