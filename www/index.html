@@ -16,9 +16,35 @@
 <div id="content">
 
     <div class="post">
-        <h2 class="title"><a href="#">New version of StExBar</a></h2>
+        <h2 class="title"><a href="#">Auto Aero Colors</a></h2>
         <p class="meta">Posted on January 31, 2011</p>
             $ADSENSE_TOP$
+        <div class="storycontent">
+            <p>Windows 8 (or whatever its name will be when it's released)
+            will have a new feature where the Aero colors can be 
+            <a href="http://www.withinwindows.com/2011/04/06/windows-8-secrets-aero-auto-colorization/">
+            automatically adjusted according to the selected wallpaper</a>.</p>
+            <p>This seems to be a nice feature, and there's even a tool available
+            that offers that feature for Windows 7: <a href="http://aura.codeplex.com/">Aura</a>.</p>
+            <p>But there are some things about Aura that bother me, so I hacked together
+            my own tool which offers that feature.</p>
+            <p>Unlike Aura, AAClr is written in plain C++ and doesn't 
+            use the .NET framework. For tools that are supposed to be started
+            automatically on logon, this ensures that the whole startup time
+            doesn't increase by several seconds.</p>
+            <p>AAClr also detects changes in wallpapers by catching events
+            from the system and doesn't use timers that access the wallpaper file
+            several times a second (like Aura does). That means that AAClr is idle
+            most of the time and only wakes up when necessary.</p>
+            <p>And about resource usage: AAClr uses less than 2MB of 
+            private bytes - I think that's not too much.</p>
+            <p>A compiled executable can be found on the 
+            <a href="http://code.google.com/p/stexbar/downloads/list">download page</a>.</p>
+        </div>
+    </div>
+    <div class="post">
+        <h2 class="title"><a href="#">New version of StExBar</a></h2>
+        <p class="meta">Posted on January 31, 2011</p>
         <div class="storycontent">
             <p>
             A new version of the <a href="http://tools.tortoisesvn.net/StExBar.html">StExBar</a>
