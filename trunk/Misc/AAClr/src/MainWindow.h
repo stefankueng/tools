@@ -54,11 +54,16 @@ protected:
     void                ShowTrayIcon();
     DWORD               GetDllVersion(LPCTSTR lpszDllName);
 
+    static unsigned int __stdcall WatcherThread(LPVOID lpvParam);
+
 protected:
     NOTIFYICONDATA      niData;
     HWND                hwndNextViewer;
     HWND                foregroundWND;
     CAeroColors         aeroColors;
+    static std::wstring wpPath;
+    static bool         threadRunning;
+
     typedef BOOL(__stdcall *PFNCHANGEWINDOWMESSAGEFILTEREX)(HWND hWnd, UINT message, DWORD dwFlag, PCHANGEFILTERSTRUCT pChangeFilterStruct);
     static PFNCHANGEWINDOWMESSAGEFILTEREX m_pChangeWindowMessageFilter;
 };

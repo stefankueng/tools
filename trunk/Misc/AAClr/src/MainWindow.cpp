@@ -24,11 +24,14 @@
 #include "AeroColors.h"
 
 #include <WindowsX.h>
+#include <process.h>
 
 #define TRAY_WM_MESSAGE     WM_APP+1
 
 #define TIMER_DETECTCHANGES 100
 
+bool CMainWindow::threadRunning = false;
+std::wstring CMainWindow::wpPath;
 
 static UINT WM_TASKBARCREATED = RegisterWindowMessage(_T("TaskbarCreated"));
 CMainWindow::PFNCHANGEWINDOWMESSAGEFILTEREX CMainWindow::m_pChangeWindowMessageFilter = NULL;
@@ -160,8 +163,9 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
     case WM_CREATE:
         {
             m_hwnd = hwnd;
-            aeroColors.AdjustColorsFromWallpaper();
-            SetTimer(*this, TIMER_DETECTCHANGES, 1000, NULL);
+            wpPath = aeroColors.AdjustColorsFromWallpaper();
+            threadRunning = true;
+            _beginthreadex(NULL, 0, WatcherThread, this, 0, NULL);
         }
         break;
     case WM_COMMAND:
@@ -207,6 +211,12 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
             SetTimer(*this, TIMER_DETECTCHANGES, 1000, NULL);
         }
         break;
+    case WM_QUERYENDSESSION:
+        threadRunning = false;
+        return TRUE;
+    case WM_QUIT:
+        threadRunning = false;
+        break;
     default:
         return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }
@@ -239,6 +249,56 @@ LRESULT CMainWindow::DoCommand(int id)
         break;
     };
     return 1;
+}
+
+unsigned int __stdcall CMainWindow::WatcherThread( LPVOID lpvParam )
+{
+    CMainWindow * pThis = (CMainWindow*)lpvParam;
+
+    DWORD dwWaitStatus; 
+    HANDLE dwChangeHandle; 
+    std::wstring monitorPath;
+
+    while (pThis->threadRunning)
+    {
+        monitorPath = pThis->wpPath;
+        // Watch the directory for file creation and deletion.
+        std::wstring dirPath = monitorPath.substr(0, monitorPath.find_last_of('\\'));
+        dwChangeHandle = FindFirstChangeNotification( 
+            dirPath.c_str(),
+            FALSE,
+            FILE_NOTIFY_CHANGE_LAST_WRITE);
+
+        if (dwChangeHandle != INVALID_HANDLE_VALUE) 
+        {
+            // Change notification is set.
+            while ((pThis->threadRunning)&&(monitorPath.compare(pThis->wpPath) == 0))
+            { 
+                // Wait for notification.
+                dwWaitStatus = WaitForSingleObject(dwChangeHandle, 1000); 
+
+                switch (dwWaitStatus) 
+                { 
+                case WAIT_OBJECT_0: 
+                    SendMessage(*pThis, WM_SETTINGCHANGE, 0, 0);
+                    break; 
+
+                case WAIT_TIMEOUT:
+                    // A timeout occurred
+                    if (monitorPath.compare(pThis->wpPath) != 0)
+                    {
+                        SendMessage(*pThis, WM_SETTINGCHANGE, 0, 0);
+                    }
+                    break;
+                }
+                FindNextChangeNotification(dwChangeHandle);
+            }
+            FindCloseChangeNotification(dwChangeHandle);
+            monitorPath.clear();
+        }
+        Sleep(10);
+    }
+    return 0;
 }
 
 
