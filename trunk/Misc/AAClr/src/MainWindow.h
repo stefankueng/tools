@@ -20,6 +20,7 @@
 #include "basewindow.h"
 #include "Resource.h"
 #include "AeroColors.h"
+#include "Registry.h"
 #include "shellapi.h"
 #include "shlwapi.h"
 #include <commctrl.h>
@@ -33,8 +34,10 @@ public:
         : CWindow(hInst, wcx)
         , hwndNextViewer(NULL)
         , foregroundWND(NULL)
+        , randomcolors(false)
     {
         SetWindowTitle((LPCTSTR)ResString(hResource, IDS_APP_TITLE));
+        randomcolors = !!CRegStdWORD(_T("Software\\AAClr\\randomcolors"));
     };
 
     ~CMainWindow(void)
@@ -60,6 +63,7 @@ protected:
     NOTIFYICONDATA      niData;
     HWND                hwndNextViewer;
     HWND                foregroundWND;
+    bool                randomcolors;
     CAeroColors         aeroColors;
     static std::wstring wpPath;
     static bool         threadRunning;

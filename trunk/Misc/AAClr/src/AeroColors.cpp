@@ -4,12 +4,27 @@
 #include <dwmapi.h>
 #pragma  comment(lib, "dwmapi.lib")
 
+
+typedef struct tagCOLORIZATIONPARAMS
+{
+    COLORREF    clr1;
+    COLORREF    clr2;
+    UINT        nIntensity;
+    UINT        nReserved2;
+    UINT        nReserved3;
+    UINT        nReserved4;
+    BOOL        fOpaque;
+} COLORIZATIONPARAMS;
+
+typedef void (WINAPI *FN_DwmGetColorizationParameters) (COLORIZATIONPARAMS * parameters);
+typedef void (WINAPI *FN_DwmSetColorizationParameters) (COLORIZATIONPARAMS * parameters, BOOL unknown);
+
+
 CAeroColors::CAeroColors(void)
 {
     oldWallPaperDate.dwLowDateTime  = 0;
     oldWallPaperDate.dwHighDateTime = 0;
 }
-
 
 CAeroColors::~CAeroColors(void)
 {
@@ -54,20 +69,6 @@ std::wstring CAeroColors::AdjustColorsFromWallpaper()
         Gdiplus::Color clr;
         bitmap->GetPixel(0, 0, &clr);
 
-        typedef struct tagCOLORIZATIONPARAMS
-        {
-            COLORREF    clr1;
-            COLORREF    clr2;
-            UINT        nIntensity;
-            UINT        nReserved2;
-            UINT        nReserved3;
-            UINT        nReserved4;
-            BOOL        fOpaque;
-        } COLORIZATIONPARAMS;
-
-        typedef void (WINAPI *FN_DwmGetColorizationParameters) (COLORIZATIONPARAMS * parameters);
-        typedef void (WINAPI *FN_DwmSetColorizationParameters) (COLORIZATIONPARAMS * parameters, BOOL unknown);
-
         FN_DwmGetColorizationParameters pDwmGetColorizationParameters = (FN_DwmGetColorizationParameters)GetProcAddress(GetModuleHandle(L"dwmapi.dll"), LPCSTR(127));
         FN_DwmSetColorizationParameters pDwmSetColorizationParameters = (FN_DwmSetColorizationParameters)GetProcAddress(GetModuleHandle(L"dwmapi.dll"), LPCSTR(131));
         if (pDwmGetColorizationParameters && pDwmSetColorizationParameters)
@@ -84,4 +85,23 @@ std::wstring CAeroColors::AdjustColorsFromWallpaper()
         delete bmp;
     }
     return oldWallpaperPath;
+}
+
+void CAeroColors::SetRandomColor()
+{
+    BOOL bDwmEnabled = FALSE;
+    if (SUCCEEDED(DwmIsCompositionEnabled(&bDwmEnabled)) && bDwmEnabled)
+    {
+        FN_DwmGetColorizationParameters pDwmGetColorizationParameters = (FN_DwmGetColorizationParameters)GetProcAddress(GetModuleHandle(L"dwmapi.dll"), LPCSTR(127));
+        FN_DwmSetColorizationParameters pDwmSetColorizationParameters = (FN_DwmSetColorizationParameters)GetProcAddress(GetModuleHandle(L"dwmapi.dll"), LPCSTR(131));
+        if (pDwmGetColorizationParameters && pDwmSetColorizationParameters)
+        {
+            COLORREF clr = RGB(rand() & 0xFF, rand() & 0xFF, rand() & 0xFF);
+            COLORIZATIONPARAMS params = {0};
+            pDwmGetColorizationParameters(&params);
+            params.clr1 = clr;
+            params.clr2 = clr;
+            pDwmSetColorizationParameters(&params, 0);
+        }
+    }
 }
