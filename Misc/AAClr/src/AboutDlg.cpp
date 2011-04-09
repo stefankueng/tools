@@ -52,7 +52,6 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
     default:
         return FALSE;
     }
-    return FALSE;
 }
 
 LRESULT CAboutDlg::DoCommand(int id, int /*msg*/)

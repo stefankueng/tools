@@ -19,6 +19,7 @@
 #pragma once
 #include "basewindow.h"
 #include "Resource.h"
+#include "AeroColors.h"
 #include "shellapi.h"
 #include "shlwapi.h"
 #include <commctrl.h>
@@ -57,7 +58,7 @@ protected:
     NOTIFYICONDATA      niData;
     HWND                hwndNextViewer;
     HWND                foregroundWND;
-
-    typedef BOOL(__stdcall *PFNCHANGEWINDOWMESSAGEFILTER)(UINT message, DWORD dwFlag);
-    static PFNCHANGEWINDOWMESSAGEFILTER m_pChangeWindowMessageFilter;
+    CAeroColors         aeroColors;
+    typedef BOOL(__stdcall *PFNCHANGEWINDOWMESSAGEFILTEREX)(HWND hWnd, UINT message, DWORD dwFlag, PCHANGEFILTERSTRUCT pChangeFilterStruct);
+    static PFNCHANGEWINDOWMESSAGEFILTEREX m_pChangeWindowMessageFilter;
 };

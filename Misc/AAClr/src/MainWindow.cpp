@@ -21,16 +21,17 @@
 #include "NotifySlider.h"
 #include "AboutDlg.h"
 #include "OptionsDlg.h"
+#include "AeroColors.h"
 
 #include <WindowsX.h>
 
 #define TRAY_WM_MESSAGE     WM_APP+1
 
-#define TIMER_CLIPWAIT 100
+#define TIMER_DETECTCHANGES 100
 
 
 static UINT WM_TASKBARCREATED = RegisterWindowMessage(_T("TaskbarCreated"));
-CMainWindow::PFNCHANGEWINDOWMESSAGEFILTER CMainWindow::m_pChangeWindowMessageFilter = NULL;
+CMainWindow::PFNCHANGEWINDOWMESSAGEFILTEREX CMainWindow::m_pChangeWindowMessageFilter = NULL;
 
 #define PACKVERSION(major,minor) MAKELONG(minor,major)
 
@@ -95,10 +96,11 @@ bool CMainWindow::RegisterAndCreateWindow()
             HMODULE hLib = LoadLibrary(_T("user32.dll"));
             if (hLib)
             {
-                m_pChangeWindowMessageFilter = (CMainWindow::PFNCHANGEWINDOWMESSAGEFILTER)GetProcAddress(hLib, "ChangeWindowMessageFilter");
+                m_pChangeWindowMessageFilter = (CMainWindow::PFNCHANGEWINDOWMESSAGEFILTEREX)GetProcAddress(hLib, "ChangeWindowMessageFilterEx");
                 if (m_pChangeWindowMessageFilter)
                 {
-                    (*m_pChangeWindowMessageFilter)(WM_TASKBARCREATED, MSGFLT_ADD);
+                    (*m_pChangeWindowMessageFilter)(m_hwnd, WM_TASKBARCREATED, MSGFLT_ALLOW, NULL);
+                    (*m_pChangeWindowMessageFilter)(m_hwnd, WM_SETTINGCHANGE, MSGFLT_ALLOW, NULL);
                 }
             }
 
@@ -150,9 +152,16 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 {
     switch (uMsg)
     {
+    case WM_SETTINGCHANGE:
+        {
+            aeroColors.AdjustColorsFromWallpaper();
+        }
+        break;
     case WM_CREATE:
         {
             m_hwnd = hwnd;
+            aeroColors.AdjustColorsFromWallpaper();
+            SetTimer(*this, TIMER_DETECTCHANGES, 1000, NULL);
         }
         break;
     case WM_COMMAND:
@@ -192,9 +201,10 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
         PostQuitMessage(0);
         break;
     case WM_TIMER:
-        if (wParam == TIMER_CLIPWAIT)
+        if (wParam == TIMER_DETECTCHANGES)
         {
-            KillTimer(*this, TIMER_CLIPWAIT);
+            aeroColors.AdjustColorsFromWallpaper();
+            SetTimer(*this, TIMER_DETECTCHANGES, 1000, NULL);
         }
         break;
     default:

@@ -52,6 +52,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
     CMainWindow trayWindow(hInstance);
 
+    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+    ULONG_PTR gdiplusToken;
+    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+
     if (trayWindow.RegisterAndCreateWindow())
     {
         hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_AACLR));
@@ -64,8 +68,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
                 DispatchMessage(&msg);
             }
         }
+        Gdiplus::GdiplusShutdown(gdiplusToken);
         return (int) msg.wParam;
     }
+    Gdiplus::GdiplusShutdown(gdiplusToken);
     return 1;
 }
 
