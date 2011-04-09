@@ -191,15 +191,15 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
                 {
                     if (randomcolors)
                         aeroColors.SetRandomColor();
-                    else
-                    {
-                        POINT pt;
-                        GetCursorPos(&pt);
-                        CNotifySlider dlg(NULL);
-                        dlg.xPos = pt.x;
-                        dlg.yPos = pt.y;
-                        dlg.DoModal(hResource, IDD_NOTIFYSLIDER, NULL);
-                    }
+                    //else
+                    //{
+                    //    POINT pt;
+                    //    GetCursorPos(&pt);
+                    //    CNotifySlider dlg(NULL);
+                    //    dlg.xPos = pt.x;
+                    //    dlg.yPos = pt.y;
+                    //    dlg.DoModal(hResource, IDD_NOTIFYSLIDER, NULL);
+                    //}
                 }
                 break;
             }
