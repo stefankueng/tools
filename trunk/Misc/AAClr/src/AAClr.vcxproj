@@ -78,7 +78,6 @@
     <None Include="..\default.build.user" />
     <None Include="..\version.build.in" />
     <None Include="..\versioninfo.build" />
-    <None Include="ReadMe.txt" />
     <None Include="AAClr.ico" />
     <None Include="small.ico" />
   </ItemGroup>

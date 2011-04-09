@@ -42,10 +42,10 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
         {
             InitDialog(hwndDlg, IDI_AACLR);
 
-            AddToolTip(IDC_AUTOSTART, _T("Starts SKBright automatically when Windows starts up."));
+            AddToolTip(IDC_AUTOSTART, _T("Starts AAClr automatically when Windows starts up."));
 
             // initialize the controls
-            bool bStartWithWindows = !wstring(CRegStdString(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\SKBright"))).empty();
+            bool bStartWithWindows = !wstring(CRegStdString(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\AAClr"))).empty();
             SendDlgItemMessage(*this, IDC_AUTOSTART, BM_SETCHECK, bStartWithWindows ? BST_CHECKED : BST_UNCHECKED, NULL);
 
             ExtendFrameIntoClientArea(0, 0, 0, 0);
@@ -67,14 +67,13 @@ LRESULT COptionsDlg::DoCommand(int id)
     {
     case IDOK:
         {
-            CRegStdString regStartWithWindows = CRegStdString(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\SKBright"));
+            CRegStdString regStartWithWindows = CRegStdString(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\AAClr"));
             bool bStartWithWindows = !!SendDlgItemMessage(*this, IDC_AUTOSTART, BM_GETCHECK, 0, NULL);
             if (bStartWithWindows)
             {
                 TCHAR buf[MAX_PATH*4];
                 GetModuleFileName(NULL, buf, MAX_PATH*4);
                 wstring cmd = wstring(buf);
-                cmd += _T(" /hidden");
                 regStartWithWindows = cmd;
             }
             else
