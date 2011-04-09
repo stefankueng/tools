@@ -37,7 +37,7 @@ public:
         , randomcolors(false)
     {
         SetWindowTitle((LPCTSTR)ResString(hResource, IDS_APP_TITLE));
-        randomcolors = !!CRegStdWORD(_T("Software\\AAClr\\randomcolors"));
+        randomcolors = !!CRegStdWORD(_T("Software\\AAClr\\randomcolors"), 1);
     };
 
     ~CMainWindow(void)
