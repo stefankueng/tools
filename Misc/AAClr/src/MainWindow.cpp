@@ -189,12 +189,17 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
                 break;
             case WM_LBUTTONDOWN:
                 {
-                    POINT pt;
-                    GetCursorPos(&pt);
-                    CNotifySlider dlg(NULL);
-                    dlg.xPos = pt.x;
-                    dlg.yPos = pt.y;
-                    dlg.DoModal(hResource, IDD_NOTIFYSLIDER, NULL);
+                    if (randomcolors)
+                        aeroColors.SetRandomColor();
+                    else
+                    {
+                        POINT pt;
+                        GetCursorPos(&pt);
+                        CNotifySlider dlg(NULL);
+                        dlg.xPos = pt.x;
+                        dlg.yPos = pt.y;
+                        dlg.DoModal(hResource, IDD_NOTIFYSLIDER, NULL);
+                    }
                 }
                 break;
             }
@@ -243,6 +248,7 @@ LRESULT CMainWindow::DoCommand(int id)
         {
             COptionsDlg dlg(NULL);
             dlg.DoModal(hResource, IDD_OPTIONS, NULL);
+            randomcolors = dlg.randomcolors;
         }
         break;
     default:

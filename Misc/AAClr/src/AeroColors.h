@@ -8,6 +8,7 @@ public:
     ~CAeroColors(void);
 
     std::wstring AdjustColorsFromWallpaper();
+    void SetRandomColor();
 
 private:
     std::wstring oldWallpaperPath;

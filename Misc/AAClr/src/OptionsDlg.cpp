@@ -25,7 +25,9 @@
 
 using namespace std;
 
-COptionsDlg::COptionsDlg(HWND hParent) : m_hParent(hParent)
+COptionsDlg::COptionsDlg(HWND hParent) 
+    : m_hParent(hParent)
+    , randomcolors(false)
 {
 }
 
@@ -48,8 +50,12 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             bool bStartWithWindows = !wstring(CRegStdString(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\AAClr"))).empty();
             SendDlgItemMessage(*this, IDC_AUTOSTART, BM_SETCHECK, bStartWithWindows ? BST_CHECKED : BST_UNCHECKED, NULL);
 
+            randomcolors = !!CRegStdWORD(_T("Software\\AAClr\\randomcolors"));
+            SendDlgItemMessage(*this, IDC_RANDOMCOLOR, BM_SETCHECK, randomcolors ? BST_CHECKED : BST_UNCHECKED, NULL);
+
             ExtendFrameIntoClientArea(0, 0, 0, 0);
             m_aerocontrols.SubclassControl(GetDlgItem(*this, IDC_AUTOSTART));
+            m_aerocontrols.SubclassControl(GetDlgItem(*this, IDC_RANDOMCOLOR));
             m_aerocontrols.SubclassControl(GetDlgItem(*this, IDOK));
             m_aerocontrols.SubclassControl(GetDlgItem(*this, IDCANCEL));
         }
@@ -78,6 +84,10 @@ LRESULT COptionsDlg::DoCommand(int id)
             }
             else
                 regStartWithWindows.removeValue();
+
+            CRegStdWORD regrandomcolors = CRegStdWORD(_T("Software\\AAClr\\randomcolors"));
+            randomcolors = !!SendDlgItemMessage(*this, IDC_RANDOMCOLOR, BM_GETCHECK, 0, NULL);
+            regrandomcolors = randomcolors;
         }
         // fall through
     case IDCANCEL:

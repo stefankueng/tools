@@ -29,6 +29,7 @@ public:
     COptionsDlg(HWND hParent);
     ~COptionsDlg(void);
 
+    bool                    randomcolors;
 protected:
     LRESULT CALLBACK        DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
     LRESULT                 DoCommand(int id);
