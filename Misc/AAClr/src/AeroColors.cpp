@@ -15,14 +15,14 @@ CAeroColors::~CAeroColors(void)
 {
 }
 
-void CAeroColors::AdjustColorsFromWallpaper()
+std::wstring CAeroColors::AdjustColorsFromWallpaper()
 {
     WCHAR wallPaperPath[MAX_PATH] = {0};
     SystemParametersInfo(SPI_GETDESKWALLPAPER, MAX_PATH, wallPaperPath, 0);
     if (wallPaperPath[0] == 0)
     {
         // no wallpaper - no nothing
-        return;
+        return L"";
     }
     if (oldWallpaperPath.compare(wallPaperPath) == 0)
     {
@@ -33,11 +33,11 @@ void CAeroColors::AdjustColorsFromWallpaper()
             GetFileTime(hFile, &create, &access, &write);
             CloseHandle(hFile);
             if (CompareFileTime(&oldWallPaperDate, &write) == 0)
-                return;
+                return oldWallpaperPath;
             oldWallPaperDate = write;
         }
         else
-            return;
+            return oldWallpaperPath;
     }
     oldWallpaperPath = wallPaperPath;
     BOOL bDwmEnabled = FALSE;
@@ -45,7 +45,7 @@ void CAeroColors::AdjustColorsFromWallpaper()
     {
         Gdiplus::Bitmap * bmp = new Gdiplus::Bitmap(wallPaperPath);
         if (bmp == nullptr)
-            return;
+            return oldWallpaperPath;
 
         Gdiplus::Bitmap * bitmap = new Gdiplus::Bitmap(1, 1);
         Gdiplus::Graphics * graphics = Gdiplus::Graphics::FromImage(bitmap);
@@ -83,4 +83,5 @@ void CAeroColors::AdjustColorsFromWallpaper()
         delete bitmap;
         delete bmp;
     }
+    return oldWallpaperPath;
 }

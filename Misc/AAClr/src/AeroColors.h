@@ -7,7 +7,7 @@ public:
     CAeroColors(void);
     ~CAeroColors(void);
 
-    void AdjustColorsFromWallpaper();
+    std::wstring AdjustColorsFromWallpaper();
 
 private:
     std::wstring oldWallpaperPath;
