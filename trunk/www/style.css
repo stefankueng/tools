@@ -15,7 +15,7 @@ a:hover {
 }
 
 .ss {
-    font-size: 50%;
+    font-size: 70%;
     vertical-align: super;
 }
 
@@ -32,7 +32,7 @@ blockquote {
 body {
        background: #5e7eff url("images/background.jpg") repeat-x top;
        color: #181818;
-       font-size: 60.5%;
+       font-size: 80%;
        font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
        margin: 0 auto;
        padding: 0;
@@ -45,7 +45,7 @@ cite {
 }
 
 h2 {
-     font-size: 12px;
+     font-size: 14px;
      margin: 0px 0 6px 0;
      padding: 3px 0 3px 5px;
      font-weight: bold;
@@ -66,7 +66,7 @@ h2 a:visited:hover {
                      color: #BFBFEF;
                      }
 h3 {
-     font-size: 120%;
+     font-size: 130%;
      margin-top: 0;
 }
 
@@ -109,7 +109,7 @@ ul {
 /* The credits at the bottom of the site */
 #credit {
           color: #181818;
-          font-size: 11px;
+          font-size: 14px;
           width: 868px;
           text-align: center;
           margin: 0 auto;
@@ -145,7 +145,7 @@ ul {
 
 
 .meta { 
-        font-size: 11px;
+        font-size: 12px;
        font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
         }
 
@@ -248,7 +248,7 @@ ul.post-meta li {
 	border-bottom:none;
 	}
 .header-description {
-        font-size: 11px;
+        font-size: 14px;
         font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
         font-weight: normal;
 	color:#fefefe;
@@ -291,8 +291,8 @@ ul.post-meta li {
 #menu-left { 
              float: left;
              padding: 0px 10px 20px 30px;
-             width: 220px;
-             font-size: 11px;
+             width: 240px;
+             font-size: 12px;
 border-right: 1px dotted #181818;
 display: inline;
              }
