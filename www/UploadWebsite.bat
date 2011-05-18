@@ -14,6 +14,7 @@ rem set PSCP="C:\Programme\PuttY\pscp.exe"
 rem set PLINK="C:\Programme\Putty\plink.exe"
 rem set ZIP="C:\Programme\7-zip\7z.exe"
 
+rd /s /q ..\..\toolssite
 cd scripts
 python generatesite.py
 cd ..
@@ -23,7 +24,7 @@ call ..\serverlogin.bat
 cd ..\..\toolssite
 del website.zip
 
-%ZIP% a -r -tzip website.zip *
+%ZIP% a -r -tzip website.zip * > NUL
 
 %PSCP% -r -l %USERNAME% -pw %PASSWORD% website.zip tortoisesvn.net:/var/www/vhosts/tools/
 
