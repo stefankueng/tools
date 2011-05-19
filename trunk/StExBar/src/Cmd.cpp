@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010 - Stefan Kueng
+// Copyright (C) 2007-2011 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 //
 #include "stdafx.h"
 #include "SRBand.h"
+#include "resource.h"
 
 
 void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
@@ -30,7 +31,7 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
 
     // find the cmd program
     TCHAR buf[MAX_PATH] = {0};
-    if (DWORD(CRegStdWORD(_T("Software\\StefansTools\\StExBar\\UsePowershell"), FALSE)))
+    if (DWORD(CRegStdWORD(_T("Software\\StefansTools\\StExBar\\EditBoxUsage"), IDC_USECONSOLE))==IDC_USEPOWERSHELL)
     {
         if (ExpandEnvironmentStrings(_T("%systemroot%"), buf, MAX_PATH))
         {
