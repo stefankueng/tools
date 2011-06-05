@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010 - Stefan Kueng
+// Copyright (C) 2007-2011 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -282,31 +282,34 @@ bool CCommands::LoadFromFile()
         cmd.key = key;
 
         // check if that command already exists
-        if (!cmd.separator)
+        if (cmd.name.compare(_T("StexBar Internal Edit Box")) != 0)
         {
-            for (vector<Command>::iterator cit = m_commands.begin(); cit != m_commands.end(); ++cit)
+            if (!cmd.separator)
             {
-                if (cit->name.compare(cmd.name) == 0)
+                for (vector<Command>::iterator cit = m_commands.begin(); cit != m_commands.end(); ++cit)
                 {
-                    // found the command
-                    // for normal commands, we simply ignore duplicate entries.
-                    // but for internal commands, we overwrite the default settings.
-                    if ((cit->commandline.compare(INTERNALCOMMAND)==0)||(cit->commandline.compare(INTERNALCOMMANDHIDDEN)==0))
+                    if (cit->name.compare(cmd.name) == 0)
                     {
-                        // the icon for internal commands isn't saved to the ini file, so
-                        // we copy it from the existing one
-                        cmd.nIconID = cit->nIconID;
-                        m_commands.erase(cit);
+                        // found the command
+                        // for normal commands, we simply ignore duplicate entries.
+                        // but for internal commands, we overwrite the default settings.
+                        if ((cit->commandline.compare(INTERNALCOMMAND)==0)||(cit->commandline.compare(INTERNALCOMMANDHIDDEN)==0))
+                        {
+                            // the icon for internal commands isn't saved to the ini file, so
+                            // we copy it from the existing one
+                            cmd.nIconID = cit->nIconID;
+                            m_commands.erase(cit);
+                        }
+                        break;
                     }
-                    break;
                 }
             }
+            m_commands.push_back(cmd);
         }
-        m_commands.push_back(cmd);
     }
     // remove leftover separators
-    while (m_commands[0].separator)
-        m_commands.erase(m_commands.begin());
+    while (m_commands[1].separator)
+        m_commands.erase(m_commands.begin()+1);
     return false;
 }
 
