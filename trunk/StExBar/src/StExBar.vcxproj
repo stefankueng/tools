@@ -191,6 +191,7 @@
     <ClCompile Include="AutoComplete.cpp" />
     <ClCompile Include="BaseDialog.cpp" />
     <ClCompile Include="BaseWindow.cpp" />
+    <ClCompile Include="BrowseFolder.cpp" />
     <ClCompile Include="ChevronMenu.cpp" />
     <ClCompile Include="ClassFactory.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
@@ -270,6 +271,7 @@
     <ClInclude Include="AutoComplete.h" />
     <ClInclude Include="BaseDialog.h" />
     <ClInclude Include="BaseWindow.h" />
+    <ClInclude Include="BrowseFolder.h" />
     <ClInclude Include="ChevronMenu.h" />
     <ClInclude Include="ClassFactory.h" />
     <ClInclude Include="Commands.h" />

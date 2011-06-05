@@ -51,6 +51,7 @@
 #define IDC_SELECTEDCOUNT               1030
 #define IDC_SEPARATOR                   1031
 #define IDC_MOVEUP                      1032
+#define IDC_STARTIN                     1032
 #define IDC_MOVEDOWN                    1033
 #define IDC_HIDEEDITBOX                 1034
 #define IDC_CHECK1                      1035
@@ -63,6 +64,8 @@
 #define IDC_BROWSEICON                  1038
 #define IDC_BROWSECOMMAND               1039
 #define IDC_USECONSOLE                  1040
+#define IDC_BROWSECOMMAND2              1040
+#define IDC_BROWSESTARTIN               1040
 #define IDC_USEPOWERSHELL               1041
 #define IDC_USEGREPWIN                  1042
 #define IDC_USEFILTER                   1043
