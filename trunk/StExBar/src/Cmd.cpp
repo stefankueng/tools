@@ -31,7 +31,7 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
 
     // find the cmd program
     TCHAR buf[MAX_PATH] = {0};
-    if (DWORD(CRegStdWORD(_T("Software\\StefansTools\\StExBar\\EditBoxUsage"), IDC_USECONSOLE))==IDC_USEPOWERSHELL)
+    if (GetEditBoxUsage()==IDC_USEPOWERSHELL)
     {
         if (ExpandEnvironmentStrings(_T("%systemroot%"), buf, MAX_PATH))
         {

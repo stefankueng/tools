@@ -233,6 +233,10 @@ private:
     wstring                 WriteFileListToTempFile(bool bUnicode, const wstring& paths);
     /// returns true if the pidl matches the filter string
     bool                    CheckDisplayName(IShellFolder * shellFolder, LPITEMIDLIST pidl, LPCTSTR filter, bool bUseRegex);
+    /// returns the usage for the edit box
+    DWORD                   GetEditBoxUsage();
+    /// returns a string buffer with the text of the edit box. Must be freed with delete[]!
+    TCHAR *                 GetEditBoxText(bool sanitized = true);
     /// returns the list view control
     HWND                    GetListView32(IShellView * shellView);
     static BOOL CALLBACK    EnumChildProc(HWND hwnd, LPARAM lParam);

@@ -592,19 +592,12 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
         if (wParam == TID_FILTER)
         {
             KillTimer(pThis->m_hWnd, TID_FILTER);
-            if (DWORD(pThis->m_regEditBoxUsage) == IDC_USEFILTER)
+            if (DWORD(pThis->GetEditBoxUsage()) == IDC_USEFILTER)
             {
-                // get the command entered in the edit box
-                int count = MAX_PATH;
-                TCHAR * buf = new TCHAR[count+1];
-                while (::GetWindowText(pThis->m_hWndEdit, buf, count)>=count)
-                {
-                    delete [] buf;
-                    count += MAX_PATH;
-                    buf = new TCHAR[count+1];
-                }
+                TCHAR * buf = pThis->GetEditBoxText();
                 // select the files which match the filter string
                 pThis->Filter(buf);
+                delete [] buf;
             }
         }
         break;
@@ -684,11 +677,8 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
         ((uMessage == WM_KEYDOWN) && (wParam == VK_ESCAPE)))
     {
         ::SetWindowText(pThis->m_hWndEdit, _T(""));
-        if (DWORD(pThis->m_regEditBoxUsage) == IDC_USEFILTER)
-        {
-            // select the files which match the filter string
-            pThis->Filter(_T(""));
-        }
+        // clear the filter
+        pThis->Filter(_T(""));
     }
     return DefSubclassProc(hWnd, uMessage, wParam, lParam);
 }
@@ -781,15 +771,8 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
         if (cmd.name.compare(_T("StexBar Internal Edit Box")) == 0)
         {
             // get the command entered in the edit box
-            int count = MAX_PATH;
-            TCHAR * buf = new TCHAR[count+1];
-            while (::GetWindowText(m_hWndEdit, buf, count)>=count)
-            {
-                delete [] buf;
-                count += MAX_PATH;
-                buf = new TCHAR[count+1];
-            }
-            switch (DWORD(m_regEditBoxUsage))
+            TCHAR * buf = GetEditBoxText();
+            switch (GetEditBoxUsage())
             {
             case IDC_USEFILTER:
                 // select the files which match the filter string
@@ -991,18 +974,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
     }
     else
     {
-        int count = MAX_PATH;
-        TCHAR * buf = new TCHAR[count+1];
-        buf[0] = 0;
-        if (::IsWindow(m_hWndEdit))
-        {
-            while (::GetWindowText(m_hWndEdit, buf, count)>=count)
-            {
-                delete [] buf;
-                count += MAX_PATH;
-                buf = new TCHAR[count+1];
-            }
-        }
+        TCHAR * buf = GetEditBoxText();
         wstring consoletext = buf;
 
         // replace "%selpaths" with the paths of the selected items
@@ -1105,6 +1077,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             wstring::iterator it_end= it_begin + tag.size();
             commandline.replace(it_begin, it_end, tempFilePath);
         }
+        delete [] buf;
         StartApplication(cwd, commandline, (GetKeyState(VK_LWIN)&0x8000)!=0);
     }
 }
@@ -1547,4 +1520,81 @@ BOOL CDeskBand::EnumChildProc(HWND hwnd, LPARAM lParam)
     }
     pTHIS->m_hwndListView = NULL;
     return TRUE;
+}
+
+DWORD CDeskBand::GetEditBoxUsage()
+{
+    if (DWORD(m_regEditBoxUsage) == IDC_USEAUTO)
+    {
+        TCHAR * buf = GetEditBoxText(false);
+        if (_tcslen(buf)>1)
+        {
+            switch (buf[0])
+            {
+            case 'G':
+            case 'g':
+                delete[] buf;
+                return IDC_USEGREPWIN;
+            case 'C':
+            case 'c':
+                delete[] buf;
+                return IDC_USECONSOLE;
+            case 'P':
+            case 'p':
+                delete[] buf;
+                return IDC_USEPOWERSHELL;
+            case 'F':
+            case 'f':
+                delete[] buf;
+                return IDC_USEFILTER;
+            default:
+                delete[] buf;
+                return IDC_USEFILTER;
+            }
+        }
+    }
+    return DWORD(m_regEditBoxUsage);
+}
+
+TCHAR * CDeskBand::GetEditBoxText(bool sanitized /* = true */)
+{
+    // get the command entered in the edit box
+    int count = MAX_PATH;
+    TCHAR * buf = new TCHAR[count+1];
+    while (::GetWindowText(m_hWndEdit, buf, count)>=count)
+    {
+        delete [] buf;
+        count += MAX_PATH;
+        buf = new TCHAR[count+1];
+    }
+
+    if ((sanitized)&&(DWORD(m_regEditBoxUsage) == IDC_USEAUTO))
+    {
+        // remove the command-switch char and whitespaces after it
+        if (_tcslen(buf) > 0)
+        {
+            switch (buf[0])
+            {
+            case 'G':
+            case 'g':
+            case 'C':
+            case 'c':
+            case 'P':
+            case 'p':
+            case 'F':
+            case 'f':
+                {
+                    int i = 1;
+                    while (buf[i] && (buf[i]==' '))
+                        ++i;
+                    TCHAR * sanitizedbuf = new TCHAR[count+1];
+                    _tcscpy_s(sanitizedbuf, count+1, &buf[i]);
+                    delete [] buf;
+                    buf = sanitizedbuf;
+                }
+                break;
+            }
+        }
+    }
+    return buf;
 }
