@@ -672,6 +672,24 @@ LRESULT CALLBACK CDeskBand::EditProc(HWND hWnd, UINT uMessage, WPARAM wParam, LP
     {
         pThis->OnSetFocus();
         ::SendMessage(pThis->m_hWndEdit, EM_SETSEL, 0, (LPARAM)-1);
+        switch (pThis->GetEditBoxUsage())
+        {
+        case IDC_USEFILTER:
+            ::SendMessage(pThis->m_hWndEdit, EM_SETCUEBANNER, TRUE, (LPARAM)L"Filter items");
+            break;
+        case IDC_USECONSOLE:
+            ::SendMessage(pThis->m_hWndEdit, EM_SETCUEBANNER, TRUE, (LPARAM)L"Console commands");
+            break;
+        case IDC_USEPOWERSHELL:
+            ::SendMessage(pThis->m_hWndEdit, EM_SETCUEBANNER, TRUE, (LPARAM)L"Powershell commands");
+            break;
+        case IDC_USEGREPWIN:
+            ::SendMessage(pThis->m_hWndEdit, EM_SETCUEBANNER, TRUE, (LPARAM)L"search with grepWin");
+            break;
+        case IDC_USEAUTO:
+            ::SendMessage(pThis->m_hWndEdit, EM_SETCUEBANNER, TRUE, (LPARAM)L"Auto command - use f, c, p or g");
+            break;
+        }
     }
     if ((uMessage == WM_LBUTTONDBLCLK)||
         ((uMessage == WM_KEYDOWN) && (wParam == VK_ESCAPE)))
