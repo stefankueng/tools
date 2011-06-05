@@ -270,6 +270,7 @@ bool CCommands::LoadFromFile()
         cmd.icon = inifile.GetValue(*it, _T("icon"), _T(""));
         cmd.nIconID = 0;
         cmd.commandline = inifile.GetValue(*it, _T("commandline"), _T(""));
+        cmd.startin = inifile.GetValue(*it, _T("startin"), _T(""));
         cmd.separator = (wstring(inifile.GetValue(*it, _T("separator"), _T(""))).compare(_T("true")) == 0) ? true : false;
 
         cmd.enabled_viewpath = (wstring(inifile.GetValue(*it, _T("viewpath"), _T(""))).compare(_T("true")) == 0) ? true : false;
@@ -344,6 +345,7 @@ bool CCommands::SaveToFile()
         inifile.SetValue(counterstr, _T("name"), pCmd->name.c_str());
         inifile.SetValue(counterstr, _T("icon"), pCmd->icon.c_str());
         inifile.SetValue(counterstr, _T("commandline"), pCmd->commandline.c_str());
+        inifile.SetValue(counterstr, _T("startin"), pCmd->startin.c_str());
         inifile.SetValue(counterstr, _T("separator"), pCmd->separator ? _T("true") : _T(""));
 
         inifile.SetValue(counterstr, _T("viewpath"), pCmd->enabled_viewpath ? _T("true") : _T(""));

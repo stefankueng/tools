@@ -1096,7 +1096,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             commandline.replace(it_begin, it_end, tempFilePath);
         }
         delete [] buf;
-        StartApplication(cwd, commandline, (GetKeyState(VK_LWIN)&0x8000)!=0);
+        StartApplication(cmd.startin.size() > 0 ? cmd.startin : cwd, commandline, (GetKeyState(VK_LWIN)&0x8000)!=0);
     }
 }
 

@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2009, 2011 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #include <algorithm>
 #include "EditCmdDlg.h"
 #include "InfoDlg.h"
+#include "BrowseFolder.h"
 #include <string>
 
 #include <regex>
@@ -62,6 +63,7 @@ Special placeholders are available:\r\n\
 %curdir\t\t: replaced with the path of the currently shown directory\r\n\
 %cmdtext\t: replaced with the content of the edit box\r\n"));
 
+            AddToolTip(IDC_STARTIN, _T("Path to a directory in which the tool is started in"));
             AddToolTip(IDC_VIEWPATH, _T("Enables the command when the explorer shows a file system path"));
             AddToolTip(IDC_NOVIEWPATH, _T("Enables the command when the explorer shows a non file system path, e.g., the printers view"));
             AddToolTip(IDC_FILESELECTED, _T("Enables the command when one or more files in the explorer are selected"));
@@ -131,6 +133,16 @@ Special placeholders are available:\r\n\
                 }
             }
             break;
+        case IDC_BROWSESTARTIN:
+            {
+                CBrowseFolder folderBrowser;
+                WCHAR path[MAX_PATH] = {0};
+                if (folderBrowser.Show(*this, path, MAX_PATH) == CBrowseFolder::OK)
+                {
+                    SetDlgItemText(*this, IDC_STARTIN, path);
+                }
+            }
+            break;
         case IDC_SEPARATOR:
             m_command.separator = SendMessage(GetDlgItem(*this, IDC_SEPARATOR), BM_GETCHECK, 0, 0) == BST_CHECKED;
             SetSeparator(m_command.separator);
@@ -150,6 +162,7 @@ void CEditCmdDlg::SetSeparator(bool bSeparator)
     EnableWindow(GetDlgItem(*this, IDC_NAME), !bSeparator);
     EnableWindow(GetDlgItem(*this, IDC_ICONPATH), !bSeparator);
     EnableWindow(GetDlgItem(*this, IDC_COMMANDLINE), !bSeparator);
+    EnableWindow(GetDlgItem(*this, IDC_STARTIN), !bSeparator);
     EnableWindow(GetDlgItem(*this, IDC_HOTKEY), !bSeparator);
     EnableWindow(GetDlgItem(*this, IDC_VIEWPATH), !bSeparator);
     EnableWindow(GetDlgItem(*this, IDC_NOVIEWPATH), !bSeparator);
@@ -169,6 +182,7 @@ void CEditCmdDlg::SetupControls()
     SetDlgItemText(*this, IDC_NAME, m_command.name.c_str());
     SetDlgItemText(*this, IDC_ICONPATH, m_command.icon.c_str());
     SetDlgItemText(*this, IDC_COMMANDLINE, m_command.commandline.c_str());
+    SetDlgItemText(*this, IDC_STARTIN, m_command.startin.c_str());
 
     WPARAM hk = m_command.key.keycode;
     hk |= m_command.key.alt ? HOTKEYF_ALT<<8 : 0;
@@ -198,6 +212,7 @@ void CEditCmdDlg::SetupControls()
         EnableWindow(GetDlgItem(*this, IDC_NAME), FALSE);
         EnableWindow(GetDlgItem(*this, IDC_ICONPATH), FALSE);
         EnableWindow(GetDlgItem(*this, IDC_COMMANDLINE), FALSE);
+        EnableWindow(GetDlgItem(*this, IDC_STARTIN), FALSE);
         EnableWindow(GetDlgItem(*this, IDC_VIEWPATH), FALSE);
         EnableWindow(GetDlgItem(*this, IDC_NOVIEWPATH), FALSE);
         EnableWindow(GetDlgItem(*this, IDC_FILESELECTED), FALSE);
@@ -226,6 +241,8 @@ void CEditCmdDlg::SetupCommand()
     m_command.icon = buf;
     GetDlgItemText(*this, IDC_COMMANDLINE, buf, EDITCMDDLG_MAXBUF);
     m_command.commandline = buf;
+    GetDlgItemText(*this, IDC_STARTIN, buf, EDITCMDDLG_MAXBUF);
+    m_command.startin = buf;
 
     WPARAM hk = SendMessage(GetDlgItem(*this, IDC_HOTKEY), HKM_GETHOTKEY, 0, 0);
     m_command.key.keycode = LOBYTE(hk);
