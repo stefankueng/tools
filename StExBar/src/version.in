@@ -1,9 +1,0 @@
-#define FILEVER        1,8,2,$WCREV$
-#define PRODUCTVER     1,8,2,$WCREV$
-#define STRFILEVER     "1, 8, 2, $WCREV$\0"
-#define STRPRODUCTVER  "1, 8, 2, $WCREV$\0"
-
-#define VER_MAJOR		1
-#define VER_MINOR		8
-#define	VER_MICRO		2
-#define	VER_REVISION	$WCREV$
