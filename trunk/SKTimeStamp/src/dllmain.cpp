@@ -65,22 +65,22 @@ STDAPI DllRegisterServer(void)
         return SELFREG_E_CLASS;
     }
 
-    if (RegSetValue(HKEY_CLASSES_ROOT, _T("*\\shellex\\PropertySheetHandlers\\SKTimeStamp"), REG_SZ, _T(SKTIMESTAMP_GUID), _tcslen(_T(SKTIMESTAMP_GUID))*sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CLASSES_ROOT, _T("*\\shellex\\PropertySheetHandlers\\SKTimeStamp"), REG_SZ, _T(SKTIMESTAMP_GUID), (DWORD)_tcslen(_T(SKTIMESTAMP_GUID))*sizeof(TCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (RegSetValue(HKEY_CLASSES_ROOT, _T("Directory\\shellex\\PropertySheetHandlers\\SKTimeStamp"), REG_SZ, _T(SKTIMESTAMP_GUID), _tcslen(_T(SKTIMESTAMP_GUID))*sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CLASSES_ROOT, _T("Directory\\shellex\\PropertySheetHandlers\\SKTimeStamp"), REG_SZ, _T(SKTIMESTAMP_GUID), (DWORD)_tcslen(_T(SKTIMESTAMP_GUID))*sizeof(TCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID), REG_SZ, _T("SKTimeStamp"), _tcslen(_T("SKTimeStamp"))*sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID), REG_SZ, _T("SKTimeStamp"), (DWORD)_tcslen(_T("SKTimeStamp"))*sizeof(TCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID) _T("InProcServer32"), REG_SZ, szModule, _tcslen(szModule)*sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID) _T("InProcServer32"), REG_SZ, szModule, (DWORD)_tcslen(szModule)*sizeof(TCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
