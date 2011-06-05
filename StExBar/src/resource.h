@@ -66,6 +66,7 @@
 #define IDC_USEPOWERSHELL               1041
 #define IDC_USEGREPWIN                  1042
 #define IDC_USEFILTER                   1043
+#define IDC_USEAUTO                     1044
 
 // Next default values for new objects
 // 

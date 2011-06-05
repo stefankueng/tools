@@ -61,10 +61,11 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_SETCHECK, DWORD(m_regHideEditBox) ? BST_CHECKED : BST_UNCHECKED, 0);
             SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_SETCHECK, DWORD(m_regUseSelector) ? BST_CHECKED : BST_UNCHECKED, 0);
             SendMessage(GetDlgItem(hwndDlg, IDC_CONTEXTMENU), BM_SETCHECK, DWORD(m_regContextMenu) ? BST_CHECKED : BST_UNCHECKED, 0);
-            CheckRadioButton(hwndDlg, IDC_USECONSOLE, IDC_USEFILTER, DWORD(m_regEditBoxUsage));
+            CheckRadioButton(hwndDlg, IDC_USECONSOLE, IDC_USEAUTO, DWORD(m_regEditBoxUsage));
             EnableWindow(GetDlgItem(hwndDlg, IDC_USECONSOLE), !DWORD(m_regHideEditBox));
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEPOWERSHELL), !DWORD(m_regHideEditBox));
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEFILTER), !DWORD(m_regHideEditBox));
+            EnableWindow(GetDlgItem(hwndDlg, IDC_USEAUTO), !DWORD(m_regHideEditBox));
             CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin...\\command\\", L"", 0, HKEY_CLASSES_ROOT);
             wstring grepWinPath = regGrepWinPath;
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEGREPWIN), !grepWinPath.empty() && !DWORD(m_regHideEditBox));
@@ -74,10 +75,11 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             AddToolTip(IDC_SELECTORCHECK, _T("Determines whether the edit box on the right behaves as a shortcut for the console\r\nor whether it filters items according to the entered mask.\r\nDoes not work on Win7 for folders in a library and\r\ncan be very slow if not in detailed view!"));
             AddToolTip(IDC_HIDEEDITBOX, _T("Hides the edit box on the right of the toolbar"));
             AddToolTip(IDC_CONTEXTMENU, _T("Adds the commands also to the right-click context menu"));
-            AddToolTip(IDC_USECONSOLE, _T("If enabled, the edit box text is sent to the console (cmd.exe)"));
-            AddToolTip(IDC_USEPOWERSHELL, _T("If enabled, the edit box text is sent to the Powershell"));
-            AddToolTip(IDC_USEGREPWIN, _T("If enabled, the edit box text is sent to the grepWin tool if it is installed"));
-            AddToolTip(IDC_USEFILTER, _T("If enabled, the edit box text is used to filter the content in the explorer"));
+            AddToolTip(IDC_USECONSOLE, _T("The edit box text is sent to the console (cmd.exe)"));
+            AddToolTip(IDC_USEPOWERSHELL, _T("The edit box text is sent to the Powershell"));
+            AddToolTip(IDC_USEGREPWIN, _T("The edit box text is sent to the grepWin tool if it is installed"));
+            AddToolTip(IDC_USEFILTER, _T("The edit box text is used to filter the content in the explorer"));
+            AddToolTip(IDC_USEAUTO, _T("The first char determines the function:\nf filtertext\ng grepWin search text\nc console command\np powershell command"));
 
             TCHAR buf[MAX_PATH] = {0};
             _stprintf_s(buf, MAX_PATH, _T("StExBar %ld.%ld.%ld.%ld"), VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
@@ -103,8 +105,10 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                     m_regEditBoxUsage = IDC_USEPOWERSHELL;
                 else if (IsDlgButtonChecked(hwndDlg, IDC_USEGREPWIN))
                     m_regEditBoxUsage = IDC_USEGREPWIN;
-                else //if (IsDlgButtonChecked(hwndDlg, IDC_USEFILTER))
+                else if (IsDlgButtonChecked(hwndDlg, IDC_USEFILTER))
                     m_regEditBoxUsage = IDC_USEFILTER;
+                else //if (IsDlgButtonChecked(hwndDlg, IDC_USEAUTO))
+                    m_regEditBoxUsage = IDC_USEAUTO;
                 m_commands.SaveToFile();
             }
             // fall through
@@ -120,6 +124,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USECONSOLE), bHide);
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USEPOWERSHELL), bHide);
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USEFILTER), bHide);
+                EnableWindow(GetDlgItem(hwndDlg, IDC_USEAUTO), bHide);
                 CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin...\\command\\", L"", 0, HKEY_CLASSES_ROOT);
                 wstring grepWinPath = regGrepWinPath;
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USEGREPWIN), !grepWinPath.empty() && bHide);
