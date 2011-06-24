@@ -62,7 +62,7 @@ std::wstring CAeroColors::AdjustColorsFromWallpaper()
         if (bmp == nullptr)
             return oldWallpaperPath;
 
-        Gdiplus::Bitmap * bitmap = new Gdiplus::Bitmap(1, 1);
+        Gdiplus::Bitmap * bitmap = new Gdiplus::Bitmap(1, 1, PixelFormat32bppRGB);
         Gdiplus::Graphics * graphics = Gdiplus::Graphics::FromImage(bitmap);
         graphics->SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
         graphics->DrawImage(bmp, Gdiplus::RectF(0, 0, 1, 1));
