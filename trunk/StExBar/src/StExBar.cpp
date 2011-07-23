@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010 - Stefan Kueng
+// Copyright (C) 2007-2011 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -69,8 +69,19 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance,
     switch(dwReason)
     {
     case DLL_PROCESS_ATTACH:
-        g_hInst = hInstance;
-        _set_invalid_parameter_handler(my_invalid_parameter);
+        {
+            // only load the dll in explorer
+            WCHAR path[MAX_PATH] = {0};
+            if (GetModuleFileName(NULL, path, MAX_PATH)==FALSE)
+                return FALSE;
+            wchar_t * slash = wcsrchr(path, '\\');
+            if (slash == NULL)
+                return FALSE;
+            if (_wcsicmp(L"\\explorer.exe", slash) != 0)
+                return FALSE;
+            g_hInst = hInstance;
+            _set_invalid_parameter_handler(my_invalid_parameter);
+        }
         break;
     case DLL_PROCESS_DETACH:
         UnregisterClass(DB_CLASS_NAME, g_hInst);
