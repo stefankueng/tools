@@ -282,6 +282,7 @@
     <ClInclude Include="hyperlink.h" />
     <ClInclude Include="InfoDlg.h" />
     <ClInclude Include="ItemIDList.h" />
+    <ClInclude Include="NumberReplacer.h" />
     <ClInclude Include="OptionsDlg.h" />
     <ClInclude Include="Pidl.h" />
     <ClInclude Include="RegHistory.h" />
