@@ -23,17 +23,11 @@
 #include <algorithm>
 #include "RenameDlg.h"
 #include "InfoDlg.h"
+#include "NumberReplacer.h"
 #include <string>
 
 using namespace std;
 
-struct __lesscasecmp
-{
-    bool operator() (const wstring& a, const wstring& b) const
-    {
-        return (_wcsicmp(a.c_str(), b.c_str()) < 0);
-    }
-};
 
 #define IDT_RENAME 101
 
@@ -292,10 +286,12 @@ void CRenameDlg::FillRenamedList()
             m_fl |= tr1::regex_constants::icase;
         const tr1::wregex regCheck(m_sMatch, m_fl);
 
+        NumberReplaceHandler handler(m_sReplace);
         wstring replaced;
-        for (set<wstring>::iterator it = m_filelist.begin(); it != m_filelist.end(); ++it)
+        for (auto it = m_filelist.begin(); it != m_filelist.end(); ++it)
         {
             replaced = tr1::regex_replace(*it, regCheck, m_sReplace);
+            replaced = handler.ReplaceCounters(replaced);
             renamedmap[*it] = replaced;
         }
         // now fill in the list of files which got renamed
@@ -324,7 +320,7 @@ void CRenameDlg::FillRenamedList()
     {
         int iItem = 0;
         TCHAR textbuf[MAX_PATH] = {0};
-        for (set<wstring>::iterator it = m_filelist.begin(); it != m_filelist.end(); ++it)
+        for (auto it = m_filelist.begin(); it != m_filelist.end(); ++it)
         {
             LVITEM lvi = {0};
             lvi.mask = LVIF_TEXT|LVIF_PARAM;
@@ -341,5 +337,14 @@ void CRenameDlg::FillRenamedList()
         }
         ListView_SetColumnWidth(hListCtrl, 0, LVSCW_AUTOSIZE_USEHEADER);
         ListView_SetColumnWidth(hListCtrl, 1, LVSCW_AUTOSIZE_USEHEADER);
+    }
+}
+
+void CRenameDlg::SetFileList( const set<wstring>& list )
+{
+    m_filelist.clear();
+    for (auto it = list.cbegin(); it != list.cend(); ++it)
+    {
+        m_filelist.insert(*it);
     }
 }

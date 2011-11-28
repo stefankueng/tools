@@ -25,6 +25,14 @@
 
 using namespace std;
 
+struct __lesscasecmp
+{
+    bool operator() (const wstring& a, const wstring& b) const
+    {
+        return (_wcsicmp(a.c_str(), b.c_str()) < 0);
+    }
+};
+
 /**
 * bookmarks dialog.
 */
@@ -37,7 +45,7 @@ public:
     wstring                 GetMatchString() {return m_sMatch;}
     tr1::regex_constants::syntax_option_type GetRegexFlags() {return m_fl;}
     wstring                 GetReplaceString() {return m_sReplace;}
-    void                    SetFileList(const set<wstring>& list) {m_filelist = list;}
+    void                    SetFileList(const set<wstring>& list);
 
 protected:
     LRESULT CALLBACK        DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -48,7 +56,7 @@ private:
     CDlgResizer             m_resizer;
     wstring                 m_sMatch;           ///< the match string of the rename
     wstring                 m_sReplace;         ///< the replace string of the rename
-    set<wstring>            m_filelist;         ///< the list of selected file/folder names
+    set<wstring, __lesscasecmp>            m_filelist;         ///< the list of selected file/folder names
     CAutoComplete           m_AutoCompleteRen1;
     CAutoComplete           m_AutoCompleteRen2;
 

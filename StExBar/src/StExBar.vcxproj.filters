@@ -249,6 +249,9 @@
     <ClInclude Include="BrowseFolder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NumberReplacer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StExBar.rc">
