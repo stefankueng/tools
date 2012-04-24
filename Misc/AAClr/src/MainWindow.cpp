@@ -1,6 +1,6 @@
 // AAClr - tool to adjust the aero colors according to the desktop wallpaper
 
-// Copyright (C) 2011 - Stefan Kueng
+// Copyright (C) 2011-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -153,6 +153,9 @@ LRESULT CMainWindow::HandleCustomMessages(HWND /*hwnd*/, UINT uMsg, WPARAM /*wPa
 
 LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+    // the custom messages are not constant, therefore we can't handle them in the
+    // switch-case below
+    HandleCustomMessages(hwnd, uMsg, wParam, lParam);
     switch (uMsg)
     {
     case WM_SETTINGCHANGE:
