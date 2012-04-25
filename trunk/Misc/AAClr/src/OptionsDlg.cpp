@@ -1,6 +1,6 @@
 // AAClr - tool to adjust the aero colors according to the desktop wallpaper
 
-// Copyright (C) 2011 - Stefan Kueng
+// Copyright (C) 2011-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -54,9 +54,13 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             randomcolors = !!CRegStdWORD(_T("Software\\AAClr\\randomcolors"), 1);
             SendDlgItemMessage(*this, IDC_RANDOMCOLOR, BM_SETCHECK, randomcolors ? BST_CHECKED : BST_UNCHECKED, NULL);
 
+            brightness = !!CRegStdWORD(_T("Software\\AAClr\\brightness"), 1);
+            SendDlgItemMessage(*this, IDC_BRIGHTNESS, BM_SETCHECK, brightness ? BST_CHECKED : BST_UNCHECKED, NULL);
+
             ExtendFrameIntoClientArea(0, 0, 0, 0);
             m_aerocontrols.SubclassControl(GetDlgItem(*this, IDC_AUTOSTART));
             m_aerocontrols.SubclassControl(GetDlgItem(*this, IDC_RANDOMCOLOR));
+            m_aerocontrols.SubclassControl(GetDlgItem(*this, IDC_BRIGHTNESS));
             m_aerocontrols.SubclassControl(GetDlgItem(*this, IDOK));
             m_aerocontrols.SubclassControl(GetDlgItem(*this, IDCANCEL));
         }
@@ -89,6 +93,9 @@ LRESULT COptionsDlg::DoCommand(int id)
             CRegStdWORD regrandomcolors = CRegStdWORD(_T("Software\\AAClr\\randomcolors"), 1);
             randomcolors = !!SendDlgItemMessage(*this, IDC_RANDOMCOLOR, BM_GETCHECK, 0, NULL);
             regrandomcolors = randomcolors;
+            CRegStdWORD regbrightness = CRegStdWORD(_T("Software\\AAClr\\brightness"), 1);
+            brightness = !!SendDlgItemMessage(*this, IDC_BRIGHTNESS, BM_GETCHECK, 0, NULL);
+            regbrightness = brightness;
         }
         // fall through
     case IDCANCEL:

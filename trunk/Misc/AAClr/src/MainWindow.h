@@ -1,6 +1,6 @@
 // AAClr - tool to adjust the aero colors according to the desktop wallpaper
 
-// Copyright (C) 2011 - Stefan Kueng
+// Copyright (C) 2011-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,6 +38,7 @@ public:
     {
         SetWindowTitle((LPCTSTR)ResString(hResource, IDS_APP_TITLE));
         randomcolors = !!CRegStdWORD(_T("Software\\AAClr\\randomcolors"), 1);
+        brightness = !!CRegStdWORD(_T("Software\\AAClr\\brightness"), 1);
     };
 
     ~CMainWindow(void)
@@ -64,6 +65,7 @@ protected:
     HWND                hwndNextViewer;
     HWND                foregroundWND;
     bool                randomcolors;
+    bool                brightness;
     CAeroColors         aeroColors;
     static std::wstring wpPath;
     static bool         threadRunning;
