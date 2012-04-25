@@ -16,9 +16,10 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
 #include "AeroGlass.h"
-#include "registry.h"
+#include "Registry.h"
 #include <map>
 #include <gdiplus.h>
 
@@ -52,4 +53,3 @@ private:
     std::map<HWND, UINT_PTR>    subclassedControls;
     ULONG_PTR                   gdiplusToken;
 };
-
