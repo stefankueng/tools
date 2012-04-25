@@ -1,6 +1,6 @@
 // tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011 - Stefan Kueng
+// Copyright (C) 2011-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -299,7 +299,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     {
                         // we have more or equal spaces in a row than the tabsize is, that's a violation!
                         TCHAR buf[MAX_PATH*2];
-                        _stprintf_s(buf, MAX_PATH*2, _T("found spaces instead of tabs in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition(pos));
+                        _stprintf_s(buf, MAX_PATH*2, _T("found spaces instead of tabs in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition((long)pos));
                         _fputts(buf, stderr);
                     }
                 }
@@ -315,7 +315,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 {
                     // we have a tab, that's a violation!
                     TCHAR buf[MAX_PATH*2];
-                    _stprintf_s(buf, MAX_PATH*2, _T("found tab instead of spaces in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition(pos));
+                    _stprintf_s(buf, MAX_PATH*2, _T("found tab instead of spaces in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition((long)pos));
                     _fputts(buf, stderr);
 
                     // now skip to the next non-space char
