@@ -16,7 +16,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "MainWindow.h"
 #include "NotifySlider.h"
 #include "AboutDlg.h"
@@ -264,8 +264,8 @@ unsigned int __stdcall CMainWindow::WatcherThread( LPVOID lpvParam )
 {
     CMainWindow * pThis = (CMainWindow*)lpvParam;
 
-    DWORD dwWaitStatus; 
-    HANDLE dwChangeHandle; 
+    DWORD dwWaitStatus;
+    HANDLE dwChangeHandle;
     std::wstring monitorPath;
 
     while (pThis->threadRunning)
@@ -273,24 +273,24 @@ unsigned int __stdcall CMainWindow::WatcherThread( LPVOID lpvParam )
         monitorPath = pThis->wpPath;
         // Watch the directory for file creation and deletion.
         std::wstring dirPath = monitorPath.substr(0, monitorPath.find_last_of('\\'));
-        dwChangeHandle = FindFirstChangeNotification( 
+        dwChangeHandle = FindFirstChangeNotification(
             dirPath.c_str(),
             FALSE,
             FILE_NOTIFY_CHANGE_LAST_WRITE);
 
-        if (dwChangeHandle != INVALID_HANDLE_VALUE) 
+        if (dwChangeHandle != INVALID_HANDLE_VALUE)
         {
             // Change notification is set.
             while ((pThis->threadRunning)&&(monitorPath.compare(pThis->wpPath) == 0))
-            { 
+            {
                 // Wait for notification.
-                dwWaitStatus = WaitForSingleObject(dwChangeHandle, 1000); 
+                dwWaitStatus = WaitForSingleObject(dwChangeHandle, 1000);
 
-                switch (dwWaitStatus) 
-                { 
-                case WAIT_OBJECT_0: 
+                switch (dwWaitStatus)
+                {
+                case WAIT_OBJECT_0:
                     SendMessage(*pThis, WM_SETTINGCHANGE, 0, 0);
-                    break; 
+                    break;
 
                 case WAIT_TIMEOUT:
                     // A timeout occurred
