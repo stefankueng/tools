@@ -20,7 +20,7 @@
  */
 #include "stdafx.h"
 #include "hyperlink.h"
-#include "shellapi.h"
+#include <shellapi.h>
 
 /*
  * If you do not wish to link with the windebug module,

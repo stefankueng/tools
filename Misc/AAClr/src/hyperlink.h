@@ -21,7 +21,7 @@
 #ifndef   _HYPERLINK_H_
 #define   _HYPERLINK_H_
 
-#include "windows.h"
+#include <windows.h>
 
 class CHyperLink
 {
