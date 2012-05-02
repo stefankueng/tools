@@ -18,10 +18,10 @@
 //
 
 #include "stdafx.h"
-#include "shlwapi.h"
+#include <shlwapi.h>
 #include "DirFileEnum.h"
 
-#pragma comment(lib, "shlwapi")
+#pragma comment(lib, "shlwapi.lib")
 
 CSimpleFileFind::CSimpleFileFind(const wstring &sPath, LPCTSTR pPattern) :
 m_dError(ERROR_SUCCESS),

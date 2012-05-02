@@ -23,18 +23,16 @@
 
 using std::map;
 
-#pragma warning (push,1)
-typedef std::wstring wide_string;
 #ifndef stdstring
-#ifdef UNICODE
-#   define stdstring wide_string
-#else
-#   define stdstring std::string
+#   ifdef UNICODE
+#       define stdstring std::wstring
+#   else
+#       define stdstring std::string
+#   endif
 #endif
-#endif
-#pragma warning (pop)
 
 /**
+ *
  * A helper class for parsing command lines.
  * It provides methods to extract 'key' and 'value'
  * pairs of the form -keyname:value or /keyname:value.
