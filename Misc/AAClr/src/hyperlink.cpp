@@ -2,11 +2,11 @@
  * Module ID: hyperlink.cpp
  * Title    : CHyperLink definition.
  *
- * Author   : Olivier Langlois <olanglois@sympatico.ca>
+ * Author   : Olivier Langlois <olivier@olivierlanglois.net>
  * Date     : November 15, 2005
  *
  * To read the article describing this class, visit
- * http://www3.sympatico.ca/olanglois/hyperlinkdemo.htm
+ * http://www.olivierlanglois.net/hyperlinkdemo.htm
  *
  * Note: Strongly inspired by Neal Stublen code
  *       Minor ideas come from Chris Maunder and Paul DiLascia code
@@ -49,10 +49,10 @@ public:
     CGlobalAtom(void)
 #ifdef _WIN64
     { atom = GlobalAddAtom(TEXT("_Hyperlink_Object_Pointer64_")
-    TEXT("\\{AFEED740-CC6D-47c5-831D-9848FD916EEF}")); }
+             TEXT("\\{AFEED740-CC6D-47c5-831D-9848FD916EEF}")); }
 #else
     { atom = GlobalAddAtom(TEXT("_Hyperlink_Object_Pointer_")
-        TEXT("\\{AFEED740-CC6D-47c5-831D-9848FD916EEF}")); }
+             TEXT("\\{AFEED740-CC6D-47c5-831D-9848FD916EEF}")); }
 #endif
     ~CGlobalAtom(void)
     { DeleteAtom(atom); }
@@ -336,6 +336,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
             if (pHyperLink->m_strURL && _tcslen(pHyperLink->m_strURL))
             {
                 pHyperLink->Navigate();
+                InvalidateRect(hwnd, NULL, FALSE);
                 return 0;
             }
         }

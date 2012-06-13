@@ -2,11 +2,11 @@
  * Module ID: hyperlink.h
  * Title    : CHyperLink Declaration.
  *
- * Author   : Olivier Langlois <olanglois@sympatico.ca>
+ * Author   : Olivier Langlois <olivier@olivierlanglois.net>
  * Date     : November 15, 2005
  *
  * To read the article describing this class, visit
- * http://www3.sympatico.ca/olanglois/hyperlinkdemo.htm
+ * http://www.olivierlanglois.net/hyperlinkdemo.htm
  *
  * Note: Strongly inspired by Neal Stublen code
  *       Minor ideas come from Chris Maunder and Paul DiLascia code
