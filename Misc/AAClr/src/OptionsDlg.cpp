@@ -24,8 +24,6 @@
 #include <string>
 #include <Commdlg.h>
 
-using namespace std;
-
 COptionsDlg::COptionsDlg(HWND hParent)
     : m_hParent(hParent)
     , randomcolors(false)
@@ -48,7 +46,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             AddToolTip(IDC_AUTOSTART, _T("Starts AAClr automatically when Windows starts up."));
 
             // initialize the controls
-            bool bStartWithWindows = !wstring(CRegStdString(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\AAClr"))).empty();
+            bool bStartWithWindows = !std::wstring(CRegStdString(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\AAClr"))).empty();
             SendDlgItemMessage(*this, IDC_AUTOSTART, BM_SETCHECK, bStartWithWindows ? BST_CHECKED : BST_UNCHECKED, NULL);
 
             randomcolors = !!CRegStdWORD(_T("Software\\AAClr\\randomcolors"), 1);
@@ -84,7 +82,7 @@ LRESULT COptionsDlg::DoCommand(int id)
             {
                 TCHAR buf[MAX_PATH*4];
                 GetModuleFileName(NULL, buf, MAX_PATH*4);
-                wstring cmd = wstring(buf);
+                std::wstring cmd = std::wstring(buf);
                 regStartWithWindows = cmd;
             }
             else
