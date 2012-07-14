@@ -24,9 +24,9 @@
 #pragma comment(lib, "shlwapi.lib")
 
 CSimpleFileFind::CSimpleFileFind(const std::wstring &sPath, LPCTSTR pPattern) :
-m_dError(ERROR_SUCCESS),
-m_bFirst(true),
-m_sPathPrefix(sPath)
+    m_dError(ERROR_SUCCESS),
+    m_bFirst(true),
+    m_sPathPrefix(sPath)
 {
     if (PathIsDirectory(sPath.c_str()))
     {
@@ -35,7 +35,7 @@ m_sPathPrefix(sPath)
         {
             int len = (int)m_sPathPrefix.size();
             if (len != 0) {
-                TCHAR ch = sPath[len-1];
+                TCHAR ch = sPath[len - 1];
                 if (ch != '\\' && (ch != ':' || len != 2)) {
                     m_sPathPrefix += '\\';
                 }
@@ -123,10 +123,9 @@ bool CSimpleFileFind::FindNextFileNoDirectories()
 */
 
 
-CDirFileEnum::CDirStackEntry::CDirStackEntry(CDirStackEntry * seNext,
-                                             const std::wstring& sDirName)
-                                             : CSimpleFileFind(sDirName),
-                                             m_seNext(seNext)
+CDirFileEnum::CDirStackEntry::CDirStackEntry(CDirStackEntry * seNext, const std::wstring& sDirName)
+    : CSimpleFileFind(sDirName),
+      m_seNext(seNext)
 {
 }
 
@@ -143,12 +142,12 @@ inline void CDirFileEnum::PopStack()
 
 inline void CDirFileEnum::PushStack(const std::wstring& sDirName)
 {
-    m_seStack = new CDirStackEntry(m_seStack,sDirName);
+    m_seStack = new CDirStackEntry(m_seStack, sDirName);
 }
 
 CDirFileEnum::CDirFileEnum(const std::wstring& sDirName) :
-m_seStack(NULL),
-m_bIsNew(true)
+    m_seStack(NULL),
+    m_bIsNew(true)
 {
     PushStack(sDirName);
 }
@@ -178,7 +177,7 @@ bool CDirFileEnum::NextFile(std::wstring &sResult, bool* pbIsDirectory, bool rec
     if (m_seStack)
     {
         sResult = m_seStack->GetFilePath();
-        if(pbIsDirectory != NULL)
+        if (pbIsDirectory != NULL)
         {
             *pbIsDirectory = m_seStack->IsDirectory();
         }

@@ -34,7 +34,7 @@ CTextFile::~CTextFile(void)
 bool CTextFile::Save(LPCTSTR path)
 {
     HANDLE hFile = CreateFile(path, GENERIC_WRITE, FILE_SHARE_READ,
-        NULL, CREATE_ALWAYS, FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+                              NULL, CREATE_ALWAYS, FILE_FLAG_SEQUENTIAL_SCAN, NULL);
     if (hFile == INVALID_HANDLE_VALUE)
         return false;
     DWORD byteswritten;
@@ -54,12 +54,12 @@ bool CTextFile::Load(LPCTSTR path)
         delete [] pFileBuf;
     pFileBuf = NULL;
     HANDLE hFile = CreateFile(path, GENERIC_READ, FILE_SHARE_READ,
-        NULL, OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+                              NULL, OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, NULL);
     if (hFile == INVALID_HANDLE_VALUE)
         return false;
     std::wstring wpath(path);
     size_t pos = wpath.find_last_of('\\');
-    filename = wpath.substr(pos+1);
+    filename = wpath.substr(pos + 1);
     if (!GetFileSizeEx(hFile, &lint))
     {
         CloseHandle(hFile);
@@ -86,7 +86,7 @@ bool CTextFile::Load(LPCTSTR path)
     encoding = CheckUnicodeType(pFileBuf, bytesread);
 
     if (encoding == UNICODE_LE)
-        textcontent = std::wstring((wchar_t*)pFileBuf, bytesread/sizeof(wchar_t));
+        textcontent = std::wstring((wchar_t*)pFileBuf, bytesread / sizeof(wchar_t));
     else if (encoding == UTF8)
     {
         int ret = MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)pFileBuf, bytesread, NULL, 0);
@@ -124,11 +124,11 @@ CTextFile::UnicodeType CTextFile::CheckUnicodeType(LPVOID pBuffer, int cb)
     if (cb < 2)
         return ANSI;
     UINT16 * pVal = (UINT16 *)pBuffer;
-    UINT8 * pVal2 = (UINT8 *)(pVal+1);
+    UINT8 * pVal2 = (UINT8 *)(pVal + 1);
     // scan the whole buffer for a 0x0000 sequence
     // if found, we assume a binary file
     bool bNull = false;
-    for (int i=0; i<(cb-2); i=i+2)
+    for (int i = 0; i < (cb - 2); i = i + 2)
     {
         if (0x0000 == *pVal++)
             return BINARY;
@@ -137,10 +137,10 @@ CTextFile::UnicodeType CTextFile::CheckUnicodeType(LPVOID pBuffer, int cb)
         if (0x00 == *pVal2++)
             bNull = true;
     }
-    if ((bNull)&&((cb % 2)==0))
+    if ((bNull) && ((cb % 2) == 0))
         return UNICODE_LE;
     pVal = (UINT16 *)pBuffer;
-    pVal2 = (UINT8 *)(pVal+1);
+    pVal2 = (UINT8 *)(pVal + 1);
     if (*pVal == 0xFEFF)
         return UNICODE_LE;
     if (cb < 3)
@@ -152,43 +152,49 @@ CTextFile::UnicodeType CTextFile::CheckUnicodeType(LPVOID pBuffer, int cb)
     }
     // check for illegal UTF8 chars
     pVal2 = (UINT8 *)pBuffer;
-    for (int i=0; i<cb; ++i)
+    for (int i = 0; i < cb; ++i)
     {
-        if ((*pVal2 == 0xC0)||(*pVal2 == 0xC1)||(*pVal2 >= 0xF5))
+        if ((*pVal2 == 0xC0) || (*pVal2 == 0xC1) || (*pVal2 >= 0xF5))
             return ANSI;
         pVal2++;
     }
     pVal2 = (UINT8 *)pBuffer;
     bool bUTF8 = false;
-    for (int i=0; i<(cb-3); ++i)
+    for (int i = 0; i < (cb - 3); ++i)
     {
-        if ((*pVal2 & 0xE0)==0xC0)
+        if ((*pVal2 & 0xE0) == 0xC0)
         {
-            pVal2++;i++;
-            if ((*pVal2 & 0xC0)!=0x80)
+            pVal2++;
+            i++;
+            if ((*pVal2 & 0xC0) != 0x80)
                 return ANSI;
             bUTF8 = true;
         }
-        if ((*pVal2 & 0xF0)==0xE0)
+        if ((*pVal2 & 0xF0) == 0xE0)
         {
-            pVal2++;i++;
-            if ((*pVal2 & 0xC0)!=0x80)
+            pVal2++;
+            i++;
+            if ((*pVal2 & 0xC0) != 0x80)
                 return ANSI;
-            pVal2++;i++;
-            if ((*pVal2 & 0xC0)!=0x80)
+            pVal2++;
+            i++;
+            if ((*pVal2 & 0xC0) != 0x80)
                 return ANSI;
             bUTF8 = true;
         }
-        if ((*pVal2 & 0xF8)==0xF0)
+        if ((*pVal2 & 0xF8) == 0xF0)
         {
-            pVal2++;i++;
-            if ((*pVal2 & 0xC0)!=0x80)
+            pVal2++;
+            i++;
+            if ((*pVal2 & 0xC0) != 0x80)
                 return ANSI;
-            pVal2++;i++;
-            if ((*pVal2 & 0xC0)!=0x80)
+            pVal2++;
+            i++;
+            if ((*pVal2 & 0xC0) != 0x80)
                 return ANSI;
-            pVal2++;i++;
-            if ((*pVal2 & 0xC0)!=0x80)
+            pVal2++;
+            i++;
+            if ((*pVal2 & 0xC0) != 0x80)
                 return ANSI;
             bUTF8 = true;
         }
@@ -224,7 +230,7 @@ bool CTextFile::CalculateLines()
                 else
                 {
                     // cr lineending
-                    linepositions.push_back(pos-1);
+                    linepositions.push_back(pos - 1);
                 }
             }
             else

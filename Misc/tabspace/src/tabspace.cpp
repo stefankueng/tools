@@ -35,7 +35,7 @@ bool FileExtensionInPattern(const std::wstring& filepath)
     const TCHAR * pFound = _tcsrchr(filepath.c_str(), '.');
     std::wstring ext;
     if (pFound)
-        ext = pFound+1;
+        ext = pFound + 1;
 
     std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower);
 

@@ -75,7 +75,9 @@ public:
      * returns the command line string this object was created on.
      * \return the command line
      */
-    LPCTSTR getCmdLine() const { return m_sCmdLine.c_str(); }
+    LPCTSTR getCmdLine() const {
+        return m_sCmdLine.c_str();
+    }
 
     /**
      * Starts an iteration over all command line parameters.
@@ -133,7 +135,9 @@ public:
 private:
     BOOL Parse(LPCTSTR sCmdLine);
     CValsMap::const_iterator findKey(LPCTSTR sKey) const;
-    const CValsMap& getVals() const { return m_valueMap; }
+    const CValsMap& getVals() const {
+        return m_valueMap;
+    }
 private:
     stdstring   m_sCmdLine;
     CValsMap    m_valueMap;
