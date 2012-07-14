@@ -67,28 +67,28 @@ public:
      * Returns the file content as a text string.
      * \note the text string can not be modified and is to be treated read-only.
      */
-    const std::wstring&  GetFileString() const {return textcontent;}
+    const std::wstring&  GetFileString() const { return textcontent; }
 
     /**
      * Returns a pointer to the file contents. Call GetFileLength() to get
      * the size in number of bytes of this buffer.
      */
-    LPVOID          GetFileContent() {return pFileBuf;}
+    LPVOID          GetFileContent() { return pFileBuf; }
 
     /**
      * Returns the size of the file in bytes
      */
-    long            GetFileLength() const {return filelen;}
+    long            GetFileLength() const { return filelen; }
 
     /**
      * Returns the encoding of the file
      */
-    UnicodeType     GetEncoding() const {return encoding;}
+    UnicodeType     GetEncoding() const { return encoding; }
 
     /**
      * Returns the filename
      */
-    const std::wstring&  GetFileName() const {return filename;}
+    const std::wstring&  GetFileName() const { return filename; }
 
     /**
      * Returns the filename without the extension (if any)

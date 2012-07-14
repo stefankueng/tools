@@ -47,13 +47,13 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 {
                     // we have to convert all spaces in groups of more than the tabsize
                     // a space followed by a tab may lead to just removing the space
-                    if ((*it == ' ')||(*it == '\t'))
+                    if ((*it == ' ') || (*it == '\t'))
                     {
                         spacecount++;
-                        if ((spacecount == tabsize)||((*it == '\t')&&(spacecount > 1)))
+                        if ((spacecount == tabsize) || ((*it == '\t') && (spacecount > 1)))
                         {
-                            spacegrouppositions.push_back(pos-spacecount+1);
-                            count += (spacecount-1);
+                            spacegrouppositions.push_back(pos - spacecount + 1);
+                            count += (spacecount - 1);
                             spacecount = 0;
                         }
                         if (*it == '\t')
@@ -68,13 +68,13 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 char * pBuf = (char*)file.GetFileContent();
                 for (int i = 0; i < file.GetFileLength(); ++i, ++pos, ++pBuf)
                 {
-                    if ((*pBuf == ' ')||(*pBuf == '\t'))
+                    if ((*pBuf == ' ') || (*pBuf == '\t'))
                     {
                         spacecount++;
-                        if ((spacecount == tabsize)||((*pBuf == '\t')&&(spacecount > 1)))
+                        if ((spacecount == tabsize) || ((*pBuf == '\t') && (spacecount > 1)))
                         {
-                            spacegrouppositions.push_back(pos-spacecount+1);
-                            count += (spacecount-1);
+                            spacegrouppositions.push_back(pos - spacecount + 1);
+                            count += (spacecount - 1);
                             spacecount = 0;
                         }
                         if (*pBuf == '\t')
@@ -92,24 +92,24 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 if (file.GetEncoding() == CTextFile::UNICODE_LE)
                 {
                     long newfilelen = file.GetFileLength();
-                    newfilelen -= (count*sizeof(WCHAR));
-                    WCHAR * pBuf = new WCHAR[newfilelen/sizeof(WCHAR)];
+                    newfilelen -= (count * sizeof(WCHAR));
+                    WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
                     WCHAR * pBufStart = pBuf;
                     WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
                     std::vector<long>::iterator it = spacegrouppositions.begin();
-                    for (long i=0; i<long(file.GetFileLength()/sizeof(WCHAR)); ++i)
+                    for (long i = 0; i < long(file.GetFileLength() / sizeof(WCHAR)); ++i)
                     {
-                        if ((it != spacegrouppositions.end())&&(*it == i))
+                        if ((it != spacegrouppositions.end()) && (*it == i))
                         {
                             *pBuf++ = '\t';
                             spacecount = 0;
-                            while ((spacecount<tabsize)&&(*pOldBuf == ' '))
+                            while ((spacecount < tabsize) && (*pOldBuf == ' '))
                             {
                                 i++;
                                 spacecount++;
                                 *pOldBuf++;
                             }
-                            if ((spacecount<tabsize)&&(*pOldBuf == '\t'))
+                            if ((spacecount < tabsize) && (*pOldBuf == '\t'))
                                 pBuf--;
                             --i;
                             ++it;
@@ -118,8 +118,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             *pBuf++ = *pOldBuf++;
                     }
                     file.ContentsModified(pBufStart, newfilelen);
-                    TCHAR outbuf[MAX_PATH*2];
-                    _stprintf_s(outbuf, MAX_PATH*2, _T("converted spaces to tabs in file'%s'\n"), file.GetFileName().c_str());
+                    TCHAR outbuf[MAX_PATH * 2];
+                    _stprintf_s(outbuf, MAX_PATH * 2, _T("converted spaces to tabs in file'%s'\n"), file.GetFileName().c_str());
                     _fputts(outbuf, stdout);
                     return true;
                 }
@@ -131,19 +131,19 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     char * pBufStart = pBuf;
                     char * pOldBuf = (char*)file.GetFileContent();
                     std::vector<long>::iterator it = spacegrouppositions.begin();
-                    for (long i=0; i<(file.GetFileLength()); ++i)
+                    for (long i = 0; i < (file.GetFileLength()); ++i)
                     {
-                        if ((it != spacegrouppositions.end())&&(*it == i))
+                        if ((it != spacegrouppositions.end()) && (*it == i))
                         {
                             *pBuf++ = '\t';
                             spacecount = 0;
-                            while ((spacecount<tabsize)&&(*pOldBuf == ' '))
+                            while ((spacecount < tabsize) && (*pOldBuf == ' '))
                             {
                                 i++;
                                 spacecount++;
                                 *pOldBuf++;
                             }
-                            if ((spacecount<tabsize)&&(*pOldBuf == '\t'))
+                            if ((spacecount < tabsize) && (*pOldBuf == '\t'))
                                 pBuf--;
                             --i;
                             ++it;
@@ -152,8 +152,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             *pBuf++ = *pOldBuf++;
                     }
                     file.ContentsModified(pBufStart, newfilelen);
-                    TCHAR outbuf[MAX_PATH*2];
-                    _stprintf_s(outbuf, MAX_PATH*2, _T("converted spaces to tabs in file'%s'\n"), file.GetFileName().c_str());
+                    TCHAR outbuf[MAX_PATH * 2];
+                    _stprintf_s(outbuf, MAX_PATH * 2, _T("converted spaces to tabs in file'%s'\n"), file.GetFileName().c_str());
                     _fputts(outbuf, stdout);
                     return true;
                 }
@@ -171,13 +171,13 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
                 {
                     ++inlinepos;
-                    if ((*it == '\r')||(*it == '\n'))
+                    if ((*it == '\r') || (*it == '\n'))
                         inlinepos = 0;
                     // we have to convert all tabs
                     if (*it == '\t')
                     {
-                        inlinepos += tabsize-1;
-                        long inlinepostemp = tabsize - ((inlinepos + tabsize)%tabsize);
+                        inlinepos += tabsize - 1;
+                        long inlinepostemp = tabsize - ((inlinepos + tabsize) % tabsize);
                         if (inlinepostemp == 0)
                             inlinepostemp = tabsize;
                         spacestoinsert += (inlinepostemp - 1);      // minus one because the tab itself gets replaced
@@ -191,13 +191,13 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 for (int i = 0; i < file.GetFileLength(); ++i, ++pos, ++pBuf)
                 {
                     ++inlinepos;
-                    if ((*pBuf == '\r')||(*pBuf == '\n'))
+                    if ((*pBuf == '\r') || (*pBuf == '\n'))
                         inlinepos = 0;
                     // we have to convert all tabs
                     if (*pBuf == '\t')
                     {
-                        inlinepos += tabsize-1;
-                        long inlinepostemp = tabsize - ((inlinepos + tabsize)%tabsize);
+                        inlinepos += tabsize - 1;
+                        long inlinepostemp = tabsize - ((inlinepos + tabsize) % tabsize);
                         if (inlinepostemp == 0)
                             inlinepostemp = tabsize;
                         spacestoinsert += (inlinepostemp - 1);      // minus one because the tab itself gets replaced
@@ -210,22 +210,22 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 inlinepos = 0;
                 if (file.GetEncoding() == CTextFile::UNICODE_LE)
                 {
-                    long newfilelen = file.GetFileLength() + (spacestoinsert*sizeof(WCHAR));
-                    WCHAR * pBuf = new WCHAR[newfilelen/sizeof(WCHAR)];
+                    long newfilelen = file.GetFileLength() + (spacestoinsert * sizeof(WCHAR));
+                    WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
                     WCHAR * pBufStart = pBuf;
                     WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
-                    for (long i=0; i<long(file.GetFileLength()/sizeof(WCHAR)); ++i)
+                    for (long i = 0; i < long(file.GetFileLength() / sizeof(WCHAR)); ++i)
                     {
                         ++inlinepos;
-                        if ((*pOldBuf == '\r')||(*pOldBuf == '\n'))
+                        if ((*pOldBuf == '\r') || (*pOldBuf == '\n'))
                             inlinepos = 0;
                         if (*pOldBuf == '\t')
                         {
-                            long inlinepostemp = tabsize-(((inlinepos-1)+tabsize)%tabsize);
+                            long inlinepostemp = tabsize - (((inlinepos - 1) + tabsize) % tabsize);
                             if (inlinepostemp == 0)
                                 inlinepostemp = tabsize;
-                            inlinepos += (inlinepostemp-1);
-                            for (int j=0; j<inlinepostemp; ++j)
+                            inlinepos += (inlinepostemp - 1);
+                            for (int j = 0; j < inlinepostemp; ++j)
                                 *pBuf++ = ' ';
                             pOldBuf++;
                         }
@@ -233,8 +233,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             *pBuf++ = *pOldBuf++;
                     }
                     file.ContentsModified(pBufStart, newfilelen);
-                    TCHAR outbuf[MAX_PATH*2];
-                    _stprintf_s(outbuf, MAX_PATH*2, _T("converted tabs to spaces in file'%s'\n"), file.GetFileName().c_str());
+                    TCHAR outbuf[MAX_PATH * 2];
+                    _stprintf_s(outbuf, MAX_PATH * 2, _T("converted tabs to spaces in file'%s'\n"), file.GetFileName().c_str());
                     _fputts(outbuf, stdout);
                     return true;
                 }
@@ -244,18 +244,18 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     char * pBuf = new char[newfilelen];
                     char * pBufStart = pBuf;
                     char * pOldBuf = (char*)file.GetFileContent();
-                    for (long i=0; i<file.GetFileLength(); ++i)
+                    for (long i = 0; i < file.GetFileLength(); ++i)
                     {
                         ++inlinepos;
-                        if ((*pOldBuf == '\r')||(*pOldBuf == '\n'))
+                        if ((*pOldBuf == '\r') || (*pOldBuf == '\n'))
                             inlinepos = 0;
                         if (*pOldBuf == '\t')
                         {
-                            long inlinepostemp = tabsize-(((inlinepos-1)+tabsize)%tabsize);
+                            long inlinepostemp = tabsize - (((inlinepos - 1) + tabsize) % tabsize);
                             if (inlinepostemp == 0)
                                 inlinepostemp = tabsize;
-                            inlinepos += (inlinepostemp-1);
-                            for (int j=0; j<inlinepostemp; ++j)
+                            inlinepos += (inlinepostemp - 1);
+                            for (int j = 0; j < inlinepostemp; ++j)
                             {
                                 *pBuf++ = ' ';
                             }
@@ -265,8 +265,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             *pBuf++ = *pOldBuf++;
                     }
                     file.ContentsModified(pBufStart, newfilelen);
-                    TCHAR outbuf[MAX_PATH*2];
-                    _stprintf_s(outbuf, MAX_PATH*2, _T("converted tabs to spaces in file'%s'\n"), file.GetFileName().c_str());
+                    TCHAR outbuf[MAX_PATH * 2];
+                    _stprintf_s(outbuf, MAX_PATH * 2, _T("converted tabs to spaces in file'%s'\n"), file.GetFileName().c_str());
                     _fputts(outbuf, stdout);
                     return true;
                 }
@@ -289,7 +289,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     ++it;
                     ++pos;
                     int count = 1;
-                    while ((it != file.GetFileString().end())&&(*it == ' '))
+                    while ((it != file.GetFileString().end()) && (*it == ' '))
                     {
                         ++count;
                         ++it;
@@ -298,8 +298,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     if (count >= tabsize)
                     {
                         // we have more or equal spaces in a row than the tabsize is, that's a violation!
-                        TCHAR buf[MAX_PATH*2];
-                        _stprintf_s(buf, MAX_PATH*2, _T("found spaces instead of tabs in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition((long)pos));
+                        TCHAR buf[MAX_PATH * 2];
+                        _stprintf_s(buf, MAX_PATH * 2, _T("found spaces instead of tabs in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition((long)pos));
                         _fputts(buf, stderr);
                     }
                 }
@@ -314,12 +314,12 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 if (*it == '\t')
                 {
                     // we have a tab, that's a violation!
-                    TCHAR buf[MAX_PATH*2];
-                    _stprintf_s(buf, MAX_PATH*2, _T("found tab instead of spaces in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition((long)pos));
+                    TCHAR buf[MAX_PATH * 2];
+                    _stprintf_s(buf, MAX_PATH * 2, _T("found tab instead of spaces in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition((long)pos));
                     _fputts(buf, stderr);
 
                     // now skip to the next non-space char
-                    while ((it != file.GetFileString().end())&&((*it == ' ')||(*it == '\t')))
+                    while ((it != file.GetFileString().end()) && ((*it == ' ') || (*it == '\t')))
                     {
                         ++it;
                         ++pos;
@@ -348,7 +348,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
             {
                 ++inlinepos;
                 ++pos;
-                if ((*it == '\r')||(*it == '\n'))
+                if ((*it == '\r') || (*it == '\n'))
                 {
                     if (whitespaces)
                     {
@@ -358,7 +358,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                     whitespaces = 0;
                     inlinepos = 0;
                 }
-                if ((*it == ' ')||(*it == '\t'))
+                if ((*it == ' ') || (*it == '\t'))
                     whitespaces++;
                 else
                     whitespaces = 0;
@@ -371,7 +371,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
             {
                 ++inlinepos;
                 ++pos;
-                if ((*pBuf == '\r')||(*pBuf == '\n'))
+                if ((*pBuf == '\r') || (*pBuf == '\n'))
                 {
                     if (whitespaces)
                     {
@@ -381,7 +381,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                     whitespaces = 0;
                     inlinepos = 0;
                 }
-                if ((*pBuf == ' ')||(*pBuf == '\t'))
+                if ((*pBuf == ' ') || (*pBuf == '\t'))
                     whitespaces++;
                 else
                     whitespaces = 0;
@@ -394,22 +394,22 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
             if (file.GetEncoding() == CTextFile::UNICODE_LE)
             {
                 long newfilelen = file.GetFileLength();
-                newfilelen -= (totalwhitespaces*sizeof(WCHAR));
-                WCHAR * pBuf = new WCHAR[newfilelen/sizeof(WCHAR)];
+                newfilelen -= (totalwhitespaces * sizeof(WCHAR));
+                WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
                 WCHAR * pBufStart = pBuf;
                 WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
                 std::vector<long>::iterator it = spacepositions.begin();
-                for (long i=0; i<long(file.GetFileLength()/sizeof(WCHAR)); ++i)
+                for (long i = 0; i < long(file.GetFileLength() / sizeof(WCHAR)); ++i)
                 {
                     ++pos;
-                    if ((it != spacepositions.end())&&(pos == *it))
+                    if ((it != spacepositions.end()) && (pos == *it))
                     {
                         ++it;
-                        TCHAR outbuf[MAX_PATH*2];
-                        _stprintf_s(outbuf, MAX_PATH*2, _T("fixed end-of-line whitespaces in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition(pos));
+                        TCHAR outbuf[MAX_PATH * 2];
+                        _stprintf_s(outbuf, MAX_PATH * 2, _T("fixed end-of-line whitespaces in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition(pos));
                         _fputts(outbuf, stdout);
                         // now skip the rest of the whitespaces
-                        while ((*pOldBuf == ' ')||(*pOldBuf == '\t'))
+                        while ((*pOldBuf == ' ') || (*pOldBuf == '\t'))
                         {
                             pOldBuf++;
                             i++;
@@ -429,24 +429,24 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                 char * pBufStart = pBuf;
                 char * pOldBuf = (char*)file.GetFileContent();
                 std::vector<long>::iterator it = spacepositions.begin();
-                for (long i=0; i<long(file.GetFileLength()); ++i)
+                for (long i = 0; i < long(file.GetFileLength()); ++i)
                 {
                     ++pos;
-                    if ((it != spacepositions.end())&&(pos == *it))
+                    if ((it != spacepositions.end()) && (pos == *it))
                     {
                         ++it;
-                        TCHAR outbuf[MAX_PATH*2];
-                        _stprintf_s(outbuf, MAX_PATH*2, _T("fixed end-of-line whitespaces in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition(pos));
+                        TCHAR outbuf[MAX_PATH * 2];
+                        _stprintf_s(outbuf, MAX_PATH * 2, _T("fixed end-of-line whitespaces in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition(pos));
                         _fputts(outbuf, stdout);
                         // now skip the rest of the whitespaces
-                        while ((*pOldBuf == ' ')||(*pOldBuf == '\t'))
+                        while ((*pOldBuf == ' ') || (*pOldBuf == '\t'))
                         {
                             pOldBuf++;
                             i++;
                             pos++;
                         }
                     }
-                    if (i<long(file.GetFileLength()))
+                    if (i < long(file.GetFileLength()))
                         *pBuf++ = *pOldBuf++;
                 }
                 file.ContentsModified(pBufStart, newfilelen);
@@ -464,18 +464,18 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
         {
             ++inlinepos;
             ++pos;
-            if ((*it == '\r')||(*it == '\n'))
+            if ((*it == '\r') || (*it == '\n'))
             {
                 if (whitespaces)
                 {
-                    TCHAR outbuf[MAX_PATH*2];
-                    _stprintf_s(outbuf, MAX_PATH*2, _T("end-of-line whitespaces found in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition(pos));
+                    TCHAR outbuf[MAX_PATH * 2];
+                    _stprintf_s(outbuf, MAX_PATH * 2, _T("end-of-line whitespaces found in file'%s', line %d\n"), file.GetFileName().c_str(), file.LineFromPosition(pos));
                     _fputts(outbuf, stderr);
                 }
                 whitespaces = 0;
                 inlinepos = 0;
             }
-            if ((*it == ' ')||(*it == '\t'))
+            if ((*it == ' ') || (*it == '\t'))
                 whitespaces++;
             else
                 whitespaces = 0;
