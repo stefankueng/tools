@@ -93,12 +93,12 @@ public:
     /**
      * Returns the filename without the extension (if any)
      */
-    std::wstring         GetFileNameWithoutExtension();
+    std::wstring    GetFileNameWithoutExtension();
 
     /**
      * Returns the filename extension (if any)
      */
-    std::wstring         GetFileNameExtension();
+    std::wstring    GetFileNameExtension();
 protected:
     /**
      * Tries to find out the encoding of the file (utf8, utf16, ansi)
@@ -114,6 +114,6 @@ private:
     DWORD           filelen;
     std::wstring    textcontent;
     std::vector<size_t>  linepositions;
-    UnicodeType          encoding;
-    std::wstring         filename;
+    UnicodeType     encoding;
+    std::wstring    filename;
 };
