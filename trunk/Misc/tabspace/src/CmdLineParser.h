@@ -21,8 +21,6 @@
 #include <map>
 #include <string>
 
-using std::map;
-
 #ifndef stdstring
 #   ifdef UNICODE
 #       define stdstring std::wstring
@@ -61,7 +59,7 @@ using std::map;
 class CCmdLineParser
 {
 public:
-    typedef map<stdstring, stdstring> CValsMap;
+    typedef std::map<stdstring, stdstring> CValsMap;
     typedef CValsMap::const_iterator ITERPOS;
 public:
     /**
