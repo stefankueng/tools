@@ -21,8 +21,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 /**
  * handles text files.
  */
@@ -69,7 +67,7 @@ public:
      * Returns the file content as a text string.
      * \note the text string can not be modified and is to be treated read-only.
      */
-    const wstring&  GetFileString() const {return textcontent;}
+    const std::wstring&  GetFileString() const {return textcontent;}
 
     /**
      * Returns a pointer to the file contents. Call GetFileLength() to get
@@ -90,17 +88,17 @@ public:
     /**
      * Returns the filename
      */
-    const wstring&  GetFileName() const {return filename;}
+    const std::wstring&  GetFileName() const {return filename;}
 
     /**
      * Returns the filename without the extension (if any)
      */
-    wstring         GetFileNameWithoutExtension();
+    std::wstring         GetFileNameWithoutExtension();
 
     /**
      * Returns the filename extension (if any)
      */
-    wstring         GetFileNameExtension();
+    std::wstring         GetFileNameExtension();
 protected:
     /**
      * Tries to find out the encoding of the file (utf8, utf16, ansi)
@@ -114,8 +112,8 @@ protected:
 private:
     LPVOID          pFileBuf;
     DWORD           filelen;
-    wstring         textcontent;
-    vector<size_t>  linepositions;
-    UnicodeType     encoding;
-    wstring         filename;
+    std::wstring    textcontent;
+    std::vector<size_t>  linepositions;
+    UnicodeType          encoding;
+    std::wstring         filename;
 };

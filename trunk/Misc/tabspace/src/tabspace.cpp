@@ -27,14 +27,13 @@
 #include <algorithm>
 #include <cctype>
 
-using namespace std;
 
-set<wstring> g_allowedPatterns;
+std::set<std::wstring> g_allowedPatterns;
 
-bool FileExtensionInPattern(const wstring& filepath)
+bool FileExtensionInPattern(const std::wstring& filepath)
 {
     const TCHAR * pFound = _tcsrchr(filepath.c_str(), '.');
-    wstring ext;
+    std::wstring ext;
     if (pFound)
         ext = pFound+1;
 
@@ -52,7 +51,7 @@ int _tmain(int argc, _TCHAR* argv[])
     bool    bUseSpaces              =   true;
     int     tabsize                 =   4;
     bool    bRemoveEOLWhitespaces   =   true;
-    wstring filepattern             =   _T("c;cpp;cxx;cc;h;hpp;hxx;cs");
+    std::wstring filepattern        =   _T("c;cpp;cxx;cc;h;hpp;hxx;cs");
 
 
     LPWSTR lpCmdLine = GetCommandLine();
@@ -98,15 +97,15 @@ int _tmain(int argc, _TCHAR* argv[])
     {
         g_allowedPatterns.clear();
         // skip delimiters at beginning.
-        string::size_type lastPos = filepattern.find_first_not_of(_T(";"), 0);
+        std::string::size_type lastPos = filepattern.find_first_not_of(_T(";"), 0);
 
         // find first "non-delimiter".
-        string::size_type pos = filepattern.find_first_of(_T(";"), lastPos);
+        std::string::size_type pos = filepattern.find_first_of(_T(";"), lastPos);
 
-        while (string::npos != pos || string::npos != lastPos)
+        while (std::string::npos != pos || std::string::npos != lastPos)
         {
             // found a token, add it to the set.
-            wstring ext = filepattern.substr(lastPos, pos - lastPos);
+            std::wstring ext = filepattern.substr(lastPos, pos - lastPos);
             std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower);
             g_allowedPatterns.insert(ext);
 
@@ -120,7 +119,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
     CDirFileEnum filelister((cwd));
 
-    wstring filepath;
+    std::wstring filepath;
     bool bIsDir = false;
     while (filelister.NextFile(filepath, &bIsDir, true))
     {

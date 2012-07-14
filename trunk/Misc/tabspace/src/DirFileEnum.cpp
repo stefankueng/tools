@@ -23,7 +23,7 @@
 
 #pragma comment(lib, "shlwapi.lib")
 
-CSimpleFileFind::CSimpleFileFind(const wstring &sPath, LPCTSTR pPattern) :
+CSimpleFileFind::CSimpleFileFind(const std::wstring &sPath, LPCTSTR pPattern) :
 m_dError(ERROR_SUCCESS),
 m_bFirst(true),
 m_sPathPrefix(sPath)
@@ -41,7 +41,7 @@ m_sPathPrefix(sPath)
                 }
             }
         }
-        m_hFindFile = ::FindFirstFile(wstring(m_sPathPrefix + pPattern).c_str(), &m_FindFileData);
+        m_hFindFile = ::FindFirstFile(std::wstring(m_sPathPrefix + pPattern).c_str(), &m_FindFileData);
         m_bFile = FALSE;
     }
     else
@@ -124,7 +124,7 @@ bool CSimpleFileFind::FindNextFileNoDirectories()
 
 
 CDirFileEnum::CDirStackEntry::CDirStackEntry(CDirStackEntry * seNext,
-                                             const wstring& sDirName)
+                                             const std::wstring& sDirName)
                                              : CSimpleFileFind(sDirName),
                                              m_seNext(seNext)
 {
@@ -141,12 +141,12 @@ inline void CDirFileEnum::PopStack()
     delete seToDelete;
 }
 
-inline void CDirFileEnum::PushStack(const wstring& sDirName)
+inline void CDirFileEnum::PushStack(const std::wstring& sDirName)
 {
     m_seStack = new CDirStackEntry(m_seStack,sDirName);
 }
 
-CDirFileEnum::CDirFileEnum(const wstring& sDirName) :
+CDirFileEnum::CDirFileEnum(const std::wstring& sDirName) :
 m_seStack(NULL),
 m_bIsNew(true)
 {
@@ -160,7 +160,7 @@ CDirFileEnum::~CDirFileEnum()
     }
 }
 
-bool CDirFileEnum::NextFile(wstring &sResult, bool* pbIsDirectory, bool recurse)
+bool CDirFileEnum::NextFile(std::wstring &sResult, bool* pbIsDirectory, bool recurse)
 {
     if (m_bIsNew) {
         // Special-case first time - haven't found anything yet,

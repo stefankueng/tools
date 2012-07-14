@@ -57,7 +57,7 @@ bool CTextFile::Load(LPCTSTR path)
         NULL, OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, NULL);
     if (hFile == INVALID_HANDLE_VALUE)
         return false;
-    wstring wpath(path);
+    std::wstring wpath(path);
     size_t pos = wpath.find_last_of('\\');
     filename = wpath.substr(pos+1);
     if (!GetFileSizeEx(hFile, &lint))
@@ -86,14 +86,14 @@ bool CTextFile::Load(LPCTSTR path)
     encoding = CheckUnicodeType(pFileBuf, bytesread);
 
     if (encoding == UNICODE_LE)
-        textcontent = wstring((wchar_t*)pFileBuf, bytesread/sizeof(wchar_t));
+        textcontent = std::wstring((wchar_t*)pFileBuf, bytesread/sizeof(wchar_t));
     else if (encoding == UTF8)
     {
         int ret = MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)pFileBuf, bytesread, NULL, 0);
         wchar_t * pWideBuf = new wchar_t[ret];
         int ret2 = MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)pFileBuf, bytesread, pWideBuf, ret);
         if (ret2 == ret)
-            textcontent = wstring(pWideBuf, ret);
+            textcontent = std::wstring(pWideBuf, ret);
         delete [] pWideBuf;
     }
     else if (encoding == ANSI)
@@ -102,7 +102,7 @@ bool CTextFile::Load(LPCTSTR path)
         wchar_t * pWideBuf = new wchar_t[ret];
         int ret2 = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)pFileBuf, bytesread, pWideBuf, ret);
         if (ret2 == ret)
-            textcontent = wstring(pWideBuf, ret);
+            textcontent = std::wstring(pWideBuf, ret);
         delete [] pWideBuf;
     }
     else
@@ -208,7 +208,7 @@ bool CTextFile::CalculateLines()
         return false;
     linepositions.clear();
     size_t pos = 0;
-    for (wstring::iterator it = textcontent.begin(); it != textcontent.end(); ++it)
+    for (std::wstring::iterator it = textcontent.begin(); it != textcontent.end(); ++it)
     {
         if (*it == '\r')
         {
@@ -243,7 +243,7 @@ bool CTextFile::CalculateLines()
 long CTextFile::LineFromPosition(long pos) const
 {
     long line = 0;
-    for (vector<size_t>::const_iterator it = linepositions.begin(); it != linepositions.end(); ++it)
+    for (std::vector<size_t>::const_iterator it = linepositions.begin(); it != linepositions.end(); ++it)
     {
         line++;
         if (pos <= long(*it))
@@ -252,18 +252,18 @@ long CTextFile::LineFromPosition(long pos) const
     return line;
 }
 
-wstring CTextFile::GetFileNameWithoutExtension()
+std::wstring CTextFile::GetFileNameWithoutExtension()
 {
     size_t pos = filename.find_last_of('.');
-    if (pos != string::npos)
+    if (pos != std::string::npos)
         return filename.substr(0, pos);
     return filename;
 }
 
-wstring CTextFile::GetFileNameExtension()
+std::wstring CTextFile::GetFileNameExtension()
 {
     size_t pos = filename.find_last_of('.');
-    if (pos != string::npos)
+    if (pos != std::string::npos)
         return filename.substr(pos);
     return L"";
 }
