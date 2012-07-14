@@ -178,7 +178,6 @@ LONG CCmdLineParser::GetLongVal(LPCTSTR sKey) const
     return _tstol(it->second.c_str());
 }
 
-
 CCmdLineParser::ITERPOS CCmdLineParser::begin() const
 {
     return m_valueMap.begin();
