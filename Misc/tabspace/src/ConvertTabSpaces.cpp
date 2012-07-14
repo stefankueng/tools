@@ -39,11 +39,11 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             // first find out how many spaces we have to convert into tabs
             int count = 0;
             int spacecount = 0;
-            vector<long> spacegrouppositions;
+            std::vector<long> spacegrouppositions;
             long pos = 0;
             if (file.GetEncoding() == CTextFile::UNICODE_LE)
             {
-                for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
+                for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
                 {
                     // we have to convert all spaces in groups of more than the tabsize
                     // a space followed by a tab may lead to just removing the space
@@ -96,7 +96,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     WCHAR * pBuf = new WCHAR[newfilelen/sizeof(WCHAR)];
                     WCHAR * pBufStart = pBuf;
                     WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
-                    vector<long>::iterator it = spacegrouppositions.begin();
+                    std::vector<long>::iterator it = spacegrouppositions.begin();
                     for (long i=0; i<long(file.GetFileLength()/sizeof(WCHAR)); ++i)
                     {
                         if ((it != spacegrouppositions.end())&&(*it == i))
@@ -130,7 +130,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     char * pBuf = new char[newfilelen];
                     char * pBufStart = pBuf;
                     char * pOldBuf = (char*)file.GetFileContent();
-                    vector<long>::iterator it = spacegrouppositions.begin();
+                    std::vector<long>::iterator it = spacegrouppositions.begin();
                     for (long i=0; i<(file.GetFileLength()); ++i)
                     {
                         if ((it != spacegrouppositions.end())&&(*it == i))
@@ -168,7 +168,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             long spacestoinsert = 0;
             if (file.GetEncoding() == CTextFile::UNICODE_LE)
             {
-                for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
+                for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
                 {
                     ++inlinepos;
                     if ((*it == '\r')||(*it == '\n'))
@@ -282,7 +282,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             // less spaces than the tabsize could be used to align text to a non-tab position and therefore
             // is not a violation.
             size_t pos = 0;
-            for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
+            for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
             {
                 if (*it == ' ')
                 {
@@ -309,7 +309,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
         {
             // in space mode, even one tab is a violation
             size_t pos = 0;
-            for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
+            for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
             {
                 if (*it == '\t')
                 {
@@ -341,10 +341,10 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
         int whitespaces = 0;
         int totalwhitespaces = 0;
         int pos = 0;
-        vector<long> spacepositions;
+        std::vector<long> spacepositions;
         if (file.GetEncoding() == CTextFile::UNICODE_LE)
         {
-            for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it)
+            for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it)
             {
                 ++inlinepos;
                 ++pos;
@@ -398,7 +398,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                 WCHAR * pBuf = new WCHAR[newfilelen/sizeof(WCHAR)];
                 WCHAR * pBufStart = pBuf;
                 WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
-                vector<long>::iterator it = spacepositions.begin();
+                std::vector<long>::iterator it = spacepositions.begin();
                 for (long i=0; i<long(file.GetFileLength()/sizeof(WCHAR)); ++i)
                 {
                     ++pos;
@@ -428,7 +428,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                 char * pBuf = new char[newfilelen];
                 char * pBufStart = pBuf;
                 char * pOldBuf = (char*)file.GetFileContent();
-                vector<long>::iterator it = spacepositions.begin();
+                std::vector<long>::iterator it = spacepositions.begin();
                 for (long i=0; i<long(file.GetFileLength()); ++i)
                 {
                     ++pos;
@@ -460,7 +460,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
         int inlinepos = 0;
         int whitespaces = 0;
         int pos = 0;
-        for (wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it)
+        for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it)
         {
             ++inlinepos;
             ++pos;
