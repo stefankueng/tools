@@ -1,6 +1,6 @@
 // tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011 - Stefan Kueng
+// Copyright (C) 2011-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -80,7 +80,7 @@ public:
      * \param sPath    The path to search in.
      * \param sPattern The filename pattern - default all files.
      */
-    CSimpleFileFind(const std::wstring &sPath, LPCTSTR pPattern = _T("*.*"));
+    CSimpleFileFind(const std::wstring &sPath, LPCTSTR pPattern = L"*.*");
     ~CSimpleFileFind();
 
     /**
@@ -204,9 +204,9 @@ public:
     inline bool IsDots() const
     {
         return IsDirectory()
-               && m_FindFileData.cFileName[0] == _T('.')
+               && m_FindFileData.cFileName[0] == L'.'
                && ((m_FindFileData.cFileName[1] == 0)
-                   || (m_FindFileData.cFileName[1] == _T('.')
+                   || (m_FindFileData.cFileName[1] == L'.'
                        && m_FindFileData.cFileName[2] == 0));
     }
 };
