@@ -80,17 +80,33 @@ bool FileExtensionInPattern(const std::wstring& filepath)
     std::wstring lowercasepath = filepath;
     std::transform(lowercasepath.begin(), lowercasepath.end(), lowercasepath.begin(), std::tolower);
 
+    std::wstring lowercasename = lowercasepath;
+    std::string::size_type lastPos = lowercasepath.find_last_of('\\');
+    if (lastPos != std::wstring::npos)
+        lowercasename = lowercasepath.substr(lastPos+1);
+
     for (auto it = g_excludedPatterns.cbegin(); it != g_excludedPatterns.cend(); ++it)
     {
-        if (wcswildcmp(it->c_str(), lowercasepath.c_str()))
+        if (it->find('\\') == std::wstring::npos)
+        {
+            if (wcswildcmp(it->c_str(), lowercasename.c_str()))
+                return false;
+        }
+        else if (wcswildcmp(it->c_str(), lowercasepath.c_str()))
             return false;
     }
-    const TCHAR * pFound = _tcsrchr(lowercasepath.c_str(), '.');
-    std::wstring ext;
-    if (pFound)
-        ext = pFound + 1;
+    for (auto it = g_allowedPatterns.cbegin(); it != g_allowedPatterns.cend(); ++it)
+    {
+        if (it->find('\\') == std::wstring::npos)
+        {
+            if (wcswildcmp(it->c_str(), lowercasename.c_str()))
+                return true;
+        }
+        else if (wcswildcmp(it->c_str(), lowercasepath.c_str()))
+            return true;
+    }
 
-    return (g_allowedPatterns.find(ext) != g_allowedPatterns.end());
+    return false;
 }
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -102,6 +118,7 @@ int _tmain(int argc, _TCHAR* argv[])
     bool    bUseSpaces              =   true;
     int     tabsize                 =   4;
     bool    bRemoveEOLWhitespaces   =   true;
+    bool    bExtPatterns            =   true;
     std::wstring filepattern        =   L"c;cpp;cxx;cc;h;hpp;hxx;cs";
 
 
@@ -120,6 +137,10 @@ int _tmain(int argc, _TCHAR* argv[])
         _fputts(L"/leaveol   : if specified, whitespaces at the end of lines are not removed\n", stdout);
         _fputts(L"/ext       : a list of file extensions to scan, other extensions are ignored.\n", stdout);
         _fputts(L"             defaults to \"c;cpp;cxx;cc;h;hpp;hxx;cs\"\n", stdout);
+        _fputts(L"             if this is set, /include must not be set!\n", stdout);
+        _fputts(L"/include   : a list of patterns to include, separated by ';'\n", stdout);
+        _fputts(L"             if this is set, /ext must not be set!\n", stdout);
+        _fputts(L"             for example \"c:\\sub1\\*.*;*\\sub2\\*.cpp\"\n", stdout);
         _fputts(L"/exclude   : a list of patterns to ignore, separated by ';'\n", stdout);
         _fputts(L"             for example \"c:\\sub1\\*.*;*\\sub2\\*.cpp\"\n", stdout);
         return 0;
@@ -135,7 +156,22 @@ int _tmain(int argc, _TCHAR* argv[])
     }
     if (parser.HasVal(L"ext"))
     {
+        if (parser.HasVal(L"include"))
+        {
+            _fputts(L"error: both /ext and /include are set", stderr);
+            return -1;
+        }
         filepattern = parser.GetVal(L"ext");
+    }
+    if (parser.HasVal(L"include"))
+    {
+        if (parser.HasVal(L"ext"))
+        {
+            _fputts(L"error: both /ext and /include are set", stderr);
+            return -1;
+        }
+        bExtPatterns = false;
+        filepattern = parser.GetVal(L"include");
     }
     if (parser.HasKey(L"checkonly"))
         bCheckOnly = true;
@@ -160,6 +196,8 @@ int _tmain(int argc, _TCHAR* argv[])
             // found a token, add it to the set.
             std::wstring ext = filepattern.substr(lastPos, pos - lastPos);
             std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower);
+            if (bExtPatterns)
+                ext = L"*." + ext;
             g_allowedPatterns.insert(ext);
 
             // skip delimiters. Note the "not_of"
