@@ -212,26 +212,26 @@ int _tmain(int argc, _TCHAR* argv[])
         if (parser.HasVal(L"exclude"))
         {
             filepattern = parser.GetVal(L"exclude");
-        }
-        g_excludedPatterns.clear();
-        // skip delimiters at beginning.
-        std::string::size_type lastPos = filepattern.find_first_not_of(L";", 0);
+            g_excludedPatterns.clear();
+            // skip delimiters at beginning.
+            std::string::size_type lastPos = filepattern.find_first_not_of(L";", 0);
 
-        // find first "non-delimiter".
-        std::string::size_type pos = filepattern.find_first_of(L";", lastPos);
+            // find first "non-delimiter".
+            std::string::size_type pos = filepattern.find_first_of(L";", lastPos);
 
-        while (std::string::npos != pos || std::string::npos != lastPos)
-        {
-            // found a token, add it to the set.
-            std::wstring ext = filepattern.substr(lastPos, pos - lastPos);
-            std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower);
-            g_excludedPatterns.insert(ext);
+            while (std::string::npos != pos || std::string::npos != lastPos)
+            {
+                // found a token, add it to the set.
+                std::wstring ext = filepattern.substr(lastPos, pos - lastPos);
+                std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower);
+                g_excludedPatterns.insert(ext);
 
-            // skip delimiters. Note the "not_of"
-            lastPos = filepattern.find_first_not_of(L";", pos);
+                // skip delimiters. Note the "not_of"
+                lastPos = filepattern.find_first_not_of(L";", pos);
 
-            // find next "non-delimiter"
-            pos = filepattern.find_first_of(L";", lastPos);
+                // find next "non-delimiter"
+                pos = filepattern.find_first_of(L";", lastPos);
+            }
         }
     }
 
