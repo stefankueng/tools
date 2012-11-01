@@ -84,7 +84,7 @@ h3 {
 
 img {
       padding: 3px;
-      border: 1px solid #181818;
+      border: none; /* 1px solid #181818; */
 
       }
 
