@@ -22,7 +22,7 @@ cd ..
 call ..\serverlogin.bat
 
 cd ..\..\toolssite
-del website.zip
+if exist website.zip del website.zip
 
 %ZIP% a -r -tzip website.zip * > NUL
 
