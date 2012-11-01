@@ -203,7 +203,9 @@ ul.post-meta li {
 
 #content {
            float: left;
-           width: 575px;
+           /* width: 575px; */
+           width: 815px;
+             padding: 0px 10px 20px 30px;
            margin: 10px 8px 20px 8px;
            text-align: left;
        display: inline;
@@ -303,7 +305,8 @@ ul.post-meta li {
 #menu-left {
              float: left;
              padding: 0px 10px 20px 30px;
-             width: 240px;
+             /* width: 240px; */
+             width: 0px;
              font-size: 12px;
 border-right: 1px dotted #181818;
 display: inline;
