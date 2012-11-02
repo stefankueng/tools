@@ -1,11 +1,11 @@
 @echo off
 rem run this batch file to upload the docs to our sourceforge server
-rem to make this work, you have to create a file "docserverlogin.bat"
+rem to make this work, you have to create a file "serverlogin.bat"
 rem which sets the variables USERNAME and PASSWORD, and also set the PSCP
 rem variable to point to your scp program the PLINK variable to the plink
 rem program and the ZIP variable to your zip program
 
-rem example docserverlogin.bat file
+rem example serverlogin.bat file
 rem
 rem @echo off
 rem set USERNAME=myname
