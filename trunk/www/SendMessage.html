@@ -1,11 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>SendMessage</title>
-<meta name="Description" content="" />  
-<meta name="Keywords" content="" />
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="scripts/lightbox/prototype.js"></script>
 <script type="text/javascript" src="scripts/lightbox/scriptaculous.js?load=effects,builder"></script>
@@ -18,87 +15,86 @@
 
 <div id="content">
 
-    <div class="post">
-        <h2><a href="#">SendMessage</a></h2>
-        $ADSENSE_TOP$
-        
-        <div class="storycontent">
-            <p>SendMessage is a little tool to send Windows messages to any window.</p>
-            <p>Ever wondered how you should test whether your application correctly 
-            responds to certain system messages like WM_ENDSESSION or 
-            WM_POWERBROADCAST? Of course you can test your application by actually 
-            triggering those messages, but especially the 
-            WM_ENDSESSION message and its purpose makes it impossible to 
-            attach a debugger to your app once Windows sends you that message.</p>
-            <p>With this tool, you can send that message and any other message 
-            you like to your application window. And you can do that while you 
-            have a debugger attached to your application!</p>
-            <a href="http://sendmessage.googlecode.com/svn/trunk/web/MainDlg-Endsession.png" rel="lightbox[sendmessage]"><img src="images/SendMessageMainDlg-Endsession.png"></a>.
-            <p>To find the window handle of your app, either drag the target icon 
-            in the upper left to your main window, or click on the "Windows" button 
-            and select the window from the list.</p>
-            <a href="http://sendmessage.googlecode.com/svn/trunk/web/FindWindowDlg.png" rel="lightbox[sendmessage]"><img src="images/SendMessageFindWindowDlg.png"></a>.
-            <p>There are a few window messages predefined in SendMessage. If you 
-            need to send a message that is not in the list, just enter the number of 
-            the message and any required values for WPARAM and LPARAM manually. 
-            The screenshot below shows how this would look like for the 
-            WM_SYSCOLORCHANGE message.</p>
-            <a href="http://sendmessage.googlecode.com/svn/trunk/web/MainDlg-CustomMessage.png" rel="lightbox[sendmessage]"><img src="images/SendMessageMainDlg-CustomMessage.png"></a>.
-            <p>Once you've entered the message information, click on either the 
-            "SendMessage" or "PostMessage" button and the message is sent or 
-            posted to your window.</p>
-            <p>If you find any bugs or have suggestions for new features, please 
-            enter them in the <a href="http://code.google.com/p/sendmessage/issues/list">issue tracker</a>.</p>
-            <p>To download the tool, go to the 
-            <a href="http://code.google.com/p/sendmessage/downloads/list">download page</a>.</p>
-        </div>
-        <hr />
-        <div class="storycontent">
-            <p>SendMessage can also be used from a command line:</p>
-            <p>
-                <dl>
-                    <dt>/message:NNNN</dt>
-                    <dd>specifies the window message to send or post as a decimal value</dd>
-                    
-                    <dt>/wparam:NNNN</dt>
-                    <dd>specifies the WPARAM</dd>
-                    <dt>/lparam:NNNN</dt>
-                    <dd>specifies the LPARAM</dd>
-                    
-                    <dt>/post</dt>
-                    <dd>optional: if specified, the message is sent 
-                    using <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms644944.aspx">PostMessage</a>.
-                    If it's not specified, the message is sent using <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950.aspx">SendMessage</a>.</dd>
-                                    </dl>
-                and at least one or more of these must be specified:
-                <dl>
-                    <dt>/windowhandle:NNNN</dt>
-                    <dd>the window handle to send the message to as a decimal value</dd>
-                    <dt>/windowtitle:TTTT</dt>
-                    <dd>the message is sent to any window that matches the specified title text</dd>
-                    <dt>/windowclass:TTTT</dt>
-                    <dd>the message is sent to any window that has the specified window class</dd>
-                    <dt>/processname:TTTT</dt>
-                    <dd>the message is sent only to windows that are part of the specified process</dd>
-                </dl>
-            </p>
-            <p>
-            If only <code>/processname:TTTT</code> is specified without
-            any window title, class or handle, the message is sent to
-            the top level window of the specified process(es).
-            </p>
-            <hr />
-            <p>
-            Example:
-            </p>
-            <p>
-            <code>SendMessage.exe /message:16 /processname:cmd.exe</code>
-            Sends a WM_CLOSE message to all open console windows.
-            </p>
-        </div>
-    </div>
-</div>
+	<div class="post">
+		<h2><a href="#">SendMessage</a></h2>
+		$ADSENSE_TOP$
 
+		<div class="storycontent">
+			<p>SendMessage is a little tool to send Windows messages to any window.</p>
+			<p>Ever wondered how you should test whether your application correctly
+			responds to certain system messages like WM_ENDSESSION or
+			WM_POWERBROADCAST? Of course you can test your application by actually
+			triggering those messages, but especially the
+			WM_ENDSESSION message and its purpose makes it impossible to
+			attach a debugger to your app once Windows sends you that message.</p>
+			<p>With this tool, you can send that message and any other message
+			you like to your application window. And you can do that while you
+			have a debugger attached to your application!</p>
+			<a href="http://sendmessage.googlecode.com/svn/trunk/web/MainDlg-Endsession.png" rel="lightbox[sendmessage]"><img src="images/SendMessageMainDlg-Endsession.png"></a>.
+			<p>To find the window handle of your app, either drag the target icon
+			in the upper left to your main window, or click on the "Windows" button
+			and select the window from the list.</p>
+			<a href="http://sendmessage.googlecode.com/svn/trunk/web/FindWindowDlg.png" rel="lightbox[sendmessage]"><img src="images/SendMessageFindWindowDlg.png"></a>.
+			<p>There are a few window messages predefined in SendMessage. If you
+			need to send a message that is not in the list, just enter the number of
+			the message and any required values for WPARAM and LPARAM manually.
+			The screenshot below shows how this would look like for the
+			WM_SYSCOLORCHANGE message.</p>
+			<a href="http://sendmessage.googlecode.com/svn/trunk/web/MainDlg-CustomMessage.png" rel="lightbox[sendmessage]"><img src="images/SendMessageMainDlg-CustomMessage.png"></a>.
+			<p>Once you've entered the message information, click on either the
+			"SendMessage" or "PostMessage" button and the message is sent or
+			posted to your window.</p>
+			<p>If you find any bugs or have suggestions for new features, please
+			enter them in the <a href="http://code.google.com/p/sendmessage/issues/list">issue tracker</a>.</p>
+			<p>To download the tool, go to the
+			<a href="http://code.google.com/p/sendmessage/downloads/list">download page</a>.</p>
+		</div>
+		<hr />
+		<div class="storycontent">
+			<p>SendMessage can also be used from a command line:</p>
+			<p>
+				<dl>
+					<dt>/message:NNNN</dt>
+					<dd>specifies the window message to send or post as a decimal value</dd>
+
+					<dt>/wparam:NNNN</dt>
+					<dd>specifies the WPARAM</dd>
+					<dt>/lparam:NNNN</dt>
+					<dd>specifies the LPARAM</dd>
+
+					<dt>/post</dt>
+					<dd>optional: if specified, the message is sent
+					using <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms644944.aspx">PostMessage</a>.
+					If it's not specified, the message is sent using <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950.aspx">SendMessage</a>.</dd>
+									</dl>
+				and at least one or more of these must be specified:
+				<dl>
+					<dt>/windowhandle:NNNN</dt>
+					<dd>the window handle to send the message to as a decimal value</dd>
+					<dt>/windowtitle:TTTT</dt>
+					<dd>the message is sent to any window that matches the specified title text</dd>
+					<dt>/windowclass:TTTT</dt>
+					<dd>the message is sent to any window that has the specified window class</dd>
+					<dt>/processname:TTTT</dt>
+					<dd>the message is sent only to windows that are part of the specified process</dd>
+				</dl>
+			</p>
+			<p>
+			If only <code>/processname:TTTT</code> is specified without
+			any window title, class or handle, the message is sent to
+			the top level window of the specified process(es).
+			</p>
+			<hr />
+			<p>
+			Example:
+			</p>
+			<p>
+			<code>SendMessage.exe /message:16 /processname:cmd.exe</code>
+			Sends a WM_CLOSE message to all open console windows.
+			</p>
+		</div>
+	</div>
+</div>
 
 <!--#include FILE="footer.html" -->
 

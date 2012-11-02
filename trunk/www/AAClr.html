@@ -1,11 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Auto Aero Colors</title>
-<meta name="Description" content="" />  
-<meta name="Keywords" content="" />
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 
@@ -15,48 +12,42 @@
 
 <div id="content">
 
-    <div class="post">
-        <h2><a href="#">Auto Aero Colors (AAClr)</a></h2>
-        
-        $ADSENSE_TOP$
-        <div class="storycontent">
-            <p>Windows 8 (or whatever its name will be when it's released)
-            will have a new feature where the Aero colors can be 
-            <a href="http://www.withinwindows.com/2011/04/06/windows-8-secrets-aero-auto-colorization/">
-            automatically adjusted according to the selected wallpaper</a>.</p>
-            <p>This seems to be a nice feature, and there's even a tool available
-            that offers that feature for Windows 7: <a href="http://aura.codeplex.com/">Aura</a>.</p>
-            <p>But there are some things about Aura that bother me, so I hacked together
-            my own tool which offers that feature.</p>
-            <p>Unlike Aura, AAClr is written in plain C++ and doesn't 
-            use the .NET framework. For tools that are supposed to be started
-            automatically on logon, this ensures that the whole startup time
-            doesn't increase by several seconds.</p>
-            <p>AAClr also detects changes in wallpapers by catching events
-            from the system and doesn't use timers that access the wallpaper file
-            several times a second (like Aura does). That means that AAClr is idle
-            most of the time and only wakes up when necessary.</p>
-            <p>And about resource usage: AAClr uses less than 2MB of 
-            private bytes - I think that's not too much.</p>
-        </div>
-        <div class="storycontent">
-            <p>I've put the AAClr sourcecode into the <a href="/StExBar.html">StExBar</a>
-            repository since it's too small to justify creating its own project
-            for it. You can browse the source code 
-            <a href="http://code.google.com/p/stexbar/source/browse/#svn%2Ftrunk%2FMisc%2FAAClr">here</a>.</p>
-            <p>A compiled executable can be found on the 
-            <a href="http://code.google.com/p/stexbar/downloads/list">download page</a>.</p>
-        </div>
-    </div>
+	<div class="post">
+		<h2><a href="#">Auto Aero Colors (AAClr)</a></h2>
+
+		$ADSENSE_TOP$
+		<div class="storycontent">
+			<p>Windows 8 (or whatever its name will be when it's released)
+			will have a new feature where the Aero colors can be
+			<a href="http://www.withinwindows.com/2011/04/06/windows-8-secrets-aero-auto-colorization/">
+			automatically adjusted according to the selected wallpaper</a>.</p>
+			<p>This seems to be a nice feature, and there's even a tool available
+			that offers that feature for Windows 7: <a href="http://aura.codeplex.com/">Aura</a>.</p>
+			<p>But there are some things about Aura that bother me, so I hacked together
+			my own tool which offers that feature.</p>
+			<p>Unlike Aura, AAClr is written in plain C++ and doesn't
+			use the .NET framework. For tools that are supposed to be started
+			automatically on logon, this ensures that the whole startup time
+			doesn't increase by several seconds.</p>
+			<p>AAClr also detects changes in wallpapers by catching events
+			from the system and doesn't use timers that access the wallpaper file
+			several times a second (like Aura does). That means that AAClr is idle
+			most of the time and only wakes up when necessary.</p>
+			<p>And about resource usage: AAClr uses less than 2MB of
+			private bytes - I think that's not too much.</p>
+		</div>
+		<div class="storycontent">
+			<p>I've put the AAClr sourcecode into the <a href="/StExBar.html">StExBar</a>
+			repository since it's too small to justify creating its own project
+			for it. You can browse the source code
+			<a href="http://code.google.com/p/stexbar/source/browse/#svn%2Ftrunk%2FMisc%2FAAClr">here</a>.</p>
+			<p>A compiled executable can be found on the
+			<a href="http://code.google.com/p/stexbar/downloads/list">download page</a>.</p>
+		</div>
+	</div>
 </div>
 
 <!--#include FILE="footer.html" -->
 
 </body>
 </html>
-
-
-
-
-
-
