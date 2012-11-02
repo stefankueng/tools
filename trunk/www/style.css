@@ -47,7 +47,7 @@ body {
     background: #5e7eff url("images/background.png") repeat-x top;
     color: #181818;
     font-size: 80%;
-    font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
     margin: 0 auto;
     padding: 0;
     text-align: center;
@@ -155,7 +155,7 @@ ul {
 
 .meta {
     font-size: 12px;
-    font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
 }
 
 .meta li,
@@ -189,7 +189,6 @@ ul.post-meta li {
     letter-spacing: 0;
     padding-left: 5px;
 }
-
 
 .storycontent {
     font-size: 115%;
@@ -240,7 +239,7 @@ ul.post-meta li {
 }
 
 .header-title {
-    font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
     color: #5e7eff;
     font-size: 26px;
     font-weight: bold;
@@ -262,7 +261,7 @@ ul.post-meta li {
 
 .header-description {
     font-size: 14px;
-    font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
     font-weight: normal;
     color:#fefefe;
     padding: 0px 0 0 350px;
@@ -276,7 +275,7 @@ ul.post-meta li {
     color: #fefefe;
     background: url("images/footer.png") no-repeat;
     font-size: 11px;
-    font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
 }
 
 #footer a {
