@@ -1,4 +1,5 @@
 @echo off
+rem install node.js and then run "npm install -g uglify-js"
 
 set PATH=C:\MSYS\bin;%PATH%
 
