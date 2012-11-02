@@ -6,7 +6,7 @@ rem variable to point to your scp program the PLINK variable to the plink
 rem program and the ZIP variable to your zip program
 
 rem example docserverlogin.bat file
-rem 
+rem
 rem @echo off
 rem set USERNAME=myname
 rem set PASSWORD=mypassword
@@ -14,10 +14,10 @@ rem set PSCP="C:\Programme\PuttY\pscp.exe"
 rem set PLINK="C:\Programme\Putty\plink.exe"
 rem set ZIP="C:\Programme\7-zip\7z.exe"
 
-rd /s /q ..\..\toolssite
-cd scripts
+if exist ..\..\toolssite rd /s /q ..\..\toolssite
+pushd scripts
 python generatesite.py
-cd ..
+popd
 
 call ..\serverlogin.bat
 
