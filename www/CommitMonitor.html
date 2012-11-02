@@ -1,11 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>CommitMonitor</title>
-<meta name="Description" content="" />  
-<meta name="Keywords" content="" />
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="scripts/lightbox/prototype.js"></script>
 <script type="text/javascript" src="scripts/lightbox/scriptaculous.js?load=effects,builder"></script>
@@ -17,100 +14,94 @@
 <!--#include FILE="menu.html" -->
 
 <div id="content">
-    <div class="post">
-        <h2><a href="#">CommitMonitor</a></h2>
-        $ADSENSE_TOP$
-        
-        <div class="storycontent">
-            <p>
-            The CommitMonitor is a small tool to monitor <a href="http://subversion.apache.org/">Apache<span class="ss">&trade;</span> Subversion<span class="ss">&reg;</span></a> 
-            repositories for new commits. It has a very small memory footprint and resides in the system tray.
-            <br>
-            <a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/MainDlg.png" rel="lightbox[commitmonitor]"><img src="images/cmMainDlg.png"></a>.
-            </p>
-            <p>
-            In case you have multiple repositories under an SVNParentPath with the 
-            <a href="http://svnbook.red-bean.com/en/1.4/svn.serverconfig.httpd.html#svn.serverconfig.httpd.extra">SVNListParentPath</a> 
-            directive activated in Apache, the CommitMonitor can monitor these URLs too, 
-            as you can see in the screenshot above: the "Private Projects" is shown as a 
-            folder, which means this is an URL to an SVNParentPath URL.
-            </p>
-            <p>
-            The new commits are shown on the top right of the main dialog, while the 
-            commit log message is shown at the bottom right. 
-            </p>
-            <p>
-            A doublelick on any revision in the top right view will fetch the diff 
-            for that revision as a <a href="http://en.wikipedia.org/wiki/Unified_diff#Unified_format">unified diff</a> 
-            so you can further inspect the commit. If you have <a href="http://tortoisesvn.net">TortoiseSVN</a>
-            installed, the CommitMonitor automatically uses TortoiseSVN to do the diff.
-            </p>
-            <p>
-            Of course, you can configure the time interval the CommitMonitor should check your repositories for new commits:
-            <br>
-            <a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/EditURL.png" rel="lightbox[commitmonitor]"><img src="images/cmEditURL.png"></a>.
-            </p>
-            <p>
-            Just make sure in case you want to monitor a public open source repository to set 
-            the check interval not too small - you don't want to hammer those repositories!
-            </p>
-            <p>You can also put an <code>svnrobots.txt</code> file on your repository server to
-            set a minimum time interval.<br/>
-            See <a href="/svnrobots.html">the svnrobots documentation</a> for more details about this.
-            </p>
-            <p>
-            Once CommitMonitor has found new commits to one or more of the repositories you 
-            monitor, it shows a notification popup, and the system tray icon changes the 'eyes' 
-            from black to red. And if you have the system tray animation enabled in the 
-            Options dialog, the eyes will also move around until you open the CommitMonitor 
-            main dialog (by doubleclicking on the system tray icon) and read the commits.
-            <br>
-            <a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/Notification.png" rel="lightbox[commitmonitor]"><img src="images/cmNotification.png"></a>.
-            </p>
-            <p>
-            If you have <a href="http://www.fullphat.net">Snarl</a> installed, 
-            CommitMonitor automatically uses Snarl to show its popups:
-            <br>
-            <a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/snarlpopup.png" rel="lightbox[commitmonitor]"><img src="images/cmsnarlpopup.png"></a>.
-            </p>
-            <p>
-            CommitMonitor also registers itself with Snarl which will allow you to configure the popups in more detail:
-            <br>
-            <a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/snarlconfig.png" rel="lightbox[commitmonitor]"><img src="images/cmsnarlconfig.png"></a>.
+	<div class="post">
+		<h2><a href="#">CommitMonitor</a></h2>
+		$ADSENSE_TOP$
 
-            </p>
-            $ADSENSE_INPAGE$
-            <p>
-            As already mentioned, the CommitMonitor resides in your system tray (if so required). 
-            Tools which do that should use as less resources as possible, and that's what 
-            CommitMonitor tries to do. As you can see in the screenshot below, when the 
-            program is idle (i.e., not currently connecting to a repository and downloading 
-            information) it only uses about 1MB of RAM. Of course, it uses more 
-            (about 15MB RAM) while it accesses the repositories.
-            <br>
-            <a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/MemoryFootprint.png" rel="lightbox[commitmonitor]"><img src="images/cmMemoryFootprint.png"></a>.
-            </p>
-            <p>
-            CommitMonitor is available under the GP licence 
-            (<a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GPL</a>).
-            <br/>
-            You can either download an msi installer or a zipped exe file, whatever suits you:
-            <a href="http://code.google.com/p/commitmonitor/downloads/list">Download page</a>
-            <br/>
-            Of course, the source code is available too. You can browse or check it 
-            out directly from the <a href="http://commitmonitor.googlecode.com/svn">Subversion repository</a>.
-            </p>
-        </div>
-    </div>
+		<div class="storycontent">
+			<p>
+			The CommitMonitor is a small tool to monitor <a href="http://subversion.apache.org/">Apache<span class="ss">&trade;</span> Subversion<span class="ss">&reg;</span></a>
+			repositories for new commits. It has a very small memory footprint and resides in the system tray.
+			<br>
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/MainDlg.png" rel="lightbox[commitmonitor]"><img src="images/cmMainDlg.png"></a>.
+			</p>
+			<p>
+			In case you have multiple repositories under an SVNParentPath with the
+			<a href="http://svnbook.red-bean.com/en/1.4/svn.serverconfig.httpd.html#svn.serverconfig.httpd.extra">SVNListParentPath</a>
+			directive activated in Apache, the CommitMonitor can monitor these URLs too,
+			as you can see in the screenshot above: the "Private Projects" is shown as a
+			folder, which means this is an URL to an SVNParentPath URL.
+			</p>
+			<p>
+			The new commits are shown on the top right of the main dialog, while the
+			commit log message is shown at the bottom right.
+			</p>
+			<p>
+			A doublelick on any revision in the top right view will fetch the diff
+			for that revision as a <a href="http://en.wikipedia.org/wiki/Unified_diff#Unified_format">unified diff</a>
+			so you can further inspect the commit. If you have <a href="http://tortoisesvn.net">TortoiseSVN</a>
+			installed, the CommitMonitor automatically uses TortoiseSVN to do the diff.
+			</p>
+			<p>
+			Of course, you can configure the time interval the CommitMonitor should check your repositories for new commits:
+			<br>
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/EditURL.png" rel="lightbox[commitmonitor]"><img src="images/cmEditURL.png"></a>.
+			</p>
+			<p>
+			Just make sure in case you want to monitor a public open source repository to set
+			the check interval not too small - you don't want to hammer those repositories!
+			</p>
+			<p>You can also put an <code>svnrobots.txt</code> file on your repository server to
+			set a minimum time interval.<br/>
+			See <a href="/svnrobots.html">the svnrobots documentation</a> for more details about this.
+			</p>
+			<p>
+			Once CommitMonitor has found new commits to one or more of the repositories you
+			monitor, it shows a notification popup, and the system tray icon changes the 'eyes'
+			from black to red. And if you have the system tray animation enabled in the
+			Options dialog, the eyes will also move around until you open the CommitMonitor
+			main dialog (by doubleclicking on the system tray icon) and read the commits.
+			<br>
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/Notification.png" rel="lightbox[commitmonitor]"><img src="images/cmNotification.png"></a>.
+			</p>
+			<p>
+			If you have <a href="http://www.fullphat.net">Snarl</a> installed,
+			CommitMonitor automatically uses Snarl to show its popups:
+			<br>
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/snarlpopup.png" rel="lightbox[commitmonitor]"><img src="images/cmsnarlpopup.png"></a>.
+			</p>
+			<p>
+			CommitMonitor also registers itself with Snarl which will allow you to configure the popups in more detail:
+			<br>
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/snarlconfig.png" rel="lightbox[commitmonitor]"><img src="images/cmsnarlconfig.png"></a>.
+
+			</p>
+			$ADSENSE_INPAGE$
+			<p>
+			As already mentioned, the CommitMonitor resides in your system tray (if so required).
+			Tools which do that should use as less resources as possible, and that's what
+			CommitMonitor tries to do. As you can see in the screenshot below, when the
+			program is idle (i.e., not currently connecting to a repository and downloading
+			information) it only uses about 1MB of RAM. Of course, it uses more
+			(about 15MB RAM) while it accesses the repositories.
+			<br>
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/MemoryFootprint.png" rel="lightbox[commitmonitor]"><img src="images/cmMemoryFootprint.png"></a>.
+			</p>
+			<p>
+			CommitMonitor is available under the GP licence
+			(<a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GPL</a>).
+			<br/>
+			You can either download an msi installer or a zipped exe file, whatever suits you:
+			<a href="http://code.google.com/p/commitmonitor/downloads/list">Download page</a>
+			<br/>
+			Of course, the source code is available too. You can browse or check it
+			out directly from the <a href="http://commitmonitor.googlecode.com/svn">Subversion repository</a>.
+			</p>
+		</div>
+	</div>
 </div>
 
 <!--#include FILE="footer.html" -->
 
 </body>
 </html>
-
-
-
-
-
-

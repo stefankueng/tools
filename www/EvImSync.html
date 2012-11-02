@@ -1,11 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>EvImSync</title>
-<meta name="Description" content="" />  
-<meta name="Keywords" content="" />
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 
@@ -15,141 +12,134 @@
 
 <div id="content">
 
-    <div class="post">
-        <h2><a href="#">EvImSync</a></h2>
-        $ADSENSE_TOP$
-        
-        <div class="storycontent">
-            <p>EvImSync is a small tool to synchronize
-            <a href="http://www.evernote.com">Evernote</a> notebooks with a 
-            <a href="http://mail.google.com/mail/">GMail</a> account. 
-            Notes in Evernote are uploaded to your GMail account as emails, and
-            emails in GMail are imported to Evernote notebooks as notes.
-            </p>
-            <img src="http://stexbar.googlecode.com/svn/trunk/www/images/evimsync-overview.png" />
-            <p>
-            EvImSync requires the .NET framework 4. You can get this via Windows
-            update or directly from <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992&displaylang=en">here</a>.
-            </p>
-            <h3>Details: how it works</h3>
-            <p>
-            EvImSync uses the Evernote script engine <code>ENScript.exe</code>
-            to import and export notes. These notes are parsed and then compared
-            to emails in your GMail account using the IMAP protocol. This requires
-            that you have enabled IMAP in your GMail settings:
-            </p>
-            <img src="http://stexbar.googlecode.com/svn/trunk/www/images/GMail-IMAP.png" />
-            <p>
-            You can sync one notebook with one folder in a GMail account. EvImSync
-            allows you to sync as many notebooks and GMail folders as you like.
-            </p>
-            <h3>Limitations</h3>
-            <p>
-            Due to limitations both in the IMAP protocol, the Evernote scripting
-            engine and the available documentation, the synchronization is not
-            perfect. Some things simply can't be done by EvImSync.
-            </p>
-            <p>
-            <ul>
-                <li>Notes in Evernote are not deleted: if you delete an email
-                in GMail, that deletion is not reflected in Evernote. ENScript
-                doesn't have a command to delete a specific note. Instead, EvImSync
-                uploads the note from Evernote again to GMail. That means that
-                if you want to delete a note, you must do that in Evernote, not
-                in your GMail account. Notes that are deleted in Evernote get
-                moved to the folder "evernote trash" in your GMail account
-                from where you can remove them permanently if you like.</li>
-                <li>Tag changes in GMail are not reflected in Evernote: Again,
-                ENScript doesn't have a command to do that. However, if you have
-                a new email that's not already synced the Evernote you can use
-                GMail to add the tags you like. New emails are properly imported
-                to Evernote with all the GMail tags you have set.<br/>
-                Synching tags in the other direction works ok: If you change 
-                tags in Evernote, those changes are properly reflected in your 
-                GMail account.</li>
-                <li>Source URLs are not synched: Source URLs from Evernote are
-                not stored in GMail, but of course left as is in the Evernote notes.</li>
-                <li>Ink notes: Evernote Ink notes are not shown in GMail. The
-                format of those notes is not documented, so I can't convert them
-                to images or something like that which would properly be shown
-                in an email. Instead, such notes are converted to an email 
-                attachment. Synching those works, but as mentioned you won't
-                be able to actually see them in GMail.</li>
-            </ul>
-            </p>
-            <h3>Installation</h3>
-            <p>EvImSync does not require installation. It can be run from any
-            place. Just doubleclick on the file to run it.</p>
-            <p>By default, EvImSync stores its configuration in the <code>%APPDATA%</code>
-            folder. However if you want to use EvImSync on an USB-stick, rename
-            the exe file to <code>EvImSyncPortable.exe</code>: this will force
-            EvImSync to store its configuration in the same directory as it was
-            started from.</p>
-            <h3>Configuration</h3>
-            <p>
-            EvImSync needs to know which GMail folder it has to sync with which
-            of your notebooks in Evernote. To do that, you have to enter this
-            information in the configuration dialog. You can get to that dialog
-            via the <code>File->Configuration</code> menu.
-            </p>
-            <img src="http://stexbar.googlecode.com/svn/trunk/www/images/evimsync-configuration.png" />
-            <p>
-            <ul>
-                <li><code>Path to ENScript.exe</code>: in case EvImSync can not
-                determine that path automatically, you have to set it yourself.
-                That tool should be in the folder where you've installed Evernote.</li>
-                <li><code>Evernote Notebook</code>: the name of the notebook
-                you want to sync.</li>
-                <li><code>Server</code>: the domain name of the GMail imap server.
-                Usually that's <code>imap.gmail.com</code>.</li>
-                <li><code>Username/Password</code>: your GMail username and
-                password.</li>
-                <li><code>Base Folder</code>: the IMAP folder name where you want
-                your notes to be put under. EvImSync requires that all notes
-                be stored in a subfolder. I usually use <i>Notes</i> or the
-                name of the Evernote notebook for that name.</li>
-            </ul>
-            After you've set that information, click on the <i>Set Pair</i>
-            button to store the GMail/Notebook pair. You can configure as many
-            pairs as you like.
-            </p>
-            <h3>Synching</h3>
-            <p>
-            If you've set up at least one sync pair, just click on the <i>Start Sync</i>
-            button to start the synchronization. Depending on how many notes/emails
-            you have, this might take a while though.
-            </p>
-            <img src="http://stexbar.googlecode.com/svn/trunk/www/images/evimsync-main.png" />
-            <h3>Report problems</h3>
-            <p>
-            In case you encounter a bug or some other problem, please file an
-            issue in the <a href="http://code.google.com/p/evimsync/issues/list">issue tracker</a>.
-            If EvImSync has problems with the encoding of emails, please save
-            the email as an <code>eml</code> and attach it to the issue. Otherwise
-            filing the issue is useless since I won't be able to reproduce the
-            problem and therefore won't be able to fix it.
-            </p>
-            <h3>Download</h3>
-            <p>
-            EvImSync is open source (GPL). You can get the source code from
-            the Google Code <a href="http://code.google.com/p/evimsync/">project page</a>.
-            </p>
-            <p>
-            If you just want the compiled application, get it from the
-            <a href="http://code.google.com/p/evimsync/downloads/list">download page</a>
-            </p>
-        </div>
-    </div>
-</div>
+	<div class="post">
+		<h2><a href="#">EvImSync</a></h2>
+		$ADSENSE_TOP$
 
+		<div class="storycontent">
+			<p>EvImSync is a small tool to synchronize
+			<a href="http://www.evernote.com">Evernote</a> notebooks with a
+			<a href="http://mail.google.com/mail/">GMail</a> account.
+			Notes in Evernote are uploaded to your GMail account as emails, and
+			emails in GMail are imported to Evernote notebooks as notes.
+			</p>
+			<img src="http://stexbar.googlecode.com/svn/trunk/www/images/evimsync-overview.png" />
+			<p>
+			EvImSync requires the .NET framework 4. You can get this via Windows
+			update or directly from <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992&displaylang=en">here</a>.
+			</p>
+			<h3>Details: how it works</h3>
+			<p>
+			EvImSync uses the Evernote script engine <code>ENScript.exe</code>
+			to import and export notes. These notes are parsed and then compared
+			to emails in your GMail account using the IMAP protocol. This requires
+			that you have enabled IMAP in your GMail settings:
+			</p>
+			<img src="http://stexbar.googlecode.com/svn/trunk/www/images/GMail-IMAP.png" />
+			<p>
+			You can sync one notebook with one folder in a GMail account. EvImSync
+			allows you to sync as many notebooks and GMail folders as you like.
+			</p>
+			<h3>Limitations</h3>
+			<p>
+			Due to limitations both in the IMAP protocol, the Evernote scripting
+			engine and the available documentation, the synchronization is not
+			perfect. Some things simply can't be done by EvImSync.
+			</p>
+			<p>
+			<ul>
+				<li>Notes in Evernote are not deleted: if you delete an email
+				in GMail, that deletion is not reflected in Evernote. ENScript
+				doesn't have a command to delete a specific note. Instead, EvImSync
+				uploads the note from Evernote again to GMail. That means that
+				if you want to delete a note, you must do that in Evernote, not
+				in your GMail account. Notes that are deleted in Evernote get
+				moved to the folder "evernote trash" in your GMail account
+				from where you can remove them permanently if you like.</li>
+				<li>Tag changes in GMail are not reflected in Evernote: Again,
+				ENScript doesn't have a command to do that. However, if you have
+				a new email that's not already synced the Evernote you can use
+				GMail to add the tags you like. New emails are properly imported
+				to Evernote with all the GMail tags you have set.<br/>
+				Synching tags in the other direction works ok: If you change
+				tags in Evernote, those changes are properly reflected in your
+				GMail account.</li>
+				<li>Source URLs are not synched: Source URLs from Evernote are
+				not stored in GMail, but of course left as is in the Evernote notes.</li>
+				<li>Ink notes: Evernote Ink notes are not shown in GMail. The
+				format of those notes is not documented, so I can't convert them
+				to images or something like that which would properly be shown
+				in an email. Instead, such notes are converted to an email
+				attachment. Synching those works, but as mentioned you won't
+				be able to actually see them in GMail.</li>
+			</ul>
+			</p>
+			<h3>Installation</h3>
+			<p>EvImSync does not require installation. It can be run from any
+			place. Just doubleclick on the file to run it.</p>
+			<p>By default, EvImSync stores its configuration in the <code>%APPDATA%</code>
+			folder. However if you want to use EvImSync on an USB-stick, rename
+			the exe file to <code>EvImSyncPortable.exe</code>: this will force
+			EvImSync to store its configuration in the same directory as it was
+			started from.</p>
+			<h3>Configuration</h3>
+			<p>
+			EvImSync needs to know which GMail folder it has to sync with which
+			of your notebooks in Evernote. To do that, you have to enter this
+			information in the configuration dialog. You can get to that dialog
+			via the <code>File->Configuration</code> menu.
+			</p>
+			<img src="http://stexbar.googlecode.com/svn/trunk/www/images/evimsync-configuration.png" />
+			<p>
+			<ul>
+				<li><code>Path to ENScript.exe</code>: in case EvImSync can not
+				determine that path automatically, you have to set it yourself.
+				That tool should be in the folder where you've installed Evernote.</li>
+				<li><code>Evernote Notebook</code>: the name of the notebook
+				you want to sync.</li>
+				<li><code>Server</code>: the domain name of the GMail imap server.
+				Usually that's <code>imap.gmail.com</code>.</li>
+				<li><code>Username/Password</code>: your GMail username and
+				password.</li>
+				<li><code>Base Folder</code>: the IMAP folder name where you want
+				your notes to be put under. EvImSync requires that all notes
+				be stored in a subfolder. I usually use <i>Notes</i> or the
+				name of the Evernote notebook for that name.</li>
+			</ul>
+			After you've set that information, click on the <i>Set Pair</i>
+			button to store the GMail/Notebook pair. You can configure as many
+			pairs as you like.
+			</p>
+			<h3>Synching</h3>
+			<p>
+			If you've set up at least one sync pair, just click on the <i>Start Sync</i>
+			button to start the synchronization. Depending on how many notes/emails
+			you have, this might take a while though.
+			</p>
+			<img src="http://stexbar.googlecode.com/svn/trunk/www/images/evimsync-main.png" />
+			<h3>Report problems</h3>
+			<p>
+			In case you encounter a bug or some other problem, please file an
+			issue in the <a href="http://code.google.com/p/evimsync/issues/list">issue tracker</a>.
+			If EvImSync has problems with the encoding of emails, please save
+			the email as an <code>eml</code> and attach it to the issue. Otherwise
+			filing the issue is useless since I won't be able to reproduce the
+			problem and therefore won't be able to fix it.
+			</p>
+			<h3>Download</h3>
+			<p>
+			EvImSync is open source (GPL). You can get the source code from
+			the Google Code <a href="http://code.google.com/p/evimsync/">project page</a>.
+			</p>
+			<p>
+			If you just want the compiled application, get it from the
+			<a href="http://code.google.com/p/evimsync/downloads/list">download page</a>
+			</p>
+		</div>
+	</div>
+</div>
 
 <!--#include FILE="footer.html" -->
 
 </body>
 </html>
-
-
-
-
-
-
