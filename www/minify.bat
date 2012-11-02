@@ -7,5 +7,5 @@ set PATH=C:\MSYS\bin;%PATH%
 
 pushd %~dp0
 
-cleancss -o css/style.min.css css/style.css && ^
-cat js/builder.js js/effects.js js/scriptaculous.js js/lightbox.js | uglifyjs -o js/pack.js -nc
+cat css/lightbox.css css/style.css | cleancss -o css/pack.css && ^
+uglifyjs --no-copyright -o js/lightbox.min.js js/lightbox.js
