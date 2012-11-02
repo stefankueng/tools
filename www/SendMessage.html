@@ -52,6 +52,50 @@
             <p>To download the tool, go to the 
             <a href="http://code.google.com/p/sendmessage/downloads/list">download page</a>.</p>
         </div>
+        <hr />
+        <div class="storycontent">
+            <p>SendMessage can also be used from a command line:</p>
+            <p>
+                <dl>
+                    <dt>/message:NNNN</dt>
+                    <dd>specifies the window message to send or post as a decimal value</dd>
+                    
+                    <dt>/wparam:NNNN</dt>
+                    <dd>specifies the WPARAM</dd>
+                    <dt>/lparam:NNNN</dt>
+                    <dd>specifies the LPARAM</dd>
+                    
+                    <dt>/post</dt>
+                    <dd>optional: if specified, the message is sent 
+                    using <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms644944.aspx">PostMessage</a>.
+                    If it's not specified, the message is sent using <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950.aspx">SendMessage</a>.</dd>
+                                    </dl>
+                and at least one or more of these must be specified:
+                <dl>
+                    <dt>/windowhandle:NNNN</dt>
+                    <dd>the window handle to send the message to as a decimal value</dd>
+                    <dt>/windowtitle:TTTT</dt>
+                    <dd>the message is sent to any window that matches the specified title text</dd>
+                    <dt>/windowclass:TTTT</dt>
+                    <dd>the message is sent to any window that has the specified window class</dd>
+                    <dt>/processname:TTTT</dt>
+                    <dd>the message is sent only to windows that are part of the specified process</dd>
+                </dl>
+            </p>
+            <p>
+            If only <code>/processname:TTTT</code> is specified without
+            any window title, class or handle, the message is sent to
+            the top level window of the specified process(es).
+            </p>
+            <hr />
+            <p>
+            Example:
+            </p>
+            <p>
+            <code>SendMessage.exe /message:16 /processname:cmd.exe</code>
+            Sends a WM_CLOSE message to all open console windows.
+            </p>
+        </div>
     </div>
 </div>
 
@@ -60,9 +104,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
