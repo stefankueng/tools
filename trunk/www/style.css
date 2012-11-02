@@ -303,10 +303,9 @@ ul.post-meta li {
 /*
  * Left sidebar
  */
-#menu-left {
+/*#menu-left {
     float: left;
     padding: 0px 10px 20px 30px;
-    /* width: 240px; */
     width: 0px;
     font-size: 12px;
     border-right: 1px dotted #181818;
@@ -341,7 +340,7 @@ ul.post-meta li {
 #menu-left img {
     padding: 0px;
     border: none;
-}
+}*/
 
 /* End of left sidebar */
 
