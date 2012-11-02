@@ -1,0 +1,5 @@
+* specify image dimensions
+* minify css with clean-css and js with uglify-js
+* improve .htaccess
+* add 16x16 favicon
+* replace lightbox with fancybox
