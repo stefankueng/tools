@@ -44,7 +44,7 @@ code.command {
 }
 
 body {
-    background: #5e7eff url("images/background.png") repeat-x top;
+    background: #5e7eff url("../img/background.png") repeat-x top;
     color: #181818;
     font-size: 80%;
     font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
@@ -65,7 +65,7 @@ h2 {
     font-weight: bold;
     color: #eeeeee;
     border-bottom: #3d3d3d 1px solid;
-    background: url("images/title.png") repeat-x;
+    background: url("../img/title.png") repeat-x;
 }
 
 h2 a,
@@ -235,7 +235,7 @@ ul.post-meta li {
     height: 300px;
     width: 900px;
     padding: 0;
-    background: url("images/header.jpg");
+    background: url("../img/header.jpg");
 }
 
 .header-title {
@@ -273,7 +273,7 @@ ul.post-meta li {
     height: 54px;
     margin: 0 auto;
     color: #fefefe;
-    background: url("images/footer.png") no-repeat;
+    background: url("../img/footer.png") no-repeat;
     font-size: 11px;
     font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
 }
@@ -331,7 +331,7 @@ ul.post-meta li {
 }
 
 #menu-left ul ul li {
-    list-style-image: url("images/icon.png");
+    list-style-image: url("../img/icon.png");
     margin-left: 5px;
     padding: 1px 0px 1px 0px;
 }
@@ -346,7 +346,7 @@ ul.post-meta li {
 #rap {
     width: 900px;
     margin: 0 auto;
-    background: url("images/main.png") repeat-y;
+    background: url("../img/main.png") repeat-y;
     text-align: left;
 }
 
@@ -394,8 +394,8 @@ table td {
 #prevLink, #nextLink { width: 49%; height: 100%; background-image: url(data:image/gif;base64,AAAA); /* Trick IE into showing hover */ display: block; }
 #prevLink { left: 0; float: left;}
 #nextLink { right: 0; float: right;}
-#prevLink:hover, #prevLink:visited:hover { background: url("images/prevlabel.png") left 15% no-repeat; }
-#nextLink:hover, #nextLink:visited:hover { background: url("images/nextlabel.png") right 15% no-repeat; }
+#prevLink:hover, #prevLink:visited:hover { background: url("../img/prevlabel.png") left 15% no-repeat; }
+#nextLink:hover, #nextLink:visited:hover { background: url("../img/nextlabel.png") right 15% no-repeat; }
 
 #imageDataContainer { font: 10px Verdana, Helvetica, sans-serif; background-color: #fff; margin: 0 auto; line-height: 1.4em; overflow: auto; width: 100% ; }
 
