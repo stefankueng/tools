@@ -1,3 +1,2 @@
-* specify image dimensions
 * improve .htaccess
 * replace lightbox with fancybox
