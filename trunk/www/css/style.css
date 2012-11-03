@@ -19,16 +19,6 @@ a:hover {
     vertical-align: super;
 }
 
-acronym, abbr {
-    cursor: help;
-}
-
-blockquote {
-    border-left: 5px solid #5e7eff;
-    margin-left: 15px;
-    padding-left: 5px;
-}
-
 code.command {
     color: white;
     font-weight: bold;
@@ -51,11 +41,6 @@ body {
     margin: 0 auto;
     padding: 0;
     text-align: center;
-}
-
-cite {
-    font-size: 90%;
-    font-style: normal;
 }
 
 h2 {
@@ -90,16 +75,6 @@ img {
     border: none; /* 1px solid #181818; */
  }
 
-img.alignleft {
-    float: left;
-    margin: 0px 0px 0px 0;
-}
-
-img.alignright {
-    float: right;
-    margin: 0 0px 0px 0px;
-}
-
 li {
     margin: 0;
     padding: 3px;
@@ -118,24 +93,9 @@ ul {
  * Classes
  */
 
-#ad728x90 {
-    text-align: center;
- }
-
-/* The post information */
 .post {
     background: #ffffff;
     border: 1px solid #ffffff;
-}
-
-.meta {
-    font-size: 12px;
-    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
-}
-
-.meta li,
-ul.post-meta li {
-    display: inline;
 }
 
 .meta ul {
@@ -144,26 +104,6 @@ ul.post-meta li {
     margin: 0;
     padding: 0;
  }
-
-.meta a {
-    color: #181818;
-    text-transform: lowercase;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.meta a:hover {
-    color: #181818;
-    text-transform: lowercase;
-    text-decoration: underline;
-}
-
-.meta {
-    color: #181818;
-    font-weight: normal;
-    letter-spacing: 0;
-    padding-left: 5px;
-}
 
 .storycontent {
     font-size: 115%;
