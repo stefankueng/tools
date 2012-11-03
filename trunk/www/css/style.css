@@ -173,7 +173,6 @@ ul.post-meta li {
 
 #content {
     float: left;
-    /*width: 575px;*/
     width: 815px;
     padding: 0px 10px 20px 30px;
     margin: 10px 8px 0;
@@ -192,13 +191,6 @@ ul.post-meta li {
 
 #content ul li {
     list-style-image: none;
-}
-
-#content-big {
-    float: left;
-    width: 575px;
-    margin: 0px 8px 20px 8px;
-    text-align: justify;
 }
 
 #header {
