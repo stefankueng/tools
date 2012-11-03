@@ -193,6 +193,10 @@ ul.post-meta li {
     list-style-image: none;
 }
 
+#adsense {
+    text-align: center;
+ }
+ 
 #header {
     font-size: 33px;
     font-weight: bold;
