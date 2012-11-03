@@ -118,24 +118,6 @@ ul {
  * Classes
  */
 
-/* The credits at the bottom of the site */
-#credit {
-    color: #181818;
-    font-size: 14px;
-    width: 868px;
-    text-align: center;
-    margin: 0 auto;
-    padding: 5px 0 5px 0;
-    clear: both;
- }
-
-#credit a,
-#credit a:hover,
-#credit a:visited,
-#credit a:visited:hover {
-    color: #181818;
-}
-
 #ad728x90 {
     text-align: center;
  }
@@ -144,13 +126,6 @@ ul {
 .post {
     background: #ffffff;
     border: 1px solid #ffffff;
-}
-
-.spacer {
-    padding-bottom: 10px;
-    text-align: right;
-    clear: both;
-    text-transform: lowercase;
 }
 
 .meta {
@@ -298,50 +273,6 @@ ul.post-meta li {
     color: #BFBFEF;
     text-decoration: underline;
 }
-
-/*
- * Left sidebar
- */
-/*#menu-left {
-    float: left;
-    padding: 0px 10px 20px 30px;
-    width: 0px;
-    font-size: 12px;
-    border-right: 1px dotted #181818;
-    display: inline;
-}
-
-#menu-left a,
-#menu-left a:visited {
-    text-transform: lowercase;
-    text-decoration: none;
-    color: #181818;
-    font-weight: bold;
-}
-
-#menu-left a:hover,
-#menu-left a:visited:hover {
-    color: #181818;
-    text-decoration: underline;
-}
-
-#menu-left ul ul {
-    padding-bottom: 10px;
-    margin-left: 15px;
-}
-
-#menu-left ul ul li {
-    list-style-image: url("../img/icon.png");
-    margin-left: 5px;
-    padding: 1px 0px 1px 0px;
-}
-
-#menu-left img {
-    padding: 0px;
-    border: none;
-}*/
-
-/* End of left sidebar */
 
 #rap {
     width: 900px;
