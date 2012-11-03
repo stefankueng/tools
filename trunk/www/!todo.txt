@@ -1,4 +1,3 @@
 * specify image dimensions
 * improve .htaccess
-* add 16x16 favicon
 * replace lightbox with fancybox
