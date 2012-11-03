@@ -140,7 +140,7 @@ ul {
     text-align: center;
  }
 
-/* The post informations */
+/* The post information */
 .post {
     background: #ffffff;
     border: 1px solid #ffffff;
@@ -229,8 +229,8 @@ ul.post-meta li {
 #header {
     font-size: 33px;
     font-weight: bold;
-    text-decoration:none;
-    font-family: Verdana;
+    text-decoration: none;
+    font-family: Verdana, Arial, Sans-Serif;
     margin: 0 auto;
     height: 300px;
     width: 900px;
