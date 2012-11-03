@@ -1,4 +1,4 @@
-<div align="adsense">
+<div id="adsense">
 	<script type="text/javascript"><!--
 		google_ad_client = "pub-0430507460695576";
 		/* 336x280, tools inpage */
