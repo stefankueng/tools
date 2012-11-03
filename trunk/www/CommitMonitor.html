@@ -5,11 +5,8 @@
 <title>CommitMonitor</title>
 <link href="css/pack.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
-
 <body>
-
-<!--#include FILE="menu.html" -->
-
+<!--#include FILE="header.html"-->
 <div id="content">
 	<div class="post">
 		<h2><a href="#">CommitMonitor</a></h2>
@@ -20,7 +17,7 @@
 			The CommitMonitor is a small tool to monitor <a href="http://subversion.apache.org/">Apache<span class="ss">&trade;</span> Subversion<span class="ss">&reg;</span></a>
 			repositories for new commits. It has a very small memory footprint and resides in the system tray.
 			<br/>
-			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/MainDlg.png" rel="lightbox[commitmonitor]"><img src="img/cmMainDlg.png" alt="Main Dialog" /></a>.
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/MainDlg.png" rel="lightbox[commitmonitor]"><img src="img/cmMainDlg.png" alt="Main Dialog" /></a>
 			</p>
 			<p>
 			In case you have multiple repositories under an SVNParentPath with the
@@ -42,7 +39,7 @@
 			<p>
 			Of course, you can configure the time interval the CommitMonitor should check your repositories for new commits:
 			<br/>
-			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/EditURL.png" rel="lightbox[commitmonitor]"><img src="img/cmEditURL.png" alt="EditURL" /></a>.
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/EditURL.png" rel="lightbox[commitmonitor]"><img src="img/cmEditURL.png" alt="EditURL" /></a>
 			</p>
 			<p>
 			Just make sure in case you want to monitor a public open source repository to set
@@ -50,7 +47,7 @@
 			</p>
 			<p>You can also put an <code>svnrobots.txt</code> file on your repository server to
 			set a minimum time interval.<br/>
-			See <a href="/svnrobots.html">the svnrobots documentation</a> for more details about this.
+			See <a href="svnrobots.html">the svnrobots documentation</a> for more details about this.
 			</p>
 			<p>
 			Once CommitMonitor has found new commits to one or more of the repositories you
@@ -59,13 +56,13 @@
 			Options dialog, the eyes will also move around until you open the CommitMonitor
 			main dialog (by doubleclicking on the system tray icon) and read the commits.
 			<br/>
-			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/Notification.png" rel="lightbox[commitmonitor]"><img src="img/cmNotification.png" alt="Notification" /></a>.
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/Notification.png" rel="lightbox[commitmonitor]"><img src="img/cmNotification.png" alt="Notification" /></a>
 			</p>
 			<p>
 			If you have <a href="http://www.fullphat.net">Snarl</a> installed,
 			CommitMonitor automatically uses Snarl to show its popups:
 			<br/>
-			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/snarlpopup.png" rel="lightbox[commitmonitor]"><img src="img/cmsnarlpopup.png" alt="Snarl popup" /></a>.
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/snarlpopup.png" rel="lightbox[commitmonitor]"><img src="img/cmsnarlpopup.png" alt="Snarl popup" /></a>
 			</p>
 			<p>
 			CommitMonitor also registers itself with Snarl which will allow you to configure the popups in more detail:
@@ -82,7 +79,9 @@
 			information) it only uses about 1MB of RAM. Of course, it uses more
 			(about 15MB RAM) while it accesses the repositories.
 			<br/>
-			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/MemoryFootprint.png" rel="lightbox[commitmonitor]"><img src="img/cmMemoryFootprint.png" alt="Memory Footprint" /></a>.
+			<a href="http://commitmonitor.googlecode.com/svn/trunk/docs/ScreenShots/MemoryFootprint.png" rel="lightbox[commitmonitor]">
+				<img src="img/cmMemoryFootprint.png" alt="Memory Footprint" />
+			</a>
 			</p>
 			<p>
 			CommitMonitor is available under the <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GNU GPL version 2</a>.
@@ -96,7 +95,7 @@
 		</div>
 	</div>
 </div>
-<!--#include FILE="footer.html" -->
+<!--#include FILE="footer.html"-->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/lightbox.min.js"></script>
 </body>
