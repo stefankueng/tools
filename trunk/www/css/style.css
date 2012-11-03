@@ -133,8 +133,9 @@ ul {
     list-style-image: none;
 }
 
-#adsense {
+.centered {
     text-align: center;
+    vertical-align: middle;
  }
  
 #header {
@@ -240,4 +241,8 @@ table td {
     border-style: inset;
     border-color: blue;
     background-color: white;
+}
+
+.tdnowrap {
+    white-space: nowrap;
 }
