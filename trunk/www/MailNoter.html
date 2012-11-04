@@ -7,11 +7,9 @@
 <body>
 <!--#include FILE="header.html"-->
 <div id="content">
-
 	<div class="post">
 		<h2><a href="#">MailNoter</a></h2>
 		$ADSENSE_TOP$
-
 		<div class="storycontent">
 			<p>MailNoter is a small tool to help gathering notes from various
 			applications, but specifically from browsers.</p>
@@ -73,7 +71,6 @@
 
 	<div class="post">
 		<h2><a href="#">Setup</a></h2>
-
 		$ADSENSE_INPAGE$
 		<div class="storycontent">
 			<p>After downloading MailNoter, unzip the executable file. After
@@ -86,7 +83,9 @@
 			<br/>
 			A click on the "options" entry brings up the configuration dialog:
 			<br/>
-			<a href="http://mailnoter.googlecode.com/svn/trunk/www/optionsDialog.png" rel="lightbox[mailnoter]"><img src="img/mnoptionsDialog.png" alt="Options dialog" width="148" height="89" /></a>
+			<a class="fancybox" data-fancybox-group="gallery" href="http://mailnoter.googlecode.com/svn/trunk/www/optionsDialog.png" title="Options dialog">
+				<img src="img/mnoptionsDialog.png" alt="Options dialog" width="148" height="89"/>
+			</a>
 			<br/>
 			Here you can set the hotkey, the "from" address (most email clients
 			will ignore that, so you can leave that empty) and of course the
@@ -106,7 +105,6 @@
 
 	<div class="post">
 		<h2><a href="#">Email client</a></h2>
-
 		<div class="storycontent">
 			<p>For MailNoter to work, you must have an email client installed
 			which supports <a href="http://en.wikipedia.org/wiki/Messaging_Application_Programming_Interface">Simple MAPI</a>.
@@ -122,7 +120,6 @@
 
 	<div class="post">
 		<h2><a href="#">Capture content</a></h2>
-
 		<div class="storycontent">
 			<p>After you've set everything up and MailNoter is running, you
 			can start capturing content. For example, go to a website with your
@@ -130,16 +127,17 @@
 			hotkey and see MailNoter open a new email for you with your
 			default email client:
 			<br/>
-			<a href="http://mailnoter.googlecode.com/svn/trunk/www/capturingWeb.png" rel="lightbox[mailnoter]"><img src="img/mncapturingWeb.png" alt="Capturing" width="257" height="193" /></a>
+			<a class="fancybox" data-fancybox-group="gallery" href="http://mailnoter.googlecode.com/svn/trunk/www/capturingWeb.png" title="Capturing the web">
+				<img src="img/mncapturingWeb.png" alt="Capturing the web" width="257" height="193"/>
+			</a>
 			</p>
 			<p>To report problems, please use the
 			<a href="http://code.google.com/p/mailnoter/issues/list">issue tracker</a>.</p>
 		</div>
 	</div>
-
 </div>
-<!--#include FILE="footer.html"-->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="js/lightbox.min.js"></script>
+<script type="text/javascript" src="js/pack.js"></script>
+<!--#include FILE="footer-js.html"-->
 </body>
 </html>

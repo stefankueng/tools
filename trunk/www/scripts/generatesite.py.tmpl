@@ -14,12 +14,16 @@ if os.path.exists(setpath):
 shutil.copytree(os.path.abspath('..'), setpath)
 
 footerFile = file(os.path.join(setpath, 'footer.html'), 'r')
+footerjsFile = file(os.path.join(setpath, 'footer-js.html'), 'r')
 menuFile = file(os.path.join(setpath, 'header.html'), 'r')
 adtopFile = file(os.path.join(setpath, 'files/adsense_top.txt'), 'r')
 adinpageFile = file(os.path.join(setpath, 'files/adsense_inpage.txt'), 'r')
 
 footerText = footerFile.read()
 footerFile.close()
+
+footerjsText = footerjsFile.read()
+footerjsFile.close()
 
 menuText = menuFile.read()
 menuFile.close()
@@ -30,8 +34,8 @@ adtopFile.close()
 adinpageText = adinpageFile.read()
 adinpageFile.close()
 
-searchfor.extend( [ '<!--#include FILE="header.html"-->', '<!--#include FILE="footer.html"-->', '$ADSENSE_TOP$', '$ADSENSE_INPAGE$' ] )
-replacewith.extend( [ menuText, footerText, adtopText, adinpageText ] )
+searchfor.extend( [ '<!--#include FILE="header.html"-->', '<!--#include FILE="footer.html"-->', '<!--#include FILE="footer-js.html"-->', '$ADSENSE_TOP$', '$ADSENSE_INPAGE$' ] )
+replacewith.extend( [ menuText, footerText, footerjsText, adtopText, adinpageText ] )
 
 for root, dirs, files in os.walk(setpath):
     fname = files

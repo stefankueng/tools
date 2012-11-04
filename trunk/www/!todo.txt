@@ -1,2 +1,0 @@
-* improve .htaccess
-* replace lightbox with fancybox
