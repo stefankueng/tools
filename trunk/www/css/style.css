@@ -102,7 +102,7 @@ ul {
 code.command {
     color: white;
     font-weight: bold;
-    background-color:black;
+    background-color: black;
     white-space: pre;
     font-family: monospace;
     display: inline-block;
@@ -184,22 +184,20 @@ code.command {
 .header-title a {
     color: #5e7eff;
     text-decoration: none;
-    border-bottom: none;
 }
 
 .header-title a:hover {
-    color:#BFBFEF;
-    text-decoration:none;
-    border-bottom:none;
+    color: #BFBFEF;
+    text-decoration: none;
 }
 
 .header-description {
     font-size: 14px;
     font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
     font-weight: normal;
-    color:#fefefe;
+    color: #fefefe;
     padding: 0px 0 0 350px;
-    text-align:left;
+    text-align: left;
 }
 
 #footer {
