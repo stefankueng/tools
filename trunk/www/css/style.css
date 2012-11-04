@@ -1,6 +1,16 @@
 /*
  * Default HTML tags
  */
+body {
+    background: #5e7eff url("../img/background.png") repeat-x top;
+    color: #181818;
+    font-size: 80%;
+    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+}
+
 a {
     color: #181818;
 }
@@ -14,33 +24,29 @@ a:hover {
     color: #5e7eff;
 }
 
-.ss {
-    font-size: 70%;
-    vertical-align: super;
-}
-
-code.command {
-    color: white;
-    font-weight: bold;
-    background-color:black;
-    white-space: pre;
-    font-family: monospace;
-    display: inline-block;
-    margin: 6px 6px 6px 6px;
-    padding: 12px 12px 12px 12px;
+table {
+    border-width: 1px;
+    border-spacing: 2px;
     border-style: solid;
-    border-width: thin;
-    border-color: gray;
+    border-color: blue;
+    border-collapse: collapse;
+    background-color: white;
 }
 
-body {
-    background: #5e7eff url("../img/background.png") repeat-x top;
-    color: #181818;
-    font-size: 80%;
-    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
-    margin: 0 auto;
-    padding: 0;
-    text-align: center;
+table th {
+    border-width: 1px;
+    padding: 3px;
+    border-style: inset;
+    border-color: blue;
+    background-color: white;
+}
+
+table td {
+    border-width: 1px;
+    padding: 3px;
+    border-style: inset;
+    border-color: blue;
+    background-color: white;
 }
 
 h2 {
@@ -92,6 +98,25 @@ ul {
 /*
  * Classes
  */
+
+code.command {
+    color: white;
+    font-weight: bold;
+    background-color:black;
+    white-space: pre;
+    font-family: monospace;
+    display: inline-block;
+    margin: 6px 6px 6px 6px;
+    padding: 12px 12px 12px 12px;
+    border-style: solid;
+    border-width: thin;
+    border-color: gray;
+}
+
+.ss {
+    font-size: 70%;
+    vertical-align: super;
+}
 
 .post {
     background: #ffffff;
@@ -213,29 +238,4 @@ ul {
     margin: 0 auto;
     background: url("../img/main.png") repeat-y;
     text-align: left;
-}
-
-table {
-    border-width: 1px;
-    border-spacing: 2px;
-    border-style: solid;
-    border-color: blue;
-    border-collapse: collapse;
-    background-color: white;
-}
-
-table th {
-    border-width: 1px;
-    padding: 3px;
-    border-style: inset;
-    border-color: blue;
-    background-color: white;
-}
-
-table td {
-    border-width: 1px;
-    padding: 3px;
-    border-style: inset;
-    border-color: blue;
-    background-color: white;
 }
