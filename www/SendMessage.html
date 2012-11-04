@@ -7,11 +7,9 @@
 <body>
 <!--#include FILE="header.html"-->
 <div id="content">
-
 	<div class="post">
 		<h2><a href="#">SendMessage</a></h2>
 		$ADSENSE_TOP$
-
 		<div class="storycontent">
 			<p>SendMessage is a little tool to send Windows messages to any window.</p>
 			<p>Ever wondered how you should test whether your application correctly
@@ -23,17 +21,23 @@
 			<p>With this tool, you can send that message and any other message
 			you like to your application window. And you can do that while you
 			have a debugger attached to your application!</p>
-			<a href="http://sendmessage.googlecode.com/svn/trunk/web/MainDlg-Endsession.png" rel="lightbox[sendmessage]"><img src="img/SendMessageMainDlg-Endsession.png" alt="End session" width="182" height="100" /></a>
+			<a class="fancybox" data-fancybox-group="gallery" href="http://sendmessage.googlecode.com/svn/trunk/web/MainDlg-Endsession.png" title="End session">
+				<img src="img/SendMessageMainDlg-Endsession.png" alt="End session" width="182" height="100"/>
+			</a>
 			<p>To find the window handle of your app, either drag the target icon
 			in the upper left to your main window, or click on the "Windows" button
 			and select the window from the list.</p>
-			<a href="http://sendmessage.googlecode.com/svn/trunk/web/FindWindowDlg.png" rel="lightbox[sendmessage]"><img src="img/SendMessageFindWindowDlg.png" alt="Find Window Dialog" width="183" height="139" /></a>
+			<a class="fancybox" data-fancybox-group="gallery" href="http://sendmessage.googlecode.com/svn/trunk/web/FindWindowDlg.png" title="Find Window Dialog">
+				<img src="img/SendMessageFindWindowDlg.png" alt="Find Window Dialog" width="183" height="139"/>
+			</a>
 			<p>There are a few window messages predefined in SendMessage. If you
 			need to send a message that is not in the list, just enter the number of
 			the message and any required values for WPARAM and LPARAM manually.
 			The screenshot below shows how this would look like for the
 			WM_SYSCOLORCHANGE message.</p>
-			<a href="http://sendmessage.googlecode.com/svn/trunk/web/MainDlg-CustomMessage.png" rel="lightbox[sendmessage]"><img src="img/SendMessageMainDlg-CustomMessage.png" alt="Main Dialog Custom Message" width="182" height="100" /></a>
+			<a class="fancybox" data-fancybox-group="gallery" href="http://sendmessage.googlecode.com/svn/trunk/web/MainDlg-CustomMessage.png" title="Main Dialog Custom Message">
+				<img src="img/SendMessageMainDlg-CustomMessage.png" alt="Main Dialog Custom Message" width="182" height="100"/>
+			</a>
 			<p>Once you've entered the message information, click on either the
 			"SendMessage" or "PostMessage" button and the message is sent or
 			posted to your window.</p>
@@ -86,8 +90,8 @@
 		</div>
 	</div>
 </div>
-<!--#include FILE="footer.html"-->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="js/lightbox.min.js"></script>
+<script type="text/javascript" src="js/pack.js"></script>
+<!--#include FILE="footer-js.html"-->
 </body>
 </html>
