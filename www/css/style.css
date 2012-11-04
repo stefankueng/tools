@@ -72,7 +72,7 @@ h3 {
 
 img {
     padding: 3px;
-    border: none; /* 1px solid #181818; */
+    border: 0;
  }
 
 li {
@@ -97,13 +97,6 @@ ul {
     background: #ffffff;
     border: 1px solid #ffffff;
 }
-
-.meta ul {
-    display: inline;
-    list-style: none;
-    margin: 0;
-    padding: 0;
- }
 
 .storycontent {
     font-size: 115%;
@@ -136,8 +129,12 @@ ul {
 .centered {
     text-align: center;
     vertical-align: middle;
- }
- 
+}
+
+.tdnowrap {
+    white-space: nowrap;
+}
+
 #header {
     font-size: 33px;
     font-weight: bold;
@@ -241,8 +238,4 @@ table td {
     border-style: inset;
     border-color: blue;
     background-color: white;
-}
-
-.tdnowrap {
-    white-space: nowrap;
 }
