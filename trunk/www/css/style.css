@@ -113,7 +113,7 @@ code.command {
     border-color: gray;
 }
 
-.ss {
+.superscript {
     font-size: 70%;
     vertical-align: super;
 }
