@@ -13,11 +13,11 @@ if os.path.exists(setpath):
     os.rmdir(setpath)
 shutil.copytree(os.path.abspath('..'), setpath)
 
-footerFile = file(os.path.join(setpath, 'footer.html'), 'r')
-footerjsFile = file(os.path.join(setpath, 'footer-js.html'), 'r')
-menuFile = file(os.path.join(setpath, 'header.html'), 'r')
-adtopFile = file(os.path.join(setpath, 'files/adsense_top.txt'), 'r')
-adinpageFile = file(os.path.join(setpath, 'files/adsense_inpage.txt'), 'r')
+footerFile = file(os.path.join(setpath, 'templates/footer.html'), 'r')
+footerjsFile = file(os.path.join(setpath, 'templates/footer-js.html'), 'r')
+menuFile = file(os.path.join(setpath, 'templates/header.html'), 'r')
+adtopFile = file(os.path.join(setpath, 'templates/adsense_top.html'), 'r')
+adinpageFile = file(os.path.join(setpath, 'templates/adsense_inpage.html'), 'r')
 
 footerText = footerFile.read()
 footerFile.close()
