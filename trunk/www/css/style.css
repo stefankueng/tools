@@ -131,7 +131,8 @@ code.command {
     padding: 0px 10px 20px 30px;
     margin: 10px 8px 0;
     text-align: left;
-    display: block; float: none;
+    display: block;
+    float: none;
 }
 
 #content ol li {
