@@ -232,6 +232,72 @@ code.command {
     width: 900px;
 }
 
+.caution, .important, .note, .tip, .warning {
+    border-top: 5px solid;
+    border-left: 1px solid;
+    margin: 1em 0 0 1em;
+    padding: 5px 0 10px 0;
+    width: 90%;
+    clear: both;
+    background-repeat: no-repeat;
+    background-position: 5px 1.33em;
+    padding: 0 0 0 42px;
+    min-height: 52px;
+    width: 80%;
+}
+
+.tip {
+    background-image: url("../img/tip.png");
+    border-color: #090;
+}
+
+.tip h3 {
+    padding-top: 4px;
+    color: #090;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 1.05em;
+}
+
+.important {
+    background-image: url("../img/important.png");
+    border-color: #069;
+}
+
+.important h3 {
+    padding-top: 4px;
+    color: #069;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 1.05em;
+}
+
+.caution {
+    background-image: url("../img/caution.png");
+    border-color: #c60;
+}
+
+.caution h3 {
+    padding-top: 4px;
+    color: #c60;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 1.05em;
+}
+
+.warning {
+    background-image: url("../img/warning.png");
+    border-color: #900;
+}
+
+.warning h3 {
+    padding-top: 4px;
+    color: #900;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 1.05em;
+}
+
 .sprite-AAClr {
     background: url("../img/app_icons_sprite.png") no-repeat 0 0;
     width: 64px;
