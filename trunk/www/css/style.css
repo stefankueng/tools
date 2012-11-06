@@ -24,6 +24,36 @@ a:hover {
     color: #5e7eff;
 }
 
+footer {
+    background: url("../img/footer.png") no-repeat;
+    color: #fefefe;
+    font-size: 11px;
+    height: 54px;
+    margin: 0 auto;
+    width: 900px;
+}
+
+footer a {
+    color: #5e7eff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #bfbfef;
+    text-decoration: underline;
+}
+
+footer a:visited {
+    color: #5e7eff;
+    text-decoration: none;
+}
+
+footer a:visited:hover {
+    color: #bfbfef;
+    text-decoration: underline;
+}
+
 h2 {
     background: url("../img/header2.png") repeat-x;
     border-bottom: #3d3d3d 1px solid;
@@ -51,6 +81,17 @@ h3 {
     margin-top: 0;
 }
 
+header {
+    background: url("../img/header.png");
+    font-size: 33px;
+    font-weight: bold;
+    margin: 0 auto;
+    padding: 0;
+    text-decoration: none;
+    width: 900px;
+    height: 300px;
+}
+
 img {
     border: 0;
     padding: 3px;
@@ -59,6 +100,10 @@ img {
 li {
     margin: 0;
     padding: 3px;
+}
+
+ol li {
+    list-style: decimal;
 }
 
 table {
@@ -89,6 +134,10 @@ table td {
 ul {
     margin: 0;
     padding: 0;
+}
+
+ul li {
+    list-style-image: none;
 }
 
 /*
@@ -136,17 +185,9 @@ code.command {
     width: 815px;
 }
 
-#content ol li {
-    list-style: decimal;
-}
-
 #content ul {
     margin-left: 35px;
     margin-top: 10px;
-}
-
-#content ul li {
-    list-style-image: none;
 }
 
 .centered {
@@ -158,21 +199,8 @@ code.command {
     white-space: nowrap;
 }
 
-#header {
-    background: url("../img/header.png");
-    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
-    font-size: 33px;
-    font-weight: bold;
-    margin: 0 auto;
-    padding: 0;
-    text-decoration: none;
-    width: 900px;
-    height: 300px;
-}
-
 .header-title {
     color: #5e7eff;
-    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
     font-size: 26px;
     font-weight: bold;
     padding: 128px 0 0 348px;
@@ -191,42 +219,10 @@ code.command {
 
 .header-description {
     color: #fefefe;
-    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
     font-size: 14px;
     font-weight: normal;
     padding: 0px 0 0 350px;
     text-align: left;
-}
-
-#footer {
-    background: url("../img/footer.png") no-repeat;
-    color: #fefefe;
-    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
-    font-size: 11px;
-    height: 54px;
-    margin: 0 auto;
-    width: 900px;
-}
-
-#footer a {
-    color: #5e7eff;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#footer a:hover {
-    color: #bfbfef;
-    text-decoration: underline;
-}
-
-#footer a:visited {
-    color: #5e7eff;
-    text-decoration: none;
-}
-
-#footer a:visited:hover {
-    color: #bfbfef;
-    text-decoration: underline;
 }
 
 #rap {
