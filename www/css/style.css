@@ -115,7 +115,7 @@ table {
     border-width: 1px;
 }
 
-table th {
+table td {
     background-color: white;
     border-color: blue;
     border-style: inset;
@@ -123,7 +123,7 @@ table th {
     padding: 3px;
 }
 
-table td {
+table th {
     background-color: white;
     border-color: blue;
     border-style: inset;
@@ -143,7 +143,6 @@ ul li {
 /*
  * Classes
  */
-
 code.command {
     background-color: black;
     border-color: gray;
@@ -300,15 +299,15 @@ code.command {
 
 
 .sprite         { background: url("../img/app_icons_sprite.png") no-repeat 64px 64px; }
-.AAClr          { background-position: 0 0;}
-.CommitMonitor  { background-position: 0 -72px;}
-.CryptSync      { background-position: 0 -146px;}
-.DemoHelper     { background-position: 0 -222px;}
-.EvImSync       { background-position: 0 -292px;}
-.FavIconizer    { background-position: 0 -366px;}
-.MailNoter      { background-position: 0 -440px;}
-.SendMessage    { background-position: 0 -518px;}
-.console        { background-position: 0 -590px;}
-.grepWin        { background-position: 0 -664px;}
-.trafficwatcher { background-position: 0 -740px;}
-.win            { background-position: 0 -812px;}
+.AAClr          { background-position: 0 0; }
+.CommitMonitor  { background-position: 0 -72px; }
+.CryptSync      { background-position: 0 -146px; }
+.DemoHelper     { background-position: 0 -222px; }
+.EvImSync       { background-position: 0 -292px; }
+.FavIconizer    { background-position: 0 -366px; }
+.MailNoter      { background-position: 0 -440px; }
+.SendMessage    { background-position: 0 -518px; }
+.console        { background-position: 0 -590px; }
+.grepWin        { background-position: 0 -664px; }
+.trafficwatcher { background-position: 0 -740px; }
+.win            { background-position: 0 -812px; }
