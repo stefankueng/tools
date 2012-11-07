@@ -232,7 +232,7 @@ code.command {
     width: 900px;
 }
 
-.caution, .important, .note, .tip, .warning {
+/*.caution,*/ .important/*, .note, .tip, .warning*/ {
     border-top: 5px solid;
     border-left: 1px solid;
     margin: 1em 0 0 1em;
@@ -246,7 +246,7 @@ code.command {
     width: 80%;
 }
 
-.tip {
+/*.tip {
     background-image: url("../img/tip.png");
     border-color: #090;
 }
@@ -257,7 +257,7 @@ code.command {
     font-weight: bold;
     font-style: italic;
     font-size: 1.05em;
-}
+}*/
 
 .important {
     background-image: url("../img/important.png");
@@ -272,7 +272,7 @@ code.command {
     font-size: 1.05em;
 }
 
-.caution {
+/*.caution {
     background-image: url("../img/caution.png");
     border-color: #c60;
 }
@@ -296,7 +296,7 @@ code.command {
     font-weight: bold;
     font-style: italic;
     font-size: 1.05em;
-}
+}*/
 
 .sprite-AAClr {
     background: url("../img/app_icons_sprite.png") no-repeat 0 0;
