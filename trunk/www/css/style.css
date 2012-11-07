@@ -114,15 +114,7 @@ table {
     border-width: 1px;
 }
 
-table td {
-    background-color: white;
-    border-color: blue;
-    border-style: inset;
-    border-width: 1px;
-    padding: 3px;
-}
-
-table th {
+table td, th {
     background-color: white;
     border-color: blue;
     border-style: inset;
