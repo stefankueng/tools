@@ -55,8 +55,7 @@ footer a:visited:hover {
 }
 
 h2 {
-    background: url("../img/header2.png") repeat-x;
-    border-bottom: #3d3d3d 1px solid;
+    background-color: #3d3d3d;
     color: #eeeeee;
     font-size: 14px;
     font-weight: bold;
@@ -231,72 +230,25 @@ code.command {
     width: 900px;
 }
 
-/*.caution,*/ .important/*, .note, .tip, .warning*/ {
-    border-top: 5px solid;
-    border-left: 1px solid;
-    margin: 1em 0 0 1em;
-    padding: 5px 0 10px 0;
-    width: 90%;
-    clear: both;
-    background-repeat: no-repeat;
-    background-position: 5px 1.33em;
-    padding: 0 0 0 42px;
-    min-height: 52px;
-    width: 80%;
-}
-
-/*.tip {
-    background-image: url("../img/tip.png");
-    border-color: #090;
-}
-
-.tip h3 {
-    padding-top: 4px;
-    color: #090;
-    font-weight: bold;
-    font-style: italic;
-    font-size: 1.05em;
-}*/
-
 .important {
-    background-image: url("../img/important.png");
-    border-color: #069;
+    background: url("../img/important.png") no-repeat 5px 1.33em;
+    border-color: #069 !important;
+    border-left: 1px solid;
+    border-top: 5px solid;
+    clear: both;
+    margin: 1em 0 0 1em;
+    min-height: 52px;
+    padding: 0 0 0 42px;
+    width: 90%;
 }
 
 .important h3 {
-    padding-top: 4px;
     color: #069;
-    font-weight: bold;
-    font-style: italic;
     font-size: 1.05em;
-}
-
-/*.caution {
-    background-image: url("../img/caution.png");
-    border-color: #c60;
-}
-
-.caution h3 {
+    font-style: italic;
+    font-weight: bold;
     padding-top: 4px;
-    color: #c60;
-    font-weight: bold;
-    font-style: italic;
-    font-size: 1.05em;
 }
-
-.warning {
-    background-image: url("../img/warning.png");
-    border-color: #900;
-}
-
-.warning h3 {
-    padding-top: 4px;
-    color: #900;
-    font-weight: bold;
-    font-style: italic;
-    font-size: 1.05em;
-}*/
-
 
 .sprite         { background: url("../img/app_icons_sprite.png") no-repeat 64px 64px; }
 .AAClr          { background-position: 0 0; }
