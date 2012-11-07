@@ -213,7 +213,7 @@ code.command {
 }
 
 .header-title a:hover {
-    color: #BFBFEF;
+    color: #bfbfef;
     text-decoration: none;
 }
 
@@ -297,75 +297,18 @@ code.command {
     font-style: italic;
     font-size: 1.05em;
 }*/
-
-.sprite-AAClr {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 0;
-    width: 64px;
-    height: 64px;
 }
 
-.sprite-CommitMonitor {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -72px;
-    width: 64px;
-    height: 64px;
-}
-
-.sprite-CryptSync {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -146px;
-    width: 64px;
-    height: 64px;
-}
-
-.sprite-DemoHelper {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -222px;
-    width: 64px;
-    height: 64px;
-}
-
-.sprite-EvImSync {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -292px;
-    width: 64px;
-    height: 64px;
-}
-
-.sprite-FavIconizer {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -366px;
-    width: 64px;
-    height: 64px;
-}
-
-.sprite-MailNoter {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -440px;
-    width: 64px;
-    height: 64px;
-}
-
-.sprite-SendMessage {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -518px;
-    width: 64px;
-    height: 64px;
-}
-
-.sprite-console {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -590px;
-    width: 64px;
-    height: 64px;
-}
-
-.sprite-grepWin {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -664px;
-    width: 64px;
-    height: 64px;
-}
-
-.sprite-trafficwatcher {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -740px;
-    width: 64px;
-    height: 64px;
-}
-
-.sprite-win {
-    background: url("../img/app_icons_sprite.png") no-repeat 0 -812px;
-    width: 64px;
-    height: 64px;
-}
+.sprite         { background: url("../img/app_icons_sprite.png") no-repeat 64px 64px; }
+.AAClr          { background-position: 0 0;}
+.CommitMonitor  { background-position: 0 -72px;}
+.CryptSync      { background-position: 0 -146px;}
+.DemoHelper     { background-position: 0 -222px;}
+.EvImSync       { background-position: 0 -292px;}
+.FavIconizer    { background-position: 0 -366px;}
+.MailNoter      { background-position: 0 -440px;}
+.SendMessage    { background-position: 0 -518px;}
+.console        { background-position: 0 -590px;}
+.grepWin        { background-position: 0 -664px;}
+.trafficwatcher { background-position: 0 -740px;}
+.win            { background-position: 0 -812px;}
