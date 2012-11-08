@@ -15,11 +15,6 @@ a {
     color: #181818;
 }
 
-a:visited {
-    color: #181818;
-    text-decoration: underline;
-}
-
 a:hover {
     color: #5e7eff;
 }
@@ -44,16 +39,6 @@ footer a:hover {
     text-decoration: underline;
 }
 
-footer a:visited {
-    color: #5e7eff;
-    text-decoration: none;
-}
-
-footer a:visited:hover {
-    color: #bfbfef;
-    text-decoration: underline;
-}
-
 h2 {
     background-color: #3d3d3d;
     color: #eeeeee;
@@ -63,14 +48,12 @@ h2 {
     padding: 1px 0 3px 5px;
 }
 
-h2 a,
-h2 a:visited {
+h2 a {
     color: #eeeeee;
     text-decoration: none;
 }
 
-h2 a:hover,
-h2 a:visited:hover {
+h2 a:hover {
     color: #bfbfef;
     text-decoration: none;
 }
