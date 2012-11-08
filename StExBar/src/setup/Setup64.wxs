@@ -19,7 +19,7 @@
       <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="1.8.3" IncludeMaximum="no" />
     </Upgrade>
 
-    <Media Id='1' Cabinet='StExBar.cab' EmbedCab='yes' />
+    <Media Id='1' Cabinet='StExBar.cab' EmbedCab='yes' CompressionLevel='high' />
 	<Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
 	<Property Id="ALLUSERS">1</Property>
 	<Condition Message='This application requires an 64-bit OS'>VersionNT64</Condition>
