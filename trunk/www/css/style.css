@@ -59,7 +59,7 @@ h2 {
     color: #eeeeee;
     font-size: 14px;
     font-weight: bold;
-    margin: 0px 0 6px 0;
+    margin: 0 0 6px 0;
     padding: 1px 0 3px 5px;
 }
 
@@ -123,7 +123,7 @@ table td, th {
 }
 
 ul {
-    margin: 0;
+    margin: 10px 0 0 35px;
     padding: 0;
 }
 
@@ -144,8 +144,8 @@ code.command {
     font-family: monospace, Sans-Serif;
     font-size: 1em;
     font-weight: bold;
-    margin: 6px 6px 6px 6px;
-    padding: 12px 12px 12px 12px;
+    margin: 6px;
+    padding: 12px;
     white-space: pre;
 }
 
@@ -170,14 +170,9 @@ code.command {
     float: left;
     float: none;
     margin: 10px 8px 0;
-    padding: 0px 10px 20px 30px;
+    padding: 0 10px 20px 30px;
     text-align: left;
     width: 815px;
-}
-
-#content ul {
-    margin-left: 35px;
-    margin-top: 10px;
 }
 
 .centered {
@@ -211,7 +206,7 @@ code.command {
     color: #fefefe;
     font-size: 14px;
     font-weight: normal;
-    padding: 0px 0 0 350px;
+    padding: 0 0 0 350px;
     text-align: left;
 }
 
