@@ -14,13 +14,18 @@ if os.path.exists(setpath):
 shutil.copytree(os.path.abspath('..'), setpath)
 
 footerFile = file(os.path.join(setpath, 'templates/footer.html'), 'r')
+footerFileZH = file(os.path.join(setpath, 'templates/footer.zh.html'), 'r')
 footerjsFile = file(os.path.join(setpath, 'templates/footer-js.html'), 'r')
 menuFile = file(os.path.join(setpath, 'templates/header.html'), 'r')
+menuFileZH = file(os.path.join(setpath, 'templates/header.zh.html'), 'r')
 adtopFile = file(os.path.join(setpath, 'templates/adsense_top.html'), 'r')
 adinpageFile = file(os.path.join(setpath, 'templates/adsense_inpage.html'), 'r')
 
 footerText = footerFile.read()
 footerFile.close()
+
+footerTextZH = footerFileZH.read()
+footerFileZH.close()
 
 footerjsText = footerjsFile.read()
 footerjsFile.close()
@@ -28,14 +33,17 @@ footerjsFile.close()
 menuText = menuFile.read()
 menuFile.close()
 
+menuTextZH = menuFileZH.read()
+menuFileZH.close()
+
 adtopText = adtopFile.read()
 adtopFile.close()
 
 adinpageText = adinpageFile.read()
 adinpageFile.close()
 
-searchfor.extend( [ '<!--#include FILE="header.html"-->', '<!--#include FILE="footer.html"-->', '<!--#include FILE="footer-js.html"-->', '$ADSENSE_TOP$', '$ADSENSE_INPAGE$' ] )
-replacewith.extend( [ menuText, footerText, footerjsText, adtopText, adinpageText ] )
+searchfor.extend( [ '<!--#include FILE="header.html"-->', '<!--#include FILE="header.zh.html"-->', '<!--#include FILE="footer.html"-->', '<!--#include FILE="footer.zh.html"-->', '<!--#include FILE="footer-js.html"-->', '$ADSENSE_TOP$', '$ADSENSE_INPAGE$' ] )
+replacewith.extend( [ menuText, menuTextZH, footerText, footerTextZH, footerjsText, adtopText, adinpageText ] )
 
 for root, dirs, files in os.walk(setpath):
     fname = files
