@@ -12,6 +12,10 @@ class TestClass{
 };
 */
 
+std::string s("     test	");
+const char c = '	';
+std::string s2("\"       	\"\"\'");
+
 // now the real class
 class TestClass1
 {
