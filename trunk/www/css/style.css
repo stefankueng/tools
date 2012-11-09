@@ -4,8 +4,7 @@
 body {
     background: #5e7eff url("../img/background.png") repeat-x top;
     color: #181818;
-    font-family: "Lucida Grande", Verdana, Arial, Sans-Serif;
-    font-size: 80%;
+    font: 80% "Lucida Grande", Verdana, Arial, Sans-Serif;
     margin: 0 auto;
     padding: 0;
     text-align: center;
@@ -99,18 +98,14 @@ ol li {
 
 table {
     background-color: white;
+    border: 1px solid blue;
     border-collapse: collapse;
-    border-color: blue;
     border-spacing: 0;
-    border-style: solid;
-    border-width: 1px;
 }
 
 table td, th {
     background-color: white;
-    border-color: blue;
-    border-style: inset;
-    border-width: 1px;
+    border: 1px inset blue;
     padding: 3px;
 }
 
@@ -124,14 +119,10 @@ ul {
  */
 code.command {
     background-color: black;
-    border-color: gray;
-    border-style: solid;
-    border-width: thin;
+    border: thin solid gray;
     color: white;
     display: inline-block;
-    font-family: monospace, Sans-Serif;
-    font-size: 1em;
-    font-weight: bold;
+    font: bold 1em monospace, Sans-Serif;
     margin: 6px;
     padding: 12px;
     white-space: pre;
@@ -155,7 +146,6 @@ code.command {
 
 #content {
     display: block;
-    float: left;
     float: none;
     margin: 10px 8px 0;
     padding: 0 10px 20px 30px;
