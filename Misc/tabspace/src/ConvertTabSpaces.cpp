@@ -28,7 +28,7 @@ ConvertTabSpaces::~ConvertTabSpaces(void)
 {
 }
 
-bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, bool checkonly)
+bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, bool checkonly, bool bCStyle)
 {
     if (!checkonly)
     {
@@ -43,8 +43,31 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             long pos = 0;
             if (file.GetEncoding() == CTextFile::UNICODE_LE)
             {
+                bool inChar = false;
+                bool inString = false;
+                bool escapeChar = false;
                 for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
                 {
+                    if (bCStyle)
+                    {
+                        if (escapeChar)
+                        {
+                            escapeChar = false;
+                            continue;
+                        }
+                        if (*it == '\\')
+                            escapeChar = true;
+                        if (!inString && (*it == '\''))
+                            inChar = !inChar;
+                        if ((!inChar) && (*it == '\"'))
+                            inString = !inString;
+                        if (inChar || inString)
+                        {
+                            spacecount = 0;
+                            continue;
+                        }
+                    }
+
                     // we have to convert all spaces in groups of more than the tabsize
                     // a space followed by a tab may lead to just removing the space
                     if ((*it == ' ') || (*it == '\t'))
@@ -65,9 +88,32 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             }
             else
             {
+                bool inChar = false;
+                bool inString = false;
+                bool escapeChar = false;
                 char * pBuf = (char*)file.GetFileContent();
                 for (int i = 0; i < file.GetFileLength(); ++i, ++pos, ++pBuf)
                 {
+                    if (bCStyle)
+                    {
+                        if (escapeChar)
+                        {
+                            escapeChar = false;
+                            continue;
+                        }
+                        if (*pBuf == '\\')
+                            escapeChar = true;
+                        if (!inString && (*pBuf == '\''))
+                            inChar = !inChar;
+                        if ((!inChar) && (*pBuf == '\"'))
+                            inString = !inString;
+                        if (inChar || inString)
+                        {
+                            spacecount = 0;
+                            continue;
+                        }
+                    }
+
                     if ((*pBuf == ' ') || (*pBuf == '\t'))
                     {
                         spacecount++;
@@ -174,9 +220,29 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             long spacestoinsert = 0;
             if (file.GetEncoding() == CTextFile::UNICODE_LE)
             {
+                bool inChar = false;
+                bool inString = false;
+                bool escapeChar = false;
                 for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
                 {
                     ++inlinepos;
+                    if (bCStyle)
+                    {
+                        if (escapeChar)
+                        {
+                            escapeChar = false;
+                            continue;
+                        }
+                        if (*it == '\\')
+                            escapeChar = true;
+                        if (!inString && (*it == '\''))
+                            inChar = !inChar;
+                        if ((!inChar) && (*it == '\"'))
+                            inString = !inString;
+                        if (inChar || inString)
+                            continue;
+                    }
+
                     if ((*it == '\r') || (*it == '\n'))
                         inlinepos = 0;
                     // we have to convert all tabs
@@ -193,10 +259,30 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             }
             else
             {
+                bool inChar = false;
+                bool inString = false;
+                bool escapeChar = false;
                 char * pBuf = (char*)file.GetFileContent();
                 for (int i = 0; i < file.GetFileLength(); ++i, ++pos, ++pBuf)
                 {
                     ++inlinepos;
+                    if (bCStyle)
+                    {
+                        if (escapeChar)
+                        {
+                            escapeChar = false;
+                            continue;
+                        }
+                        if (*pBuf == '\\')
+                            escapeChar = true;
+                        if (!inString && (*pBuf == '\''))
+                            inChar = !inChar;
+                        if ((!inChar) && (*pBuf == '\"'))
+                            inString = !inString;
+                        if (inChar || inString)
+                            continue;
+                    }
+
                     if ((*pBuf == '\r') || (*pBuf == '\n'))
                         inlinepos = 0;
                     // we have to convert all tabs
@@ -220,9 +306,29 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
                     WCHAR * pBufStart = pBuf;
                     WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
+                    bool inChar = false;
+                    bool inString = false;
+                    bool escapeChar = false;
                     for (long i = 0; i < long(file.GetFileLength() / sizeof(WCHAR)); ++i)
                     {
                         ++inlinepos;
+                        if (bCStyle)
+                        {
+                            if (escapeChar)
+                            {
+                                escapeChar = false;
+                                continue;
+                            }
+                            if (*pOldBuf == '\\')
+                                escapeChar = true;
+                            if (!inString && (*pOldBuf == '\''))
+                                inChar = !inChar;
+                            if ((!inChar) && (*pOldBuf == '\"'))
+                                inString = !inString;
+                            if (inChar || inString)
+                                continue;
+                        }
+
                         if ((*pOldBuf == '\r') || (*pOldBuf == '\n'))
                             inlinepos = 0;
                         if (*pOldBuf == '\t')
@@ -253,9 +359,29 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     char * pBuf = new char[newfilelen];
                     char * pBufStart = pBuf;
                     char * pOldBuf = (char*)file.GetFileContent();
+                    bool inChar = false;
+                    bool inString = false;
+                    bool escapeChar = false;
                     for (long i = 0; i < file.GetFileLength(); ++i)
                     {
                         ++inlinepos;
+                        if (bCStyle)
+                        {
+                            if (escapeChar)
+                            {
+                                escapeChar = false;
+                                continue;
+                            }
+                            if (*pOldBuf == '\\')
+                                escapeChar = true;
+                            if (!inString && (*pOldBuf == '\''))
+                                inChar = !inChar;
+                            if ((!inChar) && (*pOldBuf == '\"'))
+                                inString = !inString;
+                            if (inChar || inString)
+                                continue;
+                        }
+
                         if ((*pOldBuf == '\r') || (*pOldBuf == '\n'))
                             inlinepos = 0;
                         if (*pOldBuf == '\t')
@@ -294,8 +420,28 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             // less spaces than the tabsize could be used to align text to a non-tab position and therefore
             // is not a violation.
             size_t pos = 0;
+            bool inChar = false;
+            bool inString = false;
+            bool escapeChar = false;
             for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
             {
+                if (bCStyle)
+                {
+                    if (escapeChar)
+                    {
+                        escapeChar = false;
+                        continue;
+                    }
+                    if (*it == '\\')
+                        escapeChar = true;
+                    if (!inString && (*it == '\''))
+                        inChar = !inChar;
+                    if ((!inChar) && (*it == '\"'))
+                        inString = !inString;
+                    if (inChar || inString)
+                        continue;
+                }
+
                 if (*it == ' ')
                 {
                     ++it;
@@ -325,8 +471,28 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
         {
             // in space mode, even one tab is a violation
             size_t pos = 0;
+            bool inChar = false;
+            bool inString = false;
+            bool escapeChar = false;
             for (std::wstring::const_iterator it = file.GetFileString().begin(); it != file.GetFileString().end(); ++it, ++pos)
             {
+                if (bCStyle)
+                {
+                    if (escapeChar)
+                    {
+                        escapeChar = false;
+                        continue;
+                    }
+                    if (*it == '\\')
+                        escapeChar = true;
+                    if (!inString && (*it == '\''))
+                        inChar = !inChar;
+                    if ((!inChar) && (*it == '\"'))
+                        inString = !inString;
+                    if (inChar || inString)
+                        continue;
+                }
+
                 if (*it == '\t')
                 {
                     // we have a tab, that's a violation!
