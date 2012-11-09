@@ -22,9 +22,9 @@
 			</p>
 			<p>
 				Ever wondered how you should test whether your application correctly
-				responds to certain system messages like WM_ENDSESSION or WM_POWERBROADCAST?
+				responds to certain system messages like <code>WM_ENDSESSION</code> or <code>WM_POWERBROADCAST</code>?
 				Of course you can test your application by actually triggering those messages,
-				but especially the WM_ENDSESSION message and its purpose makes it impossible
+				but especially the <code>WM_ENDSESSION</code> message and its purpose makes it impossible
 				to attach a debugger to your application once Windows sends you that message.
 			</p>
 			<p>
@@ -46,8 +46,8 @@
 			<p>
 				There are a few window messages predefined in SendMessage. If you need to
 				send a message that is not in the list, just enter the number of the message
-				and any required values for WPARAM and LPARAM manually. The screenshot below
-				shows how this would look like for the WM_SYSCOLORCHANGE message.
+				and any required values for <code>WPARAM</code> and <code>LPARAM</code> manually.
+				The screenshot below shows how this would look like for the <code>WM_SYSCOLORCHANGE</code> message.
 			</p>
 			<a class="fancybox" data-fancybox-group="gallery" href="img/sendmessage/MainDlg_CustomMessage.png" title="Main Dialog Custom Message">
 				<img src="img/sendmessage/MainDlg_CustomMessage-small.png" alt="Main Dialog Custom Message" width="182" height="100"/>
@@ -98,10 +98,8 @@
 			<hr/>
 			<p>
 				Example:
-			</p>
-			<p>
-				<code>SendMessage.exe /message:16 /processname:cmd.exe</code>
-				Sends a WM_CLOSE message to all open console windows.
+				<pre>SendMessage.exe /message:16 /processname:cmd.exe</pre>
+				Sends a <code>WM_CLOSE</code> message to all open console windows.
 			</p>
 		</div>
 	</div>
