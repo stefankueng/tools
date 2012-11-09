@@ -119,6 +119,7 @@ int _tmain(int argc, _TCHAR* argv[])
     int     tabsize                 =   4;
     bool    bRemoveEOLWhitespaces   =   true;
     bool    bExtPatterns            =   true;
+    bool    bCStyle                 =   false;
     std::wstring filepattern        =   L"c;cpp;cxx;cc;h;hpp;hxx;cs";
 
 
@@ -135,6 +136,7 @@ int _tmain(int argc, _TCHAR* argv[])
         _fputts(L"/usetabs   : convert spaces to tabs instead of tabs to spaces\n", stdout);
         _fputts(L"/tabsize   : specifies the tab size, defaults to 4\n", stdout);
         _fputts(L"/leaveol   : if specified, whitespaces at the end of lines are not removed\n", stdout);
+        _fputts(L"/cstyle    : if specified, whitespaces inside C/C++ strings are ignored\n", stdout);
         _fputts(L"/ext       : a list of file extensions to scan, other extensions are ignored.\n", stdout);
         _fputts(L"             defaults to \"c;cpp;cxx;cc;h;hpp;hxx;cs\"\n", stdout);
         _fputts(L"             if this is set, /include must not be set!\n", stdout);
@@ -181,6 +183,8 @@ int _tmain(int argc, _TCHAR* argv[])
         tabsize = parser.GetLongVal(L"tabsize");
     if (parser.HasKey(L"leaveeol"))
         bRemoveEOLWhitespaces = false;
+    if (parser.HasKey(L"cstyle"))
+        bCStyle = true;
 
     // split the file extension string into the extensions
     {
@@ -249,7 +253,7 @@ int _tmain(int argc, _TCHAR* argv[])
             CTextFile file;
             if (file.Load(filepath.c_str()))
             {
-                if (ConvertTabSpaces::Convert(file, bUseSpaces, tabsize, bCheckOnly))
+                if (ConvertTabSpaces::Convert(file, bUseSpaces, tabsize, bCheckOnly, bCStyle))
                 {
                     // the file was modified, we have to reload it for the next conversion
                     file.Save(filepath.c_str());

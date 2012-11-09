@@ -1,6 +1,6 @@
 // tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011 - Stefan Kueng
+// Copyright (C) 2011-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,6 @@ public:
     ~ConvertTabSpaces(void);
 
 public:
-    static bool         Convert(CTextFile& file, bool useSpaces, int tabsize, bool checkonly);
+    static bool         Convert(CTextFile& file, bool useSpaces, int tabsize, bool checkonly, bool bCStyle);
     static bool         RemoveEndSpaces(CTextFile& file, bool checkonly);
 };
