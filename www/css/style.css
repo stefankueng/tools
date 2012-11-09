@@ -109,6 +109,15 @@ table td, th {
     padding: 2px 4px 2px 4px;
 }
 
+td > ul {
+    margin: 14px;
+}
+
+td > ul li {
+    margin: 0;
+    padding: 0;
+}
+
 ul {
     margin: 10px 0 0 35px;
     padding: 0;
