@@ -126,6 +126,12 @@ ul {
 /*
  * Classes
  */
+
+.centered {
+    text-align: center;
+    vertical-align: middle;
+}
+
 code.command {
     background-color: black;
     border: thin solid gray;
@@ -137,22 +143,6 @@ code.command {
     white-space: pre;
 }
 
-.superscript {
-    font-size: 75%;
-    vertical-align: super;
-}
-
-.post {
-    background: #ffffff;
-    border: 1px solid #ffffff;
-}
-
-.storycontent {
-    font-size: 110%;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
 #content {
     display: block;
     float: none;
@@ -160,22 +150,6 @@ code.command {
     padding: 0 10px 20px 30px;
     text-align: left;
     width: 815px;
-}
-
-#langselection {
-    margin: 0px 50px 0;
-    float: right;
-    text-align: right;
-    padding: 0;
-}
-
-.centered {
-    text-align: center;
-    vertical-align: middle;
-}
-
-.tdnowrap {
-    white-space: nowrap;
 }
 
 .header-title {
@@ -204,13 +178,6 @@ code.command {
     text-align: left;
 }
 
-#rap {
-    background: url("../img/main.png") repeat-y;
-    margin: 0 auto;
-    text-align: left;
-    width: 900px;
-}
-
 .important {
     background: url("../img/important.png") no-repeat 5px 1.33em;
     border-color: #069 !important;
@@ -229,6 +196,40 @@ code.command {
     font-style: italic;
     font-weight: bold;
     padding-top: 4px;
+}
+
+#langselection {
+    margin: 0 50px 0;
+    float: right;
+    text-align: right;
+    padding: 0;
+}
+
+.post {
+    background: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+#rap {
+    background: url("../img/main.png") repeat-y;
+    margin: 0 auto;
+    text-align: left;
+    width: 900px;
+}
+
+.storycontent {
+    font-size: 110%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.superscript {
+    font-size: 75%;
+    vertical-align: super;
+}
+
+.tdnowrap {
+    white-space: nowrap;
 }
 
 .sprite         { background: url("../img/app_icons_sprite.png") no-repeat 64px 64px; }
