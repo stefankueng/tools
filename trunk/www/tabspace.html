@@ -11,53 +11,51 @@
 </head>
 <body>
 <!--#include FILE="header.html"-->
-<div id="content">
-	<div class="post">
+<section id="content">
+	<article>
 		<h2><a href="#">tabspace</a></h2>
 		$ADSENSE_TOP$
-		<div class="storycontent">
-			<p>
-				tabspace is a small command line tool that converts
-				tabs to spaces or spaces to tabs automatically in
-				files. It also removes spaces at the end of lines.
-			</p>
-			<p>
-				It works with ANSI, UTF8 and even UTF16 (on Windows mostly
-				referred to as UNICODE) files alike.
-			</p>
-			<p>
-				The conversion is done so that the alignment always stays the
-				same - the conversion does not simply replace the characters,
-				but uses an algorithm to find out how the replacement has to be done.
-			</p>
-			<p>
-				The command line is:
-			</p>
-			<code class="command">tabspace [/path:&quot;path\to\convert&quot;] [/checkonly] [/usetabs]
+		<p>
+			tabspace is a small command line tool that converts
+			tabs to spaces or spaces to tabs automatically in
+			files. It also removes spaces at the end of lines.
+		</p>
+		<p>
+			It works with ANSI, UTF8 and even UTF16 (on Windows mostly
+			referred to as UNICODE) files alike.
+		</p>
+		<p>
+			The conversion is done so that the alignment always stays the
+			same - the conversion does not simply replace the characters,
+			but uses an algorithm to find out how the replacement has to be done.
+		</p>
+		<p>
+			The command line is:
+		</p>
+		<code class="command">tabspace [/path:&quot;path\to\convert&quot;] [/checkonly] [/usetabs]
 	 [/tabsize:4] [/leaveeol] [/ext:&quot;extension;list&quot;]</code>
-			<dl>
-				<dt>/path</dt>
-				<dd>specifies the path where all the files are to be converted</dd>
-				<dt>/checkonly</dt>
-				<dd>if specified, the files are not modified but only an info is shown</dd>
-				<dt>/usetabs</dt>
-				<dd>convert spaces to tabs instead of tabs to spaces</dd>
-				<dt>/tabsize</dt>
-				<dd>specifies the tab size, defaults to 4</dd>
-				<dt>/leaveeol</dt>
-				<dd>if specified, whitespaces at the end of lines are not removed</dd>
-				<dt>/ext</dt>
-				<dd>a list of file extensions to scan, other extensions are ignored.
-					Defaults to &quot;c;cpp;cxx;cc;h;hpp;hxx;cs&quot;</dd>
-			</dl>
-			<p>
-				You can download the tool from <a href="http://code.google.com/p/stexbar/downloads/list">here</a>.
-				<br>
-				The source code is <a href="http://code.google.com/p/stexbar/source/browse/#svn%2Ftrunk%2FMisc%2Ftabspace">here</a>.
-			</p>
-		</div>
-	</div>
-</div>
+		<dl>
+			<dt>/path</dt>
+			<dd>specifies the path where all the files are to be converted</dd>
+			<dt>/checkonly</dt>
+			<dd>if specified, the files are not modified but only an info is shown</dd>
+			<dt>/usetabs</dt>
+			<dd>convert spaces to tabs instead of tabs to spaces</dd>
+			<dt>/tabsize</dt>
+			<dd>specifies the tab size, defaults to 4</dd>
+			<dt>/leaveeol</dt>
+			<dd>if specified, whitespaces at the end of lines are not removed</dd>
+			<dt>/ext</dt>
+			<dd>a list of file extensions to scan, other extensions are ignored.
+				Defaults to &quot;c;cpp;cxx;cc;h;hpp;hxx;cs&quot;</dd>
+		</dl>
+		<p>
+			You can download the tool from <a href="http://code.google.com/p/stexbar/downloads/list">here</a>.
+			<br>
+			The source code is <a href="http://code.google.com/p/stexbar/source/browse/#svn%2Ftrunk%2FMisc%2Ftabspace">here</a>.
+		</p>
+	</article>
+</section>
 <!--#include FILE="footer.html"-->
 </body>
 </html>
