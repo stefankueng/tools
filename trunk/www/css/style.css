@@ -22,15 +22,21 @@ footer {
     background: url("../img/footer.png") no-repeat;
     color: #fefefe;
     font-size: 11px;
-    height: 54px;
     margin: 0 auto;
     width: 900px;
+    height: 54px;
 }
 
 footer a {
     color: #5e7eff;
     font-weight: bold;
     text-decoration: none;
+}
+
+footer p {
+    display: inline-block;
+    height: 20px;
+    line-height: 42px;
 }
 
 footer a:hover {
