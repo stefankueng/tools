@@ -7,7 +7,7 @@ body {
     font: 80% "Lucida Grande", Verdana, Arial, Sans-Serif;
     margin: 0 auto;
     padding: 0;
-    text-align: center;
+    text-align: left;
 }
 
 a {
@@ -176,7 +176,6 @@ code.command {
     float: none;
     margin: 10px 8px 0;
     padding: 0 10px 20px 30px;
-    text-align: left;
     width: 815px;
 }
 
@@ -185,7 +184,6 @@ code.command {
     font-size: 26px;
     font-weight: bold;
     padding: 128px 0 0 348px;
-    text-align: left;
 }
 
 .header-title a {
@@ -203,7 +201,6 @@ code.command {
     font-size: 14px;
     font-weight: normal;
     padding: 0 0 0 350px;
-    text-align: left;
 }
 
 .important {
@@ -232,7 +229,6 @@ code.command {
 #rap {
     background: url("../img/main.png") repeat-y;
     margin: 0 auto;
-    text-align: left;
     width: 900px;
 }
 
