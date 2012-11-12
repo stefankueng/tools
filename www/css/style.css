@@ -120,6 +120,11 @@ nav li {
     display: inline;
 }
 
+ol, ul {
+    margin: 10px 0 0 35px;
+    padding: 0;
+}
+
 ol li {
     list-style: decimal;
 }
@@ -138,16 +143,11 @@ table td, th {
 }
 
 td > ul {
-    margin: 14px;
+    margin: 0 4px 0 16px;
 }
 
 td > ul li {
     margin: 0;
-    padding: 0;
-}
-
-ul {
-    margin: 10px 0 0 35px;
     padding: 0;
 }
 
