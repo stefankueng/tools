@@ -220,6 +220,7 @@ code.command {
 
 .important h3 {
     background: none;
+    filter: none;
     color: #069;
     font-size: 1.05em;
     font-style: italic;
