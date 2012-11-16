@@ -66,33 +66,34 @@ h3 {
     background-image:         linear-gradient(to bottom, #0a0809 0%, #0a0e0a 48%, #6e7774 92%, #aebcbf 100%);   /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0a0809", endColorstr="#aebcbf", GradientType=0); /* IE6-8 */
     color: #eeeeee;
-    font-size: 14px;
     font-weight: bold;
     margin: 12px 0 4px 0;
     padding: 2px 4px 6px 6px;
 }
 
 h2 {
-    font-size: 14px;
+    font-size: 120%;
 }
 
-h2 a {
+h2 a,
+h3 a {
     color: #eeeeee;
     text-decoration: none;
 }
 
-h2 a:hover {
+h2 a:hover,
+h3 a:hover {
     color: #bfbfef;
     text-decoration: none;
 }
 
 h3 {
-    font-size: 12px;
+    font-size: 105%;
 }
 
 header {
     background-image: url("../img/header.png");
-    font-size: 33px;
+    font-size: 200%;
     font-weight: bold;
     margin: 0 auto;
     padding: 0;
@@ -190,8 +191,6 @@ code.command {
 
 .header-title {
     color: #5e7eff;
-    font-size: 26px;
-    font-weight: bold;
     padding: 128px 0 0 348px;
 }
 
@@ -207,7 +206,7 @@ code.command {
 
 .header-description {
     color: #fefefe;
-    font-size: 14px;
+    font-size: 55%;
     font-weight: normal;
     padding: 0 0 0 350px;
 }
