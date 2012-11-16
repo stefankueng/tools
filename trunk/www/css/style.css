@@ -162,7 +162,7 @@ td > ul li {
     padding: 0;
 }
 
-td.nowrap.sprite a {
+.nowrap.sprite a {
     padding: 0 2px 0 74px;
 }
 
@@ -255,7 +255,6 @@ code.command {
 
 .sprite {
     background: url("../img/app_icons_sprite.png") no-repeat;
-    padding: 2px;
     width: 64px;
     height: 64px;
 }
