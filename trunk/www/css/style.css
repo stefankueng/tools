@@ -53,7 +53,8 @@ footer a:hover {
     text-decoration: underline;
 }
 
-h2, h3 {
+h2,
+h3 {
     background-color: #0a0809; /* Old browsers */
     /* IE9 SVG, needs conditional override of "filter" to "none" */
     background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBhMDgwOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ4JSIgc3RvcC1jb2xvcj0iIzBhMGUwYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjkyJSIgc3RvcC1jb2xvcj0iIzZlNzc3NCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNhZWJjYmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
@@ -68,7 +69,7 @@ h2, h3 {
     font-size: 14px;
     font-weight: bold;
     margin: 12px 0 4px 0;
-    padding: 1px 4px 6px 6px;
+    padding: 2px 4px 6px 6px;
 }
 
 h2 {
@@ -119,9 +120,11 @@ nav {
 
 nav li {
     display: inline;
+    padding: 0;
 }
 
-ol, ul {
+ol,
+ul {
     margin: 10px 0 0 35px;
     padding: 0;
 }
@@ -131,16 +134,15 @@ ol li {
 }
 
 table {
-    background-color: white;
     border: 1px solid blue;
     border-collapse: collapse;
     border-spacing: 0;
 }
 
-table td, th {
-    background-color: white;
+table td,
+th {
     border: 1px inset blue;
-    padding: 2px 4px 2px 4px;
+    padding: 2px 2px 2px 4px;
 }
 
 td > ul {
@@ -226,6 +228,10 @@ code.command {
     padding: 4px 0 0 0;
 }
 
+.nowrap {
+    white-space: nowrap;
+}
+
 #rap {
     background: url("../img/main.png") repeat-y;
     margin: 0 auto;
@@ -237,11 +243,13 @@ code.command {
     vertical-align: super;
 }
 
-.tdnowrap {
-    white-space: nowrap;
+.sprite {
+    background: url("../img/app_icons_sprite.png") no-repeat;
+    padding: 2px;
+    width: 64px;
+    height: 64px;
 }
 
-.sprite         { background: url("../img/app_icons_sprite.png") no-repeat 64px 64px; }
 .AAClr          { background-position: 0 0; }
 .CommitMonitor  { background-position: 0 -72px; }
 .CryptSync      { background-position: 0 -146px; }
@@ -288,9 +296,6 @@ code.command {
 
     img {
         page-break-inside: avoid;
-    }
-
-    img {
         max-width: 100% !important;
     }
 
