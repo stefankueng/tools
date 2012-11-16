@@ -162,10 +162,6 @@ td > ul li {
     padding: 0;
 }
 
-.nowrap.sprite a {
-    padding: 0 2px 0 74px;
-}
-
 /*
  * Classes
  */
@@ -255,22 +251,23 @@ code.command {
 
 .sprite {
     background: url("../img/app_icons_sprite.png") no-repeat;
+    padding: 2px;
     width: 64px;
     height: 64px;
 }
 
-.AAClr          { background-position: 4px 2px; }
-.CommitMonitor  { background-position: 4px -70px; }
-.CryptSync      { background-position: 4px -144px; }
-.DemoHelper     { background-position: 4px -222px; }
-.EvImSync       { background-position: 4px -292px; }
-.FavIconizer    { background-position: 4px -366px; }
-.MailNoter      { background-position: 4px -440px; }
-.SendMessage    { background-position: 4px -518px; }
-.console        { background-position: 4px -590px; }
-.grepWin        { background-position: 4px -658px; }
-.trafficWatcher { background-position: 4px -740px; }
-.win            { background-position: 4px -812px; }
+.AAClr          { background-position: 0 0; }
+.CommitMonitor  { background-position: 0 -72px; }
+.CryptSync      { background-position: 0 -146px; }
+.DemoHelper     { background-position: 0 -222px; }
+.EvImSync       { background-position: 0 -292px; }
+.FavIconizer    { background-position: 0 -366px; }
+.MailNoter      { background-position: 0 -440px; }
+.SendMessage    { background-position: 0 -518px; }
+.console        { background-position: 0 -590px; }
+.grepWin        { background-position: 0 -664px; }
+.trafficwatcher { background-position: 0 -740px; }
+.win            { background-position: 0 -812px; }
 
 @media print {
     * {
