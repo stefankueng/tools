@@ -19,11 +19,9 @@ a:hover {
 }
 
 article {
-    background-color: white;
     border: 1px solid white;
     font-size: 110%;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 0 10px;
 }
 
 footer {
@@ -182,8 +180,6 @@ code.command {
 }
 
 #content {
-    display: block;
-    float: none;
     margin: 10px 8px 0;
     padding: 0 10px 20px 30px;
     width: 815px;
@@ -272,7 +268,7 @@ code.command {
 @media print {
     * {
         background: transparent !important;
-        color: #000 !important; /* Black prints faster: h5bp.com/s */
+        color: black !important; /* Black prints faster: h5bp.com/s */
         box-shadow: none !important;
         text-shadow: none !important;
     }
