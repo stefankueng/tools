@@ -51,7 +51,7 @@ footer p {
 }
 
 footer a:hover {
-    color: #bfbfef;
+    color: #acacd7;
     text-decoration: underline;
 }
 
@@ -82,7 +82,7 @@ h3 a {
 
 h2 a:hover,
 h3 a:hover {
-    color: #bfbfef;
+    color: #acacd7;
     text-decoration: none;
 }
 
@@ -171,7 +171,7 @@ td > ul li {
 }
 
 #header-title a:hover {
-    color: #bfbfef;
+    color: #acacd7;
 }
 
 #header-description {
