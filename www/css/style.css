@@ -139,7 +139,7 @@ table {
 table td,
 th {
     border: 1px inset blue;
-    padding: 2px 2px 2px 4px;
+    padding: 2px 4px;
 }
 
 td > ul {
