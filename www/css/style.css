@@ -30,7 +30,7 @@ article {
 
 footer {
     background: url("../img/footer.png") no-repeat;
-    color: #fefefe;
+    color: white;
     font-size: 11px;
     margin: 0 auto;
     text-align: center;
@@ -178,7 +178,7 @@ td > ul li {
 }
 
 #header-description {
-    color: #fefefe;
+    color: white;
     font-size: 55%;
     font-weight: normal;
     padding: 0 0 0 350px;
