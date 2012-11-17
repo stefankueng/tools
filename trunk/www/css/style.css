@@ -155,8 +155,41 @@ td > ul li {
 }
 
 /*
- * Classes
+ * ID selectors and classes
  */
+#content {
+    margin: 10px 8px 0;
+    padding: 0 10px 20px 30px;
+    width: 815px;
+}
+
+#header-title {
+    color: #5e7eff;
+    padding: 128px 0 0 348px;
+}
+
+#header-title a {
+    color: #5e7eff;
+    text-decoration: none;
+}
+
+#header-title a:hover {
+    color: #bfbfef;
+}
+
+#header-description {
+    color: #fefefe;
+    font-size: 55%;
+    font-weight: normal;
+    padding: 0 0 0 350px;
+}
+
+#rap {
+    background: url("../img/main.png") repeat-y;
+    margin: 0 auto;
+    width: 900px;
+}
+
 .centered {
     text-align: center;
     vertical-align: middle;
@@ -171,34 +204,6 @@ code.command {
     margin: 6px;
     padding: 8px;
     white-space: pre;
-}
-
-#content {
-    margin: 10px 8px 0;
-    padding: 0 10px 20px 30px;
-    width: 815px;
-}
-
-.header-title {
-    color: #5e7eff;
-    padding: 128px 0 0 348px;
-}
-
-.header-title a {
-    color: #5e7eff;
-    text-decoration: none;
-}
-
-.header-title a:hover {
-    color: #bfbfef;
-    text-decoration: none;
-}
-
-.header-description {
-    color: #fefefe;
-    font-size: 55%;
-    font-weight: normal;
-    padding: 0 0 0 350px;
 }
 
 .important {
@@ -226,12 +231,6 @@ code.command {
 
 .nowrap {
     white-space: nowrap;
-}
-
-#rap {
-    background: url("../img/main.png") repeat-y;
-    margin: 0 auto;
-    width: 900px;
 }
 
 .superscript {
