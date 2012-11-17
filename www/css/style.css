@@ -12,6 +12,10 @@ body {
 
 a {
     color: #181818;
+    -webkit-transition: color 0.15s linear;
+       -moz-transition: color 0.15s linear;
+         -o-transition: color 0.15s linear;
+            transition: color 0.15s linear;
 }
 
 a:hover {
@@ -116,17 +120,7 @@ nav {
 }
 
 nav ul > li {
-    background: #fff;
     display: inline;
-    padding: 2px;
-    -webkit-transition: background .25s linear /*ease-in-out*/;
-       -moz-transition: background .25s linear /*ease-in-out*/;
-         -o-transition: background .25s linear /*ease-in-out*/;
-            transition: background .25s linear /*ease-in-out*/;
-}
-
-nav ul > li:hover {
-    background: #ddd;
 }
 
 ol,
