@@ -266,7 +266,7 @@ code.command {
 .SendMessage    { background-position: 0 -518px; }
 .console        { background-position: 0 -590px; }
 .grepWin        { background-position: 0 -664px; }
-.trafficwatcher { background-position: 0 -740px; }
+.trafficWatcher { background-position: 0 -740px; }
 .win            { background-position: 0 -812px; }
 
 @media print {
