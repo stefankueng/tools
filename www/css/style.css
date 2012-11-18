@@ -190,12 +190,12 @@ table {
 
 #main-table th {
     background-color: #005fbf; /* Old browsers */
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #003f7f)); /* Chrome, Safari4+ */
-    background-image: -webkit-linear-gradient(top, #005fbf 5%, #003f7f 100%);       /* Chrome10+, Safari5.1+ */
-    background-image:    -moz-linear-gradient(top, #005fbf 5%, #003f7f 100%);       /* FF3.6+ */
-    background-image:     -ms-linear-gradient(top, #005fbf 5%, #003f7f 100%);       /* IE10+ */
-    background-image:      -o-linear-gradient(top, #005fbf 5%, #003f7f 100%);       /* Opera 11.10+ */
-    background-image:         linear-gradient(to bottom, #005fbf 5%, #003f7f 100%); /* W3C */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.5, #005fbf), color-stop(0.9, #003f7f)); /* Chrome, Safari4+ */
+    background-image: -webkit-linear-gradient(top, #005fbf 50%, #003f7f 90%);       /* Chrome10+, Safari5.1+ */
+    background-image:    -moz-linear-gradient(top, #005fbf 50%, #003f7f 90%);       /* FF3.6+ */
+    background-image:     -ms-linear-gradient(top, #005fbf 50%, #003f7f 90%);       /* IE10+ */
+    background-image:      -o-linear-gradient(top, #005fbf 50%, #003f7f 90%);       /* Opera 11.10+ */
+    background-image:         linear-gradient(to bottom, #005fbf 50%, #003f7f 90%); /* W3C */
     border: 0 solid #0000ff;
     border-width: 0 0 1px 1px;
     color: #fff;
