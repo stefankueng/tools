@@ -134,22 +134,6 @@ table {
     border: 1px solid blue;
     border-collapse: collapse;
     border-spacing: 0;
-    box-shadow: 10px 10px 5px #888888;
-}
-
-table td,
-th {
-    border: 1px inset blue;
-    padding: 2px 4px;
-}
-
-td > ul {
-    margin: 0 4px 0 16px;
-}
-
-td > ul li {
-    margin: 0;
-    padding: 0;
 }
 
 /*
@@ -180,6 +164,51 @@ td > ul li {
     font-size: 55%;
     font-weight: normal;
     padding: 0 0 0 350px;
+}
+
+/* Homepage's table */
+#main-table {
+    box-shadow: 10px 10px 5px #888888;
+}
+
+#main-table td,
+#main-table th {
+    border: 1px inset blue;
+    border-width: 0 1px 1px 0;
+    color: #000;
+    padding: 4px;
+    vertical-align: middle;
+}
+
+#main-table td > ul {
+    margin: 0 4px 0 16px;
+}
+
+#main-table td > ul li {
+    margin: 0;
+    padding: 0;
+}
+
+#main-table tr:first-child td {
+    background-color: #005fbf;
+    background-image: -moz-linear-gradient(center top, #005fbf 5%, #003f7f 100%);
+    background-image:  -ms-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);
+    background-image:   -o-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);
+    background-image:     -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #003f7f));
+    background-image:      linear-gradient(to bottom, #005fbf 5%, #003f7f 100%);
+    border: 0 solid #0000ff;
+    border-width: 0 0 1px 1px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+#main-table tr:first-child td:first-child {
+    border-width: 0 0 1px 0;
+}
+
+#main-table tr:first-child td:last-child {
+    border-width: 0 0 1px 1px;
 }
 
 #rap {
