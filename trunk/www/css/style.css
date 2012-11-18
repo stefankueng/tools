@@ -135,11 +135,6 @@ table {
     border-spacing: 0;
 }
 
-td > ul li {
-    margin: 0;
-    padding: 0;
-}
-
 /*
  * ID selectors and classes
  */
@@ -188,7 +183,12 @@ td > ul li {
     margin: 0 4px 0 16px;
 }
 
-#main-table tr:first-child th {
+#main-table li {
+    margin: 0;
+    padding: 0;
+}
+
+#main-table th {
     background-color: #005fbf;
     background-image: -moz-linear-gradient(center top, #005fbf 5%, #003f7f 100%);
     background-image:  -ms-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);
@@ -200,14 +200,6 @@ td > ul li {
     color: #fff;
     font-weight: bold;
     text-align: center;
-}
-
-#main-table tr:first-child th:first-child {
-    border-width: 0 0 1px 0;
-}
-
-#main-table tr:first-child th:last-child {
-    border-width: 0 0 1px 1px;
 }
 
 #rap {
