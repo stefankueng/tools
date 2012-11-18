@@ -134,6 +134,7 @@ table {
     border: 1px solid blue;
     border-collapse: collapse;
     border-spacing: 0;
+    box-shadow: 10px 10px 5px #888888;
 }
 
 table td,
