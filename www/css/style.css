@@ -136,6 +136,11 @@ table {
     border-spacing: 0;
 }
 
+td > ul li {
+    margin: 0;
+    padding: 0;
+}
+
 /*
  * ID selectors and classes
  */
@@ -182,11 +187,6 @@ table {
 
 #main-table td > ul {
     margin: 0 4px 0 16px;
-}
-
-#main-table td > ul li {
-    margin: 0;
-    padding: 0;
 }
 
 #main-table tr:first-child td {
