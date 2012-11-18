@@ -168,6 +168,8 @@ table {
 /* Homepage's table start */
 #main-table {
     box-shadow: 10px 10px 5px #888888;
+    border: 1px inset blue;
+    padding: 4px;
 }
 
 #main-table li {
@@ -178,10 +180,7 @@ table {
 #main-table td,
 #main-table th {
     border: 1px inset blue;
-    border-width: 0 1px 1px 0;
-    color: #000;
     padding: 4px;
-    vertical-align: middle;
 }
 
 #main-table td > ul {
@@ -196,11 +195,10 @@ table {
     background-image:     -ms-linear-gradient(top, #005fbf 50%, #003f7f 90%);       /* IE10+ */
     background-image:      -o-linear-gradient(top, #005fbf 50%, #003f7f 90%);       /* Opera 11.10+ */
     background-image:         linear-gradient(to bottom, #005fbf 50%, #003f7f 90%); /* W3C */
-    border: 0 solid #0000ff;
-    border-width: 0 0 1px 1px;
     color: #fff;
     font-weight: bold;
     text-align: center;
+    vertical-align: middle;
 }
 
 #main-table tr {
