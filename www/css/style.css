@@ -106,7 +106,6 @@ img {
  }
 
 li {
-    margin: 0;
     padding: 2px;
 }
 
@@ -239,9 +238,8 @@ code.command {
 
 .important {
     background: url("../img/important.png") no-repeat 5px 1.33em;
-    border-color: #069 !important;
-    border-left: 1px solid;
-    border-top: 5px solid;
+    border-left: 1px solid #069;
+    border-top: 5px solid #069;
     clear: both;
     margin: 1em 0 0 1em;
     min-height: 52px;
