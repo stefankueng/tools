@@ -88,8 +88,8 @@ footer a:hover {
     text-decoration: underline;
 }
 
-h2,
-h3 {
+h1,
+h2 {
     background-color: #0a0809; /* Old browsers */
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0a0809), color-stop(48%, #0a0e0a), color-stop(92%, #6e7774), color-stop(100%, #aebcbf)); /* Chrome, Safari4+ */
     background-image: -webkit-linear-gradient(top, #0a0809 0%, #0a0e0a 48%, #6e7774 92%, #aebcbf 100%);       /* Chrome10+, Safari5.1+ */
@@ -106,23 +106,23 @@ h3 {
        -moz-border-radius: 3px;
 }
 
-h2 {
+h1 {
     font-size: 120%;
 }
 
-h2 a,
-h3 a {
+h1 a,
+h2 a {
     color: #eeeeee;
     text-decoration: none;
 }
 
-h2 a:hover,
-h3 a:hover {
+h1 a:hover,
+h2 a:hover {
     color: #acacd7;
     text-decoration: none;
 }
 
-h3 {
+h2 {
     font-size: 105%;
 }
 
@@ -300,7 +300,7 @@ table {
        -moz-border-radius: 3px;
 }
 
-.important h3 {
+.important h2 {
     background: none;
     color: #069;
     font-size: 1.05em;
@@ -376,14 +376,14 @@ table {
     }
 
     p,
-    h2,
-    h3 {
+    h1,
+    h2 {
         orphans: 3;
         widows: 3;
     }
 
-    h2,
-    h3 {
+    h1,
+    h2 {
         page-break-after: avoid;
     }
 }
