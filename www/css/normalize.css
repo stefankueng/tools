@@ -9,16 +9,12 @@
  */
 
 article,
-aside,
-details,
-figcaption,
 figure,
 footer,
 header,
 hgroup,
 nav,
-section,
-summary {
+section {
     display: block;
 }
 
@@ -74,26 +70,6 @@ strong {
 /* ==========================================================================
    Forms
    ========================================================================== */
-
-/*
- * Define consistent border, margin, and padding.
- */
-
-fieldset {
-    border: 1px solid #c0c0c0;
-    margin: 0 2px;
-    padding: 0.35em 0.625em 0.75em;
-}
-
-/*
- * 1. Corrects color not being inherited in IE 8/9.
- * 2. Remove padding so people aren't caught out if they zero out fieldsets.
- */
-
-legend {
-    border: 0; /* 1 */
-    padding: 0; /* 2 */
-}
 
 /*
  * 1. Corrects font family not being inherited in all browsers.
@@ -189,12 +165,15 @@ input::-moz-focus-inner {
     padding: 0;
 }
 
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
 /*
- * 1. Removes default vertical scrollbar in IE 8/9.
- * 2. Improves readability and alignment in all browsers.
+ * Remove most spacing between table cells.
  */
 
-textarea {
-    overflow: auto; /* 1 */
-    vertical-align: top; /* 2 */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
 }
