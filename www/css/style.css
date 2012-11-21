@@ -149,7 +149,7 @@ li {
 }
 
 nav {
-    margin: -8px 60px;
+    margin: 0 60px 0 0;
     float: right;
 }
 
@@ -202,7 +202,7 @@ table {
  */
 #content {
     margin: 10px 8px 0;
-    padding: 0 10px 20px 30px;
+    padding: 0 10px 10px 30px;
     width: 815px;
 }
 
@@ -231,7 +231,8 @@ table {
 #main-table {
     box-shadow: 10px 10px 5px #888888;
     border: 1px inset blue;
-    padding: 4px;
+    display: inline-block;
+    margin: 8px 0 2px;
 }
 
 #main-table li {
