@@ -70,34 +70,32 @@
 
         <h2><a href="#" id="installation">Installation</a></h2>
         <!--$ADSENSE_INPAGE$-->
-        <p>Installation is easy, just run the msi installer:
+        <p>Installation is easy, just run the msi installer:</p>
         <a class="fancybox" data-fancybox-group="gallery" href="img/stexbar/installer.png" title="StExBar installer">
             <img src="img/stexbar/installer-small.png" alt="StExBar installer" width="151" height="117"/>
         </a>
-        </p>
-        After installing, the StExBar is ready:
+
+        <p>After installing, the StExBar is ready:</p>
         <ol>
             <li>open an explorer window</li>
             <li>open the menu "View-&gt;Toolbars" (note: on vista, you have to either activate the menu first, or hit the ALT key)</li>
             <li>chose "StExBar" from the list</li>
             <li>you may want to adjust the size and position of the StExBar. To do that, you have to first unlock the toolbars with the menu "View-&gt;Toolbars-&gt;Lock the Toolbars"</li>
         </ol>
-        <p>After that, the StExBar is ready:
+        <p>After that, the StExBar is ready:</p>
         <a class="fancybox" data-fancybox-group="gallery" href="img/stexbar/vistaexplorer.png" title="Vista explorer">
             <img src="img/stexbar/vistaexplorer-small.png" alt="Vista explorer" width="239" height="58"/>
         </a>
-        </p>
         <p>Note: restarting should not be necessary (only close all explorer windows).
         But if you don't see the StExBar listed in the Toolbars menu, it's most
-        likely because Windows caches the installed toolbars:
-        <br>
-        Delete the following two registry keys to clear the cache (the registry
-        keys will be automatically recreated):
-        <br>
-        HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\Component Categories\{00021493-0000-0000-C000-000000000046}\Enum
-        <br>
-        HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\Component Categories\{00021494-0000-0000-C000-000000000046}\Enum
-        </p>
+        likely because Windows caches the installed toolbars:</p>
+
+        <p>Delete the following two registry keys to clear the cache (the registry
+        keys will be automatically recreated):</p>
+<pre>
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\Component Categories\{00021493-0000-0000-C000-000000000046}\Enum
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\Component Categories\{00021494-0000-0000-C000-000000000046}\Enum
+</pre>
         <p>If the StExBar is still not showing properly, go to <em>Internet
         Options/Advanced/Browsing</em> and there check
         <em>Enable third-party browser extensions</em>.
