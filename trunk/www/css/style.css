@@ -101,9 +101,9 @@ h2 {
     font-weight: bold;
     margin: 12px 0;
     padding: 2px 4px 6px 6px;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-       -moz-border-radius: 3px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
 }
 
 h1 {
@@ -191,11 +191,6 @@ pre code {
     padding: 0;
 }
 
-table {
-    border: 1px solid blue;
-    border-collapse: collapse;
-    border-spacing: 0;
-}
 
 /*
  * ID selectors and classes
@@ -230,7 +225,6 @@ table {
 /* Homepage's table start */
 #main-table {
     box-shadow: 10px 10px 5px #888888;
-    border: 1px inset blue;
     display: inline-block;
     margin: 8px 0 2px;
 }
@@ -298,9 +292,9 @@ table {
     min-height: 52px;
     padding: 0 0 0 42px;
     width: 90%;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-       -moz-border-radius: 3px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
 }
 
 .important h2 {
