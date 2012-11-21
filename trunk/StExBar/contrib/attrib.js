@@ -1,12 +1,12 @@
-// attrib.js
-// this script toggles the readonly file attribute of the file
-// specified in the path.
-//
-// to use this in the StExBar, add the command line:
-// wscript.exe "path/to/attrib.js" //E:javascript %sel*paths
-//
+/* attrib.js
+ * This script toggles the readonly file attribute of the file
+ * specified in the path.
+ *
+ * To use this in the StExBar, add the command line:
+ * wscript.exe "path/to/attrib.js" //E:javascript %sel*paths
+ */
 
-var objArgs,num;
+var objArgs, num;
 
 objArgs = WScript.Arguments;
 num = objArgs.length;
@@ -22,14 +22,14 @@ fs = new ActiveXObject("Scripting.FileSystemObject");
 // remove the quotes
 var filesstring = objArgs(0).replace(/\"(.*)\"/, "$1");
 var files = filesstring.split("*");
-var fileindex=0;
-var errormsg = "";
+var fileindex = 0;
 
 while (fileindex < files.length)
 {
     var f = files[fileindex];
     fso = fs.GetFile(f);
-    if (fso.attributes & 1)
+
+    if (fso.attributes && 1)
     {
         fso.attributes = fso.attributes - 1;
     }
@@ -37,7 +37,7 @@ while (fileindex < files.length)
     {
         fso.attributes = fso.attributes + 1;
     }
-    fileindex+=1;
+    fileindex += 1;
 }
 
 WScript.Quit(0);
