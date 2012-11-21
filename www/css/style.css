@@ -27,10 +27,44 @@ article {
     padding: 2px 10px;
 }
 
+code,
+pre {
+    color: #333;
+    font-family: monospace, serif;
+    font-size: 1em;
+}
+
+code {
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    color: #d14;
+    padding: 2px 4px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+}
+
+dd {
+    margin-left: 10px;
+}
+
+dd,
+dt {
+    line-height: 1.4em;
+}
+
+dl {
+    margin-bottom: 20px;
+}
+
+dt {
+    font-weight: bold;
+}
+
 footer {
     background: url("../img/footer.png") no-repeat;
     color: white;
-    font-size: 11px;
+    font-size: 85%;
     margin: 0 auto;
     text-align: center;
     width: 900px;
@@ -128,6 +162,30 @@ ol li {
     list-style: decimal;
 }
 
+pre {
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    display: block;
+    line-height: 140%;
+    margin: 0 0 10px;
+    padding: 9.5px;
+    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+}
+
+pre code {
+    background-color: transparent;
+    border: 0;
+    color: inherit;
+    padding: 0;
+}
+
 table {
     border: 1px solid blue;
     border-collapse: collapse;
@@ -223,17 +281,6 @@ table {
 .centered {
     text-align: center;
     vertical-align: middle;
-}
-
-code.command {
-    background-color: black;
-    border: thin solid gray;
-    color: white;
-    display: inline-block;
-    font: bold 1em monospace, Sans-Serif;
-    margin: 6px;
-    padding: 8px;
-    white-space: pre;
 }
 
 .important {
