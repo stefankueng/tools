@@ -27,6 +27,7 @@
 COptionsDlg::COptionsDlg(HWND hParent)
     : m_hParent(hParent)
     , randomcolors(false)
+    , brightness(false)
 {
 }
 

@@ -49,7 +49,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(nCmdShow);
 
     MSG msg;
-    HACCEL hAccelTable;
 
     CMainWindow trayWindow(hInstance);
 
@@ -59,7 +58,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
     if (trayWindow.RegisterAndCreateWindow())
     {
-        hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_AACLR));
+        HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_AACLR));
         // Main message loop:
         while (GetMessage(&msg, NULL, 0, 0))
         {
