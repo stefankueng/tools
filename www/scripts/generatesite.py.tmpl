@@ -40,7 +40,7 @@ adtopFile.close()
 adinpageText = adinpageFile.read()
 adinpageFile.close()
 
-searchfor.extend( [ '<!--#include FILE="header.html"-->', '<!--#include FILE="header.zh.html"-->', '<!--#include FILE="footer.html"-->', '<!--#include FILE="footer-js.html"-->', '<!--$ADSENSE_TOP$-->', '<!--$ADSENSE_INPAGE$-->' ] )
+searchfor.extend( [ '<!--#include FILE="header.html"-->', '<!--#include FILE="header.zh.html"-->', '<!--#include FILE="footer.html"-->', '<!--#include FILE="footer-js.html"-->', '<!--#include FILE="adsense_top.html"-->', '<!--#include FILE="adsense_inpage.html"-->' ] )
 replacewith.extend( [ menuText, menuTextZH, footerText, footerjsText, adtopText, adinpageText ] )
 
 for root, dirs, files in os.walk(setpath):
