@@ -2,7 +2,7 @@ import os, string, shutil
 
 setpath = 'D:\\Development\\toolssite'
 
-for root, dirs, files in os.walk(setpath, topdown=False):
+for root, dirs, files in os.walk(setpath, topdown = False):
     for name in files:
         os.remove(os.path.join(root, name))
     for name in dirs:
@@ -44,16 +44,16 @@ for root, dirs, files in os.walk(setpath):
     fname = files
     for fname in files:
         if fname.endswith('.html'):
-            inputFile = file(os.path.join(root,fname), 'r')
+            inputFile = file(os.path.join(root, fname), 'r')
             data = inputFile.read()
             inputFile.close()
             for i in range(len(searchfor)):
                 x = searchfor[i]
                 y = replacewith[i]
                 search = string.find(data, x)
-                if search >=1:
+                if search >= 1:
                     data = data.replace(x, y)
 
-            outputFile = file(os.path.join(root,fname), 'w')
+            outputFile = file(os.path.join(root, fname), 'w')
             outputFile.write(data)
             outputFile.close()
