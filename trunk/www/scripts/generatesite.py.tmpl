@@ -1,8 +1,5 @@
 import os, string, shutil
 
-# these do not apply for the tools page so better remove them
-searchfor = [ '$TSVNSHORTVERSION$', '$TSVNVERSION$', '$SVNVERSION$' ]
-replacewith = [ '1.6.11', '1.6.11.20210', '1.6.13' ]
 setpath = 'D:\\Development\\toolssite'
 
 for root, dirs, files in os.walk(setpath, topdown=False):
@@ -21,7 +18,7 @@ menuFileZH = file(os.path.join(setpath, 'templates/header.zh.html'), 'r')
 adtopFile = file(os.path.join(setpath, 'templates/adsense_top.html'), 'r')
 adinpageFile = file(os.path.join(setpath, 'templates/adsense_inpage.html'), 'r')
 
-# the following 20 lines should be in a loop
+# the following 17 lines should be in a loop
 footerText = footerFile.read()
 footerFile.close()
 
@@ -40,8 +37,8 @@ adtopFile.close()
 adinpageText = adinpageFile.read()
 adinpageFile.close()
 
-searchfor.extend( [ '<!--#include FILE="header.html"-->', '<!--#include FILE="header.zh.html"-->', '<!--#include FILE="footer.html"-->', '<!--#include FILE="footer-js.html"-->', '<!--#include FILE="adsense_top.html"-->', '<!--#include FILE="adsense_inpage.html"-->' ] )
-replacewith.extend( [ menuText, menuTextZH, footerText, footerjsText, adtopText, adinpageText ] )
+searchfor = [ '<!--#include FILE="header.html"-->', '<!--#include FILE="header.zh.html"-->', '<!--#include FILE="footer.html"-->', '<!--#include FILE="footer-js.html"-->', '<!--#include FILE="adsense_top.html"-->', '<!--#include FILE="adsense_inpage.html"-->' ]
+replacewith = [ menuText, menuTextZH, footerText, footerjsText, adtopText, adinpageText ]
 
 for root, dirs, files in os.walk(setpath):
     fname = files
