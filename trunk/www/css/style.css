@@ -12,14 +12,18 @@ body {
 
 a {
     color: #181818;
+}
+
+a:hover {
+    color: #0066ee;
+}
+
+a,
+#main-table tr {
     -webkit-transition: color 0.15s linear;
        -moz-transition: color 0.15s linear;
          -o-transition: color 0.15s linear;
             transition: color 0.15s linear;
-}
-
-a:hover {
-    color: #5e7eff;
 }
 
 article {
@@ -27,21 +31,27 @@ article {
     padding: 2px 10px;
 }
 
-code,
-pre {
-    color: #333;
-    font-family: monospace, serif;
-    font-size: 1em;
-}
-
 code {
     background-color: #f7f7f9;
     border: 1px solid #e1e1e8;
     color: #d14;
-    padding: 2px 4px;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-       -moz-border-radius: 3px;
+    padding: 0.5px 4px;
+}
+
+code,
+pre {
+    font-family: monospace, serif;
+    font-size: 1em;
+}
+
+code,
+pre,
+h1,
+h2,
+.important {
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
 }
 
 dd {
@@ -99,15 +109,12 @@ h2 {
     background-image:         linear-gradient(to bottom, #0a0809 0%, #0a0e0a 48%, #6e7774 92%, #aebcbf 100%); /* W3C */
     color: #eeeeee;
     font-weight: bold;
-    margin: 12px 0;
-    padding: 2px 4px 6px 6px;
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-       -moz-border-radius: 4px;
 }
 
 h1 {
     font-size: 120%;
+    margin: 12px 0;
+    padding: 2px 4px 6px 6px;
 }
 
 h1 a,
@@ -124,6 +131,8 @@ h2 a:hover {
 
 h2 {
     font-size: 105%;
+    margin: 30px 0 15px;
+    padding: 4px 4px 6px 6px;
 }
 
 header {
@@ -171,17 +180,15 @@ pre {
     background-color: #f5f5f5;
     border: 1px solid #ccc;
     border: 1px solid rgba(0, 0, 0, 0.15);
+    color: #333;
     display: block;
     line-height: 140%;
     margin: 0 0 10px;
-    padding: 9.5px;
+    padding: 10px;
     white-space: pre;
     white-space: pre-wrap;
     word-break: break-all;
     word-wrap: break-word;
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-       -moz-border-radius: 4px;
 }
 
 pre code {
@@ -195,9 +202,19 @@ pre code {
 /*
  * ID selectors and classes
  */
+::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
 #content {
     margin: 10px 8px 0;
-    padding: 0 10px 10px 30px;
+    padding: 0 10px 20px 30px;
     width: 815px;
 }
 
@@ -260,10 +277,6 @@ pre code {
 
 #main-table tr {
     background-color: white;
-    -webkit-transition: background-color 0.15s linear;
-       -moz-transition: background-color 0.15s linear;
-         -o-transition: background-color 0.15s linear;
-            transition: background-color 0.15s linear;
 }
 
 #main-table tr:hover {
@@ -292,9 +305,6 @@ pre code {
     min-height: 52px;
     padding: 0 0 0 42px;
     width: 90%;
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-       -moz-border-radius: 4px;
 }
 
 .important h2 {
