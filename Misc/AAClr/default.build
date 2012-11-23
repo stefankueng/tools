@@ -4,7 +4,7 @@
     <include buildfile="default.build.user" />
 
     <property name="configuration" value="release" />
-    <property name="platform" value="win32" />
+
     <!-- the signinfo.txt file has to contain one line with parameters for signtool.exe,
          for example:
          /t "url/to/timestamp/server" /q
@@ -31,7 +31,12 @@
         <exec program="devenv.com" >
             <arg value="AAClr.sln" />
             <arg value="/clean" />
-            <arg value="${configuration}|${platform}" />
+            <arg value="${configuration}|win32" />
+        </exec>
+        <exec program="devenv.com" >
+            <arg value="AAClr.sln" />
+            <arg value="/clean" />
+            <arg value="${configuration}|x64" />
         </exec>
     </target>
 
@@ -66,13 +71,23 @@
         <exec program="devenv.com" >
             <arg value="AAClr.sln" />
             <arg value="/rebuild" />
-            <arg value="${configuration}|${platform}" />
+            <arg value="${configuration}|win32" />
+        </exec>
+        <exec program="devenv.com" >
+            <arg value="AAClr.sln" />
+            <arg value="/rebuild" />
+            <arg value="${configuration}|x64" />
         </exec>
         <if test="${file::exists('signinfo.txt')}">
           <exec program="signtool">
             <arg value="sign" />
             <arg value="${signinfo}" />
-            <arg value="release\AAClr.exe" />
+            <arg value="release\win32\AAClr.exe" />
+          </exec>
+          <exec program="signtool">
+            <arg value="sign" />
+            <arg value="${signinfo}" />
+            <arg value="release\x64\AAClr64.exe" />
           </exec>
         </if>
     </target>
