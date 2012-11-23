@@ -12,14 +12,14 @@
     <Package Id='*' Keywords='Installer'
       Description="File/Folder Time Stamp Changer"
       Comments='http://tools.tortoisesvn.net' Manufacturer='Stefans Tools'
-      InstallerVersion='200' Platforms="x64" Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+      InstallerVersion='200' Platform="x64" Languages='1033' Compressed='yes' SummaryCodepage='1252' />
 
     <Upgrade Id="705E17CC-A9E9-4082-96C6-EC08249B63A8" >
       <!-- flag is set if the install will trigger an upgrade of an existing install -->
       <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="1.3.3" IncludeMaximum="no" />
     </Upgrade>
 
-    <Media Id='1' Cabinet='SKTimeStamp.cab' EmbedCab='yes' />
+    <Media Id='1' Cabinet='SKTimeStamp.cab' EmbedCab='yes' CompressionLevel='high' />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
     <Property Id="ALLUSERS">1</Property>
     <Condition Message='This application requires an 64-bit OS'>VersionNT64</Condition>
