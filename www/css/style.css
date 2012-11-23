@@ -145,6 +145,38 @@ header {
     height: 300px;
 }
 
+hgroup > h1 {
+    background-color: transparent;
+    background-image: inherit;
+    color: #5e7eff;
+    font-size: 200%;
+    font-weight: bold;
+    margin: inherit;
+    padding: 128px 0 0 348px;
+}
+
+hgroup > h1 a {
+    color: #5e7eff;
+    text-decoration: none;
+}
+
+hgroup > h1 a:hover {
+    color: #acacd7;
+}
+
+hgroup > h2 {
+    background-color: transparent;
+    background-image: none;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+    color: white;
+    font-size: 110%;
+    font-weight: normal;
+    margin: 0;
+    padding: 0 0 0 350px;
+}
+
 img {
     border: 0;
     display: inline-block;
@@ -202,29 +234,6 @@ pre {
 ::selection {
     background: #b3d4fc;
     text-shadow: none;
-}
-
-#header-title {
-    color: #5e7eff;
-    font-size: 200%;
-    font-weight: bold;
-    padding: 128px 0 0 348px;
-}
-
-#header-title a {
-    color: #5e7eff;
-    text-decoration: none;
-}
-
-#header-title a:hover {
-    color: #acacd7;
-}
-
-#header-description {
-    color: white;
-    font-size: 110%;
-    font-weight: normal;
-    padding: 0 0 0 350px;
 }
 
 /* Homepage's table start */
