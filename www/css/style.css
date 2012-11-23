@@ -191,13 +191,6 @@ pre {
     word-wrap: break-word;
 }
 
-pre code {
-    background-color: transparent;
-    border: 0;
-    color: inherit;
-    padding: 0;
-}
-
 
 /*
  * ID selectors and classes
