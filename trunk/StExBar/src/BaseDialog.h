@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007, 2009-2010 - Stefan Kueng
+// Copyright (C) 2007, 2009-2010, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,9 +16,11 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
 #include <string>
 #include "AeroGlass.h"
+#include <memory>
 
 /**
  * A base window class.
@@ -69,4 +71,3 @@ private:
     INT_PTR     m_iPseudoRet;
     HWND        m_hToolTips;
 };
-

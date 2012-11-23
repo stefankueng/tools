@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010 - Stefan Kueng
+// Copyright (C) 2007-2010, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -118,7 +118,7 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
             return S_OK;
     }
 
-    if (DWORD(CRegStdWORD(_T("Software\\StefansTools\\StExBar\\ContextMenu"), TRUE)) == FALSE)
+    if (DWORD(CRegStdDWORD(_T("Software\\StefansTools\\StExBar\\ContextMenu"), TRUE)) == FALSE)
         return S_OK;
 
     //check if we already added our menu entry for a folder.
