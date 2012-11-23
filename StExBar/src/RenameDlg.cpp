@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2009, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -76,8 +76,8 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
                 ListView_InsertColumn(hListCtrl, 1, &lvc);
             }
             FillRenamedList();
-            CRegStdWORD dlgWidth = CRegStdWORD(_T("Software\\StExBar\\renameWidth"), 0);
-            CRegStdWORD dlgHeight = CRegStdWORD(_T("Software\\StExBar\\renameHeight"), 0);
+            CRegStdDWORD dlgWidth = CRegStdDWORD(_T("Software\\StExBar\\renameWidth"), 0);
+            CRegStdDWORD dlgHeight = CRegStdDWORD(_T("Software\\StExBar\\renameHeight"), 0);
 
             if (DWORD(dlgWidth) && DWORD(dlgHeight))
             {
@@ -162,8 +162,8 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
             // fall through
         case IDCANCEL:
             {
-                CRegStdWORD dlgWidth = CRegStdWORD(_T("Software\\StExBar\\renameWidth"), 0);
-                CRegStdWORD dlgHeight = CRegStdWORD(_T("Software\\StExBar\\renameHeight"), 0);
+                CRegStdDWORD dlgWidth = CRegStdDWORD(_T("Software\\StExBar\\renameWidth"), 0);
+                CRegStdDWORD dlgHeight = CRegStdDWORD(_T("Software\\StExBar\\renameHeight"), 0);
                 RECT rc;
                 ::GetWindowRect(*this, &rc);
                 dlgWidth = rc.right-rc.left;

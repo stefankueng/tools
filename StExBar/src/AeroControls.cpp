@@ -1,6 +1,6 @@
 // CommitMonitor - simple checker for new commits in svn repositories
 
-// Copyright (C) 2009-2010 - Stefan Kueng
+// Copyright (C) 2009-2010, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,6 +16,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "AeroControls.h"
 
@@ -37,6 +38,7 @@ enum ControlType
 
 using namespace Gdiplus;
 #pragma comment(lib, "gdiplus.lib")
+#pragma comment(lib, "comctl32.lib")
 
 AeroControlBase::AeroControlBase()
 {
@@ -60,7 +62,7 @@ bool AeroControlBase::SubclassControl(HWND hControl)
 {
     bool bRet = false;
     TCHAR szWndClassName[MAX_PATH];
-    if (GetClassName(hControl, szWndClassName, sizeof(szWndClassName)))
+    if (GetClassName(hControl, szWndClassName, _countof(szWndClassName)))
     {
         if (!_tcscmp(szWndClassName, _T("Static")))
         {
@@ -411,8 +413,7 @@ LRESULT AeroControlBase::ButtonWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
 
                             m_theme.DetermineGlowSize(&DttOpts.iGlowSize);
 
-                            Pen*         myPen;
-                            Graphics*    myGraphics;
+                            Pen* myPen;
                             COLORREF cr = RGB(0x00, 0x00, 0x00);
                             GetEditBorderColor(hWnd, &cr);
 
@@ -424,7 +425,7 @@ LRESULT AeroControlBase::ButtonWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
                             myPen = new Pen(Color(cr), 1);
                             if(myPen)
                             {
-                                myGraphics = new Graphics(hdcPaint);
+                                Graphics* myGraphics = new Graphics(hdcPaint);
                                 if(myGraphics)
                                 {
                                     int iY = RECTHEIGHT(rcDraw)/2;
@@ -669,8 +670,6 @@ LRESULT AeroControlBase::ButtonWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
                             }
 
 
-
-
                             if (hFontOld)
                             {
                                 SelectObject(hdcPaint, hFontOld);
@@ -681,7 +680,6 @@ LRESULT AeroControlBase::ButtonWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
                         }
                         m_theme.CloseThemeData(hTheme);
                     }
-
 
                 }
                 else if(BS_PUSHBUTTON==dwButtonType || BS_DEFPUSHBUTTON==dwButtonType)
@@ -715,7 +713,6 @@ LRESULT AeroControlBase::ButtonWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
                             if(dwButtonStyle==BS_RADIOBUTTON || dwButtonStyle==BS_AUTORADIOBUTTON)
                                 iPartId = BP_RADIOBUTTON;
 
-
                             iState = GetStateFromBtnState(dwStyle, bHot, bFocus, dwCheckState, iPartId, GetCapture()==hWnd);
 
                             ///
@@ -725,9 +722,7 @@ LRESULT AeroControlBase::ButtonWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
                             RECT rcPaint = rcClient;
                             m_theme.DrawThemeBackground(hTheme, hdcPaint, iPartId, iState, &rcPaint, NULL);
 
-
                             m_theme.GetThemeBackgroundContentRect(hTheme, hdcPaint, iPartId, iState, &rcPaint, &rc);
-
 
                             DTTOPTS DttOpts = {sizeof(DTTOPTS)};
                             DttOpts.dwFlags = DTT_COMPOSITED;
@@ -736,7 +731,6 @@ LRESULT AeroControlBase::ButtonWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
                             DttOpts.iGlowSize = 12; // Default value
 
                             m_theme.DetermineGlowSize(&DttOpts.iGlowSize);
-
 
                             HFONT hFontOld = (HFONT)SendMessage(hWnd, WM_GETFONT, 0L, NULL);
                             if(hFontOld)
@@ -859,12 +853,11 @@ LRESULT AeroControlBase::ProgressbarWindowProc(HWND hWnd, UINT uMsg, WPARAM wPar
 
 void AeroControlBase::FillRect(LPRECT prc, HDC hdcPaint, Color clr)
 {
-    Graphics*    myGraphics;
     SolidBrush *pBrush = new SolidBrush(clr);
 
     if(pBrush)
     {
-        myGraphics = new Graphics(hdcPaint);
+        Graphics* myGraphics = new Graphics(hdcPaint);
         if(myGraphics)
         {
             myGraphics->FillRectangle(pBrush, prc->left, prc->top,
@@ -971,13 +964,12 @@ int AeroControlBase::GetStateFromBtnState(LONG_PTR dwStyle, BOOL bHot, BOOL bFoc
 
 void AeroControlBase::DrawRect(LPRECT prc, HDC hdcPaint, DashStyle dashStyle, Color clr, REAL width)
 {
-    Pen*         myPen;
-    Graphics*    myGraphics;
+    Pen* myPen;
     myPen = new Pen(clr, width);
     if(myPen)
     {
         myPen->SetDashStyle(dashStyle);
-        myGraphics = new Graphics(hdcPaint);
+        Graphics* myGraphics = new Graphics(hdcPaint);
         if(myGraphics)
         {
             myGraphics->DrawRectangle(myPen, prc->left, prc->top,
@@ -1023,7 +1015,6 @@ void AeroControlBase::PaintControl(HWND hWnd, HDC hdc, RECT* prc, bool bDrawBord
             InflateRect(prc, 1, 1);
             FrameRect(hdcPaint, prc, (HBRUSH)GetStockObject(BLACK_BRUSH));
         }
-
 
         // Make every pixel opaque
         m_theme.BufferedPaintMakeOpaque_(hBufferedPaint, prc);

@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2008, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -88,8 +88,10 @@ void CDlgResizer::AddControl(HWND hWndDlg, UINT ctrlId, UINT resizeType)
 void CDlgResizer::DoResize(int width, int height)
 {
     UpdateGripPos();
-    if (m_controls.size() == 0)
+    if (m_controls.empty())
         return;
+
+    InvalidateRect(m_hDlg, NULL, true);
 
     HDWP hdwp = BeginDeferWindowPos((int)m_controls.size());
     for (size_t i=0; i<m_controls.size(); ++i)
@@ -128,7 +130,7 @@ void CDlgResizer::DoResize(int width, int height)
         }
         hdwp = DeferWindowPos(hdwp, m_controls[i].hWnd, NULL, newpos.left, newpos.top,
             newpos.right-newpos.left, newpos.bottom-newpos.top,
-            SWP_NOZORDER|SWP_SHOWWINDOW);
+            SWP_NOZORDER);
     }
     EndDeferWindowPos(hdwp);
 }

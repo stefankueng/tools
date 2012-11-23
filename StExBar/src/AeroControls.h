@@ -1,6 +1,6 @@
 // CommitMonitor - simple checker for new commits in svn repositories
 
-// Copyright (C) 2009-2010 - Stefan Kueng
+// Copyright (C) 2009-2010, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
 
 #pragma once
 #include "AeroGlass.h"
-#include "registry.h"
+#include "Registry.h"
 #include <map>
 #include <gdiplus.h>
 
@@ -53,4 +53,3 @@ private:
     std::map<HWND, UINT_PTR>    subclassedControls;
     ULONG_PTR                   gdiplusToken;
 };
-
