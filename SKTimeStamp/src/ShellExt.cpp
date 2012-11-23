@@ -61,7 +61,7 @@ STDMETHODIMP_(ULONG) CShellExt::Release()
 }
 
 // IShellExtInit
-STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
+STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST /*pIDFolder*/,
                                    LPDATAOBJECT pDataObj,
                                    HKEY /* hRegKey */)
 {
