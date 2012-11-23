@@ -91,8 +91,7 @@ footer a {
 
 footer p {
     display: inline-block;
-    height: 20px;
-    line-height: 42px;
+    margin: 28px 0 8px 0;
 }
 
 footer a:hover {
@@ -139,8 +138,6 @@ h2 {
 
 header {
     background-image: url("../img/header.png");
-    font-size: 200%;
-    font-weight: bold;
     margin: 0 auto;
     padding: 0;
     text-decoration: none;
@@ -209,6 +206,8 @@ pre {
 
 #header-title {
     color: #5e7eff;
+    font-size: 200%;
+    font-weight: bold;
     padding: 128px 0 0 348px;
 }
 
@@ -223,7 +222,7 @@ pre {
 
 #header-description {
     color: white;
-    font-size: 55%;
+    font-size: 110%;
     font-weight: normal;
     padding: 0 0 0 350px;
 }
