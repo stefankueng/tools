@@ -12,23 +12,22 @@
 </head>
 <body>
 <!--#include FILE="header.html"-->
-<div id="content">
-    <article>
-        <h1><a href="#" id="main">svnrobots.txt</a></h1>
-        <!--#include FILE="adsense_top.html"-->
-        <p>
-            Server administrators and/or committers of a Subversion repository
-            can limit <a href="CommitMonitor.html">CommitMonitor</a> from accessing
-            the repository too often or do automatic diffs.
-        </p>
-        <p>
-            This is what the <code>svnrobots.txt</code> file is for. CommitMonitor
-            looks for such a file and uses its content to limit the check
-            interval time and/or disallow automatic diffs.
-        </p>
-        <p>
-            The format of the file is simple:
-        </p>
+<article>
+    <h1><a href="#" id="main">svnrobots.txt</a></h1>
+    <!--#include FILE="adsense_top.html"-->
+    <p>
+        Server administrators and/or committers of a Subversion repository
+        can limit <a href="CommitMonitor.html">CommitMonitor</a> from accessing
+        the repository too often or do automatic diffs.
+    </p>
+    <p>
+        This is what the <code>svnrobots.txt</code> file is for. CommitMonitor
+        looks for such a file and uses its content to limit the check
+        interval time and/or disallow automatic diffs.
+    </p>
+    <p>
+        The format of the file is simple:
+    </p>
 <pre>
 # this is an example svnrobots.txt file
 #
@@ -49,7 +48,6 @@ disallowautodiff
 # the first found file is used to limit the commit monitor.
 </pre>
     </article>
-</div>
 <!--#include FILE="footer.html"-->
 </body>
 </html>
