@@ -119,34 +119,34 @@
     <None Include="StExBar.def">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="icons\cmd.ico">
+    <None Include="res\cmd.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="icons\copyname.ico">
+    <None Include="res\copyname.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="icons\copypath.ico">
+    <None Include="res\copypath.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="icons\default.ico">
+    <None Include="res\default.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="icons\newfolder.ico">
+    <None Include="res\newfolder.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="icons\options.ico">
+    <None Include="res\options.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="icons\rename.ico">
+    <None Include="res\rename.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="icons\showexts.ico">
+    <None Include="res\showexts.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="icons\showhide.ico">
+    <None Include="res\showhide.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="icons\up.ico">
+    <None Include="res\up.ico">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="setup\Setup.wxs">
@@ -155,10 +155,10 @@
     <None Include="setup\Setup64.wxs">
       <Filter>WiX</Filter>
     </None>
-    <None Include="CommandHelp.htm" />
+    <None Include="res\CommandHelp.htm" />
     <None Include="..\default.build" />
-    <None Include="OptionsHelp.htm" />
-    <None Include="regexhelp.htm" />
+    <None Include="res\OptionsHelp.htm" />
+    <None Include="res\regexhelp.htm" />
     <None Include="version.in" />
   </ItemGroup>
   <ItemGroup>

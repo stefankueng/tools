@@ -246,26 +246,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="StExBar.def" />
-    <None Include="icons\cmd.ico" />
-    <None Include="icons\copyname.ico" />
-    <None Include="icons\copypath.ico" />
-    <None Include="icons\default.ico" />
-    <None Include="icons\newfolder.ico" />
-    <None Include="icons\options.ico" />
-    <None Include="icons\rename.ico" />
-    <None Include="icons\showexts.ico" />
-    <None Include="icons\showhide.ico" />
-    <None Include="icons\up.ico" />
+    <None Include="res\cmd.ico" />
+    <None Include="res\copyname.ico" />
+    <None Include="res\copypath.ico" />
+    <None Include="res\default.ico" />
+    <None Include="res\newfolder.ico" />
+    <None Include="res\options.ico" />
+    <None Include="res\rename.ico" />
+    <None Include="res\showexts.ico" />
+    <None Include="res\showhide.ico" />
+    <None Include="res\up.ico" />
     <None Include="setup\Setup.wxs" />
     <None Include="setup\Setup64.wxs" />
-    <None Include="CommandHelp.htm">
+    <None Include="res\CommandHelp.htm">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\default.build" />
-    <None Include="OptionsHelp.htm">
+    <None Include="res\OptionsHelp.htm">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="regexhelp.htm">
+    <None Include="res\regexhelp.htm">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="version.in" />
