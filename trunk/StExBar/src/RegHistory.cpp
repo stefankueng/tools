@@ -89,7 +89,7 @@ int CRegHistory::Load(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
         //keys are of form <lpszKeyPrefix><entrynumber>
         TCHAR sKey[4096] = {0};
         _stprintf_s(sKey, 4096, _T("%s\\%s%d"), lpszSection, lpszKeyPrefix, n++);
-        sText = CRegStdString(sKey);
+        sText = (LPCTSTR)CRegStdString(sKey);
         if (!sText.empty())
         {
             m_arEntries.push_back(sText);
