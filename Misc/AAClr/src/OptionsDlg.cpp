@@ -47,13 +47,14 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             AddToolTip(IDC_AUTOSTART, _T("Starts AAClr automatically when Windows starts up."));
 
             // initialize the controls
-            bool bStartWithWindows = !std::wstring(CRegStdString(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\AAClr"))).empty();
+            CRegStdString regRun = CRegStdString(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\AAClr"));
+            bool bStartWithWindows = !std::wstring(regRun).empty();
             SendDlgItemMessage(*this, IDC_AUTOSTART, BM_SETCHECK, bStartWithWindows ? BST_CHECKED : BST_UNCHECKED, NULL);
 
-            randomcolors = !!CRegStdWORD(_T("Software\\AAClr\\randomcolors"), 1);
+            randomcolors = !!CRegStdDWORD(_T("Software\\AAClr\\randomcolors"), 1);
             SendDlgItemMessage(*this, IDC_RANDOMCOLOR, BM_SETCHECK, randomcolors ? BST_CHECKED : BST_UNCHECKED, NULL);
 
-            brightness = !!CRegStdWORD(_T("Software\\AAClr\\brightness"), 1);
+            brightness = !!CRegStdDWORD(_T("Software\\AAClr\\brightness"), 1);
             SendDlgItemMessage(*this, IDC_BRIGHTNESS, BM_SETCHECK, brightness ? BST_CHECKED : BST_UNCHECKED, NULL);
 
             ExtendFrameIntoClientArea(0, 0, 0, 0);
@@ -89,10 +90,10 @@ LRESULT COptionsDlg::DoCommand(int id)
             else
                 regStartWithWindows.removeValue();
 
-            CRegStdWORD regrandomcolors = CRegStdWORD(_T("Software\\AAClr\\randomcolors"), 1);
+            CRegStdDWORD regrandomcolors = CRegStdDWORD(_T("Software\\AAClr\\randomcolors"), 1);
             randomcolors = !!SendDlgItemMessage(*this, IDC_RANDOMCOLOR, BM_GETCHECK, 0, NULL);
             regrandomcolors = randomcolors;
-            CRegStdWORD regbrightness = CRegStdWORD(_T("Software\\AAClr\\brightness"), 1);
+            CRegStdDWORD regbrightness = CRegStdDWORD(_T("Software\\AAClr\\brightness"), 1);
             brightness = !!SendDlgItemMessage(*this, IDC_BRIGHTNESS, BM_GETCHECK, 0, NULL);
             regbrightness = brightness;
         }
