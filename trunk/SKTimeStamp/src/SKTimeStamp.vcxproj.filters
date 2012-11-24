@@ -16,12 +16,12 @@
     <Filter Include="Scripts">
       <UniqueIdentifier>{33482780-cc5b-4d16-ba05-b23b11680287}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sktoolslib">
+      <UniqueIdentifier>{ffbcecb9-4620-4979-bc5c-41b204ac82d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Registry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShellExt.cpp">
@@ -39,6 +39,9 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sktoolslib\Registry.cpp">
+      <Filter>sktoolslib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SKTimeStamp.def">
@@ -55,9 +58,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Registry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -75,6 +75,9 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sktoolslib\Registry.h">
+      <Filter>sktoolslib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

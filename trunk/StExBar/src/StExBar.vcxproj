@@ -83,6 +83,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>StExBar.def</ModuleDefinitionFile>
@@ -110,6 +111,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>StExBar.def</ModuleDefinitionFile>
@@ -139,6 +141,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OmitFramePointers>true</OmitFramePointers>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>StExBar.def</ModuleDefinitionFile>
@@ -173,6 +176,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>StExBar.def</ModuleDefinitionFile>
@@ -191,12 +195,20 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AeroControls.cpp" />
-    <ClCompile Include="AeroGlass.cpp" />
-    <ClCompile Include="AutoComplete.cpp" />
-    <ClCompile Include="BaseDialog.cpp" />
-    <ClCompile Include="BaseWindow.cpp" />
-    <ClCompile Include="BrowseFolder.cpp" />
+    <ClCompile Include="..\..\sktoolslib\AeroControls.cpp" />
+    <ClCompile Include="..\..\sktoolslib\AeroGlass.cpp" />
+    <ClCompile Include="..\..\sktoolslib\AutoComplete.cpp" />
+    <ClCompile Include="..\..\sktoolslib\BaseDialog.cpp" />
+    <ClCompile Include="..\..\sktoolslib\BaseWindow.cpp" />
+    <ClCompile Include="..\..\sktoolslib\BrowseFolder.cpp" />
+    <ClCompile Include="..\..\sktoolslib\DlgResizer.cpp" />
+    <ClCompile Include="..\..\sktoolslib\hyperlink.cpp" />
+    <ClCompile Include="..\..\sktoolslib\ItemIDList.cpp" />
+    <ClCompile Include="..\..\sktoolslib\Pidl.cpp" />
+    <ClCompile Include="..\..\sktoolslib\RegHistory.cpp" />
+    <ClCompile Include="..\..\sktoolslib\Registry.cpp" />
+    <ClCompile Include="..\..\sktoolslib\StringUtils.cpp" />
+    <ClCompile Include="..\..\sktoolslib\UnicodeUtils.cpp" />
     <ClCompile Include="ChevronMenu.cpp" />
     <ClCompile Include="ClassFactory.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
@@ -208,18 +220,12 @@
     <ClCompile Include="Cmd.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="ContextMenu.cpp" />
-    <ClCompile Include="DlgResizer.cpp" />
     <ClCompile Include="EditCmdDlg.cpp" />
     <ClCompile Include="ExPaths.cpp" />
     <ClCompile Include="Filter.cpp" />
-    <ClCompile Include="hyperlink.cpp" />
     <ClCompile Include="InfoDlg.cpp" />
-    <ClCompile Include="ItemIDList.cpp" />
     <ClCompile Include="NewFolder.cpp" />
     <ClCompile Include="OptionsDlg.cpp" />
-    <ClCompile Include="Pidl.cpp" />
-    <ClCompile Include="RegHistory.cpp" />
-    <ClCompile Include="Registry.cpp" />
     <ClCompile Include="Rename.cpp" />
     <ClCompile Include="RenameDlg.cpp" />
     <ClCompile Include="SRBand.cpp">
@@ -240,8 +246,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="StringUtils.cpp" />
-    <ClCompile Include="UnicodeUtils.cpp" />
     <ClCompile Include="VistaIcons.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -271,35 +275,35 @@
     <None Include="version.in" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AeroControls.h" />
-    <ClInclude Include="AeroGlass.h" />
-    <ClInclude Include="AutoComplete.h" />
-    <ClInclude Include="BaseDialog.h" />
-    <ClInclude Include="BaseWindow.h" />
-    <ClInclude Include="BrowseFolder.h" />
+    <ClInclude Include="..\..\sktoolslib\AeroControls.h" />
+    <ClInclude Include="..\..\sktoolslib\AeroGlass.h" />
+    <ClInclude Include="..\..\sktoolslib\AutoComplete.h" />
+    <ClInclude Include="..\..\sktoolslib\BaseDialog.h" />
+    <ClInclude Include="..\..\sktoolslib\BaseWindow.h" />
+    <ClInclude Include="..\..\sktoolslib\BrowseFolder.h" />
+    <ClInclude Include="..\..\sktoolslib\DlgResizer.h" />
+    <ClInclude Include="..\..\sktoolslib\hyperlink.h" />
+    <ClInclude Include="..\..\sktoolslib\ItemIDList.h" />
+    <ClInclude Include="..\..\sktoolslib\Pidl.h" />
+    <ClInclude Include="..\..\sktoolslib\RegHistory.h" />
+    <ClInclude Include="..\..\sktoolslib\Registry.h" />
+    <ClInclude Include="..\..\sktoolslib\SimpleIni.h" />
+    <ClInclude Include="..\..\sktoolslib\StringUtils.h" />
+    <ClInclude Include="..\..\sktoolslib\tstring.h" />
+    <ClInclude Include="..\..\sktoolslib\UnicodeUtils.h" />
     <ClInclude Include="ChevronMenu.h" />
     <ClInclude Include="ClassFactory.h" />
     <ClInclude Include="Commands.h" />
-    <ClInclude Include="DlgResizer.h" />
     <ClInclude Include="EditCmdDlg.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Guid.h" />
-    <ClInclude Include="hyperlink.h" />
     <ClInclude Include="InfoDlg.h" />
-    <ClInclude Include="ItemIDList.h" />
     <ClInclude Include="NumberReplacer.h" />
     <ClInclude Include="OptionsDlg.h" />
-    <ClInclude Include="Pidl.h" />
-    <ClInclude Include="RegHistory.h" />
-    <ClInclude Include="Registry.h" />
     <ClInclude Include="RenameDlg.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="SimpleIni.h" />
     <ClInclude Include="SRBand.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="StringUtils.h" />
-    <ClInclude Include="tstring.h" />
-    <ClInclude Include="UnicodeUtils.h" />
     <ClInclude Include="VistaIcons.h" />
   </ItemGroup>
   <ItemGroup>

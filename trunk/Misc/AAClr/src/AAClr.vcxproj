@@ -91,6 +91,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -107,6 +108,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WIN64;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,6 +132,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>..\..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,6 +155,7 @@
       <PreprocessorDefinitions>_WIN64;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>..\..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,18 +180,18 @@
     <None Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\sktoolslib\AeroColors.h" />
+    <ClInclude Include="..\..\..\sktoolslib\AeroControls.h" />
+    <ClInclude Include="..\..\..\sktoolslib\AeroGlass.h" />
+    <ClInclude Include="..\..\..\sktoolslib\BaseDialog.h" />
+    <ClInclude Include="..\..\..\sktoolslib\BaseWindow.h" />
+    <ClInclude Include="..\..\..\sktoolslib\CmdLineParser.h" />
+    <ClInclude Include="..\..\..\sktoolslib\hyperlink.h" />
+    <ClInclude Include="..\..\..\sktoolslib\Registry.h" />
     <ClInclude Include="AboutDlg.h" />
-    <ClInclude Include="AeroColors.h" />
-    <ClInclude Include="AeroControls.h" />
-    <ClInclude Include="AeroGlass.h" />
-    <ClInclude Include="BaseDialog.h" />
-    <ClInclude Include="BaseWindow.h" />
-    <ClInclude Include="CmdLineParser.h" />
-    <ClInclude Include="hyperlink.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="NotifySlider.h" />
     <ClInclude Include="OptionsDlg.h" />
-    <ClInclude Include="Registry.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="AAClr.h" />
     <ClInclude Include="stdafx.h" />
@@ -195,18 +199,18 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\sktoolslib\AeroColors.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\AeroControls.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\AeroGlass.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\BaseDialog.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\BaseWindow.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\CmdLineParser.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\hyperlink.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\Registry.cpp" />
     <ClCompile Include="AboutDlg.cpp" />
-    <ClCompile Include="AeroColors.cpp" />
-    <ClCompile Include="AeroControls.cpp" />
-    <ClCompile Include="AeroGlass.cpp" />
-    <ClCompile Include="BaseDialog.cpp" />
-    <ClCompile Include="BaseWindow.cpp" />
-    <ClCompile Include="CmdLineParser.cpp" />
-    <ClCompile Include="hyperlink.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NotifySlider.cpp" />
     <ClCompile Include="OptionsDlg.cpp" />
-    <ClCompile Include="Registry.cpp" />
     <ClCompile Include="AAClr.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

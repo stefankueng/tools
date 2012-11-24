@@ -85,6 +85,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -104,6 +105,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -126,6 +128,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <OmitFramePointers>true</OmitFramePointers>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>..\..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -150,6 +153,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>..\..\..\sktoolslib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -165,9 +169,10 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CmdLineParser.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\CmdLineParser.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\DirFileEnum.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\TextFile.cpp" />
     <ClCompile Include="ConvertTabSpaces.cpp" />
-    <ClCompile Include="DirFileEnum.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -175,15 +180,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="tabspace.cpp" />
-    <ClCompile Include="TextFile.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CmdLineParser.h" />
+    <ClInclude Include="..\..\..\sktoolslib\CmdLineParser.h" />
+    <ClInclude Include="..\..\..\sktoolslib\DirFileEnum.h" />
+    <ClInclude Include="..\..\..\sktoolslib\TextFile.h" />
     <ClInclude Include="ConvertTabSpaces.h" />
-    <ClInclude Include="DirFileEnum.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TextFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="tabspace.rc" />
