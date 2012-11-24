@@ -53,9 +53,6 @@
     <None Include="setup\Setup64.wxs">
       <Filter>Scripts</Filter>
     </None>
-    <None Include="setup\WixUI_Custom.wxs">
-      <Filter>Scripts</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Registry.h">
