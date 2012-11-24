@@ -20,6 +20,8 @@
 #include "DlgResizer.h"
 
 CDlgResizer::CDlgResizer(void)
+    : m_hDlg(NULL)
+    , m_wndGrip(NULL)
 {
     m_controls.clear();
 }

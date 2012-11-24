@@ -70,7 +70,7 @@ bool CDeskBand::FindPaths()
                             {
                                 // if there was a new folder created but not found to set into editing mode,
                                 // we try here to do that
-                                if (m_newfolderPidls.size())
+                                if (!m_newfolderPidls.empty())
                                 {
                                     int nCount2 = 0;
                                     IShellFolder * pShellFolder;
@@ -180,14 +180,14 @@ bool CDeskBand::FindPaths()
         }
         pServiceProvider->Release();
     }
-    return ((!m_currentDirectory.empty()) || (m_selectedItems.size()!=0));
+    return ((!m_currentDirectory.empty()) || (!m_selectedItems.empty()));
 }
 
 wstring CDeskBand::GetFileNames(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders)
 {
     wstring sRet;
     WCHAR buf[MAX_PATH+2];
-    if (items.size())
+    if (!items.empty())
     {
         for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
         {
@@ -217,7 +217,7 @@ wstring CDeskBand::GetFilePaths(const map<wstring, ULONG>& items, wstring separa
 {
     WCHAR buf[MAX_PATH+2];
     wstring sRet;
-    if (items.size())
+    if (!items.empty())
     {
         for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
         {

@@ -36,7 +36,8 @@
 
 map<DWORD, CDeskBand*> CDeskBand::m_desklist;   ///< set of CDeskBand objects which use the keyboard hook
 
-CDeskBand::CDeskBand() : m_bFocus(false)
+CDeskBand::CDeskBand()
+    : m_bFocus(false)
     , m_hwndParent(NULL)
     , m_hWnd(NULL)
     , m_hWndEdit(NULL)
@@ -416,7 +417,7 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 
         if (pdbi->dwMask & DBIM_MINSIZE)
         {
-            if (DBIF_VIEWMODE_FLOATING & dwViewMode)
+            if (DBIF_VIEWMODE_FLOATING & dwViewMode) // Duplicate if/else branches
             {
                 pdbi->ptMinSize.x = 0;
                 pdbi->ptMinSize.y = m_tbSize.cy;
@@ -563,12 +564,12 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
                 state |= ENABLED_FILESELECTED;
             if (pThis->m_bFolderSelected)
                 state |= ENABLED_FOLDERSELECTED;
-            if (pThis->m_selectedItems.size() == 0)
+            if (pThis->m_selectedItems.empty())
                 state |= ENABLED_NOSELECTION;
             for (map<int, DWORD>::iterator it = pThis->m_enablestates.begin(); it != pThis->m_enablestates.end(); ++it)
             {
                 if (((it->second & 0xFFFF)&state)&&
-                    ((HIWORD(it->second) == 0)||((pThis->m_selectedItems.size() == 0)&&(it->second & ENABLED_NOSELECTION))||(HIWORD(it->second) == pThis->m_selectedItems.size())))
+                    ((HIWORD(it->second) == 0)||((pThis->m_selectedItems.empty()) && (it->second & ENABLED_NOSELECTION)) || (HIWORD(it->second) == !(pThis->m_selectedItems.empty()))))
                     ::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, it->first, (LPARAM)TRUE);
                 else
                     ::SendMessage(pThis->m_hWndToolbar, TB_ENABLEBUTTON, it->first, (LPARAM)FALSE);
@@ -743,14 +744,14 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 state |= ENABLED_FILESELECTED;
             if (m_bFolderSelected)
                 state |= ENABLED_FOLDERSELECTED;
-            if (m_selectedItems.size() == 0)
+            if (m_selectedItems.empty())
                 state |= ENABLED_NOSELECTION;
             map<int, DWORD>::iterator it = m_enablestates.find(LOWORD(wParam));
             bool bEnabled = true;
             if (it != m_enablestates.end())
             {
                 if (((it->second & 0xFFFF)&state)&&
-                    ((HIWORD(it->second) == 0)||((m_selectedItems.size() == 0)&&(it->second & ENABLED_NOSELECTION))||(HIWORD(it->second) == m_selectedItems.size())))
+                    ((HIWORD(it->second) == 0)||((m_selectedItems.empty())&&(it->second & ENABLED_NOSELECTION))||(HIWORD(it->second) == m_selectedItems.size())))
                     bEnabled = true;
                 else
                     bEnabled = false;
@@ -1119,8 +1120,8 @@ wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const wstring& paths)
         FILE_ATTRIBUTE_TEMPORARY,
         0);
 
-    delete path;
-    delete tempFile;
+    delete [] path;
+    delete [] tempFile;
     if (file == INVALID_HANDLE_VALUE)
         return stdstring();
 

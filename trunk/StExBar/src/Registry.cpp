@@ -572,13 +572,13 @@ bool CRegistryKey::getSubKeys(CStringList& subkeys)
 /////////////////////////////////////////////////////////////////////
 
 CRegStdString::CRegStdString(void)
+    : m_value(_T(""))
+    , m_defaultvalue(_T(""))
+    , m_read(FALSE)
+    , m_force(FALSE)
 {
-    m_value = _T("");
-    m_defaultvalue = _T("");
     m_key = _T("");
     m_base = HKEY_CURRENT_USER;
-    m_read = FALSE;
-    m_force = FALSE;
     LastError = ERROR_SUCCESS;
 }
 
@@ -851,7 +851,7 @@ bool CStdRegistryKey::getValues(stdregistrykeylist& values)
         }
     }
 
-    return values.size() > 0;
+    return !values.empty();
 }
 
 bool CStdRegistryKey::getSubKeys(stdregistrykeylist& subkeys)
@@ -873,5 +873,5 @@ bool CStdRegistryKey::getSubKeys(stdregistrykeylist& subkeys)
         }
     }
 
-    return subkeys.size() > 0;
+    return !subkeys.empty();
 }
