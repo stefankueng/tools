@@ -106,11 +106,11 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST /*pIDFolder*/,
                 TCHAR * szFileName = new TCHAR[len+1];
                 if (0 == DragQueryFile(drop, i, szFileName, len+1))
                 {
-                    delete szFileName;
+                    delete [] szFileName;
                     continue;
                 }
                 stdstring str = stdstring(szFileName);
-                delete szFileName;
+                delete [] szFileName;
                 if (str.empty() == false)
                 {
                     files_.push_back(str);
