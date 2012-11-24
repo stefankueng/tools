@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2011 - Stefan Kueng
+// Copyright (C) 2007-2009, 2011-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -233,16 +233,15 @@ void CEditCmdDlg::SetupCommand()
     m_command.separator = SendMessage(GetDlgItem(*this, IDC_SEPARATOR), BM_GETCHECK, 0, 0) == BST_CHECKED;
     if (m_command.separator)
         return;     // nothing more to do here
-    TCHAR buf[EDITCMDDLG_MAXBUF] = {0};
 
-    GetDlgItemText(*this, IDC_NAME, buf, EDITCMDDLG_MAXBUF);
-    m_command.name = buf;
-    GetDlgItemText(*this, IDC_ICONPATH, buf, EDITCMDDLG_MAXBUF);
-    m_command.icon = buf;
-    GetDlgItemText(*this, IDC_COMMANDLINE, buf, EDITCMDDLG_MAXBUF);
-    m_command.commandline = buf;
-    GetDlgItemText(*this, IDC_STARTIN, buf, EDITCMDDLG_MAXBUF);
-    m_command.startin = buf;
+    auto buf = GetDlgItemText(IDC_NAME);
+    m_command.name = buf.get();
+    buf = GetDlgItemText(IDC_ICONPATH);
+    m_command.icon = buf.get();
+    buf = GetDlgItemText(IDC_COMMANDLINE);
+    m_command.commandline = buf.get();
+    buf = GetDlgItemText(IDC_STARTIN);
+    m_command.startin = buf.get();
 
     WPARAM hk = SendMessage(GetDlgItem(*this, IDC_HOTKEY), HKM_GETHOTKEY, 0, 0);
     m_command.key.keycode = LOBYTE(hk);
@@ -258,8 +257,8 @@ void CEditCmdDlg::SetupCommand()
     m_command.enabled_selected = SendMessage(GetDlgItem(*this, IDC_SELECTED), BM_GETCHECK, 0, 0) == BST_CHECKED;
     m_command.enabled_noselection = SendMessage(GetDlgItem(*this, IDC_NOSELECTION), BM_GETCHECK, 0, 0) == BST_CHECKED;
 
-    GetDlgItemText(*this, IDC_SELECTEDCOUNT, buf, EDITCMDDLG_MAXBUF);
-    m_command.enabled_selectedcount = _ttol(buf);
+    buf = GetDlgItemText(IDC_SELECTEDCOUNT);
+    m_command.enabled_selectedcount = _ttol(buf.get());
 
     if ((m_command.commandline.compare(INTERNALCOMMAND) == 0)||(m_command.commandline.compare(INTERNALCOMMANDHIDDEN) == 0))
     {
