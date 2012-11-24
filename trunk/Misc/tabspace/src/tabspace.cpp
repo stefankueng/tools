@@ -251,13 +251,14 @@ int _tmain(int argc, _TCHAR* argv[])
                 continue;
 
             CTextFile file;
-            if (file.Load(filepath.c_str()))
+            CTextFile::UnicodeType ut;
+            if (file.Load(filepath.c_str(), ut, false))
             {
                 if (ConvertTabSpaces::Convert(file, bUseSpaces, tabsize, bCheckOnly, bCStyle))
                 {
                     // the file was modified, we have to reload it for the next conversion
                     file.Save(filepath.c_str());
-                    file.Load(filepath.c_str());
+                    file.Load(filepath.c_str(), ut, false);
                 }
                 if (bRemoveEOLWhitespaces)
                 {
