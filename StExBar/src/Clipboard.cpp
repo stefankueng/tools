@@ -34,7 +34,7 @@ bool CDeskBand::WriteStringToClipboard(const std::wstring& sClipdata, HWND hOwni
     int ret = WideCharToMultiByte(CP_ACP, 0, sClipdata.c_str(), len, narrow, size-1, NULL, NULL);
     narrow[ret] = 0;
     sClipdataA = std::string(narrow);
-    delete narrow;
+    delete [] narrow;
 
     if (OpenClipboard(hOwningWnd))
     {

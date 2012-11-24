@@ -178,8 +178,8 @@ STDAPI DllRegisterServer(void)
         return result;
 
     // Register the object in explorer
-    LPWSTR   pwsz;
-    TCHAR    szCLSID[MAX_PATH];
+    LPWSTR pwsz;
+    TCHAR  szCLSID[MAX_PATH];
     // Get the CLSID in string form.
     if (SUCCEEDED(result = StringFromIID(CLSID_StExBand, &pwsz)))
     {

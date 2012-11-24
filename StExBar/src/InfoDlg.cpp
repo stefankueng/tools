@@ -70,7 +70,7 @@ BOOL CInfoDlg::ShowDialog(UINT idAboutHTMLID, HINSTANCE hInstance)
                     pfnShowHTMLDialog(NULL,pmk,NULL,L"resizable:yes",NULL);
                     bSuccess = TRUE;
                 }
-                delete lpWideCharStr;
+                delete [] lpWideCharStr;
             }
             delete [] lpszModule;
         }

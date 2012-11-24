@@ -97,7 +97,7 @@ public:
             {
                 if (start == end)
                     break;
-                start++;
+                ++start;
             }
             else
                 start = whatc[0].second;
@@ -107,7 +107,7 @@ public:
     std::wstring ReplaceCounters(const std::wstring& sText)
     {
         std::wstring sReplace = sText;
-        if (m_incVec.size())
+        if (!m_incVec.empty())
         {
             for (auto it = m_incVec.begin(); it != m_incVec.end(); ++it)
             {

@@ -94,14 +94,14 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
     if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
         return S_OK;
 
-    if ((m_ContextDirectory.size() == 0)&&(m_ContextItems.size() == 0))
+    if ((m_ContextDirectory.empty()) && (m_ContextItems.empty()))
         return S_OK;
 
 
     if (m_ContextDirectory.empty())
     {
         // folder is empty, but maybe files are selected
-        if (m_ContextItems.size() == 0)
+        if (m_ContextItems.empty())
             return S_OK;    // nothing selected - we don't have a menu to show
         // check whether a selected entry is an UID - those are namespace extensions
         // which we can't handle
@@ -174,10 +174,10 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
             continue;
         }
         bool bEnabled = cmd.enabled_viewpath ||
-                        (cmd.enabled_fileselected && m_ContextItems.size()) ||
-                        (cmd.enabled_folderselected && (m_ContextItems.size() || !m_ContextDirectory.empty())) ||
-                        (cmd.enabled_noselection && (m_ContextItems.size() == 0)) ||
-                        (cmd.enabled_selectedcount && (cmd.enabled_selectedcount == (int)m_ContextItems.size()));
+                        (cmd.enabled_fileselected && !m_ContextItems.empty()) ||
+                        (cmd.enabled_folderselected && (!m_ContextItems.empty() || !m_ContextDirectory.empty())) ||
+                        (cmd.enabled_noselection && (m_ContextItems.empty())) ||
+                        (cmd.enabled_selectedcount && (cmd.enabled_selectedcount == (int)!m_ContextItems.empty()));
 
         HICON hIcon = LoadCommandIcon(cmd);
         if (hIcon)
@@ -231,11 +231,7 @@ STDMETHODIMP CDeskBand::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
     if (lpcmi == NULL)
         return hr;
 
-    std::string command;
-    std::string parent;
-    std::string file;
-
-    if ((m_ContextDirectory.size() > 0)||(m_ContextItems.size() > 0))
+    if ((!m_ContextDirectory.empty()) || (!m_ContextItems.empty()))
     {
         UINT_PTR idCmd = LOWORD(lpcmi->lpVerb);
 
