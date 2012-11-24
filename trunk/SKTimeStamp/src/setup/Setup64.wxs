@@ -35,7 +35,7 @@
             <RegistryValue Root="HKLM" Key="Software\Classes\*\shellex\PropertySheetHandlers\SKTimeStamp" Value="{6A6B7688-3B34-41b2-8487-F1CE4C23FC60}" Type="string" />
             <RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\SKTimeStamp" Value="{6A6B7688-3B34-41b2-8487-F1CE4C23FC60}" Type="string" />
             <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{6A6B7688-3B34-41b2-8487-F1CE4C23FC60}" Value="SKTimeStamp" Type="string" />
-            <RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{6A6B7688-3B34-41b2-8487-F1CE4C23FC60}" Action="createAndRemoveOnUninstall" />
+            <RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{6A6B7688-3B34-41b2-8487-F1CE4C23FC60}" />
             <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{6A6B7688-3B34-41b2-8487-F1CE4C23FC60}\InProcServer32" Value="[INSTALLDIR]SKTimeStamp.dll" Type="string" />
             <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{6A6B7688-3B34-41b2-8487-F1CE4C23FC60}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 
