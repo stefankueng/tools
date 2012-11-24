@@ -1,6 +1,6 @@
 // AAClr - tool to adjust the aero colors according to the desktop wallpaper
 
-// Copyright (C) 2011 - Stefan Kueng
+// Copyright (C) 2011-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,7 +73,7 @@ void CRegRect::InternalRead (HKEY hKey, CRect& value)
     DWORD type = 0;
     RegQueryValueEx(hKey, m_key, NULL, &type, NULL, (LPDWORD) &size);
 
-    std::auto_ptr<char> buffer (new char[size]);
+    std::unique_ptr<char> buffer (new char[size]);
     if ((LastError = RegQueryValueEx(hKey, m_key, NULL, &type, (BYTE*) buffer.get(), &size))==ERROR_SUCCESS)
     {
         ASSERT(type==REG_BINARY);
@@ -108,7 +108,7 @@ void CRegPoint::InternalRead (HKEY hKey, CPoint& value)
     DWORD type = 0;
     RegQueryValueEx(hKey, m_key, NULL, &type, NULL, (LPDWORD) &size);
 
-    std::auto_ptr<char> buffer(new char[size]);
+    std::unique_ptr<char> buffer(new char[size]);
     if ((LastError = RegQueryValueEx(hKey, m_key, NULL, &type, (BYTE*) buffer.get(), &size))==ERROR_SUCCESS)
     {
         ASSERT(type==REG_BINARY);
