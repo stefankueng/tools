@@ -200,7 +200,6 @@
     <None Include="..\default.build" />
     <None Include="setup\Setup.wxs" />
     <None Include="setup\Setup64.wxs" />
-    <None Include="setup\WixUI_Custom.wxs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Registry.h" />
