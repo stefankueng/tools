@@ -1,58 +1,58 @@
-<?xml version='1.0' encoding='windows-1252'?>
-<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+<?xml version="1.0" encoding="windows-1252"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product
   UpgradeCode="8F75040C-433F-4eab-B1F0-2D8FA4153D92"
-  Name='StExBar'
-  Id='*'
-  Language='1033'
-  Codepage='1252'
-  Version='1.8.3'
-  Manufacturer='Stefans Tools'>
+  Name="StExBar"
+  Id="*"
+  Language="1033"
+  Codepage="1252"
+  Version="1.8.3"
+  Manufacturer="Stefans Tools">
 
-    <Package Id='*' Keywords='Installer'
+    <Package Id="*" Keywords="Installer"
       Description="Stefans Shell Extension Bar"
-      Comments='http://tools.StExBar.net' Manufacturer='Stefans Tools'
-      InstallerVersion='200' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+      Comments="http://tools.StExBar.net" Manufacturer="Stefans Tools"
+      InstallerVersion="200" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
 
     <Upgrade Id="8F75040C-433F-4eab-B1F0-2D8FA4153D92" >
       <!-- flag is set if the install will trigger an upgrade of an existing install -->
       <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="1.8.3" IncludeMaximum="no" />
     </Upgrade>
 
-    <Media Id='1' Cabinet='StExBar.cab' EmbedCab='yes' CompressionLevel='high' />
+    <Media Id="1" Cabinet="StExBar.cab" EmbedCab="yes" CompressionLevel="high" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
     <Property Id="ALLUSERS">1</Property>
     <Condition Message="This application only runs on Windows XP with Service Pack 3 and later.">
       <![CDATA[Installed OR ((VersionNT > 501) OR ((VersionNT = 501) AND (ServicePackLevel >= 3)))]]>
     </Condition>
 
-    <Directory Id='TARGETDIR' Name='SourceDir'>
-      <Directory Id='ProgramFilesFolder' Name='PFiles'>
-        <Directory Id='INSTALLDIR' Name='StExBar'>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="INSTALLDIR" Name="StExBar">
 
-          <Component Id='MainDll' Guid='A9818B4B-B626-4455-AA31-588EAFAFA213'>
-            <File Id='StExBar.DLL' Name='StExBar.dll' DiskId='1'
-            Source='bin/release/StExBar.dll' Vital='yes'>
+          <Component Id="MainDll" Guid="A9818B4B-B626-4455-AA31-588EAFAFA213">
+            <File Id="StExBar.DLL" Name="StExBar.dll" DiskId="1"
+            Source="bin/release/StExBar.dll" Vital="yes">
             </File>
             <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Value="StExBar" Type="string" />
-            <RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Action="createAndRemoveOnUninstall" />
+            <RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{367D8B32-F9FD-474b-8E65-9E521F35DE99}" />
             <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{367D8B32-F9FD-474b-8E65-9E521F35DE99}\InProcServer32" Value="[INSTALLDIR]StExBar.dll" Type="string" />
             <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{367D8B32-F9FD-474b-8E65-9E521F35DE99}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-            <RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{367D8B32-F9FD-474b-8E65-9E521F35DE99}\Implemented Categories\{00021492-0000-0000-C000-000000000046}" Action="createAndRemoveOnUninstall" />
+            <RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{367D8B32-F9FD-474b-8E65-9E521F35DE99}\Implemented Categories\{00021492-0000-0000-C000-000000000046}" />
             <RegistryValue Root="HKLM" Key="Software\Microsoft\Internet Explorer\Toolbar" Name="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Value="StExBar" Type="string" />
 
-            <RegistryKey Root="HKLM" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\StExBar" Action="createAndRemoveOnUninstall"/>
-            <RegistryValue Root="HKLM" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\StExBar" KeyPath="yes" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string"/>
-            <RegistryKey Root="HKLM" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\StExBar" Action="createAndRemoveOnUninstall"/>
-            <RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string"/>
-            <RegistryKey Root="HKLM" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\StExBar" Action="createAndRemoveOnUninstall"/>
-            <RegistryValue Root="HKLM" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string"/>
-            <RegistryKey Root="HKLM" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\StExBar" Action="createAndRemoveOnUninstall"/>
-            <RegistryValue Root="HKLM" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string"/>
-            <RegistryValue Root="HKLM" Key="Software\Classes\*\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string"/>
-            <RegistryKey Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\StExBar" Action="createAndRemoveOnUninstall" />
+            <RegistryKey Root="HKLM" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\StExBar" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\StExBar" KeyPath="yes" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string" />
+            <RegistryKey Root="HKLM" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\StExBar" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string" />
+            <RegistryKey Root="HKLM" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\StExBar" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string" />
+            <RegistryKey Root="HKLM" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\StExBar" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\*\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string" />
+            <RegistryKey Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\StExBar" />
             <RegistryValue Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string" />
-            <RegistryKey Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\StExBar" Action="createAndRemoveOnUninstall" />
+            <RegistryKey Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\StExBar" />
             <RegistryValue Root="HKLM" Key="Software\Classes\LibraryFolder\background\shellex\ContextMenuHandlers\StExBar" Value="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Type="string" />
 
             <RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{367D8B32-F9FD-474b-8E65-9E521F35DE99}" Value="StExBar" Type="string" />
@@ -68,10 +68,10 @@
 
     </Directory>
 
-    <Feature Id='Complete' Title='StExBar' Description='The complete package.'
-      Display='expand' Level='1' ConfigurableDirectory='INSTALLDIR'>
-      <Feature Id='MainDll' Title='Program' Description='The main executable.' Level='1'>
-        <ComponentRef Id='MainDll' />
+    <Feature Id="Complete" Title="StExBar" Description="The complete package."
+      Display="expand" Level="1" ConfigurableDirectory="INSTALLDIR">
+      <Feature Id="MainDll" Title="Program" Description="The main executable." Level="1">
+        <ComponentRef Id="MainDll" />
       </Feature>
     </Feature>
 

@@ -1,38 +1,38 @@
-<?xml version='1.0' encoding='windows-1252'?>
-<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+<?xml version="1.0" encoding="windows-1252"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product
   UpgradeCode="705E17CC-A9E9-4082-96C6-EC08249B63A8"
-  Name='SKTimeStamp'
-  Id='*'
-  Language='1033'
-  Codepage='1252'
-  Version='1.3.3'
-  Manufacturer='Stefans Tools'>
+  Name="SKTimeStamp"
+  Id="*"
+  Language="1033"
+  Codepage="1252"
+  Version="1.3.3"
+  Manufacturer="Stefans Tools">
 
-    <Package Id='*' Keywords='Installer'
+    <Package Id="*" Keywords="Installer"
       Description="File/Folder Time Stamp Changer"
-      Comments='http://tools.tortoisesvn.net' Manufacturer='Stefans Tools'
-      InstallerVersion='100' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+      Comments="http://tools.tortoisesvn.net" Manufacturer="Stefans Tools"
+      InstallerVersion="100" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
 
     <Upgrade Id="705E17CC-A9E9-4082-96C6-EC08249B63A8" >
       <!-- flag is set if the install will trigger an upgrade of an existing install -->
       <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="1.3.3" IncludeMaximum="no" />
     </Upgrade>
 
-    <Media Id='1' Cabinet='SKTimeStamp.cab' EmbedCab='yes' CompressionLevel='high' />
+    <Media Id="1" Cabinet="SKTimeStamp.cab" EmbedCab="yes" CompressionLevel="high" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
     <Property Id="ALLUSERS">1</Property>
     <Condition Message="This application only runs on Windows XP with Service Pack 3 and later.">
       <![CDATA[Installed OR ((VersionNT > 501) OR ((VersionNT = 501) AND (ServicePackLevel >= 3)))]]>
     </Condition>
 
-    <Directory Id='TARGETDIR' Name='SourceDir'>
-      <Directory Id='ProgramFilesFolder' Name='PFiles'>
-        <Directory Id='INSTALLDIR' Name='SKTimeStamp'>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="INSTALLDIR" Name="SKTimeStamp">
 
-          <Component Id='MainDll' Guid='A9818B4B-B626-4455-AA31-588EAFAFA213'>
-            <File Id='SKTIMESTAMP.DLL' Name='SKTimeStamp.dll' DiskId='1'
-            Source='bin/SKTimeStamp/Release/SKTimeStamp.dll' Vital='yes'>
+          <Component Id="MainDll" Guid="A9818B4B-B626-4455-AA31-588EAFAFA213">
+            <File Id="SKTIMESTAMP.DLL" Name="SKTimeStamp.dll" DiskId="1"
+            Source="bin/SKTimeStamp/Release/SKTimeStamp.dll" Vital="yes">
             </File>
             <RegistryValue Root="HKLM" Key="Software\Classes\*\shellex\PropertySheetHandlers\SKTimeStamp" Value="{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Type="string" />
             <RegistryValue Root="HKLM" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\SKTimeStamp" Value="{01D8AD1E-46C9-4882-925C-CC29D9A99858}" Type="string" />
@@ -49,10 +49,10 @@
 
     </Directory>
 
-    <Feature Id='Complete' Title='SKTimeStamp' Description='The complete package.'
-      Display='expand' Level='1' ConfigurableDirectory='INSTALLDIR'>
-      <Feature Id='MainDll' Title='Program' Description='The main dll.' Level='1'>
-        <ComponentRef Id='MainDll' />
+    <Feature Id="Complete" Title="SKTimeStamp" Description="The complete package."
+      Display="expand" Level="1" ConfigurableDirectory="INSTALLDIR">
+      <Feature Id="MainDll" Title="Program" Description="The main dll." Level="1">
+        <ComponentRef Id="MainDll" />
       </Feature>
     </Feature>
 
