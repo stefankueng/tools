@@ -16,7 +16,7 @@ void SetDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, const FILETIM
 STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
     LPARAM lParam)
 {
-    if (files_.size() == 0)
+    if (files_.empty())
         return NOERROR;
 
     PROPSHEETPAGE psp;
@@ -95,7 +95,8 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 // *********************** CShellPropertyPage *************************
 
 CShellPropertyPage::CShellPropertyPage(const std::vector<stdstring> &newFilenames)
-    :filenames(newFilenames)
+    : filenames(newFilenames)
+    , m_hwnd(NULL)
 {
 }
 
@@ -294,7 +295,7 @@ void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteT
             failedFiles.push_back(*it);
         }
     }
-    if (failedFiles.size() > 0)
+    if (!failedFiles.empty())
     {
         // could not set the dates for one or more files
         // show an error message
