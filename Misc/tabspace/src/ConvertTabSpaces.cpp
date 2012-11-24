@@ -163,7 +163,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         else
                             *pBuf++ = *pOldBuf++;
                     }
-                    file.ContentsModified(pBufStart, newfilelen);
+                    file.ContentsModified((BYTE*)pBufStart, newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
                                 MAX_PATH * 2,
@@ -200,7 +200,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         else
                             *pBuf++ = *pOldBuf++;
                     }
-                    file.ContentsModified(pBufStart, newfilelen);
+                    file.ContentsModified((BYTE*)pBufStart, newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
                                 MAX_PATH * 2,
@@ -344,7 +344,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         else
                             *pBuf++ = *pOldBuf++;
                     }
-                    file.ContentsModified(pBufStart, newfilelen);
+                    file.ContentsModified((BYTE*)pBufStart, newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
                                 MAX_PATH * 2,
@@ -399,7 +399,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         else
                             *pBuf++ = *pOldBuf++;
                     }
-                    file.ContentsModified(pBufStart, newfilelen);
+                    file.ContentsModified((BYTE*)pBufStart, newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
                                 MAX_PATH * 2,
@@ -607,7 +607,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                     }
                     *pBuf++ = *pOldBuf++;
                 }
-                file.ContentsModified(pBufStart, newfilelen);
+                file.ContentsModified((BYTE*)pBufStart, newfilelen);
                 return true;
             }
             else
@@ -642,7 +642,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                     if (i < long(file.GetFileLength()))
                         *pBuf++ = *pOldBuf++;
                 }
-                file.ContentsModified(pBufStart, newfilelen);
+                file.ContentsModified((BYTE*)pBufStart, newfilelen);
                 return true;
             }
         }
