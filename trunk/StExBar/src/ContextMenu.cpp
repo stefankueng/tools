@@ -16,17 +16,18 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "SRBand.h"
 #include "itemidlist.h"
 #include "VistaIcons.h"
 #include "resource.h"
 
-#define GetPIDLFolder(pida) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
+#define GetPIDLFolder(pida)  (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
 #define GetPIDLItem(pida, i) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[i+1])
 
-int                 g_shellidlist   = RegisterClipboardFormat(CFSTR_SHELLIDLIST);
-LPCTSTR             g_MenuIDString  = _T("StEx");
+int         g_shellidlist   = RegisterClipboardFormat(CFSTR_SHELLIDLIST);
+LPCTSTR     g_MenuIDString  = _T("StEx");
 
 STDMETHODIMP CDeskBand::Initialize(LPCITEMIDLIST pIDFolder,
                                    LPDATAOBJECT pDataObj,

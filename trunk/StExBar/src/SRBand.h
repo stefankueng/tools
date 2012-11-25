@@ -16,6 +16,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
 
 #include <shlobj.h>
@@ -28,7 +29,7 @@
 
 using namespace std;
 
-#define DB_CLASS_NAME (TEXT("StExBarClass"))
+#define DB_CLASS_NAME (_T("StExBarClass"))
 
 #define MIN_SIZE_X   100
 #define MIN_SIZE_Y   20

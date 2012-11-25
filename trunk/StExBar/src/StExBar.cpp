@@ -16,7 +16,9 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
+
 #include "stdafx.h"
 #include "ClassFactory.h"
 #include <strsafe.h>
@@ -170,7 +172,7 @@ STDAPI DllRegisterServer(void)
         return result;
 
     // Register the desk band object.
-    if (!RegisterServer(CLSID_StExBand, TEXT("S&tExBar")))
+    if (!RegisterServer(CLSID_StExBand, _T("S&tExBar")))
         return result;
 
     // Register the component categories for the desk band object.
@@ -187,17 +189,17 @@ STDAPI DllRegisterServer(void)
         {
             if (SUCCEEDED(result = StringCchCopy(szCLSID, MAX_PATH, pwsz)))
             {
-                CreateRegistryString(TEXT("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID, TEXT("StExBar"));
+                CreateRegistryString(_T("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID, _T("StExBar"));
 
-                CreateRegistryString(TEXT("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-                CreateRegistryString(TEXT("Software\\Classes\\Directory\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-                CreateRegistryString(TEXT("Software\\Classes\\Directory\\Background\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-                CreateRegistryString(TEXT("Software\\Classes\\Folder\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-                CreateRegistryString(TEXT("Software\\Classes\\*\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-                CreateRegistryString(TEXT("Software\\Classes\\LibraryLocation\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
-                CreateRegistryString(TEXT("Software\\Classes\\LibraryFolder\\background\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(_T("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(_T("Software\\Classes\\Directory\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(_T("Software\\Classes\\Directory\\Background\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(_T("Software\\Classes\\Folder\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(_T("Software\\Classes\\*\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(_T("Software\\Classes\\LibraryLocation\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
+                CreateRegistryString(_T("Software\\Classes\\LibraryFolder\\background\\shellex\\ContextMenuHandlers\\StExBar"), NULL, szCLSID);
 
-                CreateRegistryString(TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Approved"), szCLSID, TEXT("StExBar"));
+                CreateRegistryString(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Approved"), szCLSID, _T("StExBar"));
             }
             // Free the string.
             LPMALLOC pMalloc;
@@ -220,7 +222,7 @@ STDAPI DllUnregisterServer(void)
         res = SELFREG_E_CLASS;
 
     // UnRegister the desk band object.
-    if (!UnRegisterServer(CLSID_StExBand, TEXT("S&tExBar")))
+    if (!UnRegisterServer(CLSID_StExBand, _T("S&tExBar")))
         res = SELFREG_E_CLASS;
 
     LPWSTR   pwsz;
@@ -232,14 +234,14 @@ STDAPI DllUnregisterServer(void)
         {
             if (SUCCEEDED(res = StringCchCopy(szCLSID, MAX_PATH, pwsz)))
             {
-                SHDeleteValue(HKEY_LOCAL_MACHINE, TEXT("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID);
-                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"));
-                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Directory\\shellex\\ContextMenuHandlers\\StExBar"));
-                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Directory\\Background\\shellex\\ContextMenuHandlers\\StExBar"));
-                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Folder\\shellex\\ContextMenuHandlers\\StExBar"));
-                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\*\\shellex\\ContextMenuHandlers\\StExBar"));
-                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\LibraryLocation\\shellex\\ContextMenuHandlers\\StExBar"));
-                SHDeleteKey(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\LibraryFolder\\background\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteValue(HKEY_LOCAL_MACHINE, _T("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID);
+                SHDeleteKey(HKEY_LOCAL_MACHINE, _T("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, _T("Software\\Classes\\Directory\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, _T("Software\\Classes\\Directory\\Background\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, _T("Software\\Classes\\Folder\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, _T("Software\\Classes\\*\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, _T("Software\\Classes\\LibraryLocation\\shellex\\ContextMenuHandlers\\StExBar"));
+                SHDeleteKey(HKEY_LOCAL_MACHINE, _T("Software\\Classes\\LibraryFolder\\background\\shellex\\ContextMenuHandlers\\StExBar"));
                 res = S_OK;
             }
             // Free the string.
@@ -296,17 +298,17 @@ BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
         return FALSE;
 
     DOREGSTRUCT ClsidEntries[ ] = {HKEY_CLASSES_ROOT,
-        TEXT("CLSID\\%38s"),
+        _T("CLSID\\%38s"),
         NULL,
         lpszTitle,
         HKEY_CLASSES_ROOT,
-        TEXT("CLSID\\%38s\\InprocServer32"),
+        _T("CLSID\\%38s\\InprocServer32"),
         NULL,
         szModule,
         HKEY_CLASSES_ROOT,
-        TEXT("CLSID\\%38s\\InprocServer32"),
-        TEXT("ThreadingModel"),
-        TEXT("Apartment"),
+        _T("CLSID\\%38s\\InprocServer32"),
+        _T("ThreadingModel"),
+        _T("Apartment"),
         NULL,
         NULL,
         NULL,
@@ -410,17 +412,17 @@ BOOL UnRegisterServer(CLSID clsid, LPTSTR lpszTitle)
         return FALSE;
 
     DOREGSTRUCT ClsidEntries[ ] = {HKEY_CLASSES_ROOT,
-        TEXT("CLSID\\%38s"),
+        _T("CLSID\\%38s"),
         NULL,
         lpszTitle,
         HKEY_CLASSES_ROOT,
-        TEXT("CLSID\\%38s\\InprocServer32"),
+        _T("CLSID\\%38s\\InprocServer32"),
         NULL,
         szModule,
         HKEY_CLASSES_ROOT,
-        TEXT("CLSID\\%38s\\InprocServer32"),
-        TEXT("ThreadingModel"),
-        TEXT("Apartment"),
+        _T("CLSID\\%38s\\InprocServer32"),
+        _T("ThreadingModel"),
+        _T("Apartment"),
         NULL,
         NULL,
         NULL,

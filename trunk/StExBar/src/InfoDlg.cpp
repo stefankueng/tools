@@ -16,6 +16,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "InfoDlg.h"
 
@@ -41,18 +42,18 @@ CInfoDlg::~CInfoDlg()
 BOOL CInfoDlg::ShowDialog(UINT idAboutHTMLID, HINSTANCE hInstance)
 {
     //Load the IE Specific MSTML Interface DKK
-    HINSTANCE   hinstMSHTML = LoadLibrary(TEXT("MSHTML.DLL"));
+    HINSTANCE hinstMSHTML = LoadLibrary(_T("MSHTML.DLL"));
     BOOL bSuccess = FALSE;
     if(hinstMSHTML)
     {
-        SHOWHTMLDIALOGFN  *pfnShowHTMLDialog;
+        SHOWHTMLDIALOGFN *pfnShowHTMLDialog;
         //Locate The Function ShowHTMLDialog in the Loaded MSHTML.DLL
-        pfnShowHTMLDialog =     (SHOWHTMLDIALOGFN*)GetProcAddress(hinstMSHTML, "ShowHTMLDialog");
+        pfnShowHTMLDialog = (SHOWHTMLDIALOGFN*)GetProcAddress(hinstMSHTML, "ShowHTMLDialog");
         if(pfnShowHTMLDialog)
         {
-            LPTSTR lpszModule = new TCHAR[_MAX_PATH];
+            LPTSTR lpszModule = new TCHAR[MAX_PATH];
             //Get The Application Path
-            if (GetModuleFileName(hInstance, lpszModule, _MAX_PATH))
+            if (GetModuleFileName(hInstance, lpszModule, MAX_PATH))
             {
                 //Add the IE Res protocol
                 TCHAR strResourceURL[MAX_PATH*4];

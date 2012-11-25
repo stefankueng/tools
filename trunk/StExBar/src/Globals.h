@@ -16,6 +16,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
 
 // Global variables (global to the dll)
@@ -23,6 +24,3 @@
 
 extern HINSTANCE  g_hInst;
 extern UINT       g_DllRefCount;
-
-
-

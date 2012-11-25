@@ -36,5 +36,3 @@
 #include <olectl.h>
 
 #include "tstring.h"
-
-

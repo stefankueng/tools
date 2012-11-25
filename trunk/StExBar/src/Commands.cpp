@@ -16,6 +16,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "Commands.h"
 #include "resource.h"
@@ -248,9 +249,9 @@ bool CCommands::LoadFromFile()
         SHGFP_TYPE_CURRENT,
         szPath)))
     {
-        PathAppend(szPath, TEXT("StExBar"));
+        PathAppend(szPath, _T("StExBar"));
         CreateDirectory(szPath, NULL);
-        PathAppend(szPath, TEXT("Commands.ini"));
+        PathAppend(szPath, _T("Commands.ini"));
     }
 
     CSimpleIni inifile;
@@ -323,9 +324,9 @@ bool CCommands::SaveToFile()
         SHGFP_TYPE_CURRENT,
         szPath)))
     {
-        PathAppend(szPath, TEXT("StExBar"));
+        PathAppend(szPath, _T("StExBar"));
         CreateDirectory(szPath, NULL);
-        PathAppend(szPath, TEXT("Commands.ini"));
+        PathAppend(szPath, _T("Commands.ini"));
     }
 
     CSimpleIni inifile;
