@@ -16,6 +16,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
 #include <Uxtheme.h>
 
@@ -24,4 +25,3 @@ typedef DWORD ARGB;
 
 HBITMAP IconToBitmapPARGB32(HICON hIcon);
 HBITMAP IconToBitmap(HICON hIcon);
-

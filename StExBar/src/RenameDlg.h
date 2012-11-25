@@ -16,6 +16,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
 #include "basedialog.h"
 #include "DlgResizer.h"
@@ -56,7 +57,7 @@ private:
     CDlgResizer             m_resizer;
     wstring                 m_sMatch;           ///< the match string of the rename
     wstring                 m_sReplace;         ///< the replace string of the rename
-    set<wstring, __lesscasecmp>            m_filelist;         ///< the list of selected file/folder names
+    set<wstring, __lesscasecmp> m_filelist;     ///< the list of selected file/folder names
     CAutoComplete           m_AutoCompleteRen1;
     CAutoComplete           m_AutoCompleteRen2;
 
