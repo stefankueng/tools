@@ -74,7 +74,7 @@ dt {
 }
 
 footer {
-    background: url("../img/footer.png") no-repeat;
+    background: url("../img/main_sprite.png") no-repeat 0 -310px;
     color: white;
     font-size: 85%;
     margin: 0 auto;
@@ -137,7 +137,7 @@ h2 {
 }
 
 header {
-    background-image: url("../img/header.png");
+    background: url("../img/main_sprite.png") no-repeat 0 0;
     margin: 0 auto;
     padding: 0;
     text-decoration: none;
@@ -282,9 +282,9 @@ pre {
 /* Homepage's table end */
 
 
-#rap {
+#wrapper {
     background: url("../img/main.png") repeat-y;
-    margin: 0 auto;
+    margin: -10px auto 0;
     width: 900px;
 }
 
