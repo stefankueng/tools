@@ -12,24 +12,20 @@ if os.path.exists(setpath):
 shutil.copytree(os.path.abspath('..'), setpath)
 
 footerFile = file(os.path.join(setpath, 'templates/footer.html'), 'r')
-footerjsFile = file(os.path.join(setpath, 'templates/footer-js.html'), 'r')
-menuFile = file(os.path.join(setpath, 'templates/header.html'), 'r')
-menuFileZH = file(os.path.join(setpath, 'templates/header.zh.html'), 'r')
+headerFile = file(os.path.join(setpath, 'templates/header.html'), 'r')
+headerFileZH = file(os.path.join(setpath, 'templates/header.zh.html'), 'r')
 adtopFile = file(os.path.join(setpath, 'templates/adsense_top.html'), 'r')
 adinpageFile = file(os.path.join(setpath, 'templates/adsense_inpage.html'), 'r')
 
-# the following 17 lines should be in a loop
+# the following 15 lines should be in a loop
 footerText = footerFile.read()
 footerFile.close()
 
-footerjsText = footerjsFile.read()
-footerjsFile.close()
+headerText = headerFile.read()
+headerFile.close()
 
-menuText = menuFile.read()
-menuFile.close()
-
-menuTextZH = menuFileZH.read()
-menuFileZH.close()
+headerTextZH = headerFileZH.read()
+headerFileZH.close()
 
 adtopText = adtopFile.read()
 adtopFile.close()
@@ -37,8 +33,8 @@ adtopFile.close()
 adinpageText = adinpageFile.read()
 adinpageFile.close()
 
-searchfor = [ '<!--#include FILE="header.html"-->', '<!--#include FILE="header.zh.html"-->', '<!--#include FILE="footer.html"-->', '<!--#include FILE="footer-js.html"-->', '<!--#include FILE="adsense_top.html"-->', '<!--#include FILE="adsense_inpage.html"-->' ]
-replacewith = [ menuText, menuTextZH, footerText, footerjsText, adtopText, adinpageText ]
+searchfor = [ '<!--#include FILE="header.html"-->', '<!--#include FILE="header.zh.html"-->', '<!--#include FILE="footer.html"-->', '<!--#include FILE="adsense_top.html"-->', '<!--#include FILE="adsense_inpage.html"-->' ]
+replacewith = [ headerText, headerTextZH, footerText, adtopText, adinpageText ]
 
 for root, dirs, files in os.walk(setpath):
     fname = files
