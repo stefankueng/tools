@@ -82,8 +82,8 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             AddToolTip(IDC_USEFILTER, _T("The edit box text is used to filter the content in the explorer"));
             AddToolTip(IDC_USEAUTO, _T("The first char determines the function:\nf filtertext\ng grepWin search text\nc console command\np powershell command"));
 
-            TCHAR buf[MAX_PATH] = {0};
-            _stprintf_s(buf, MAX_PATH, _T("StExBar %ld.%ld.%ld.%ld"), VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
+            TCHAR buf[_MAX_PATH] = {0};
+            _stprintf_s(buf, _MAX_PATH, _T("StExBar %ld.%ld.%ld.%ld"), VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
             SetDlgItemText(hwndDlg, IDC_VERSIONSTRING, buf);
 
             m_commands.LoadFromFile();

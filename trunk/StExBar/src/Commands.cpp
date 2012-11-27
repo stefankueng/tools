@@ -242,7 +242,7 @@ bool CCommands::LoadFromFile()
     c.key = key;
     m_commands.push_back(c);
 
-    TCHAR szPath[MAX_PATH] = {0};
+    TCHAR szPath[_MAX_PATH] = {0};
     if (SUCCEEDED(SHGetFolderPath(NULL,
         CSIDL_APPDATA|CSIDL_FLAG_CREATE,
         NULL,
@@ -317,7 +317,7 @@ bool CCommands::LoadFromFile()
 
 bool CCommands::SaveToFile()
 {
-    TCHAR szPath[MAX_PATH] = {0};
+    TCHAR szPath[_MAX_PATH] = {0};
     if (SUCCEEDED(SHGetFolderPath(NULL,
         CSIDL_APPDATA|CSIDL_FLAG_CREATE,
         NULL,

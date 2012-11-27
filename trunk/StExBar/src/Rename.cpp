@@ -78,7 +78,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
                             if (SUCCEEDED(pPersistFolder->GetCurFolder(&folderpidl)))
                             {
                                 // we have the current folder
-                                TCHAR buf[MAX_PATH] = {0};
+                                TCHAR buf[_MAX_PATH] = {0};
                                 // find the path of the folder
                                 if (SHGetPathFromIDList(folderpidl, buf))
                                 {
@@ -95,7 +95,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
                                     if (SUCCEEDED(pFolderView->Items(SVGIO_ALLVIEW, IID_IEnumIDList, (LPVOID*)&pEnum)))
                                     {
                                         LPITEMIDLIST pidl;
-                                        WCHAR buf[MAX_PATH] = {0};
+                                        WCHAR buf[_MAX_PATH] = {0};
                                         ULONG fetched = 0;
                                         ULONG attribs = 0;
                                         do
@@ -202,8 +202,8 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
                                                     SHGDN_INFOLDER|SHGDN_FORPARSING,
                                                     &str)))
                                                 {
-                                                    TCHAR dispname[MAX_PATH];
-                                                    StrRetToBuf(&str, pidl, dispname, MAX_PATH);
+                                                    TCHAR dispname[_MAX_PATH];
+                                                    StrRetToBuf(&str, pidl, dispname, _MAX_PATH);
 
                                                     wstring replaced;
                                                     try

@@ -73,8 +73,8 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance,
     case DLL_PROCESS_ATTACH:
         {
             // only load the dll in explorer
-            WCHAR path[MAX_PATH] = {0};
-            if (GetModuleFileName(NULL, path, MAX_PATH)==FALSE)
+            WCHAR path[_MAX_PATH] = {0};
+            if (GetModuleFileName(NULL, path, _MAX_PATH)==FALSE)
                 return FALSE;
             wchar_t * slash = wcsrchr(path, '\\');
             if (slash == NULL)
@@ -181,13 +181,13 @@ STDAPI DllRegisterServer(void)
 
     // Register the object in explorer
     LPWSTR pwsz;
-    TCHAR  szCLSID[MAX_PATH];
+    TCHAR  szCLSID[_MAX_PATH];
     // Get the CLSID in string form.
     if (SUCCEEDED(result = StringFromIID(CLSID_StExBand, &pwsz)))
     {
         if (pwsz)
         {
-            if (SUCCEEDED(result = StringCchCopy(szCLSID, MAX_PATH, pwsz)))
+            if (SUCCEEDED(result = StringCchCopy(szCLSID, _MAX_PATH, pwsz)))
             {
                 CreateRegistryString(_T("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID, _T("StExBar"));
 
@@ -226,13 +226,13 @@ STDAPI DllUnregisterServer(void)
         res = SELFREG_E_CLASS;
 
     LPWSTR   pwsz;
-    TCHAR    szCLSID[MAX_PATH];
+    TCHAR    szCLSID[_MAX_PATH];
     // Get the CLSID in string form.
     if (SUCCEEDED(res = StringFromIID(CLSID_StExBand, &pwsz)))
     {
         if (pwsz)
         {
-            if (SUCCEEDED(res = StringCchCopy(szCLSID, MAX_PATH, pwsz)))
+            if (SUCCEEDED(res = StringCchCopy(szCLSID, _MAX_PATH, pwsz)))
             {
                 SHDeleteValue(HKEY_LOCAL_MACHINE, _T("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID);
                 SHDeleteKey(HKEY_LOCAL_MACHINE, _T("Software\\Classes\\Drive\\shellex\\ContextMenuHandlers\\StExBar"));
@@ -259,9 +259,9 @@ STDAPI DllUnregisterServer(void)
 
 typedef struct{
     HKEY  hRootKey;
-    LPTSTR szSubKey;        // TCHAR szSubKey[MAX_PATH];
+    LPTSTR szSubKey;        // TCHAR szSubKey[_MAX_PATH];
     LPTSTR lpszValueName;
-    LPTSTR szData;          // TCHAR szData[MAX_PATH];
+    LPTSTR szData;          // TCHAR szData[_MAX_PATH];
 }DOREGSTRUCT, *LPDOREGSTRUCT;
 
 BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
@@ -270,9 +270,9 @@ BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
     HKEY     hKey;
     LRESULT  lResult;
     DWORD    dwDisp;
-    TCHAR    szSubKey[MAX_PATH];
-    TCHAR    szCLSID[MAX_PATH];
-    TCHAR    szModule[MAX_PATH];
+    TCHAR    szSubKey[_MAX_PATH];
+    TCHAR    szCLSID[_MAX_PATH];
+    TCHAR    szModule[_MAX_PATH];
     LPWSTR   pwsz;
     DWORD    retval;
 
@@ -281,7 +281,7 @@ BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
 
     if (pwsz)
     {
-        hr = StringCchCopy(szCLSID, MAX_PATH, pwsz);
+        hr = StringCchCopy(szCLSID, _MAX_PATH, pwsz);
 
         // Free the string.
         LPMALLOC pMalloc;
@@ -293,7 +293,7 @@ BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
     }
 
     // Get this app's path and file name.
-    retval = GetModuleFileName(g_hInst, szModule, MAX_PATH);
+    retval = GetModuleFileName(g_hInst, szModule, _MAX_PATH);
     if (retval == NULL)
         return FALSE;
 
@@ -319,7 +319,7 @@ BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
     {
         // create the sub key string - for this case, insert the file extension
         if (FAILED(StringCchPrintf(szSubKey,
-            MAX_PATH,
+            _MAX_PATH,
             ClsidEntries[i].szSubKey,
             szCLSID)))
             return FALSE;
@@ -338,16 +338,16 @@ BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
 
         if (NOERROR == lResult)
         {
-            TCHAR szData[MAX_PATH];
+            TCHAR szData[_MAX_PATH];
 
             // If necessary, create the value string.
             if (SUCCEEDED(StringCchPrintf(szData,
-                MAX_PATH,
+                _MAX_PATH,
                 ClsidEntries[i].szData,
                 szModule)))
             {
                 size_t length = 0;
-                if (SUCCEEDED(StringCchLength(szData, MAX_PATH, &length)))
+                if (SUCCEEDED(StringCchLength(szData, _MAX_PATH, &length)))
                 {
                     lResult = RegSetValueEx(hKey,
                         ClsidEntries[i].lpszValueName,
@@ -384,9 +384,9 @@ BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
 BOOL UnRegisterServer(CLSID clsid, LPTSTR lpszTitle)
 {
     int      i;
-    TCHAR    szSubKey[MAX_PATH];
-    TCHAR    szCLSID[MAX_PATH];
-    TCHAR    szModule[MAX_PATH];
+    TCHAR    szSubKey[_MAX_PATH];
+    TCHAR    szCLSID[_MAX_PATH];
+    TCHAR    szModule[_MAX_PATH];
     LPWSTR   pwsz;
     DWORD    retval;
 
@@ -396,7 +396,7 @@ BOOL UnRegisterServer(CLSID clsid, LPTSTR lpszTitle)
 
     if (pwsz)
     {
-        hr = StringCchCopy(szCLSID, MAX_PATH, pwsz);
+        hr = StringCchCopy(szCLSID, _MAX_PATH, pwsz);
         // Free the string.
         LPMALLOC pMalloc;
         CoGetMalloc(1, &pMalloc);
@@ -407,7 +407,7 @@ BOOL UnRegisterServer(CLSID clsid, LPTSTR lpszTitle)
     }
 
     // Get this app's path and file name.
-    retval = GetModuleFileName(g_hInst, szModule, MAX_PATH);
+    retval = GetModuleFileName(g_hInst, szModule, _MAX_PATH);
     if (retval == NULL)
         return FALSE;
 
@@ -433,7 +433,7 @@ BOOL UnRegisterServer(CLSID clsid, LPTSTR lpszTitle)
     {
         //create the sub key string - for this case, insert the file extension
         if (FAILED(StringCchPrintf(szSubKey,
-            MAX_PATH,
+            _MAX_PATH,
             ClsidEntries[i].szSubKey,
             szCLSID)))
             return FALSE;

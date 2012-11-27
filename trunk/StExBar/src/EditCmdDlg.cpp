@@ -89,7 +89,7 @@ Special placeholders are available:\r\n\
         case IDC_BROWSEICON:
             {
                 OPENFILENAME ofn = {0};             // common dialog box structure
-                TCHAR szFile[MAX_PATH] = {0};       // buffer for file name. Explorer can't handle paths longer than MAX_PATH.
+                TCHAR szFile[_MAX_PATH] = {0};       // buffer for file name. Explorer can't handle paths longer than _MAX_PATH.
                 ofn.lStructSize = sizeof(OPENFILENAME);
                 ofn.hwndOwner = *this;
                 ofn.lpstrFile = szFile;
@@ -113,7 +113,7 @@ Special placeholders are available:\r\n\
         case IDC_BROWSECOMMAND:
             {
                 OPENFILENAME ofn = {0};             // common dialog box structure
-                TCHAR szFile[MAX_PATH] = {0};       // buffer for file name. Explorer can't handle paths longer than MAX_PATH.
+                TCHAR szFile[_MAX_PATH] = {0};       // buffer for file name. Explorer can't handle paths longer than _MAX_PATH.
                 ofn.lStructSize = sizeof(OPENFILENAME);
                 ofn.hwndOwner = *this;
                 ofn.lpstrFile = szFile;
@@ -137,8 +137,8 @@ Special placeholders are available:\r\n\
         case IDC_BROWSESTARTIN:
             {
                 CBrowseFolder folderBrowser;
-                WCHAR path[MAX_PATH] = {0};
-                if (folderBrowser.Show(*this, path, MAX_PATH) == CBrowseFolder::OK)
+                WCHAR path[_MAX_PATH] = {0};
+                if (folderBrowser.Show(*this, path, _MAX_PATH) == CBrowseFolder::OK)
                 {
                     SetDlgItemText(*this, IDC_STARTIN, path);
                 }
