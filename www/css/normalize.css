@@ -4,8 +4,8 @@
    HTML5 display definitions
    ========================================================================== */
 
-/*
- * Corrects `block` display not defined in IE 8/9.
+/**
+ * Correct `block` display not defined in IE 8/9.
  */
 
 article,
@@ -22,9 +22,9 @@ section {
    Base
    ========================================================================== */
 
-/*
- * 1. Sets default font family to sans-serif.
- * 2. Prevents iOS text size adjust after orientation change, without disabling
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
  *    user zoom.
  */
 
@@ -37,16 +37,16 @@ html {
    Links
    ========================================================================== */
 
-/*
- * Addresses `outline` inconsistency between Chrome and other browsers.
+/**
+ * Address `outline` inconsistency between Chrome and other browsers.
  */
 
 a:focus {
     outline: thin dotted;
 }
 
-/*
- * Improves readability when focused and also mouse hovered in all browsers.
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
  */
 
 a:active,
@@ -58,8 +58,8 @@ a:hover {
    Typography
    ========================================================================== */
 
-/*
- * Addresses style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
  */
 
 b,
@@ -71,10 +71,10 @@ strong {
    Forms
    ========================================================================== */
 
-/*
- * 1. Corrects font family not being inherited in all browsers.
- * 2. Corrects font size not being inherited in all browsers.
- * 3. Addresses margins set differently in Firefox 4+, Safari 5, and Chrome
+/**
+ * 1. Correct font family not being inherited in all browsers.
+ * 2. Correct font size not being inherited in all browsers.
+ * 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
  */
 
 button,
@@ -86,8 +86,8 @@ textarea {
     margin: 0; /* 3 */
 }
 
-/*
- * Addresses Firefox 4+ setting `line-height` on `input` using `!important` in
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
  * the UA stylesheet.
  */
 
@@ -96,11 +96,11 @@ input {
     line-height: normal;
 }
 
-/*
+/**
  * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
  *    and `video` controls.
- * 2. Corrects inability to style clickable `input` types in iOS.
- * 3. Improves usability and consistency of cursor style between image-type
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
  *    `input` and others.
  */
 
@@ -112,7 +112,7 @@ input[type="submit"] {
     cursor: pointer; /* 3 */
 }
 
-/*
+/**
  * Re-set default cursor for disabled elements.
  */
 
@@ -121,9 +121,9 @@ input[disabled] {
     cursor: default;
 }
 
-/*
- * 1. Addresses box sizing set to `content-box` in IE 8/9.
- * 2. Removes excess padding in IE 8/9.
+/**
+ * 1. Address box sizing set to `content-box` in IE 8/9.
+ * 2. Remove excess padding in IE 8/9.
  */
 
 input[type="checkbox"],
@@ -132,9 +132,9 @@ input[type="radio"] {
     padding: 0; /* 2 */
 }
 
-/*
- * 1. Addresses `appearance` set to `searchfield` in Safari 5 and Chrome.
- * 2. Addresses `box-sizing` set to `border-box` in Safari 5 and Chrome
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
  *    (include `-moz` to future-proof).
  */
 
@@ -145,8 +145,8 @@ input[type="search"] {
     box-sizing: content-box;
 }
 
-/*
- * Removes inner padding and search cancel button in Safari 5 and Chrome
+/**
+ * Remove inner padding and search cancel button in Safari 5 and Chrome
  * on OS X.
  */
 
@@ -155,8 +155,8 @@ input[type="search"]::-webkit-search-decoration {
     -webkit-appearance: none;
 }
 
-/*
- * Removes inner padding and border in Firefox 4+.
+/**
+ * Remove inner padding and border in Firefox 4+.
  */
 
 button::-moz-focus-inner,
@@ -169,7 +169,7 @@ input::-moz-focus-inner {
    Tables
    ========================================================================== */
 
-/*
+/**
  * Remove most spacing between table cells.
  */
 
