@@ -77,7 +77,7 @@ dt {
 }
 
 footer {
-    background: no-repeat 0 -310px url("../img/main_sprite.png");
+    background: 0 -310px no-repeat url("../img/main_sprite.png");
     color: white;
     font-size: 85%;
     margin: 0 auto;
@@ -140,7 +140,7 @@ h2 {
 }
 
 header {
-    background: no-repeat 0 0 url("../img/main_sprite.png");
+    background: 0 0 no-repeat url("../img/main_sprite.png");
     margin: 0 auto;
     padding: 0;
     text-decoration: none;
@@ -200,12 +200,12 @@ pre {
  * ID selectors and classes
  */
 ::-moz-selection {
-    background: #b3d4fc;
+    background-color: #b3d4fc;
     text-shadow: none;
 }
 
 ::selection {
-    background: #b3d4fc;
+    background-color: #b3d4fc;
     text-shadow: none;
 }
 
@@ -220,8 +220,7 @@ pre {
 }
 
 #header-description {
-    background-color: transparent;
-    background-image: none;
+    background: transparent none;
     border-radius: 0;
     -webkit-border-radius: 0;
        -moz-border-radius: 0;
@@ -234,9 +233,17 @@ pre {
 
 /* Homepage's table start */
 #main-table {
+    border-collapse: collapse;
+    border-spacing: 0;
     box-shadow: 10px 10px 5px #888888;
     display: inline-block;
     margin: 8px 0 2px;
+}
+
+#main-table,
+.main-table-td,
+.main-table-th {
+    border: 1px inset blue;
 }
 
 #main-table img {
@@ -250,7 +257,6 @@ pre {
 
 .main-table-td,
 .main-table-th {
-    border: 1px inset blue;
     padding: 4px;
 }
 
