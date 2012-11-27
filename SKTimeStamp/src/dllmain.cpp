@@ -56,9 +56,9 @@ STDAPI DllRegisterServer(void)
 {
     CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
-    TCHAR szModule[MAX_PATH*4] = {0};
+    TCHAR szModule[_MAX_PATH*4] = {0};
     // Get this dll's path and file name.
-    DWORD retval = GetModuleFileName(g_hmodThisDll, szModule, MAX_PATH*4);
+    DWORD retval = GetModuleFileName(g_hmodThisDll, szModule, _MAX_PATH*4);
     if (retval == NULL)
     {
         CoUninitialize();

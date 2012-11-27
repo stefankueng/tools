@@ -70,7 +70,7 @@ bool CDeskBand::CreateNewFolder()
                                         if (SUCCEEDED(pPersistFolder->GetCurFolder(&folderpidl)))
                                         {
                                             // we have the current folder
-                                            TCHAR buf[MAX_PATH] = {0};
+                                            TCHAR buf[_MAX_PATH] = {0};
                                             // find the path of the folder
                                             if (SHGetPathFromIDList(folderpidl, buf))
                                             {
