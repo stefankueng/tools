@@ -1,10 +1,9 @@
 /*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true,
-  strict:true, undef:true, unused:true, curly:true, browser:true, jquery:true,
+  strict:false, undef:true, unused:true, curly:true, browser:true, jquery:true,
   trailing:true*/
 
 // Avoid `console` errors in browsers that lack a console.
 (function() {
-    "use strict";
     var method;
     var noop = function noop() {};
     var methods = [
@@ -29,7 +28,6 @@
 // Place any jQuery/helper plugins in here.
 
 $(document).ready(function() {
-    "use strict";
     $(".fancybox").fancybox({});
 
     $(window).scroll(function() {
@@ -52,7 +50,6 @@ _gaq.push(['_setAccount', 'UA-716525-2']);
 _gaq.push(['_trackPageview']);
 
 (function() {
-    "use strict";
     var ga = document.createElement('script');
     ga.type = 'text/javascript';
     ga.async = true;
