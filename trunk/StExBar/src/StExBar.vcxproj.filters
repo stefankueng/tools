@@ -158,11 +158,17 @@
     <None Include="setup\Setup64.wxs">
       <Filter>WiX</Filter>
     </None>
-    <None Include="res\CommandHelp.htm" />
     <None Include="..\default.build" />
-    <None Include="res\OptionsHelp.htm" />
-    <None Include="res\regexhelp.htm" />
     <None Include="version.in" />
+    <None Include="res\CommandHelp.htm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\OptionsHelp.htm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\regexhelp.htm">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChevronMenu.h">
@@ -254,6 +260,9 @@
     </ClInclude>
     <ClInclude Include="..\..\sktoolslib\AeroGlass.h">
       <Filter>sktoolslib</Filter>
+    </ClInclude>
+    <ClInclude Include="maxpath.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
