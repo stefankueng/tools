@@ -1,5 +1,3 @@
-LIBRARY	"StExBar"
-
 EXPORTS
     DllCanUnloadNow private
     DllGetClassObject private
