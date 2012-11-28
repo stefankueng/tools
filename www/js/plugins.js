@@ -33,7 +33,7 @@ $(document).ready(function() {
     $(".fancybox").fancybox({});
 
     $(window).scroll(function() {
-        if ($(this).scrollTop() > 100) {
+        if ($(this).scrollTop() > 250) {
             $('.scrollup').fadeIn();
         } else {
             $('.scrollup').fadeOut();
@@ -41,7 +41,7 @@ $(document).ready(function() {
     });
 
     $('.scrollup').click(function() {
-        $('html, body').animate({ scrollTop: 0 }, 'normal'); /*slow, normal, fast, 600 (ms)*/
+        $('html, body').animate({ scrollTop: 0 }, 'normal'); /* slow, normal, fast, 600 (ms) */
         return false;
     });
 
