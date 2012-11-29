@@ -23,8 +23,6 @@
 #include "Utils.h"
 #include <CommCtrl.h>
 
-#pragma comment(lib, "Dxva2.lib")
-
 
 CNotifySlider::CNotifySlider(HWND hParent)
     : m_hParent(hParent)

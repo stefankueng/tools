@@ -22,7 +22,7 @@
 #include "CmdLineParser.h"
 #include "MainWindow.h"
 #include "Utils.h"
-
+#include <GdiPlus.h>
 
 
 

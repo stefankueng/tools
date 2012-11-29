@@ -25,13 +25,11 @@
 #include <stdio.h>
 #include <wbemidl.h>
 #include <comdef.h>
-#pragma comment(lib, "wbemuuid.lib")
 
 
 CUtils::CUtils(void)
 {
 }
-
 
 CUtils::~CUtils(void)
 {
