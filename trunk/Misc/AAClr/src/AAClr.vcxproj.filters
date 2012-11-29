@@ -36,15 +36,9 @@
     <None Include="..\default.build">
       <Filter>buildscripts</Filter>
     </None>
-    <None Include="..\default.build.user">
-      <Filter>buildscripts</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
