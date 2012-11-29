@@ -38,5 +38,3 @@ protected:
     HWND m_hwnd;
     std::vector<std::wstring> filenames;
 };
-
-

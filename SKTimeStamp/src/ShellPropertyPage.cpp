@@ -361,5 +361,3 @@ void SetDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, const FILETIM
     SendDlgItemMessage(hwnd, idcTimePicker, DTM_SETSYSTEMTIME, 0, (LPARAM)&st);
     SendDlgItemMessage(hwnd, idcTimePicker, WM_ENABLE, flag == GDT_VALID, 0);
 }
-
-
