@@ -4,11 +4,10 @@
 #include "ShellExtClassFactory.h"
 #include <olectl.h>
 
-HINSTANCE           g_hmodThisDll = NULL;           ///< handle to this DLL itself.
-UINT                g_cRefThisDll = 0;              ///< reference count of this DLL.
+HINSTANCE   g_hmodThisDll = NULL;           ///< handle to this DLL itself.
+UINT        g_cRefThisDll = 0;              ///< reference count of this DLL.
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#pragma comment(lib, "shlwapi")
 
 extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance,
                                DWORD dwReason,
@@ -125,4 +124,3 @@ STDAPI DllUnregisterServer(void)
     CoUninitialize();
     return S_OK;
 }
-
