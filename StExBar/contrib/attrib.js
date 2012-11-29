@@ -29,7 +29,7 @@ while (fileindex < files.length)
     var f = files[fileindex];
     fso = fs.GetFile(f);
 
-    if (fso.attributes && 1)
+    if (fso.attributes & 1)
     {
         fso.attributes = fso.attributes - 1;
     }
