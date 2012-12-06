@@ -1,6 +1,6 @@
 #pragma once
 
-#include "registry.h"
+#include "Registry.h"
 #include "resource.h"
 #include <vector>
 
@@ -32,7 +32,6 @@ protected:
     ULONG                   m_cRef;
     std::vector<stdstring>  files_;
 
-private:
 public:
     CShellExt();
     virtual ~CShellExt();
