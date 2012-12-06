@@ -18,12 +18,13 @@
 //
 
 #pragma once
+
 #include "BaseWindow.h"
 #include "resource.h"
 #include "AeroColors.h"
 #include "Registry.h"
-#include "shellapi.h"
-#include "shlwapi.h"
+#include <shellapi.h>
+#include <shlwapi.h>
 #include <commctrl.h>
 
 

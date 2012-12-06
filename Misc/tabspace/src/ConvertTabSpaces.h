@@ -18,6 +18,7 @@
 //
 
 #pragma once
+
 #include "TextFile.h"
 
 class ConvertTabSpaces
