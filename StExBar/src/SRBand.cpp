@@ -1124,7 +1124,7 @@ std::wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const std::wstrin
     delete [] path;
     delete [] tempFile;
     if (file == INVALID_HANDLE_VALUE)
-        return stdstring();
+        return tstring();
 
     DWORD written = 0;
     if (bUnicode)
