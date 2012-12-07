@@ -51,12 +51,11 @@ BOOL CInfoDlg::ShowDialog(UINT idAboutHTMLID, HINSTANCE hInstance)
         {
             LPTSTR lpszModule = new TCHAR[MAX_PATH];
             //Get The Application Path
-            if (GetModuleFileName(hInstance, lpszModule, _countof(lpszModule)))
+            if (GetModuleFileName(hInstance, lpszModule, MAX_PATH))
             {
                 //Add the IE Res protocol
                 TCHAR strResourceURL[MAX_PATH*4];
                 _stprintf_s(strResourceURL, _countof(strResourceURL), _T("res://%s/%d"), lpszModule, idAboutHTMLID);
-                size_t iLength = _tcslen(strResourceURL);
                 //Attempt to Create the URL Moniker to the specified in the URL String
                 IMoniker *pmk;
                 if(SUCCEEDED(CreateURLMoniker(NULL,strResourceURL,&pmk)))
