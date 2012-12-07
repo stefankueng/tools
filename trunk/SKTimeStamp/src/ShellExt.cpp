@@ -109,7 +109,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST /*pIDFolder*/,
                     delete [] szFileName;
                     continue;
                 }
-                stdstring str = stdstring(szFileName);
+                std::wstring str = std::wstring(szFileName);
                 delete [] szFileName;
                 if (str.empty() == false)
                 {

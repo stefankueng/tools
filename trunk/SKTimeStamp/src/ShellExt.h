@@ -30,7 +30,7 @@ class CShellExt : public    IShellExtInit,
 {
 protected:
     ULONG                   m_cRef;
-    std::vector<stdstring>  files_;
+    std::vector<std::wstring>  files_;
 
 public:
     CShellExt();

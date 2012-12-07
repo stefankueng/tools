@@ -94,7 +94,7 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 
 // *********************** CShellPropertyPage *************************
 
-CShellPropertyPage::CShellPropertyPage(const std::vector<stdstring> &newFilenames)
+CShellPropertyPage::CShellPropertyPage(const std::vector<std::wstring> &newFilenames)
     : filenames(newFilenames)
     , m_hwnd(NULL)
 {
