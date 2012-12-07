@@ -26,6 +26,9 @@
 
 CNotifySlider::CNotifySlider(HWND hParent)
     : m_hParent(hParent)
+    , currentBright(0)
+    , xPos(0)
+    , yPos(0)
 {
 }
 
