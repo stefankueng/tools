@@ -83,7 +83,7 @@ LRESULT COptionsDlg::DoCommand(int id)
             if (bStartWithWindows)
             {
                 TCHAR buf[MAX_PATH*4];
-                GetModuleFileName(NULL, buf, MAX_PATH*4);
+                GetModuleFileName(NULL, buf, _countof(buf));
                 std::wstring cmd = std::wstring(buf);
                 regStartWithWindows = cmd;
             }

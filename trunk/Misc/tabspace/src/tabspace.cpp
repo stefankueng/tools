@@ -154,7 +154,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
     if (parser.HasVal(L"path"))
     {
-        _tcscpy_s(cwd, MAX_PATH, parser.GetVal(L"path"));
+        _tcscpy_s(cwd, _countof(cwd), parser.GetVal(L"path"));
     }
     if (parser.HasVal(L"ext"))
     {
