@@ -166,7 +166,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     file.ContentsModified((BYTE*)pBufStart, newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
-                                MAX_PATH * 2,
+                                _countof(outbuf),
                                 L"converted spaces to tabs in file'%s'\n",
                                 file.GetFileName().c_str());
                     _fputts(outbuf, stdout);
@@ -203,7 +203,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     file.ContentsModified((BYTE*)pBufStart, newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
-                                MAX_PATH * 2,
+                                _countof(outbuf),
                                 L"converted spaces to tabs in file'%s'\n",
                                 file.GetFileName().c_str());
                     _fputts(outbuf, stdout);
@@ -347,7 +347,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     file.ContentsModified((BYTE*)pBufStart, newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
-                                MAX_PATH * 2,
+                                _countof(outbuf),
                                 L"converted tabs to spaces in file'%s'\n",
                                 file.GetFileName().c_str());
                     _fputts(outbuf, stdout);
@@ -402,7 +402,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     file.ContentsModified((BYTE*)pBufStart, newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
-                                MAX_PATH * 2,
+                                _countof(outbuf),
                                 L"converted tabs to spaces in file'%s'\n",
                                 file.GetFileName().c_str());
                     _fputts(outbuf, stdout);
@@ -458,7 +458,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         // we have more or equal spaces in a row than the tabsize is, that's a violation!
                         TCHAR buf[MAX_PATH * 2];
                         _stprintf_s(buf,
-                                    MAX_PATH * 2,
+                                    _countof(buf),
                                     L"found spaces instead of tabs in file'%s', line %d\n",
                                     file.GetFileName().c_str(),
                                     file.LineFromPosition((long)pos));
@@ -498,7 +498,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     // we have a tab, that's a violation!
                     TCHAR buf[MAX_PATH * 2];
                     _stprintf_s(buf,
-                                MAX_PATH * 2,
+                                _countof(buf),
                                 L"found tab instead of spaces in file'%s', line %d\n",
                                 file.GetFileName().c_str(),
                                 file.LineFromPosition((long)pos));
@@ -592,7 +592,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                         ++it;
                         TCHAR outbuf[MAX_PATH * 2];
                         _stprintf_s(outbuf,
-                                    MAX_PATH * 2,
+                                    _countof(outbuf),
                                     L"fixed end-of-line whitespaces in file'%s', line %d\n",
                                     file.GetFileName().c_str(),
                                     file.LineFromPosition(pos));
@@ -626,7 +626,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                         ++it;
                         TCHAR outbuf[MAX_PATH * 2];
                         _stprintf_s(outbuf,
-                                    MAX_PATH * 2,
+                                    _countof(outbuf),
                                     L"fixed end-of-line whitespaces in file'%s', line %d\n",
                                     file.GetFileName().c_str(),
                                     file.LineFromPosition(pos));
@@ -663,7 +663,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                 {
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
-                                MAX_PATH * 2,
+                                _countof(outbuf),
                                 L"end-of-line whitespaces found in file'%s', line %d\n",
                                 file.GetFileName().c_str(),
                                 file.LineFromPosition(pos));
