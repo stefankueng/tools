@@ -19,7 +19,7 @@
 
 #include "stdafx.h"
 #include "SRBand.h"
-#include "itemidlist.h"
+#include "ItemIDList.h"
 #include "VistaIcons.h"
 #include "resource.h"
 
@@ -135,7 +135,7 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
         miif.cbSize = sizeof(MENUITEMINFO);
         miif.fMask = MIIM_DATA;
         miif.dwTypeData = menubuf;
-        miif.cch = sizeof(menubuf)/sizeof(TCHAR);
+        miif.cch = _countof(menubuf);
         GetMenuItemInfo(hMenu, i, TRUE, &miif);
         if (miif.dwItemData == (ULONG_PTR)g_MenuIDString)
             return S_OK;

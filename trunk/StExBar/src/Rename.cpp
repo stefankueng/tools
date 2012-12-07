@@ -24,13 +24,13 @@
 #include "RenameDlg.h"
 #include "Pidl.h"
 
-void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
+void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
 {
     // fill the list of selected file/foldernames
     m_filelist.clear();
     if (items.size() > 1)
     {
-        for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
+        for (std::map<std::wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
         {
             size_t pos = it->first.find_last_of('\\');
             if (pos >= 0)
@@ -41,7 +41,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
     }
     else if (items.size() == 1)
     {
-        for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
+        for (std::map<std::wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
         {
             size_t pos = it->first.find_last_of('\\');
             if (pos >= 0)
@@ -117,7 +117,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
                                                             {
                                                                 if (SHGetPathFromIDList(abspidl, buf))
                                                                 {
-                                                                    wstring p = buf;
+                                                                    std::wstring p = buf;
                                                                     size_t pos = p.find_last_of('\\');
                                                                     if (pos >= 0)
                                                                     {
@@ -158,7 +158,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
     {
         try
         {
-            const tr1::wregex regCheck(dlg.GetMatchString(), dlg.GetRegexFlags());
+            const std::tr1::wregex regCheck(dlg.GetMatchString(), dlg.GetRegexFlags());
 
             // start renaming the files
             IServiceProvider * pServiceProvider = NULL;
@@ -205,14 +205,14 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
                                                     TCHAR dispname[MAX_PATH];
                                                     StrRetToBuf(&str, pidl, dispname, MAX_PATH);
 
-                                                    wstring replaced;
+                                                    std::wstring replaced;
                                                     try
                                                     {
-                                                        wstring sDispName = dispname;
+                                                        std::wstring sDispName = dispname;
                                                         // check if the item is in the list of selected items
                                                         if (m_filelist.find(sDispName) != m_filelist.end())
                                                         {
-                                                            replaced = tr1::regex_replace(sDispName, regCheck, dlg.GetReplaceString());
+                                                            replaced = std::tr1::regex_replace(sDispName, regCheck, dlg.GetReplaceString());
                                                             if (replaced.compare(sDispName))
                                                             {
                                                                 ITEMIDLIST * pidlrenamed;
@@ -223,7 +223,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
                                                             }
                                                         }
                                                     }
-                                                    catch (exception)
+                                                    catch (std::exception)
                                                     {
                                                     }
                                                 }
@@ -244,7 +244,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
                 pServiceProvider->Release();
             }
         }
-        catch (exception)
+        catch (std::exception)
         {
         }
     }

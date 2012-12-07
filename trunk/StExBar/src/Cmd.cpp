@@ -22,7 +22,7 @@
 #include "resource.h"
 
 
-void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
+void CDeskBand::StartCmd(const std::wstring& cwd, std::wstring params, bool elevated)
 {
     STARTUPINFO startup;
     PROCESS_INFORMATION process;
@@ -34,12 +34,12 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
     TCHAR buf[MAX_PATH] = {0};
     if (GetEditBoxUsage()==IDC_USEPOWERSHELL)
     {
-        if (ExpandEnvironmentStrings(_T("%systemroot%"), buf, MAX_PATH))
+        if (ExpandEnvironmentStrings(_T("%systemroot%"), buf, _countof(buf)))
         {
-            _tcscat_s(buf, MAX_PATH, _T("\\system32\\windowspowershell\\v1.0\\powershell.exe"));
+            _tcscat_s(buf, _countof(buf), _T("\\system32\\windowspowershell\\v1.0\\powershell.exe"));
         }
         else
-            _tcscpy_s(buf, MAX_PATH, _T("c:\\windows\\system32\\windowspowershell\\v1.0\\powershell.exe"));
+            _tcscpy_s(buf, _countof(buf), _T("c:\\windows\\system32\\windowspowershell\\v1.0\\powershell.exe"));
 
         // the powershell ignores the '-noexit' parameter completely if it's not the first
         // parameter. Problem is, it also ignores it if we split the path to the exe and its parameters
@@ -88,9 +88,9 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
         delete [] nonconstparams;
         return;
     }
-    else if (ExpandEnvironmentStrings(_T("%COMSPEC%"), buf, MAX_PATH)==NULL)
+    else if (ExpandEnvironmentStrings(_T("%COMSPEC%"), buf, _countof(buf))==NULL)
     {
-        _tcscpy_s(buf, MAX_PATH, _T("cmd.exe"));
+        _tcscpy_s(buf, _countof(buf), _T("cmd.exe"));
     }
     TCHAR * nonconstparams = new TCHAR[params.size()+1];
     _tcscpy_s(nonconstparams, params.size()+1, params.c_str());
@@ -138,7 +138,7 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
     delete [] nonconstparams;
 }
 
-void CDeskBand::StartApplication(const wstring& cwd, std::wstring commandline, bool elevated)
+void CDeskBand::StartApplication(const std::wstring& cwd, std::wstring commandline, bool elevated)
 {
     STARTUPINFO startup;
     PROCESS_INFORMATION process;

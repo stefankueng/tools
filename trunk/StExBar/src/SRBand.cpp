@@ -25,17 +25,17 @@
 #include <vector>
 #include "resource.h"
 #include "SimpleIni.h"
-#include "uxtheme.h"
-#include "Vsstyle.h"
+#include <uxtheme.h>
+#include <vsstyle.h>
 #include "ChevronMenu.h"
 #include "OptionsDlg.h"
 #include "UnicodeUtils.h"
-#include "commctrl.h"
+#include <commctrl.h>
 
 #pragma comment(lib, "uxtheme.lib")
 
 
-map<DWORD, CDeskBand*> CDeskBand::m_desklist;   ///< set of CDeskBand objects which use the keyboard hook
+std::map<DWORD, CDeskBand*> CDeskBand::m_desklist;   ///< set of CDeskBand objects which use the keyboard hook
 
 CDeskBand::CDeskBand()
     : m_bFocus(false)
@@ -80,7 +80,7 @@ CDeskBand::~CDeskBand()
     if (m_hook)
     {
         UnhookWindowsHookEx(m_hook);
-        map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
+        std::map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
         if (it != m_desklist.end())
             m_desklist.erase(it);
     }
@@ -343,7 +343,7 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
     if ((m_hook)&&(punkSite))
     {
         UnhookWindowsHookEx(m_hook);
-        map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
+        std::map<DWORD, CDeskBand*>::iterator it = m_desklist.find(GetCurrentThreadId());
         if (it != m_desklist.end())
             m_desklist.erase(it);
     }
@@ -567,7 +567,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
                 state |= ENABLED_FOLDERSELECTED;
             if (pThis->m_selectedItems.empty())
                 state |= ENABLED_NOSELECTION;
-            for (map<int, DWORD>::iterator it = pThis->m_enablestates.begin(); it != pThis->m_enablestates.end(); ++it)
+            for (std::map<int, DWORD>::iterator it = pThis->m_enablestates.begin(); it != pThis->m_enablestates.end(); ++it)
             {
                 if (((it->second & 0xFFFF)&state)&&
                     ((HIWORD(it->second) == 0)||((pThis->m_selectedItems.empty()) && (it->second & ENABLED_NOSELECTION)) || (HIWORD(it->second) == !(pThis->m_selectedItems.empty()))))
@@ -625,7 +625,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
             {
                 // tooltips requested...
                 LPNMTTDISPINFO lpnmtdi = (LPNMTTDISPINFO) lParam;
-                map<int, wstring>::iterator it = pThis->m_tooltips.find((int)pnmh->idFrom);
+                std::map<int, std::wstring>::iterator it = pThis->m_tooltips.find((int)pnmh->idFrom);
                 if (it != pThis->m_tooltips.end())
                 {
                     _tcsncpy_s(lpnmtdi->lpszText, 80, it->second.c_str(), 79);
@@ -747,7 +747,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 state |= ENABLED_FOLDERSELECTED;
             if (m_selectedItems.empty())
                 state |= ENABLED_NOSELECTION;
-            map<int, DWORD>::iterator it = m_enablestates.find(LOWORD(wParam));
+            std::map<int, DWORD>::iterator it = m_enablestates.find(LOWORD(wParam));
             bool bEnabled = true;
             if (it != m_enablestates.end())
             {
@@ -783,7 +783,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
     return 0;
 }
 
-void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd, const map<wstring, ULONG>& items)
+void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring& cwd, const std::map<std::wstring, ULONG>& items)
 {
     if (cmd.commandline.compare(INTERNALCOMMAND) == 0)
     {
@@ -806,7 +806,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
                 // If however the user enters a '@' char in front of the command
                 // then the console shall quit after executing the command.
                 {
-                    wstring params;
+                    std::wstring params;
                     if (buf[0] == '@')
                         params = _T("-Command ");
                     else
@@ -817,7 +817,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
                 break;
             case IDC_USECONSOLE:
                 {
-                    wstring params;
+                    std::wstring params;
                     if (buf[0] == '@')
                         params = _T("/c ");
                     else
@@ -829,9 +829,9 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             case IDC_USEGREPWIN:
                 {
                     CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin...\\command\\", L"", 0, HKEY_CLASSES_ROOT);
-                    wstring grepWinPath = regGrepWinPath;
+                    std::wstring grepWinPath = regGrepWinPath;
                     grepWinPath = grepWinPath.substr(0, grepWinPath.find_last_of('/'));
-                    wstring params = grepWinPath;
+                    std::wstring params = grepWinPath;
                     params += L" /searchpath:\"";
                     params += cwd;
                     params += L"\" /searchfor:\"";
@@ -944,7 +944,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
         }
         else if (cmd.name.compare(_T("Copy Names")) == 0)
         {
-            wstring str = GetFileNames(items, _T("\r\n"), true, true, true);
+            std::wstring str = GetFileNames(items, _T("\r\n"), true, true, true);
             if (str.empty())
             {
                 // Seems no items are selected
@@ -962,7 +962,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
         }
         else if (cmd.name.compare(_T("Copy Paths")) == 0)
         {
-            wstring str = GetFilePaths(items, _T("\r\n"), true, true, true, DWORD(m_regUseUNCPaths) ? true : false);
+            std::wstring str = GetFilePaths(items, _T("\r\n"), true, true, true, DWORD(m_regUseUNCPaths) ? true : false);
             if (str.empty())
             {
                 // Seems no items are selected
@@ -995,16 +995,16 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
     else
     {
         TCHAR * buf = GetEditBoxText();
-        wstring consoletext = buf;
+        std::wstring consoletext = buf;
 
         // replace "%selpaths" with the paths of the selected items
-        wstring tag(_T("%selpaths"));
-        wstring commandline = cmd.commandline;
-        wstring::iterator it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
+        std::wstring tag(_T("%selpaths"));
+        std::wstring commandline = cmd.commandline;
+        std::wstring::iterator it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
         if (it_begin != commandline.end())
         {
             // prepare the selected paths
-            wstring selpaths = GetFilePaths(items, _T(" "), true, true, true, false);
+            std::wstring selpaths = GetFilePaths(items, _T(" "), true, true, true, false);
             if (selpaths.empty())
             {
                 TCHAR buf[MAX_PATH] = {0};
@@ -1012,7 +1012,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
-            wstring::iterator it_end= it_begin + tag.size();
+            std::wstring::iterator it_end= it_begin + tag.size();
             commandline.replace(it_begin, it_end, selpaths);
         }
         // replace "%sel*paths" with the paths of the selected items
@@ -1021,7 +1021,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
         if (it_begin != commandline.end())
         {
             // prepare the selected paths
-            wstring selpaths = GetFilePaths(items, _T("*"), false, true, true, false);
+            std::wstring selpaths = GetFilePaths(items, _T("*"), false, true, true, false);
             if (selpaths.empty())
             {
                 TCHAR buf[MAX_PATH] = {0};
@@ -1029,7 +1029,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
-            wstring::iterator it_end= it_begin + tag.size();
+            std::wstring::iterator it_end= it_begin + tag.size();
             commandline.replace(it_begin, it_end, selpaths);
         }
         // replace "%selnames" with the names of the selected items
@@ -1038,8 +1038,8 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
         if (it_begin != commandline.end())
         {
             // prepare the selected names
-            wstring selnames = GetFileNames(items, _T(" "), true, true, true);
-            wstring::iterator it_end= it_begin + tag.size();
+            std::wstring selnames = GetFileNames(items, _T(" "), true, true, true);
+            std::wstring::iterator it_end= it_begin + tag.size();
             commandline.replace(it_begin, it_end, selnames);
         }
         // replace "%curdir" with the current directory
@@ -1050,9 +1050,9 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             TCHAR buf[MAX_PATH] = {0};
             _tcscpy_s(buf, MAX_PATH, cwd.c_str());
             PathQuoteSpaces(buf);
-            wstring cwdquoted = buf;
+            std::wstring cwdquoted = buf;
 
-            wstring::iterator it_end= it_begin + tag.size();
+            std::wstring::iterator it_end= it_begin + tag.size();
             commandline.replace(it_begin, it_end, cwdquoted);
         }
         // replace "%cmdtext" with the text in the console edit box
@@ -1060,7 +1060,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
         it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
         if (it_begin != commandline.end())
         {
-            wstring::iterator it_end= it_begin + tag.size();
+            std::wstring::iterator it_end= it_begin + tag.size();
             commandline.replace(it_begin, it_end, consoletext);
         }
         // replace "%selafile" with path to file containing all the selected files separated by newlines
@@ -1068,7 +1068,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
         it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
         if (it_begin != commandline.end())
         {
-            wstring selpaths = GetFilePaths(items, _T("\r\n"), false, true, true, false);
+            std::wstring selpaths = GetFilePaths(items, _T("\r\n"), false, true, true, false);
             if (selpaths.empty())
             {
                 TCHAR buf[MAX_PATH] = {0};
@@ -1076,8 +1076,8 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
-            wstring tempFilePath = WriteFileListToTempFile(false, selpaths);
-            wstring::iterator it_end= it_begin + tag.size();
+            std::wstring tempFilePath = WriteFileListToTempFile(false, selpaths);
+            std::wstring::iterator it_end= it_begin + tag.size();
             commandline.replace(it_begin, it_end, tempFilePath);
         }
         // replace "%selufile" with path to file containing all the selected files separated by newlines in utf-16 format
@@ -1085,7 +1085,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
         it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
         if (it_begin != commandline.end())
         {
-            wstring selpaths = GetFilePaths(items, _T("\r\n"), false, true, true, false);
+            std::wstring selpaths = GetFilePaths(items, _T("\r\n"), false, true, true, false);
             if (selpaths.empty())
             {
                 TCHAR buf[MAX_PATH] = {0};
@@ -1093,8 +1093,8 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
-            wstring tempFilePath = WriteFileListToTempFile(true, selpaths);
-            wstring::iterator it_end= it_begin + tag.size();
+            std::wstring tempFilePath = WriteFileListToTempFile(true, selpaths);
+            std::wstring::iterator it_end= it_begin + tag.size();
             commandline.replace(it_begin, it_end, tempFilePath);
         }
         delete [] buf;
@@ -1102,7 +1102,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
     }
 }
 
-wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const wstring& paths)
+std::wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const std::wstring& paths)
 {
     //write all selected files and paths to a temporary file
     //for TortoiseProc.exe to read out again.
@@ -1111,7 +1111,7 @@ wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const wstring& paths)
     TCHAR * tempFile = new TCHAR[pathlength + 100];
     GetTempPath (pathlength+1, path);
     GetTempFileName (path, _T("stx"), 0, tempFile);
-    wstring retFilePath = wstring(tempFile);
+    std::wstring retFilePath = std::wstring(tempFile);
 
     HANDLE file = ::CreateFile (tempFile,
         GENERIC_WRITE,
@@ -1133,7 +1133,7 @@ wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const wstring& paths)
     }
     else
     {
-        string p = WideToMultibyte(paths);
+        std::string p = WideToMultibyte(paths);
         ::WriteFile (file, p.c_str(), (DWORD)p.size()*sizeof(char), &written, 0);
     }
 
@@ -1316,7 +1316,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
 LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lParam)
 {
     DWORD threadID = GetCurrentThreadId();
-    map<DWORD, CDeskBand*>::iterator it = m_desklist.find(threadID);
+    std::map<DWORD, CDeskBand*>::iterator it = m_desklist.find(threadID);
     if (it != m_desklist.end())
     {
         if ((!it->second->m_bDialogShown)&&(code >= 0)&&((lParam & 0xc0000000) == 0))//key went from 'up' to 'down' state
@@ -1326,7 +1326,7 @@ LRESULT CALLBACK CDeskBand::KeyboardHookProc(int code, WPARAM wParam, LPARAM lPa
             realhk.alt = !!(GetKeyState(VK_MENU)&0x8000);
             realhk.control = !!(GetKeyState(VK_CONTROL)&0x8000);
             realhk.shift = !!(GetKeyState(VK_SHIFT)&0x8000);
-            map<hotkey, int>::iterator hk = it->second->m_hotkeys.find(realhk);
+            std::map<hotkey, int>::iterator hk = it->second->m_hotkeys.find(realhk);
             if (hk != it->second->m_hotkeys.end())
             {
                 // special handling of command 0: just set the focus!
@@ -1423,7 +1423,7 @@ BOOL CDeskBand::BuildToolbarButtons()
         tb[index].dwData = NULL;
         if (!cmd.separator)
         {
-            wstring sTip = cmd.name;
+            std::wstring sTip = cmd.name;
             if (cmd.key.keycode)
             {
                 sTip += _T(" (");
@@ -1481,7 +1481,7 @@ HICON CDeskBand::LoadCommandIcon(const Command& cmd)
             if (cmd.icon.find(',')>=0)
             {
                 size_t pos = cmd.icon.find_last_of(',');
-                wstring resourcefile, iconid;
+                std::wstring resourcefile, iconid;
                 if (pos >= 0)
                 {
                     resourcefile = cmd.icon.substr(0, pos);
@@ -1493,7 +1493,7 @@ HICON CDeskBand::LoadCommandIcon(const Command& cmd)
             {
                 // loading the icon with an index didn't work either
                 // next we try to use the icon of the application defined in the commandline
-                wstring appname;
+                std::wstring appname;
                 if (cmd.commandline.find(' ')>=0)
                     appname = cmd.commandline.substr(0, cmd.commandline.find(' '));
                 else

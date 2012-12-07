@@ -28,17 +28,16 @@
 #include <string>
 #include <regex>
 
-using namespace std;
 
-
-COptionsDlg::COptionsDlg(HWND hParent) : m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
+COptionsDlg::COptionsDlg(HWND hParent)
+    : m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
     , m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
     , m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
     , m_regHideEditBox(_T("Software\\StefansTools\\StExBar\\HideEditBox"), 0)
     , m_regContextMenu(_T("Software\\StefansTools\\StExBar\\ContextMenu"), 1)
-    , m_regEditBoxUsage (_T("Software\\StefansTools\\StExBar\\EditBoxUsage"), IDC_USECONSOLE)
+    , m_regEditBoxUsage(_T("Software\\StefansTools\\StExBar\\EditBoxUsage"), IDC_USECONSOLE)
+    , m_hParent(hParent)
 {
-    m_hParent = hParent;
 }
 
 COptionsDlg::~COptionsDlg(void)
@@ -68,7 +67,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEFILTER), !DWORD(m_regHideEditBox));
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEAUTO), !DWORD(m_regHideEditBox));
             CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin...\\command\\", L"", 0, HKEY_CLASSES_ROOT);
-            wstring grepWinPath = regGrepWinPath;
+            std::wstring grepWinPath = regGrepWinPath;
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEGREPWIN), !grepWinPath.empty() && !DWORD(m_regHideEditBox));
 
             AddToolTip(IDC_SHOWTEXT, _T("shows the name of the button below the icon"));
@@ -127,7 +126,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USEFILTER), bHide);
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USEAUTO), bHide);
                 CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin...\\command\\", L"", 0, HKEY_CLASSES_ROOT);
-                wstring grepWinPath = regGrepWinPath;
+                std::wstring grepWinPath = regGrepWinPath;
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USEGREPWIN), !grepWinPath.empty() && bHide);
             }
             break;
@@ -228,7 +227,7 @@ void COptionsDlg::InitCustomCommandsList()
         ListView_InsertItem(m_hListControl, &item);
         if ((!cmd.separator)&&(cmd.key.keycode))
         {
-            wstring sKeyText;
+            std::wstring sKeyText;
             if (cmd.key.control)
                 sKeyText += _T("Ctrl+");
             if (cmd.key.shift)

@@ -30,12 +30,10 @@
 
 CInfoDlg::CInfoDlg()
 {
-
 }
 
 CInfoDlg::~CInfoDlg()
 {
-
 }
 
 //Function which takes input of An HTML Resource Id
@@ -53,14 +51,12 @@ BOOL CInfoDlg::ShowDialog(UINT idAboutHTMLID, HINSTANCE hInstance)
         {
             LPTSTR lpszModule = new TCHAR[MAX_PATH];
             //Get The Application Path
-            if (GetModuleFileName(hInstance, lpszModule, MAX_PATH))
+            if (GetModuleFileName(hInstance, lpszModule, _countof(lpszModule)))
             {
                 //Add the IE Res protocol
                 TCHAR strResourceURL[MAX_PATH*4];
-                _stprintf_s(strResourceURL, MAX_PATH*4, _T("res://%s/%d"), lpszModule, idAboutHTMLID);
+                _stprintf_s(strResourceURL, _countof(strResourceURL), _T("res://%s/%d"), lpszModule, idAboutHTMLID);
                 size_t iLength = _tcslen(strResourceURL);
-                LPWSTR lpWideCharStr = NULL;
-                lpWideCharStr =  new wchar_t[iLength+1];
                 //Attempt to Create the URL Moniker to the specified in the URL String
                 IMoniker *pmk;
                 if(SUCCEEDED(CreateURLMoniker(NULL,strResourceURL,&pmk)))
@@ -71,7 +67,6 @@ BOOL CInfoDlg::ShowDialog(UINT idAboutHTMLID, HINSTANCE hInstance)
                     pfnShowHTMLDialog(NULL,pmk,NULL,L"resizable:yes",NULL);
                     bSuccess = TRUE;
                 }
-                delete [] lpWideCharStr;
             }
             delete [] lpszModule;
         }
