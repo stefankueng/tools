@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2011 - Stefan Kueng
+// Copyright (C) 2007-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,15 +31,15 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
     memset(&process, 0, sizeof(process));
 
     // find the cmd program
-    TCHAR buf[_MAX_PATH] = {0};
+    TCHAR buf[MAX_PATH] = {0};
     if (GetEditBoxUsage()==IDC_USEPOWERSHELL)
     {
-        if (ExpandEnvironmentStrings(_T("%systemroot%"), buf, _MAX_PATH))
+        if (ExpandEnvironmentStrings(_T("%systemroot%"), buf, MAX_PATH))
         {
-            _tcscat_s(buf, _MAX_PATH, _T("\\system32\\windowspowershell\\v1.0\\powershell.exe"));
+            _tcscat_s(buf, MAX_PATH, _T("\\system32\\windowspowershell\\v1.0\\powershell.exe"));
         }
         else
-            _tcscpy_s(buf, _MAX_PATH, _T("c:\\windows\\system32\\windowspowershell\\v1.0\\powershell.exe"));
+            _tcscpy_s(buf, MAX_PATH, _T("c:\\windows\\system32\\windowspowershell\\v1.0\\powershell.exe"));
 
         // the powershell ignores the '-noexit' parameter completely if it's not the first
         // parameter. Problem is, it also ignores it if we split the path to the exe and its parameters
@@ -47,11 +47,11 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
         // we call CreateProcess with NULL as the first parameter and put everything in the buffer
         // of the second parameter. Really, really stupid.
 
-        TCHAR * nonconstparams = new TCHAR[params.size()+_MAX_PATH];
-        _tcscpy_s(nonconstparams, params.size()+_MAX_PATH, _T("\""));
-        _tcscat_s(nonconstparams, params.size()+_MAX_PATH, buf);
-        _tcscat_s(nonconstparams, params.size()+_MAX_PATH, _T("\" "));
-        _tcscat_s(nonconstparams, params.size()+_MAX_PATH, params.c_str());
+        TCHAR * nonconstparams = new TCHAR[params.size()+MAX_PATH];
+        _tcscpy_s(nonconstparams, params.size()+MAX_PATH, _T("\""));
+        _tcscat_s(nonconstparams, params.size()+MAX_PATH, buf);
+        _tcscat_s(nonconstparams, params.size()+MAX_PATH, _T("\" "));
+        _tcscat_s(nonconstparams, params.size()+MAX_PATH, params.c_str());
 
         if (elevated)
         {
@@ -88,9 +88,9 @@ void CDeskBand::StartCmd(const wstring& cwd, std::wstring params, bool elevated)
         delete [] nonconstparams;
         return;
     }
-    else if (ExpandEnvironmentStrings(_T("%COMSPEC%"), buf, _MAX_PATH)==NULL)
+    else if (ExpandEnvironmentStrings(_T("%COMSPEC%"), buf, MAX_PATH)==NULL)
     {
-        _tcscpy_s(buf, _MAX_PATH, _T("cmd.exe"));
+        _tcscpy_s(buf, MAX_PATH, _T("cmd.exe"));
     }
     TCHAR * nonconstparams = new TCHAR[params.size()+1];
     _tcscpy_s(nonconstparams, params.size()+1, params.c_str());

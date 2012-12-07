@@ -82,8 +82,8 @@ LRESULT COptionsDlg::DoCommand(int id)
             bool bStartWithWindows = !!SendDlgItemMessage(*this, IDC_AUTOSTART, BM_GETCHECK, 0, NULL);
             if (bStartWithWindows)
             {
-                TCHAR buf[_MAX_PATH*4];
-                GetModuleFileName(NULL, buf, _MAX_PATH*4);
+                TCHAR buf[MAX_PATH*4];
+                GetModuleFileName(NULL, buf, MAX_PATH*4);
                 std::wstring cmd = std::wstring(buf);
                 regStartWithWindows = cmd;
             }

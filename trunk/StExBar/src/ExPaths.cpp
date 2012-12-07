@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010 - Stefan Kueng
+// Copyright (C) 2007-2010, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ bool CDeskBand::FindPaths()
                         if (SUCCEEDED(pPersistFolder->GetCurFolder(&folderpidl)))
                         {
                             // we have the current folder
-                            TCHAR buf[_MAX_PATH] = {0};
+                            TCHAR buf[MAX_PATH] = {0};
                             // find the path of the folder
                             if (SHGetPathFromIDList(folderpidl, buf))
                             {
@@ -121,7 +121,7 @@ bool CDeskBand::FindPaths()
                                 if (SUCCEEDED(pFolderView->Items(SVGIO_SELECTION, IID_IEnumIDList, (LPVOID*)&pEnum)))
                                 {
                                     LPITEMIDLIST pidl;
-                                    WCHAR buf[_MAX_PATH] = {0};
+                                    WCHAR buf[MAX_PATH] = {0};
                                     ULONG fetched = 0;
                                     ULONG attribs = 0;
                                     do
@@ -187,7 +187,7 @@ bool CDeskBand::FindPaths()
 wstring CDeskBand::GetFileNames(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders)
 {
     wstring sRet;
-    WCHAR buf[_MAX_PATH+2];
+    WCHAR buf[MAX_PATH+2];
     if (!items.empty())
     {
         for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
@@ -201,7 +201,7 @@ wstring CDeskBand::GetFileNames(const map<wstring, ULONG>& items, wstring separa
                         sRet += separator;
                     if (quotespaces)
                     {
-                        _tcscpy_s(buf, _MAX_PATH, it->first.substr(pos+1).c_str());
+                        _tcscpy_s(buf, MAX_PATH, it->first.substr(pos+1).c_str());
                         PathQuoteSpaces(buf);
                         sRet += buf;
                     }
@@ -216,7 +216,7 @@ wstring CDeskBand::GetFileNames(const map<wstring, ULONG>& items, wstring separa
 
 wstring CDeskBand::GetFilePaths(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc)
 {
-    WCHAR buf[_MAX_PATH+2];
+    WCHAR buf[MAX_PATH+2];
     wstring sRet;
     if (!items.empty())
     {
@@ -233,7 +233,7 @@ wstring CDeskBand::GetFilePaths(const map<wstring, ULONG>& items, wstring separa
                 }
                 if (quotespaces)
                 {
-                    _tcscpy_s(buf, _MAX_PATH, sPath.c_str());
+                    _tcscpy_s(buf, MAX_PATH, sPath.c_str());
                     PathQuoteSpaces(buf);
                     sRet += buf;
                 }

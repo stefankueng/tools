@@ -126,7 +126,7 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
     //we check that by iterating through all menu entries and check if
     //the dwItemData member points to our global ID string. That string is set
     //by our shell extension when the folder menu is inserted.
-    TCHAR menubuf[_MAX_PATH];
+    TCHAR menubuf[MAX_PATH];
     int count = GetMenuItemCount(hMenu);
     for (int i=0; i<count; ++i)
     {

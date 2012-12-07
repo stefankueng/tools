@@ -149,12 +149,12 @@ int _tmain(int argc, _TCHAR* argv[])
     }
 
 
-    TCHAR cwd[_MAX_PATH] = {0};
-    GetCurrentDirectory(_MAX_PATH, cwd);
+    TCHAR cwd[MAX_PATH] = {0};
+    GetCurrentDirectory(MAX_PATH, cwd);
 
     if (parser.HasVal(L"path"))
     {
-        _tcscpy_s(cwd, _MAX_PATH, parser.GetVal(L"path"));
+        _tcscpy_s(cwd, MAX_PATH, parser.GetVal(L"path"));
     }
     if (parser.HasVal(L"ext"))
     {
