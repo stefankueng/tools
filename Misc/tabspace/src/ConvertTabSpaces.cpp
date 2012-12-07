@@ -153,7 +153,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             {
                                 i++;
                                 spacecount++;
-                                (*pOldBuf)++;
+                                pOldBuf++;
                             }
                             if ((spacecount < tabsize) && (*pOldBuf == '\t'))
                                 pBuf--;
@@ -190,7 +190,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             {
                                 i++;
                                 spacecount++;
-                                (*pOldBuf)++;
+                                pOldBuf++;
                             }
                             if ((spacecount < tabsize) && (*pOldBuf == '\t'))
                                 pBuf--;
