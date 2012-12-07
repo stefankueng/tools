@@ -82,9 +82,9 @@ bool CDeskBand::Filter(LPTSTR filter)
 
                                 try
                                 {
-                                    const tr1::wregex regCheck(&filter[1], tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
+                                    const std::tr1::wregex regCheck(&filter[1], std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
                                 }
-                                catch (exception)
+                                catch (std::exception)
                                 {
                                     bUseRegex = false;
                                 }
@@ -207,12 +207,12 @@ bool CDeskBand::CheckDisplayName(IShellFolder * shellFolder, LPITEMIDLIST pidl, 
 
             try
             {
-                const tr1::wregex regCheck(&filter[1], tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
-                wstring s = dispname;
+                const std::tr1::wregex regCheck(&filter[1], std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
+                std::wstring s = dispname;
 
-                return tr1::regex_search(s, regCheck);
+                return std::tr1::regex_search(s, regCheck);
             }
-            catch (exception)
+            catch (std::exception)
             {
             }
         }

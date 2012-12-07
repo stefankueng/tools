@@ -27,14 +27,13 @@
 #include "NumberReplacer.h"
 #include <string>
 
-using namespace std;
-
 
 #define IDT_RENAME 101
 
+
 CRenameDlg::CRenameDlg(HWND hParent)
+    : m_hParent(hParent)
 {
-    m_hParent = hParent;
 }
 
 CRenameDlg::~CRenameDlg(void)
@@ -111,8 +110,8 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 
             CRegStdString ren1Reg = CRegStdString(_T("Software\\StExBar\\ren1Text"));
             CRegStdString ren2Reg = CRegStdString(_T("Software\\StExBar\\ren2Text"));
-            wstring ren1Text = ren1Reg;
-            wstring ren2Text = ren2Reg;
+            std::wstring ren1Text = ren1Reg;
+            std::wstring ren2Text = ren2Reg;
             if (ren1Text.size())
                 SetDlgItemText(*this, IDC_MATCHSTRING, ren1Text.c_str());
             if (ren2Text.size())
@@ -156,9 +155,9 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
                 m_AutoCompleteRen1.AddEntry(m_sMatch.c_str());
                 m_AutoCompleteRen2.AddEntry(m_sReplace.c_str());
 
-                m_fl = tr1::regex_constants::ECMAScript;
+                m_fl = std::tr1::regex_constants::ECMAScript;
                 if (SendDlgItemMessage(*this, IDC_CASEINSENSITIVE, BM_GETCHECK, 0, 0) == BST_CHECKED)
-                    m_fl |= tr1::regex_constants::icase;
+                    m_fl |= std::tr1::regex_constants::icase;
             }
             // fall through
         case IDCANCEL:
@@ -278,27 +277,27 @@ void CRenameDlg::FillRenamedList()
 
     ListView_DeleteAllItems(hListCtrl);
     // we also need a map which assigns each file its renamed equivalent
-    map<wstring, wstring, __lesscasecmp> renamedmap;
+    std::map<std::wstring, std::wstring, __lesscasecmp> renamedmap;
 
     try
     {
-        m_fl = tr1::regex_constants::ECMAScript;
+        m_fl = std::tr1::regex_constants::ECMAScript;
         if (SendDlgItemMessage(*this, IDC_CASEINSENSITIVE, BM_GETCHECK, 0, 0) == BST_CHECKED)
-            m_fl |= tr1::regex_constants::icase;
-        const tr1::wregex regCheck(m_sMatch, m_fl);
+            m_fl |= std::tr1::regex_constants::icase;
+        const std::tr1::wregex regCheck(m_sMatch, m_fl);
 
         NumberReplaceHandler handler(m_sReplace);
-        wstring replaced;
+        std::wstring replaced;
         for (auto it = m_filelist.begin(); it != m_filelist.end(); ++it)
         {
-            replaced = tr1::regex_replace(*it, regCheck, m_sReplace);
+            replaced = std::tr1::regex_replace(*it, regCheck, m_sReplace);
             replaced = handler.ReplaceCounters(replaced);
             renamedmap[*it] = replaced;
         }
         // now fill in the list of files which got renamed
         int iItem = 0;
         TCHAR textbuf[MAX_PATH] = {0};
-        for (map<wstring, wstring, __lesscasecmp>::iterator it = renamedmap.begin(); it != renamedmap.end(); ++it)
+        for (std::map<std::wstring, std::wstring, __lesscasecmp>::iterator it = renamedmap.begin(); it != renamedmap.end(); ++it)
         {
             LVITEM lvi = {0};
             lvi.mask = LVIF_TEXT|LVIF_PARAM;
@@ -317,7 +316,7 @@ void CRenameDlg::FillRenamedList()
         ListView_SetColumnWidth(hListCtrl, 0, LVSCW_AUTOSIZE_USEHEADER);
         ListView_SetColumnWidth(hListCtrl, 1, LVSCW_AUTOSIZE_USEHEADER);
     }
-    catch (const exception&)
+    catch (const std::exception&)
     {
         int iItem = 0;
         TCHAR textbuf[MAX_PATH] = {0};
@@ -341,7 +340,7 @@ void CRenameDlg::FillRenamedList()
     }
 }
 
-void CRenameDlg::SetFileList( const set<wstring>& list )
+void CRenameDlg::SetFileList( const std::set<std::wstring>& list )
 {
     m_filelist.clear();
     for (auto it = list.cbegin(); it != list.cend(); ++it)

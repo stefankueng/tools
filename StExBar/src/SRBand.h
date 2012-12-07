@@ -27,8 +27,6 @@
 #include "Registry.h"
 #include "Commands.h"
 
-using namespace std;
-
 #define DB_CLASS_NAME (_T("StExBarClass"))
 
 #define MIN_SIZE_X   100
@@ -145,18 +143,18 @@ private:
     static std::map<DWORD, CDeskBand*> m_desklist;  ///< map of thread-ID's and CDeskBand objects which use the keyboard hook
     HHOOK           m_hook;             ///< handle of the keyboard hook procedure
 
-    wstring         m_currentDirectory; ///< the current directory of the explorer view
-    map<wstring, ULONG> m_selectedItems;///< list of items which are selected in the explorer view
+    std::wstring    m_currentDirectory; ///< the current directory of the explorer view
+    std::map<std::wstring, ULONG> m_selectedItems; ///< list of items which are selected in the explorer view
     bool            m_bFilesSelected;   ///< at least one file is selected
     bool            m_bFolderSelected;  ///< at least one folder is selected
 
     CCommands       m_commands;
-    map<hotkey, int> m_hotkeys;         ///< the hotkeys for our commands
-    map<int, DWORD> m_enablestates;     ///< the custom commands and their enabled states
-    bool            m_bCmdEditEnabled;  ///< the cmd edit box is special, because it's not part of the toolbar
+    std::map<hotkey, int> m_hotkeys;     ///< the hotkeys for our commands
+    std::map<int, DWORD> m_enablestates; ///< the custom commands and their enabled states
+    bool            m_bCmdEditEnabled;   ///< the cmd edit box is special, because it's not part of the toolbar
 
-    set<wstring>    m_filelist;         ///< the list of selected file/folder names
-    map<int, wstring> m_tooltips;       ///< maps command/button ids against the tooltips to show for them
+    std::set<std::wstring>      m_filelist; ///< the list of selected file/folder names
+    std::map<int, std::wstring> m_tooltips; ///< maps command/button ids against the tooltips to show for them
     CRegStdDWORD     m_regShowBtnText;   ///< config setting whether to show the text for the toolbar buttons or not
     CRegStdDWORD     m_regUseUNCPaths;   ///< config setting whether to copy the UNC paths of mapped paths or not
     CRegStdDWORD     m_regEditBoxUsage;  ///< config setting whether to use the selector or the cmd.exe replacement
@@ -166,9 +164,9 @@ private:
     LPITEMIDLIST    m_currentFolder;    ///< pidl of the current folder
     HWND            m_hwndListView;     ///< handle of the list view control
 
-    wstring         m_ContextDirectory; ///< the folder background path for the context menu
-    map<wstring, ULONG> m_ContextItems; ///< list of items which are selected for the context menu
-    std::map<UINT_PTR, UINT_PTR>    myIDMap;    ///< maps menu ids to command ids
+    std::wstring                  m_ContextDirectory; ///< the folder background path for the context menu
+    std::map<std::wstring, ULONG> m_ContextItems; ///< list of items which are selected for the context menu
+    std::map<UINT_PTR, UINT_PTR>  myIDMap;    ///< maps menu ids to command ids
 
     std::vector<LPITEMIDLIST>   m_newfolderPidls;   ///< PIDLs of all items in a folder *before* the new folder was created
     int                         m_newfolderTimeoutCounter;   ///< Timeout counter for the timer task to retry setting the new folder into editing mode
@@ -199,7 +197,7 @@ private:
     /// set up the toolbar
     BOOL                    BuildToolbarButtons();
     /// handle a command
-    void                    HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd, const map<wstring, ULONG>& items);
+    void                    HandleCommand(HWND hWnd, const Command& cmd, const std::wstring& cwd, const std::map<std::wstring, ULONG>& items);
     /// loads the icon for the command. The caller is responsible for destroying the icon after using it.
     HICON                   LoadCommandIcon(const Command& cmd);
 
@@ -208,30 +206,30 @@ private:
     /// find all the paths of the current explorer view and the selected items
     bool                    FindPaths();
     /// get a list of filenames in one string, separated by \c separator
-    wstring                 GetFileNames(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders);
+    std::wstring            GetFileNames(const std::map<std::wstring, ULONG>& items, std::wstring separator, bool quotespaces, bool includefiles, bool includefolders);
     /// get a list of file paths in one string, separated by \c separator
-    wstring                 GetFilePaths(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc);
+    std::wstring            GetFilePaths(const std::map<std::wstring, ULONG>& items, std::wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc);
     /// get a list of folder paths in one string, separated by \c separator
     /// put a string on the clipboard
-    bool                    WriteStringToClipboard(const wstring& sClipdata, HWND hOwningWnd);
+    bool                    WriteStringToClipboard(const std::wstring& sClipdata, HWND hOwningWnd);
     /// starts the console program to run a script
-    void                    StartCmd(const wstring& cwd, wstring params, bool elevated);
+    void                    StartCmd(const std::wstring& cwd, std::wstring params, bool elevated);
     /// start a new process with the specified command line
-    void                    StartApplication(const wstring& cwd, std::wstring commandline, bool elevated);
+    void                    StartApplication(const std::wstring& cwd, std::wstring commandline, bool elevated);
     /// creates a new folder and starts the editing of it
     bool                    CreateNewFolder();
     /// Opens a rename dialog where the user can rename the selected files
-    void                    Rename(HWND hwnd, const map<wstring, ULONG>& items);
+    void                    Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items);
     /// helper function to find the IServiceProvider
     HRESULT                 GetIServiceProvider(HWND hwnd, IServiceProvider ** pServiceProvider);
     /// Fills the list with the renamed files in the rename dialog
     void                    FillRenamedList(HWND hDlg);
     /// convert a path to an UNC path (if it points to a network share)
-    wstring                 ConvertToUNC(wstring sPath);
+    std::wstring            ConvertToUNC(std::wstring sPath);
     /// filters out any file/folder in the current view which don't match the filter string
     bool                    Filter(LPTSTR filter);
     /// writes the string \a paths to a tempfile, either in unicode or ascii. The path to the tempfile is returned
-    wstring                 WriteFileListToTempFile(bool bUnicode, const wstring& paths);
+    std::wstring            WriteFileListToTempFile(bool bUnicode, const std::wstring& paths);
     /// returns true if the pidl matches the filter string
     bool                    CheckDisplayName(IShellFolder * shellFolder, LPITEMIDLIST pidl, LPCTSTR filter, bool bUseRegex);
     /// returns the usage for the edit box

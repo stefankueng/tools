@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2011 - Stefan Kueng
+// Copyright (C) 2007-2009, 2011-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 //
 
 #pragma once
+
 #include "SimpleIni.h"
 #include <string>
 #include <vector>

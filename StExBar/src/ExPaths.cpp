@@ -143,14 +143,14 @@ bool CDeskBand::FindPaths()
                                                         {
                                                             if (SHGetPathFromIDList(abspidl, buf))
                                                             {
-                                                                m_selectedItems[wstring(buf)] = attribs;
+                                                                m_selectedItems[std::wstring(buf)] = attribs;
                                                                 if (m_currentDirectory.empty())
                                                                 {
                                                                     // remove the last part of the path of the selected item
                                                                     WCHAR * pSlash = _tcsrchr(buf, '\\');
                                                                     if (pSlash)
                                                                         *pSlash = 0;
-                                                                    m_currentDirectory = wstring(buf);
+                                                                    m_currentDirectory = std::wstring(buf);
                                                                 }
                                                             }
                                                             CoTaskMemFree(abspidl);
@@ -184,13 +184,13 @@ bool CDeskBand::FindPaths()
     return ((!m_currentDirectory.empty()) || (!m_selectedItems.empty()));
 }
 
-wstring CDeskBand::GetFileNames(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders)
+std::wstring CDeskBand::GetFileNames(const std::map<std::wstring, ULONG>& items, std::wstring separator, bool quotespaces, bool includefiles, bool includefolders)
 {
-    wstring sRet;
+    std::wstring sRet;
     WCHAR buf[MAX_PATH+2];
     if (!items.empty())
     {
-        for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
+        for (std::map<std::wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
         {
             if (((it->second & SFGAO_FOLDER)&&(includefolders))||(((it->second & SFGAO_FOLDER)==0)&&(includefiles)))
             {
@@ -214,19 +214,19 @@ wstring CDeskBand::GetFileNames(const map<wstring, ULONG>& items, wstring separa
     return sRet;
 }
 
-wstring CDeskBand::GetFilePaths(const map<wstring, ULONG>& items, wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc)
+std::wstring CDeskBand::GetFilePaths(const std::map<std::wstring, ULONG>& items, std::wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc)
 {
     WCHAR buf[MAX_PATH+2];
-    wstring sRet;
+    std::wstring sRet;
     if (!items.empty())
     {
-        for (map<wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
+        for (std::map<std::wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
         {
             if (((it->second & SFGAO_FOLDER)&&(includefolders))||(((it->second & SFGAO_FOLDER)==0)&&(includefiles)))
             {
                 if (!sRet.empty())
                     sRet += separator;
-                wstring sPath = it->first;
+                std::wstring sPath = it->first;
                 if (useunc)
                 {
                     sPath = ConvertToUNC(sPath);
@@ -245,12 +245,12 @@ wstring CDeskBand::GetFilePaths(const map<wstring, ULONG>& items, wstring separa
     return sRet;
 }
 
-wstring CDeskBand::ConvertToUNC(wstring sPath)
+std::wstring CDeskBand::ConvertToUNC(std::wstring sPath)
 {
     WCHAR temp;
     UNIVERSAL_NAME_INFO * puni = NULL;
     DWORD bufsize = 0;
-    wstring sRet = sPath;
+    std::wstring sRet = sPath;
     //Call WNetGetUniversalName using UNIVERSAL_NAME_INFO_LEVEL option
     if (WNetGetUniversalName(sPath.c_str(),
         UNIVERSAL_NAME_INFO_LEVEL,
@@ -265,7 +265,7 @@ wstring CDeskBand::ConvertToUNC(wstring sPath)
             (LPVOID) puni,
             &bufsize) == NO_ERROR)
         {
-            sRet = wstring(puni->lpUniversalName);
+            sRet = std::wstring(puni->lpUniversalName);
         }
         delete [] buf;
     }

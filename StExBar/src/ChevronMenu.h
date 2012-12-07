@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2008, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +18,8 @@
 //
 
 #pragma once
-#include "basewindow.h"
+
+#include "BaseWindow.h"
 
 /**
  * Implements a 'menu' using a vertical toolbar to show the missing/hidden

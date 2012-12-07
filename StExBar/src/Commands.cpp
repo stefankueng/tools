@@ -21,8 +21,6 @@
 #include "Commands.h"
 #include "resource.h"
 
-using namespace std;
-
 CCommands::CCommands(void)
 {
 }
@@ -261,10 +259,10 @@ bool CCommands::LoadFromFile()
     for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
     {
         hotkey key;
-        key.control = (wstring(inifile.GetValue(*it, _T("control"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        key.shift = (wstring(inifile.GetValue(*it, _T("shift"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        key.alt = (wstring(inifile.GetValue(*it, _T("alt"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        key.keycode = _tstol(wstring(inifile.GetValue(*it, _T("keycode"), _T(""))).c_str());
+        key.control = (std::wstring(inifile.GetValue(*it, _T("control"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        key.shift = (std::wstring(inifile.GetValue(*it, _T("shift"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        key.alt = (std::wstring(inifile.GetValue(*it, _T("alt"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        key.keycode = _tstol(std::wstring(inifile.GetValue(*it, _T("keycode"), _T(""))).c_str());
 
         Command cmd;
         cmd.name = inifile.GetValue(*it, _T("name"), _T(""));
@@ -272,15 +270,15 @@ bool CCommands::LoadFromFile()
         cmd.nIconID = 0;
         cmd.commandline = inifile.GetValue(*it, _T("commandline"), _T(""));
         cmd.startin = inifile.GetValue(*it, _T("startin"), _T(""));
-        cmd.separator = (wstring(inifile.GetValue(*it, _T("separator"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        cmd.separator = (std::wstring(inifile.GetValue(*it, _T("separator"), _T(""))).compare(_T("true")) == 0) ? true : false;
 
-        cmd.enabled_viewpath = (wstring(inifile.GetValue(*it, _T("viewpath"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        cmd.enabled_noviewpath = (wstring(inifile.GetValue(*it, _T("noviewpath"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        cmd.enabled_fileselected = (wstring(inifile.GetValue(*it, _T("fileselected"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        cmd.enabled_folderselected = (wstring(inifile.GetValue(*it, _T("folderselected"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        cmd.enabled_selected = (wstring(inifile.GetValue(*it, _T("selected"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        cmd.enabled_noselection = (wstring(inifile.GetValue(*it, _T("noselection"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        cmd.enabled_selectedcount = _tstol(wstring(inifile.GetValue(*it, _T("selectedcount"), _T(""))).c_str());
+        cmd.enabled_viewpath = (std::wstring(inifile.GetValue(*it, _T("viewpath"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        cmd.enabled_noviewpath = (std::wstring(inifile.GetValue(*it, _T("noviewpath"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        cmd.enabled_fileselected = (std::wstring(inifile.GetValue(*it, _T("fileselected"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        cmd.enabled_folderselected = (std::wstring(inifile.GetValue(*it, _T("folderselected"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        cmd.enabled_selected = (std::wstring(inifile.GetValue(*it, _T("selected"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        cmd.enabled_noselection = (std::wstring(inifile.GetValue(*it, _T("noselection"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        cmd.enabled_selectedcount = _tstol(std::wstring(inifile.GetValue(*it, _T("selectedcount"), _T(""))).c_str());
         cmd.key = key;
 
         // check if that command already exists
@@ -288,7 +286,7 @@ bool CCommands::LoadFromFile()
         {
             if (!cmd.separator)
             {
-                for (vector<Command>::iterator cit = m_commands.begin(); cit != m_commands.end(); ++cit)
+                for (std::vector<Command>::iterator cit = m_commands.begin(); cit != m_commands.end(); ++cit)
                 {
                     if (cit->name.compare(cmd.name) == 0)
                     {
@@ -331,7 +329,7 @@ bool CCommands::SaveToFile()
 
     CSimpleIni inifile;
     int counter = 0;
-    for (vector<Command>::iterator it = m_commands.begin(); it != m_commands.end(); ++it)
+    for (std::vector<Command>::iterator it = m_commands.begin(); it != m_commands.end(); ++it)
     {
         Command * pCmd = &(*it);
 

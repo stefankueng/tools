@@ -28,12 +28,11 @@
 #include <string>
 
 #include <regex>
-using namespace std;
 
 
 CEditCmdDlg::CEditCmdDlg(HWND hParent)
+    : m_hParent(hParent)
 {
-    m_hParent = hParent;
 }
 
 CEditCmdDlg::~CEditCmdDlg(void)

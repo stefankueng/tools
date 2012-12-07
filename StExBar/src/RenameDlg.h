@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2009, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,17 +18,16 @@
 //
 
 #pragma once
-#include "basedialog.h"
+
+#include "BaseDialog.h"
 #include "DlgResizer.h"
 #include "AutoComplete.h"
 #include <string>
 #include <regex>
 
-using namespace std;
-
 struct __lesscasecmp
 {
-    bool operator() (const wstring& a, const wstring& b) const
+    bool operator() (const std::wstring& a, const std::wstring& b) const
     {
         return (_wcsicmp(a.c_str(), b.c_str()) < 0);
     }
@@ -43,10 +42,10 @@ public:
     CRenameDlg(HWND hParent);
     ~CRenameDlg(void);
 
-    wstring                 GetMatchString() {return m_sMatch;}
-    tr1::regex_constants::syntax_option_type GetRegexFlags() {return m_fl;}
-    wstring                 GetReplaceString() {return m_sReplace;}
-    void                    SetFileList(const set<wstring>& list);
+    std::wstring            GetMatchString() {return m_sMatch;}
+    std::tr1::regex_constants::syntax_option_type GetRegexFlags() {return m_fl;}
+    std::wstring            GetReplaceString() {return m_sReplace;}
+    void                    SetFileList(const std::set<std::wstring>& list);
 
 protected:
     LRESULT CALLBACK        DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -55,11 +54,11 @@ protected:
 private:
     HWND                    m_hParent;
     CDlgResizer             m_resizer;
-    wstring                 m_sMatch;           ///< the match string of the rename
-    wstring                 m_sReplace;         ///< the replace string of the rename
-    set<wstring, __lesscasecmp> m_filelist;     ///< the list of selected file/folder names
+    std::wstring            m_sMatch;           ///< the match string of the rename
+    std::wstring            m_sReplace;         ///< the replace string of the rename
+    std::set<std::wstring, __lesscasecmp> m_filelist;     ///< the list of selected file/folder names
     CAutoComplete           m_AutoCompleteRen1;
     CAutoComplete           m_AutoCompleteRen2;
 
-    tr1::regex_constants::syntax_option_type m_fl;
+    std::tr1::regex_constants::syntax_option_type m_fl;
 };

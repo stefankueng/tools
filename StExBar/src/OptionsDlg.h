@@ -18,12 +18,12 @@
 //
 
 #pragma once
-#include "basedialog.h"
+
+#include "BaseDialog.h"
 #include "hyperlink.h"
 #include "Commands.h"
 #include <string>
 
-using namespace std;
 
 /**
 * bookmarks dialog.
