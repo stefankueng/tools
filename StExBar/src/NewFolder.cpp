@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008, 2010 - Stefan Kueng
+// Copyright (C) 2007-2008, 2010, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,7 +70,7 @@ bool CDeskBand::CreateNewFolder()
                                         if (SUCCEEDED(pPersistFolder->GetCurFolder(&folderpidl)))
                                         {
                                             // we have the current folder
-                                            TCHAR buf[_MAX_PATH] = {0};
+                                            TCHAR buf[MAX_PATH] = {0};
                                             // find the path of the folder
                                             if (SHGetPathFromIDList(folderpidl, buf))
                                             {

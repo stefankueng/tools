@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009 - Stefan Kueng
+// Copyright (C) 2007-2009, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -78,7 +78,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
                             if (SUCCEEDED(pPersistFolder->GetCurFolder(&folderpidl)))
                             {
                                 // we have the current folder
-                                TCHAR buf[_MAX_PATH] = {0};
+                                TCHAR buf[MAX_PATH] = {0};
                                 // find the path of the folder
                                 if (SHGetPathFromIDList(folderpidl, buf))
                                 {
@@ -95,7 +95,7 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
                                     if (SUCCEEDED(pFolderView->Items(SVGIO_ALLVIEW, IID_IEnumIDList, (LPVOID*)&pEnum)))
                                     {
                                         LPITEMIDLIST pidl;
-                                        WCHAR buf[_MAX_PATH] = {0};
+                                        WCHAR buf[MAX_PATH] = {0};
                                         ULONG fetched = 0;
                                         ULONG attribs = 0;
                                         do
@@ -202,8 +202,8 @@ void CDeskBand::Rename(HWND hwnd, const map<wstring, ULONG>& items)
                                                     SHGDN_INFOLDER|SHGDN_FORPARSING,
                                                     &str)))
                                                 {
-                                                    TCHAR dispname[_MAX_PATH];
-                                                    StrRetToBuf(&str, pidl, dispname, _MAX_PATH);
+                                                    TCHAR dispname[MAX_PATH];
+                                                    StrRetToBuf(&str, pidl, dispname, MAX_PATH);
 
                                                     wstring replaced;
                                                     try

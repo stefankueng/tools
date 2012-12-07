@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2011 - Stefan Kueng
+// Copyright (C) 2007-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -769,8 +769,8 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 
             if (m_currentDirectory.empty())
             {
-                WCHAR buf[_MAX_PATH] = {0};
-                GetCurrentDirectory(_MAX_PATH, buf);
+                WCHAR buf[MAX_PATH] = {0};
+                GetCurrentDirectory(MAX_PATH, buf);
                 m_currentDirectory = buf;
             }
 
@@ -950,10 +950,10 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
                 // Seems no items are selected
                 // Use the view path instead
                 size_t pos = cwd.find_last_of('\\');
-                WCHAR buf[_MAX_PATH];
+                WCHAR buf[MAX_PATH];
                 if (pos >= 0)
                 {
-                    _tcscpy_s(buf, _MAX_PATH, cwd.substr(pos+1).c_str());
+                    _tcscpy_s(buf, MAX_PATH, cwd.substr(pos+1).c_str());
                     PathQuoteSpaces(buf);
                     str = buf;
                 }
@@ -967,14 +967,14 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             {
                 // Seems no items are selected
                 // Use the view path instead
-                WCHAR buf[_MAX_PATH];
+                WCHAR buf[MAX_PATH];
                 if (DWORD(m_regUseUNCPaths))
                 {
                     str = ConvertToUNC(cwd);
-                    _tcscpy_s(buf, _MAX_PATH, str.c_str());
+                    _tcscpy_s(buf, MAX_PATH, str.c_str());
                 }
                 else
-                    _tcscpy_s(buf, _MAX_PATH, cwd.c_str());
+                    _tcscpy_s(buf, MAX_PATH, cwd.c_str());
 
                 PathQuoteSpaces(buf);
                 str = buf;
@@ -1007,8 +1007,8 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             wstring selpaths = GetFilePaths(items, _T(" "), true, true, true, false);
             if (selpaths.empty())
             {
-                TCHAR buf[_MAX_PATH] = {0};
-                _tcscpy_s(buf, _MAX_PATH, cwd.c_str());
+                TCHAR buf[MAX_PATH] = {0};
+                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
@@ -1024,8 +1024,8 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             wstring selpaths = GetFilePaths(items, _T("*"), false, true, true, false);
             if (selpaths.empty())
             {
-                TCHAR buf[_MAX_PATH] = {0};
-                _tcscpy_s(buf, _MAX_PATH, cwd.c_str());
+                TCHAR buf[MAX_PATH] = {0};
+                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
@@ -1047,8 +1047,8 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
         it_begin = search(commandline.begin(), commandline.end(), tag.begin(), tag.end());
         if (it_begin != commandline.end())
         {
-            TCHAR buf[_MAX_PATH] = {0};
-            _tcscpy_s(buf, _MAX_PATH, cwd.c_str());
+            TCHAR buf[MAX_PATH] = {0};
+            _tcscpy_s(buf, MAX_PATH, cwd.c_str());
             PathQuoteSpaces(buf);
             wstring cwdquoted = buf;
 
@@ -1071,8 +1071,8 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             wstring selpaths = GetFilePaths(items, _T("\r\n"), false, true, true, false);
             if (selpaths.empty())
             {
-                TCHAR buf[_MAX_PATH] = {0};
-                _tcscpy_s(buf, _MAX_PATH, cwd.c_str());
+                TCHAR buf[MAX_PATH] = {0};
+                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
@@ -1088,8 +1088,8 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const wstring& cwd,
             wstring selpaths = GetFilePaths(items, _T("\r\n"), false, true, true, false);
             if (selpaths.empty())
             {
-                TCHAR buf[_MAX_PATH] = {0};
-                _tcscpy_s(buf, _MAX_PATH, cwd.c_str());
+                TCHAR buf[MAX_PATH] = {0};
+                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
@@ -1579,12 +1579,12 @@ DWORD CDeskBand::GetEditBoxUsage()
 TCHAR * CDeskBand::GetEditBoxText(bool sanitized /* = true */)
 {
     // get the command entered in the edit box
-    int count = _MAX_PATH;
+    int count = MAX_PATH;
     TCHAR * buf = new TCHAR[count+1];
     while (::GetWindowText(m_hWndEdit, buf, count)>=count)
     {
         delete [] buf;
-        count += _MAX_PATH;
+        count += MAX_PATH;
         buf = new TCHAR[count+1];
     }
 

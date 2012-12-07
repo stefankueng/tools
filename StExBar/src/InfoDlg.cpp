@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2008 - Stefan Kueng
+// Copyright (C) 2008, 2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,13 +51,13 @@ BOOL CInfoDlg::ShowDialog(UINT idAboutHTMLID, HINSTANCE hInstance)
         pfnShowHTMLDialog = (SHOWHTMLDIALOGFN*)GetProcAddress(hinstMSHTML, "ShowHTMLDialog");
         if(pfnShowHTMLDialog)
         {
-            LPTSTR lpszModule = new TCHAR[_MAX_PATH];
+            LPTSTR lpszModule = new TCHAR[MAX_PATH];
             //Get The Application Path
-            if (GetModuleFileName(hInstance, lpszModule, _MAX_PATH))
+            if (GetModuleFileName(hInstance, lpszModule, MAX_PATH))
             {
                 //Add the IE Res protocol
-                TCHAR strResourceURL[_MAX_PATH*4];
-                _stprintf_s(strResourceURL, _MAX_PATH*4, _T("res://%s/%d"), lpszModule, idAboutHTMLID);
+                TCHAR strResourceURL[MAX_PATH*4];
+                _stprintf_s(strResourceURL, MAX_PATH*4, _T("res://%s/%d"), lpszModule, idAboutHTMLID);
                 size_t iLength = _tcslen(strResourceURL);
                 LPWSTR lpWideCharStr = NULL;
                 lpWideCharStr =  new wchar_t[iLength+1];

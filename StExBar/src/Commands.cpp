@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2011 - Stefan Kueng
+// Copyright (C) 2007-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -242,7 +242,7 @@ bool CCommands::LoadFromFile()
     c.key = key;
     m_commands.push_back(c);
 
-    TCHAR szPath[_MAX_PATH] = {0};
+    TCHAR szPath[MAX_PATH] = {0};
     if (SUCCEEDED(SHGetFolderPath(NULL,
         CSIDL_APPDATA|CSIDL_FLAG_CREATE,
         NULL,
@@ -317,7 +317,7 @@ bool CCommands::LoadFromFile()
 
 bool CCommands::SaveToFile()
 {
-    TCHAR szPath[_MAX_PATH] = {0};
+    TCHAR szPath[MAX_PATH] = {0};
     if (SUCCEEDED(SHGetFolderPath(NULL,
         CSIDL_APPDATA|CSIDL_FLAG_CREATE,
         NULL,
