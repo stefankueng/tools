@@ -182,7 +182,6 @@
     <ClCompile Include="ShellExt.cpp" />
     <ClCompile Include="ShellExtClassFactory.cpp" />
     <ClCompile Include="ShellPropertyPage.cpp" />
-    <ClCompile Include="SKTimeStamp.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
