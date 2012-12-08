@@ -42,9 +42,9 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
         {
             InitDialog(hwndDlg, IDI_AACLR);
             TCHAR buf[MAX_PATH] = {0};
-            _stprintf_s(buf, _countof(buf), _T("AAClr (Auto Aero Color) version %ld.%ld.%ld.%ld"), CM_VERMAJOR, CM_VERMINOR, CM_VERMICRO, CM_VERBUILD);
+            _stprintf_s(buf, _countof(buf), _T("AAClr (Auto Aero Color) version %ld.%ld.%ld.%ld"), AACLR_VERMAJOR, AACLR_VERMINOR, AACLR_VERMICRO, AACLR_VERBUILD);
             SetDlgItemText(*this, IDC_VERSIONINFO, buf);
-            SetDlgItemText(*this, IDC_DATE, _T(CM_VERDATE));
+            SetDlgItemText(*this, IDC_DATE, _T(AACLR_VERDATE));
             m_link.ConvertStaticToHyperlink(hwndDlg, IDC_WEBLINK, _T("http://tools.tortoisesvn.net"));
         }
         return TRUE;
