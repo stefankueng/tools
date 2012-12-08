@@ -24,6 +24,7 @@
 
 extern  UINT                g_cRefThisDll;          // Reference count of this DLL.
 extern  HINSTANCE           g_hmodThisDll;          // Instance handle for this DLL
+
 #ifdef _WIN64
 // {6A6B7688-3B34-41b2-8487-F1CE4C23FC60}
 DEFINE_GUID(CLSID_SKTIMESTAMP,
@@ -47,8 +48,8 @@ class CShellExt : public    IShellExtInit,
                             IShellPropSheetExt
 {
 protected:
-    ULONG                   m_cRef;
-    std::vector<std::wstring>  files_;
+    ULONG                       m_cRef;
+    std::vector<std::wstring>   files_;
 
 public:
     CShellExt();

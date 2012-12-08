@@ -33,9 +33,6 @@
     <ClCompile Include="ShellPropertyPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SKTimeStamp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
