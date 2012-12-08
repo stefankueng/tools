@@ -8,7 +8,7 @@
 // Nonmember function prototypes
 BOOL CALLBACK PageProc (HWND, UINT, WPARAM, LPARAM);
 UINT CALLBACK PropPageCallbackProc ( HWND hwnd, UINT uMsg, LPPROPSHEETPAGE ppsp );
-// Misc utility functins.
+// Misc utility functions.
 void ReadDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pFiletime);
 void SetDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, const FILETIME* pFiletime);
 
@@ -238,12 +238,12 @@ void CShellPropertyPage::InitWorkfileView()
         // selected items as info text
         TCHAR buf[50] = {0};
         TCHAR buf2[50] = {0};
-        if (LoadString(g_hmodThisDll, IDS_FILEINFO, buf, sizeof(buf)/sizeof(TCHAR)) == 0)
+        if (LoadString(g_hmodThisDll, IDS_FILEINFO, buf, _countof(buf)) == 0)
         {
             // load string failed, use hard coded string
-            _tcscpy_s(buf, 50, _T("Selected %ld files/folders"));
+            _tcscpy_s(buf, _countof(buf), _T("Selected %ld files/folders"));
         }
-        _stprintf_s(buf2, 50, buf, filenames.size());
+        _stprintf_s(buf2, _countof(buf2), buf, filenames.size());
         SetDlgItemText(m_hwnd, IDC_FILEINFO, buf2);
     }
 }
@@ -300,10 +300,10 @@ void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteT
         // could not set the dates for one or more files
         // show an error message
         TCHAR buf[4096] = {0};
-        if (LoadString(g_hmodThisDll, IDS_ERR_FILEDATES, buf, sizeof(buf)/sizeof(TCHAR)) == 0)
+        if (LoadString(g_hmodThisDll, IDS_ERR_FILEDATES, buf, _countof(buf)) == 0)
         {
             // load string failed, use hard coded string
-            _tcscpy_s(buf, 4096, _T("Could not set the date/time for the following files:"));
+            _tcscpy_s(buf, _countof(buf), _T("Could not set the date/time for the following files:"));
         }
 
         std::wstringstream strMsg;

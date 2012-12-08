@@ -199,7 +199,7 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
         menuiteminfo.fType = cmd.separator ? MFT_SEPARATOR : MFT_STRING;
         menuiteminfo.fState = bEnabled ? MFS_ENABLED : MFS_DISABLED;
         TCHAR menutextbuf[100];
-        _tcscpy_s(menutextbuf, 100, m_commands.GetCommandPtr(j)->name.c_str());
+        _tcscpy_s(menutextbuf, _countof(menutextbuf), m_commands.GetCommandPtr(j)->name.c_str());
         menuiteminfo.dwTypeData = menutextbuf;
         menuiteminfo.wID = idCmd++;
         InsertMenuItem(subMenu, indexSubMenu++, TRUE, &menuiteminfo);

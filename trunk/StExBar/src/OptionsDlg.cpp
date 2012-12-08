@@ -82,7 +82,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             AddToolTip(IDC_USEAUTO, _T("The first char determines the function:\nf filtertext\ng grepWin search text\nc console command\np powershell command"));
 
             TCHAR buf[MAX_PATH] = {0};
-            _stprintf_s(buf, MAX_PATH, _T("StExBar %ld.%ld.%ld.%ld"), VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
+            _stprintf_s(buf, _countof(buf), _T("StExBar %ld.%ld.%ld.%ld"), VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
             SetDlgItemText(hwndDlg, IDC_VERSIONSTRING, buf);
 
             m_commands.LoadFromFile();
@@ -220,9 +220,9 @@ void COptionsDlg::InitCustomCommandsList()
         item.iItem = i;
         item.lParam = i;
         if (cmd.separator)
-            _tcscpy_s(buf, 1024, _T("----------"));
+            _tcscpy_s(buf, _countof(buf), _T("----------"));
         else
-            _tcscpy_s(buf, 1024, cmd.name.c_str());
+            _tcscpy_s(buf, _countof(buf), cmd.name.c_str());
         item.pszText = buf;
         ListView_InsertItem(m_hListControl, &item);
         if ((!cmd.separator)&&(cmd.key.keycode))
@@ -235,7 +235,7 @@ void COptionsDlg::InitCustomCommandsList()
             if (cmd.key.alt)
                 sKeyText += _T("Alt+");
             sKeyText += (wchar_t)cmd.key.keycode;
-            _tcscpy_s(buf2, 1024, sKeyText.c_str());
+            _tcscpy_s(buf2, _countof(buf2), sKeyText.c_str());
             ListView_SetItemText(m_hListControl, i, 1, buf2);
         }
     }

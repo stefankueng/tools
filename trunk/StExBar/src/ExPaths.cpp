@@ -201,7 +201,7 @@ std::wstring CDeskBand::GetFileNames(const std::map<std::wstring, ULONG>& items,
                         sRet += separator;
                     if (quotespaces)
                     {
-                        _tcscpy_s(buf, MAX_PATH, it->first.substr(pos+1).c_str());
+                        _tcscpy_s(buf, _countof(buf), it->first.substr(pos+1).c_str());
                         PathQuoteSpaces(buf);
                         sRet += buf;
                     }
@@ -233,7 +233,7 @@ std::wstring CDeskBand::GetFilePaths(const std::map<std::wstring, ULONG>& items,
                 }
                 if (quotespaces)
                 {
-                    _tcscpy_s(buf, MAX_PATH, sPath.c_str());
+                    _tcscpy_s(buf, _countof(buf), sPath.c_str());
                     PathQuoteSpaces(buf);
                     sRet += buf;
                 }

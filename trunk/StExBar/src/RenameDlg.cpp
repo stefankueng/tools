@@ -141,12 +141,12 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
                 HWND hMatchstring = GetDlgItem(*this, IDC_MATCHSTRING);
                 if (hMatchstring == NULL)
                     return (INT_PTR)TRUE;
-                GetWindowText(hMatchstring, buf, MAX_PATH);
+                GetWindowText(hMatchstring, buf, _countof(buf));
                 m_sMatch = buf;
                 HWND hReplaceString = GetDlgItem(*this, IDC_REPLACESTRING);
                 if (hReplaceString == NULL)
                     return (INT_PTR)TRUE;
-                GetWindowText(hReplaceString, buf, MAX_PATH);
+                GetWindowText(hReplaceString, buf, _countof(buf));
                 m_sReplace = buf;
                 CRegStdString ren1Reg = CRegStdString(_T("Software\\StExBar\\ren1Text"));
                 CRegStdString ren2Reg = CRegStdString(_T("Software\\StExBar\\ren2Text"));
@@ -265,14 +265,14 @@ void CRenameDlg::FillRenamedList()
     HWND hMatchstring = GetDlgItem(*this, IDC_MATCHSTRING);
     if (hMatchstring == NULL)
         return;
-    GetWindowText(hMatchstring, buf, MAX_PATH);
+    GetWindowText(hMatchstring, buf, _countof(buf));
     m_sMatch = buf;
     if (m_sMatch.size() == 0)
         return;
     HWND hReplaceString = GetDlgItem(*this, IDC_REPLACESTRING);
     if (hReplaceString == NULL)
         return;
-    GetWindowText(hReplaceString, buf, MAX_PATH);
+    GetWindowText(hReplaceString, buf, _countof(buf));
     m_sReplace = buf;
 
     ListView_DeleteAllItems(hListCtrl);
@@ -301,7 +301,7 @@ void CRenameDlg::FillRenamedList()
         {
             LVITEM lvi = {0};
             lvi.mask = LVIF_TEXT|LVIF_PARAM;
-            _tcscpy_s(textbuf, MAX_PATH, it->first.c_str());
+            _tcscpy_s(textbuf, _countof(textbuf), it->first.c_str());
             lvi.pszText = textbuf;
             lvi.iItem = iItem;
             // we use the lParam to store the result of the comparison of the original and renamed string
@@ -309,7 +309,7 @@ void CRenameDlg::FillRenamedList()
             // same in the rename grayed out.
             lvi.lParam = it->first.compare(it->second);
             ListView_InsertItem(hListCtrl, &lvi);
-            _tcscpy_s(textbuf, MAX_PATH, it->second.c_str());
+            _tcscpy_s(textbuf, _countof(textbuf), it->second.c_str());
             ListView_SetItemText(hListCtrl, iItem, 1, textbuf);
             iItem++;
         }
@@ -324,7 +324,7 @@ void CRenameDlg::FillRenamedList()
         {
             LVITEM lvi = {0};
             lvi.mask = LVIF_TEXT|LVIF_PARAM;
-            _tcscpy_s(textbuf, MAX_PATH, it->c_str());
+            _tcscpy_s(textbuf, _countof(textbuf), it->c_str());
             lvi.pszText = textbuf;
             lvi.iItem = iItem;
             // we use the lParam to store the result of the comparison of the original and renamed string

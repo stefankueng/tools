@@ -336,9 +336,9 @@ bool CCommands::SaveToFile()
         TCHAR countstr[40] = {0};
         TCHAR keycodestr[40] = {0};
         TCHAR counterstr[40] = {0};
-        _stprintf_s(countstr, 40, _T("%ld"), pCmd->enabled_selectedcount);
-        _stprintf_s(keycodestr, 40, _T("%ld"), pCmd->key.keycode);
-        _stprintf_s(counterstr, 40, _T("%04ld_%s"), counter, pCmd->name.c_str());
+        _stprintf_s(countstr, _countof(countstr), _T("%ld"), pCmd->enabled_selectedcount);
+        _stprintf_s(keycodestr, _countof(keycodestr), _T("%ld"), pCmd->key.keycode);
+        _stprintf_s(counterstr, _countof(counterstr), _T("%04ld_%s"), counter, pCmd->name.c_str());
 
 
         inifile.SetValue(counterstr, _T("name"), pCmd->name.c_str());

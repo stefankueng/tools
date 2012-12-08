@@ -770,7 +770,7 @@ LRESULT CDeskBand::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
             if (m_currentDirectory.empty())
             {
                 WCHAR buf[MAX_PATH] = {0};
-                GetCurrentDirectory(MAX_PATH, buf);
+                GetCurrentDirectory(_countof(buf), buf);
                 m_currentDirectory = buf;
             }
 
@@ -953,7 +953,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
                 WCHAR buf[MAX_PATH];
                 if (pos >= 0)
                 {
-                    _tcscpy_s(buf, MAX_PATH, cwd.substr(pos+1).c_str());
+                    _tcscpy_s(buf, _countof(buf), cwd.substr(pos+1).c_str());
                     PathQuoteSpaces(buf);
                     str = buf;
                 }
@@ -971,10 +971,10 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
                 if (DWORD(m_regUseUNCPaths))
                 {
                     str = ConvertToUNC(cwd);
-                    _tcscpy_s(buf, MAX_PATH, str.c_str());
+                    _tcscpy_s(buf, _countof(buf), str.c_str());
                 }
                 else
-                    _tcscpy_s(buf, MAX_PATH, cwd.c_str());
+                    _tcscpy_s(buf, _countof(buf), cwd.c_str());
 
                 PathQuoteSpaces(buf);
                 str = buf;
@@ -1008,7 +1008,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
             if (selpaths.empty())
             {
                 TCHAR buf[MAX_PATH] = {0};
-                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
+                _tcscpy_s(buf, _countof(buf), cwd.c_str());
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
@@ -1025,7 +1025,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
             if (selpaths.empty())
             {
                 TCHAR buf[MAX_PATH] = {0};
-                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
+                _tcscpy_s(buf, _countof(buf), cwd.c_str());
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
@@ -1048,7 +1048,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
         if (it_begin != commandline.end())
         {
             TCHAR buf[MAX_PATH] = {0};
-            _tcscpy_s(buf, MAX_PATH, cwd.c_str());
+            _tcscpy_s(buf, _countof(buf), cwd.c_str());
             PathQuoteSpaces(buf);
             std::wstring cwdquoted = buf;
 
@@ -1072,7 +1072,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
             if (selpaths.empty())
             {
                 TCHAR buf[MAX_PATH] = {0};
-                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
+                _tcscpy_s(buf, _countof(buf), cwd.c_str());
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
@@ -1089,7 +1089,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
             if (selpaths.empty())
             {
                 TCHAR buf[MAX_PATH] = {0};
-                _tcscpy_s(buf, MAX_PATH, cwd.c_str());
+                _tcscpy_s(buf, _countof(buf), cwd.c_str());
                 PathQuoteSpaces(buf);
                 selpaths = buf;
             }
