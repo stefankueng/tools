@@ -92,7 +92,7 @@ Special placeholders are available:\r\n\
                 ofn.lStructSize = sizeof(OPENFILENAME);
                 ofn.hwndOwner = *this;
                 ofn.lpstrFile = szFile;
-                ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+                ofn.nMaxFile = _countof(szFile);
                 ofn.lpstrFilter = _T("Icons (*.ico, *.dll)\0*.ico;*.dll\0All files (*.*)\0*.*\0\0");
                 ofn.nFilterIndex = 1;
                 ofn.lpstrFileTitle = NULL;
@@ -116,7 +116,7 @@ Special placeholders are available:\r\n\
                 ofn.lStructSize = sizeof(OPENFILENAME);
                 ofn.hwndOwner = *this;
                 ofn.lpstrFile = szFile;
-                ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+                ofn.nMaxFile = _countof(szFile);
                 ofn.lpstrFilter = _T("Executables\0*.exe;*.dll;*.cmd;*.vbs;*.js;*.bat\0All files (*.*)\0*.*\0\0");
                 ofn.nFilterIndex = 1;
                 ofn.lpstrFileTitle = NULL;
@@ -137,7 +137,7 @@ Special placeholders are available:\r\n\
             {
                 CBrowseFolder folderBrowser;
                 WCHAR path[MAX_PATH] = {0};
-                if (folderBrowser.Show(*this, path, MAX_PATH) == CBrowseFolder::OK)
+                if (folderBrowser.Show(*this, path, _countof(path)) == CBrowseFolder::OK)
                 {
                     SetDlgItemText(*this, IDC_STARTIN, path);
                 }
@@ -199,7 +199,7 @@ void CEditCmdDlg::SetupControls()
     SendMessage(GetDlgItem(*this, IDC_NOSELECTION), BM_SETCHECK, m_command.enabled_noselection ? BST_CHECKED : BST_UNCHECKED, 0);
 
     TCHAR buf[40] = {0};
-    _stprintf_s(buf, 40, _T("%ld"), m_command.enabled_selectedcount);
+    _stprintf_s(buf, _countof(buf), _T("%ld"), m_command.enabled_selectedcount);
     SetDlgItemText(*this, IDC_SELECTEDCOUNT, buf);
 
     // disable controls which must not be changed for internal commands

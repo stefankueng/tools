@@ -203,7 +203,7 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                                                     &str)))
                                                 {
                                                     TCHAR dispname[MAX_PATH];
-                                                    StrRetToBuf(&str, pidl, dispname, MAX_PATH);
+                                                    StrRetToBuf(&str, pidl, dispname, _countof(dispname));
 
                                                     std::wstring replaced;
                                                     try

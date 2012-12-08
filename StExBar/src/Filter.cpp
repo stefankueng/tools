@@ -200,7 +200,7 @@ bool CDeskBand::CheckDisplayName(IShellFolder * shellFolder, LPITEMIDLIST pidl, 
         &str)))
     {
         TCHAR dispname[MAX_PATH];
-        StrRetToBuf(&str, pidl, dispname, MAX_PATH);
+        StrRetToBuf(&str, pidl, dispname, _countof(dispname));
 
         if (bUseRegex)
         {
