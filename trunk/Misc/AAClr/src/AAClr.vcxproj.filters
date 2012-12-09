@@ -36,6 +36,9 @@
     <None Include="..\default.build">
       <Filter>buildscripts</Filter>
     </None>
+    <None Include="AAClr.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
