@@ -314,5 +314,3 @@ unsigned int __stdcall CMainWindow::WatcherThread( LPVOID lpvParam )
     }
     return 0;
 }
-
-
