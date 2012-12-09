@@ -18,7 +18,7 @@
 //
 
 #include "stdafx.h"
-#include "AAClr.h"
+#include "resource.h"
 #include "CmdLineParser.h"
 #include "MainWindow.h"
 #include "Utils.h"
