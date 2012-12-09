@@ -180,6 +180,7 @@
     <None Include="..\version.build.in" />
     <None Include="..\versioninfo.build" />
     <None Include="AAClr.ico" />
+    <None Include="AAClr.rc2" />
     <None Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
