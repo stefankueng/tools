@@ -1,6 +1,6 @@
 // AAClr - tool to adjust the aero colors according to the desktop wallpaper
 
-// Copyright (C) 2011 - Stefan Kueng
+// Copyright (C) 2011-2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,14 +70,14 @@ int CUtils::GetBrightness()
     // use semi-synchronous API's for accessing WMI data and events instead of the asynchronous ones.
 
     hr = CoInitializeSecurity ( NULL, -1, NULL, NULL,
-        RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
-        RPC_C_IMP_LEVEL_IMPERSONATE,
-        NULL,
-        EOAC_SECURE_REFS, //change to EOAC_NONE if you change dwAuthnLevel to RPC_C_AUTHN_LEVEL_NONE
-        NULL );
+         RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
+         RPC_C_IMP_LEVEL_IMPERSONATE,
+         NULL,
+         EOAC_SECURE_REFS, //change to EOAC_NONE if you change dwAuthnLevel to RPC_C_AUTHN_LEVEL_NONE
+         NULL );
 
     hr = CoCreateInstance(CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER,
-        IID_IWbemLocator, (LPVOID *) &pLocator);
+                          IID_IWbemLocator, (LPVOID *) &pLocator);
     if (FAILED(hr))
     {
         goto cleanup;
@@ -90,14 +90,14 @@ int CUtils::GetBrightness()
 
 
     hr = CoSetProxyBlanket(pNamespace,
-        RPC_C_AUTHN_WINNT,
-        RPC_C_AUTHZ_NONE,
-        NULL,
-        RPC_C_AUTHN_LEVEL_PKT,
-        RPC_C_IMP_LEVEL_IMPERSONATE,
-        NULL,
-        EOAC_NONE
-        );
+         RPC_C_AUTHN_WINNT,
+         RPC_C_AUTHZ_NONE,
+         NULL,
+         RPC_C_AUTHN_LEVEL_PKT,
+         RPC_C_IMP_LEVEL_IMPERSONATE,
+         NULL,
+         EOAC_NONE
+         );
 
     if(hr != WBEM_S_NO_ERROR)
     {
@@ -127,10 +127,10 @@ int CUtils::GetBrightness()
 
         //Get the Next Object from the collection
         hr = pEnum->Next(WBEM_INFINITE, //Timeout
-            1, //No of objects requested
-            &pObj, //Returned Object
-            &ulReturned //No of object returned
-            );
+             1, //No of objects requested
+             &pObj, //Returned Object
+             &ulReturned //No of object returned
+             );
 
         if(hr != WBEM_S_NO_ERROR)
         {
@@ -209,14 +209,14 @@ bool CUtils::SetBrightness(int val)
     // use semi-synchronous API's for accessing WMI data and events instead of the asynchronous ones.
 
     hr = CoInitializeSecurity ( NULL, -1, NULL, NULL,
-        RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
-        RPC_C_IMP_LEVEL_IMPERSONATE,
-        NULL,
-        EOAC_SECURE_REFS, //change to EOAC_NONE if you change dwAuthnLevel to RPC_C_AUTHN_LEVEL_NONE
-        NULL );
+         RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
+         RPC_C_IMP_LEVEL_IMPERSONATE,
+         NULL,
+         EOAC_SECURE_REFS, //change to EOAC_NONE if you change dwAuthnLevel to RPC_C_AUTHN_LEVEL_NONE
+         NULL );
 
     hr = CoCreateInstance(CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER,
-        IID_IWbemLocator, (LPVOID *) &pLocator);
+                          IID_IWbemLocator, (LPVOID *) &pLocator);
     if (FAILED(hr))
     {
         bRet = false;
@@ -231,14 +231,14 @@ bool CUtils::SetBrightness(int val)
 
 
     hr = CoSetProxyBlanket(pNamespace,
-        RPC_C_AUTHN_WINNT,
-        RPC_C_AUTHZ_NONE,
-        NULL,
-        RPC_C_AUTHN_LEVEL_PKT,
-        RPC_C_IMP_LEVEL_IMPERSONATE,
-        NULL,
-        EOAC_NONE
-        );
+         RPC_C_AUTHN_WINNT,
+         RPC_C_AUTHZ_NONE,
+         NULL,
+         RPC_C_AUTHN_LEVEL_PKT,
+         RPC_C_IMP_LEVEL_IMPERSONATE,
+         NULL,
+         EOAC_NONE
+         );
 
     if(hr != WBEM_S_NO_ERROR)
     {
@@ -247,12 +247,12 @@ bool CUtils::SetBrightness(int val)
     }
 
 
-    hr =pNamespace->ExecQuery(_bstr_t(L"WQL"), //Query Language
-        bstrQuery, //Query to Execute
-        WBEM_FLAG_RETURN_IMMEDIATELY, //Make a semi-synchronous call
-        NULL, //Context
-        &pEnum //Enumeration Interface
-        );
+    hr = pNamespace->ExecQuery(_bstr_t(L"WQL"), //Query Language
+         bstrQuery, //Query to Execute
+         WBEM_FLAG_RETURN_IMMEDIATELY, //Make a semi-synchronous call
+         NULL, //Context
+         &pEnum //Enumeration Interface
+         );
 
     if(hr != WBEM_S_NO_ERROR)
     {
@@ -270,10 +270,10 @@ bool CUtils::SetBrightness(int val)
 
         //Get the Next Object from the collection
         hr = pEnum->Next(WBEM_INFINITE, //Timeout
-            1, //No of objects requested
-            &pObj, //Returned Object
-            &ulReturned //No of object returned
-            );
+             1, //No of objects requested
+             &pObj, //Returned Object
+             &ulReturned //No of object returned
+             );
 
         if(hr != WBEM_S_NO_ERROR)
         {
