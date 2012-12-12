@@ -1547,7 +1547,7 @@ DWORD CDeskBand::GetEditBoxUsage()
     if (DWORD(m_regEditBoxUsage) == IDC_USEAUTO)
     {
         TCHAR * buf = GetEditBoxText(false);
-        if (_tcslen(buf)>1)
+        if (_tcslen(buf) > 1)
         {
             switch (buf[0])
             {
@@ -1591,7 +1591,7 @@ TCHAR * CDeskBand::GetEditBoxText(bool sanitized /* = true */)
     if ((sanitized)&&(DWORD(m_regEditBoxUsage) == IDC_USEAUTO))
     {
         // remove the command-switch char and whitespaces after it
-        if (_tcslen(buf) > 0)
+        if (buf[0] != '\0')
         {
             switch (buf[0])
             {
