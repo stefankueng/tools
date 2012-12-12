@@ -283,7 +283,8 @@ pre {
 }
 
 .main-table-ul {
-    margin: 0 4px 0 16px;
+    list-style-type: none;
+    margin: 0 4px;
 }
 
 /* Homepage's table end */
