@@ -1,4 +1,6 @@
-import os, string, shutil
+import os
+import string
+import shutil
 
 setpath = 'D:\\Development\\toolssite'
 
@@ -33,8 +35,12 @@ adtopFile.close()
 adinpageText = adinpageFile.read()
 adinpageFile.close()
 
-searchfor = [ '<!--#include FILE="header.html"-->', '<!--#include FILE="header.zh.html"-->', '<!--#include FILE="footer.html"-->', '<!--#include FILE="adsense_top.html"-->', '<!--#include FILE="adsense_inpage.html"-->' ]
-replacewith = [ headerText, headerTextZH, footerText, adtopText, adinpageText ]
+searchfor = ['<!--#include FILE="header.html"-->',
+             '<!--#include FILE="header.zh.html"-->',
+             '<!--#include FILE="footer.html"-->',
+             '<!--#include FILE="adsense_top.html"-->',
+             '<!--#include FILE="adsense_inpage.html"-->']
+replacewith = [headerText, headerTextZH, footerText, adtopText, adinpageText]
 
 for root, dirs, files in os.walk(setpath):
     fname = files
