@@ -120,7 +120,7 @@ int _tmain(int argc, _TCHAR* argv[])
     bool    bRemoveEOLWhitespaces   =   true;
     bool    bExtPatterns            =   true;
     bool    bCStyle                 =   false;
-    std::wstring filepattern        =   L"c;cpp;cxx;cc;h;hpp;hxx;cs";
+    std::wstring filepattern        =   L"c;cc;cpp;cs;cxx;h;hpp;hxx";
 
 
     LPWSTR lpCmdLine = GetCommandLine();
@@ -130,7 +130,7 @@ int _tmain(int argc, _TCHAR* argv[])
     {
         // print help text and get out
         _fputts(L"usage:\n", stdout);
-        _fputts(L"tabspace [/path:\"path\\to\\check\"] [/checkonly] [/usetabs] [/tabsize:4] [/leaveeol] [/ext:\"ext;ension;list\"\n", stdout);
+        _fputts(L"tabspace [/path:\"path\\to\\check\"] [/checkonly] [/usetabs] [/tabsize:4] [/leaveeol] [/ext:\"extension;list\"\n", stdout);
         _fputts(L"/path      : the path to scan, defaults to the current directory\n", stdout);
         _fputts(L"/checkonly : if specified, the files are not modified but only an info is shown\n", stdout);
         _fputts(L"/usetabs   : convert spaces to tabs instead of tabs to spaces\n", stdout);
@@ -138,7 +138,7 @@ int _tmain(int argc, _TCHAR* argv[])
         _fputts(L"/leaveol   : if specified, whitespaces at the end of lines are not removed\n", stdout);
         _fputts(L"/cstyle    : if specified, whitespaces inside C/C++ strings are ignored\n", stdout);
         _fputts(L"/ext       : a list of file extensions to scan, other extensions are ignored.\n", stdout);
-        _fputts(L"             defaults to \"c;cpp;cxx;cc;h;hpp;hxx;cs\"\n", stdout);
+        _fputts(L"             defaults to \"c;cc;cpp;cs;cxx;h;hpp;hxx\"\n", stdout);
         _fputts(L"             if this is set, /include must not be set!\n", stdout);
         _fputts(L"/include   : a list of patterns to include, separated by ';'\n", stdout);
         _fputts(L"             if this is set, /ext must not be set!\n", stdout);
@@ -150,7 +150,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
     TCHAR cwd[MAX_PATH] = {0};
-    GetCurrentDirectory(MAX_PATH, cwd);
+    GetCurrentDirectory(_countof(cwd), cwd);
 
     if (parser.HasVal(L"path"))
     {
