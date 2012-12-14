@@ -181,12 +181,12 @@ STDAPI DllRegisterServer(void)
 
     // Register the object in explorer
     LPWSTR pwsz;
-    TCHAR  szCLSID[MAX_PATH];
     // Get the CLSID in string form.
     if (SUCCEEDED(result = StringFromIID(CLSID_StExBand, &pwsz)))
     {
         if (pwsz)
         {
+            TCHAR  szCLSID[MAX_PATH];
             if (SUCCEEDED(result = StringCchCopy(szCLSID, _countof(szCLSID), pwsz)))
             {
                 CreateRegistryString(_T("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID, _T("StExBar"));
@@ -226,12 +226,12 @@ STDAPI DllUnregisterServer(void)
         res = SELFREG_E_CLASS;
 
     LPWSTR   pwsz;
-    TCHAR    szCLSID[MAX_PATH];
     // Get the CLSID in string form.
     if (SUCCEEDED(res = StringFromIID(CLSID_StExBand, &pwsz)))
     {
         if (pwsz)
         {
+            TCHAR    szCLSID[MAX_PATH];
             if (SUCCEEDED(res = StringCchCopy(szCLSID, _countof(szCLSID), pwsz)))
             {
                 SHDeleteValue(HKEY_LOCAL_MACHINE, _T("Software\\Microsoft\\Internet Explorer\\Toolbar"), szCLSID);

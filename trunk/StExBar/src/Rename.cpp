@@ -33,7 +33,7 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
         for (std::map<std::wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
         {
             size_t pos = it->first.find_last_of('\\');
-            if (pos >= 0)
+            if (pos != std::wstring::npos)
             {
                 m_filelist.insert(it->first.substr(pos+1));
             }
@@ -44,7 +44,7 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
         for (std::map<std::wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
         {
             size_t pos = it->first.find_last_of('\\');
-            if (pos >= 0)
+            if (pos != std::wstring::npos)
             {
                 m_filelist.insert(it->first.substr(pos+1));
             }
@@ -119,7 +119,7 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                                                                 {
                                                                     std::wstring p = buf;
                                                                     size_t pos = p.find_last_of('\\');
-                                                                    if (pos >= 0)
+                                                                    if (pos != std::wstring::npos)
                                                                     {
                                                                         m_filelist.insert(p.substr(pos+1));
                                                                     }

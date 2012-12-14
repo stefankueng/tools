@@ -29,10 +29,15 @@
 class CChevronMenu : public CWindow
 {
 public:
-    CChevronMenu(HINSTANCE hInst, const WNDCLASSEX* wcx = NULL) : CWindow(hInst, wcx)
+    CChevronMenu(HINSTANCE hInst, const WNDCLASSEX* wcx = NULL)
+        : CWindow(hInst, wcx)
+        , m_uMsg(0)
+        , m_wParam(0)
+        , m_lParam(0)
+        , m_hwndToolbar(NULL)
+        , hHiddenToolbar(NULL)
+        , m_bRun(FALSE)
     {
-        m_hwndToolbar = NULL;
-        hHiddenToolbar = NULL;
     }
 
     /**

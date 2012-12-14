@@ -37,6 +37,7 @@ COptionsDlg::COptionsDlg(HWND hParent)
     , m_regContextMenu(_T("Software\\StefansTools\\StExBar\\ContextMenu"), 1)
     , m_regEditBoxUsage(_T("Software\\StefansTools\\StExBar\\EditBoxUsage"), IDC_USECONSOLE)
     , m_hParent(hParent)
+    , m_hListControl(NULL)
 {
 }
 
@@ -255,7 +256,6 @@ void COptionsDlg::OnSelectListItem(LPNMLISTVIEW /*lpNMListView*/)
     LVITEM item = {0};
     UINT nCount = ListView_GetSelectedCount(m_hListControl);
     bool bIsSeparator = false;
-    bool bIsInternal = false;
     bool bIsHidden = false;
     bool bIsOptions = false;
     for (int i=0; i<ListView_GetItemCount(m_hListControl); ++i)
@@ -269,7 +269,6 @@ void COptionsDlg::OnSelectListItem(LPNMLISTVIEW /*lpNMListView*/)
             Command * pCmd = m_commands.GetCommandPtr(i+1);
             bIsSeparator = pCmd->separator;
             bIsHidden = pCmd->commandline.compare(INTERNALCOMMANDHIDDEN)==0;
-            bIsInternal = (pCmd->commandline.compare(INTERNALCOMMAND) || bIsHidden);
             bIsOptions = pCmd->name.compare(_T("Options")) == 0;
         }
     }
