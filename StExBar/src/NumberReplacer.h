@@ -51,7 +51,7 @@ public:
 class NumberReplaceHandler
 {
 public:
-    NumberReplaceHandler(const std::wstring sReplace)
+    NumberReplaceHandler(const std::wstring& sReplace)
         : m_sReplace(sReplace)
     {
         m_incVec.clear();

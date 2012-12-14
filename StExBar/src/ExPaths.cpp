@@ -195,7 +195,7 @@ std::wstring CDeskBand::GetFileNames(const std::map<std::wstring, ULONG>& items,
             if (((it->second & SFGAO_FOLDER)&&(includefolders))||(((it->second & SFGAO_FOLDER)==0)&&(includefiles)))
             {
                 size_t pos = it->first.find_last_of('\\');
-                if (pos >= 0)
+                if (pos != std::string::npos)
                 {
                     if (!sRet.empty())
                         sRet += separator;
@@ -248,7 +248,6 @@ std::wstring CDeskBand::GetFilePaths(const std::map<std::wstring, ULONG>& items,
 std::wstring CDeskBand::ConvertToUNC(std::wstring sPath)
 {
     WCHAR temp;
-    UNIVERSAL_NAME_INFO * puni = NULL;
     DWORD bufsize = 0;
     std::wstring sRet = sPath;
     //Call WNetGetUniversalName using UNIVERSAL_NAME_INFO_LEVEL option
@@ -259,11 +258,11 @@ std::wstring CDeskBand::ConvertToUNC(std::wstring sPath)
     {
         // now we have the size required to hold the UNC path
         WCHAR * buf = new WCHAR[bufsize+1];
-        puni = (UNIVERSAL_NAME_INFO *)buf;
+        UNIVERSAL_NAME_INFO * puni = (UNIVERSAL_NAME_INFO *)buf;
         if (WNetGetUniversalName(sPath.c_str(),
-            UNIVERSAL_NAME_INFO_LEVEL,
-            (LPVOID) puni,
-            &bufsize) == NO_ERROR)
+                                 UNIVERSAL_NAME_INFO_LEVEL,
+                                 (LPVOID) puni,
+                                 &bufsize) == NO_ERROR)
         {
             sRet = std::wstring(puni->lpUniversalName);
         }

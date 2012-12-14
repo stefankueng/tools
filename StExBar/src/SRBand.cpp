@@ -54,6 +54,12 @@ CDeskBand::CDeskBand()
     , m_bDialogShown(FALSE)
     , m_currentFolder(NULL)
     , m_hook(NULL)
+    , m_bCompositionState(false)
+    , m_bFilesSelected(false)
+    , m_bFolderSelected(false)
+    , m_bCmdEditEnabled(false)
+    , m_hwndListView(NULL)
+    , m_newfolderTimeoutCounter(0)
 {
     m_ObjRefCount = 1;
     g_DllRefCount++;
@@ -951,7 +957,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
                 // Use the view path instead
                 size_t pos = cwd.find_last_of('\\');
                 WCHAR buf[MAX_PATH];
-                if (pos >= 0)
+                if (pos != std::wstring::npos)
                 {
                     _tcscpy_s(buf, _countof(buf), cwd.substr(pos+1).c_str());
                     PathQuoteSpaces(buf);
@@ -1482,7 +1488,7 @@ HICON CDeskBand::LoadCommandIcon(const Command& cmd)
             {
                 size_t pos = cmd.icon.find_last_of(',');
                 std::wstring resourcefile, iconid;
-                if (pos >= 0)
+                if (pos != std::wstring::npos)
                 {
                     resourcefile = cmd.icon.substr(0, pos);
                     iconid = cmd.icon.substr(pos+1);

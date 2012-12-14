@@ -28,7 +28,6 @@ bool CDeskBand::CreateNewFolder()
     if (m_currentDirectory.empty())
         return false;
 
-    bool bFolderCreated = false;
     // first step: get a list of all folder items, then create the new folder
     IServiceProvider * pServiceProvider;
     if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
@@ -89,7 +88,6 @@ bool CDeskBand::CreateNewFolder()
                                                     if (SUCCEEDED(pContextMenu->InvokeCommand((CMINVOKECOMMANDINFO*)&cici)))
                                                     {
                                                         // refresh the view
-                                                        bFolderCreated = true;
                                                         pShellView->Refresh();
                                                         SHChangeNotify(0, SHCNF_FLUSH, 0, 0);
                                                         // now try to get the new refreshed items. This usually works
@@ -109,7 +107,6 @@ bool CDeskBand::CreateNewFolder()
                                                         }
                                                         // but we also need the IShellFolder interface because
                                                         // we need its CompareIDs() method
-                                                        bool bEditing = false;
                                                         IShellFolder * pShellFolder;
                                                         if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
                                                         {
@@ -117,6 +114,7 @@ bool CDeskBand::CreateNewFolder()
                                                             // of the view before the new folder was created.
                                                             // The difference should be the new folder...
                                                             nCount2 = 0;
+                                                            bool bEditing = false;
                                                             if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount2)))
                                                             {
                                                                 for (int i=0; i<nCount2; ++i)
