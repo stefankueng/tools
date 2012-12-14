@@ -58,6 +58,7 @@ protected:
 
     void                ShowTrayIcon();
     DWORD               GetDllVersion(LPCTSTR lpszDllName);
+    void                UpdateTrayIcon();
 
     static unsigned int __stdcall WatcherThread(LPVOID lpvParam);
 
