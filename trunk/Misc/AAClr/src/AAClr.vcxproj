@@ -101,6 +101,7 @@
       <AdditionalDependencies>Dxva2.lib;gdiplus.lib;wbemuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Manifest>
       <EnableDPIAwareness>true</EnableDPIAwareness>

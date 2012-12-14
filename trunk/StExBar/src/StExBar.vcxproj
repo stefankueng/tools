@@ -94,6 +94,7 @@
       <ModuleDefinitionFile>StExBar.def</ModuleDefinitionFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Manifest>
       <EnableDPIAwareness>true</EnableDPIAwareness>
