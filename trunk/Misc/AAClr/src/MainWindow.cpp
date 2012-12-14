@@ -24,7 +24,10 @@
 #include "AeroColors.h"
 
 #include <WindowsX.h>
+#include <Dwmapi.h>
 #include <process.h>
+
+#pragma comment(lib, "dwmapi.lib")
 
 #define TRAY_WM_MESSAGE     WM_APP+1
 
@@ -142,6 +145,26 @@ void CMainWindow::ShowTrayIcon()
     DestroyIcon(niData.hIcon);
 }
 
+
+void CMainWindow::UpdateTrayIcon()
+{
+    BOOL bDwmEnabled = FALSE;
+    DwmIsCompositionEnabled(&bDwmEnabled);
+    if (!bDwmEnabled)
+    {
+        wcsncpy_s( niData.szTip, _countof( niData.szTip ), L"Aero is off!", _countof( niData.szTip ) );
+        niData.hIcon = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_AACLR_DISABLED),
+            IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR);
+    }
+    else
+    {
+        niData.hIcon = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_AACLR),
+            IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR);
+    }
+    Shell_NotifyIcon( NIM_MODIFY, &niData );
+    DestroyIcon(niData.hIcon);
+}
+
 LRESULT CMainWindow::HandleCustomMessages(HWND /*hwnd*/, UINT uMsg, WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
     if (uMsg == WM_TASKBARCREATED)
@@ -161,6 +184,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
     case WM_SETTINGCHANGE:
         {
             aeroColors.AdjustColorsFromWallpaper();
+            UpdateTrayIcon();
         }
         break;
     case WM_CREATE:
@@ -193,7 +217,14 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
             case WM_LBUTTONDOWN:
                 {
                     if (randomcolors)
-                        aeroColors.SetRandomColor();
+                    {
+                        BOOL bDwmEnabled = FALSE;
+                        DwmIsCompositionEnabled(&bDwmEnabled);
+                        if (bDwmEnabled)
+                            aeroColors.SetRandomColor();
+                        else
+                            MessageBox(NULL, L"Aero is disabled, can not change the color!", L"AAClr", MB_ICONERROR);
+                    }
                 }
                 break;
             case WM_LBUTTONDBLCLK:
@@ -209,6 +240,9 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
                     }
                 }
                 break;
+            case WM_MOUSEMOVE:
+                UpdateTrayIcon();
+                break;
             }
         }
         break;
@@ -222,6 +256,9 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
             aeroColors.AdjustColorsFromWallpaper();
             SetTimer(*this, TIMER_DETECTCHANGES, 1000, NULL);
         }
+        break;
+    case WM_DWMCOMPOSITIONCHANGED:
+        UpdateTrayIcon();
         break;
     case WM_QUERYENDSESSION:
         threadRunning = false;
