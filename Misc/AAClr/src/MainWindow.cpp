@@ -223,7 +223,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
                         if (bDwmEnabled)
                             aeroColors.SetRandomColor();
                         else
-                            MessageBox(NULL, L"Aero is disabled, can not change the color!", L"AAClr", MB_ICONERROR);
+                            MessageBox(NULL, L"Aero is disabled, cannot change the color!", L"AAClr", MB_ICONERROR);
                     }
                 }
                 break;
