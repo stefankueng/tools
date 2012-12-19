@@ -211,9 +211,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties RESOURCE_FILE="SKTimeStamp.rc" />
-    </VisualStudio>
-  </ProjectExtensions>
 </Project>
