@@ -269,5 +269,5 @@ std::wstring CDeskBand::ConvertToUNC(std::wstring sPath)
         delete [] buf;
     }
 
-    return sRet;;
+    return sRet;
 } 

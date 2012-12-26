@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2009 - Stefan Kueng
+// Copyright (C) 2009,2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -111,7 +111,7 @@ HRESULT Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_opt_out void **pp
     *phBmp = NULL;
 
     BITMAPINFO bmi;
-    ZeroMemory(&bmi, sizeof(bmi));
+    SecureZeroMemory(&bmi, sizeof(bmi));
     bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     bmi.bmiHeader.biPlanes = 1;
     bmi.bmiHeader.biCompression = BI_RGB;
@@ -181,7 +181,7 @@ bool HasAlpha(__in ARGB *pargb, SIZE& sizImage, int cxRow)
 HRESULT ConvertToPARGB32(HDC hdc, __inout ARGB *pargb, HBITMAP hbmp, SIZE& sizImage, int cxRow)
 {
     BITMAPINFO bmi;
-    ZeroMemory(&bmi, sizeof(bmi));
+    SecureZeroMemory(&bmi, sizeof(bmi));
     bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     bmi.bmiHeader.biPlanes = 1;
     bmi.bmiHeader.biCompression = BI_RGB;
