@@ -38,7 +38,7 @@ STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
         return NOERROR;
 
     PROPSHEETPAGE psp;
-    ZeroMemory(&psp, sizeof(PROPSHEETPAGE));
+    SecureZeroMemory(&psp, sizeof(PROPSHEETPAGE));
     HPROPSHEETPAGE hPage;
     CShellPropertyPage *sheetpage = new CShellPropertyPage(files_);
 

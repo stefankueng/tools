@@ -1229,7 +1229,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
         WNDCLASSEX wc;
         if (!GetClassInfoEx(g_hInst, DB_CLASS_NAME, &wc))
         {
-            ZeroMemory(&wc, sizeof(wc));
+            SecureZeroMemory(&wc, sizeof(wc));
             wc.cbSize         = sizeof(WNDCLASSEX);
             wc.style          = CS_HREDRAW | CS_VREDRAW;
             wc.lpfnWndProc    = (WNDPROC)WndProc;

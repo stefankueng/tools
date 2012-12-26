@@ -59,7 +59,7 @@ DWORD CMainWindow::GetDllVersion(LPCTSTR lpszDllName)
             DLLVERSIONINFO dvi;
             HRESULT hr;
 
-            ZeroMemory(&dvi, sizeof(dvi));
+            SecureZeroMemory(&dvi, sizeof(dvi));
             dvi.cbSize = sizeof(dvi);
 
             hr = (*pDllGetVersion)(&dvi);
@@ -121,7 +121,7 @@ void CMainWindow::ShowTrayIcon()
 {
     // since our main window is hidden most of the time
     // we have to add an auxiliary window to the system tray
-    ZeroMemory(&niData,sizeof(NOTIFYICONDATA));
+    SecureZeroMemory(&niData,sizeof(NOTIFYICONDATA));
 
     ULONGLONG ullVersion = GetDllVersion(_T("Shell32.dll"));
     if (ullVersion >= MAKEDLLVERULL(6,0,0,0))
