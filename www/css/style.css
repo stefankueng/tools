@@ -330,7 +330,7 @@ pre {
     white-space: nowrap;
 }
 
-.scrollup{
+.scrollup {
     background: no-repeat url("../img/icon_top.png");
     display: none;
     opacity: 0.9;
@@ -347,53 +347,18 @@ pre {
     vertical-align: super;
 }
 
-#AAClr {
-    background: 0 0 no-repeat url("../img/app_icons_sprite.png");
-}
-
-#CommitMonitor {
-    background: 0 -72px no-repeat url("../img/app_icons_sprite.png");
-}
-
-#CryptSync {
-    background: 0 -146px no-repeat url("../img/app_icons_sprite.png");
-}
-
-#DemoHelper {
-    background: 0 -222px no-repeat url("../img/app_icons_sprite.png");
-}
-
-#EvImSync {
-    background: 0 -292px no-repeat url("../img/app_icons_sprite.png");
-}
-
-#FavIconizer {
-    background: 0 -368px no-repeat url("../img/app_icons_sprite.png");
-}
-
-#MailNoter {
-    background: 0 -444px no-repeat url("../img/app_icons_sprite.png");
-}
-
-#SendMessage {
-    background: 0 -518px no-repeat url("../img/app_icons_sprite.png");
-}
-
-#console {
-    background: 0 -590px no-repeat url("../img/app_icons_sprite.png");
-}
-
-#grepWin {
-    background: 0 -664px no-repeat url("../img/app_icons_sprite.png");
-}
-
-#trafficWatcher {
-    background: 0 -740px no-repeat url("../img/app_icons_sprite.png");
-}
-
-.win {
-    background: 0 -812px no-repeat url("../img/app_icons_sprite.png");
-}
+#AAClr          { background: 0  0     no-repeat url("../img/app_icons_sprite.png"); }
+#CommitMonitor  { background: 0  -72px no-repeat url("../img/app_icons_sprite.png"); }
+#CryptSync      { background: 0 -146px no-repeat url("../img/app_icons_sprite.png"); }
+#DemoHelper     { background: 0 -222px no-repeat url("../img/app_icons_sprite.png"); }
+#EvImSync       { background: 0 -292px no-repeat url("../img/app_icons_sprite.png"); }
+#FavIconizer    { background: 0 -368px no-repeat url("../img/app_icons_sprite.png"); }
+#MailNoter      { background: 0 -444px no-repeat url("../img/app_icons_sprite.png"); }
+#SendMessage    { background: 0 -518px no-repeat url("../img/app_icons_sprite.png"); }
+#console        { background: 0 -590px no-repeat url("../img/app_icons_sprite.png"); }
+#grepWin        { background: 0 -664px no-repeat url("../img/app_icons_sprite.png"); }
+#trafficWatcher { background: 0 -740px no-repeat url("../img/app_icons_sprite.png"); }
+.win            { background: 0 -812px no-repeat url("../img/app_icons_sprite.png"); }
 
 @media print {
     * {
