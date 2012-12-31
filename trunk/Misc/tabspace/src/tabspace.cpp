@@ -135,7 +135,7 @@ int _tmain(int argc, _TCHAR* argv[])
         _fputts(L"/checkonly : if specified, the files are not modified but only an info is shown\n", stdout);
         _fputts(L"/usetabs   : convert spaces to tabs instead of tabs to spaces\n", stdout);
         _fputts(L"/tabsize   : specifies the tab size, defaults to 4\n", stdout);
-        _fputts(L"/leaveol   : if specified, whitespaces at the end of lines are not removed\n", stdout);
+        _fputts(L"/leaveeol  : if specified, whitespaces at the end of lines are not removed\n", stdout);
         _fputts(L"/cstyle    : if specified, whitespaces inside C/C++ strings are ignored\n", stdout);
         _fputts(L"/ext       : a list of file extensions to scan, other extensions are ignored.\n", stdout);
         _fputts(L"             defaults to \"c;cc;cpp;cs;cxx;h;hpp;hxx\"\n", stdout);
