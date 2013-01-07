@@ -52,11 +52,8 @@ pre {
 code,
 h1,
 h2,
-pre,
-.important {
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-       -moz-border-radius: 4px;
+pre {
+
 }
 
 dd {
@@ -309,6 +306,9 @@ pre {
     background: no-repeat 5px 1.33em url("../img/important.png");
     border-left: 1px solid #069;
     border-top: 5px solid #069;
+    border-top-left-radius: 4px;
+    -webkit-border-top-left-radius: 4px;
+       -moz-border-radius-topleft: 4px;
     clear: both;
     margin: 1em 0 0 1em;
     min-height: 52px;
@@ -316,7 +316,7 @@ pre {
     width: 90%;
 }
 
-#important-header {
+.important-header {
     background: none;
     color: #069;
     font-size: 1.05em;
