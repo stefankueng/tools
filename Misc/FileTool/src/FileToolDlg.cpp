@@ -21,15 +21,26 @@
 #include "resource.h"
 #include "FileToolDlg.h"
 #include "SysImageList.h"
+#include "BrowseFolder.h"
+#include "SmartHandle.h"
+#include "ProgressDlg.h"
 
+#include <time.h>
 #include <Shellapi.h>
 #pragma comment(lib, "Shell32.lib")
 #pragma comment(lib, "UxTheme.lib")
+#pragma comment(lib, "Shlwapi.lib")
+
+int getrand(int min, int max)
+{
+    return (rand()%(max-min)+min);
+}
 
 CFileToolDlg::CFileToolDlg(HWND hParent)
     : m_hParent(hParent)
     , m_pDropGroup(nullptr)
     , m_pDropList(nullptr)
+    , m_pDropTarget(nullptr)
     , m_bAscending(true)
 {
 }
@@ -38,6 +49,7 @@ CFileToolDlg::~CFileToolDlg(void)
 {
     delete m_pDropGroup;
     delete m_pDropList;
+    delete m_pDropTarget;
 }
 
 LRESULT CFileToolDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -54,9 +66,20 @@ LRESULT CFileToolDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
             HWND hLockList = GetDlgItem(hwndDlg, IDC_LOCKLIST);
             m_pDropList = new CFileDropTarget(hLockList, *this);
 
-
-
-
+            // the path edit control should work as a drop target for files and folders
+            HWND hSearchPath = GetDlgItem(hwndDlg, IDC_PATH);
+            m_pDropTarget = new CFileDropTarget(hSearchPath);
+            RegisterDragDrop(hSearchPath, m_pDropTarget);
+            // create the supported formats:
+            FORMATETC ftetc={0};
+            ftetc.cfFormat = CF_TEXT;
+            ftetc.dwAspect = DVASPECT_CONTENT;
+            ftetc.lindex = -1;
+            ftetc.tymed = TYMED_HGLOBAL;
+            m_pDropTarget->AddSuportedFormat(ftetc);
+            ftetc.cfFormat=CF_HDROP;
+            m_pDropTarget->AddSuportedFormat(ftetc);
+            SHAutoComplete(GetDlgItem(*this, IDC_PATH), SHACF_FILESYSTEM|SHACF_AUTOSUGGEST_FORCE_ON);
 
             HWND hListControl = GetDlgItem(*this, IDC_LOCKLIST);
             DWORD exStyle = LVS_EX_DOUBLEBUFFER|LVS_EX_INFOTIP|LVS_EX_FULLROWSELECT;
@@ -77,6 +100,11 @@ LRESULT CFileToolDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
             ListView_InsertColumn(hListControl, 0, &lvc);
             ListView_SetColumnWidth(hListControl, 0, LVSCW_AUTOSIZE_USEHEADER);
 
+            SetDlgItemText(*this, IDC_FILECOUNT, L"1");
+            SetDlgItemText(*this, IDC_FILECOUNTSTART, L"0");
+            SetDlgItemText(*this, IDC_FILESIZE, L"0");
+            SetDlgItemText(*this, IDC_FILLFROM, L"0");
+            SetDlgItemText(*this, IDC_FILLTO, L"255");
         }
         return TRUE;
     case WM_COMMAND:
@@ -127,6 +155,26 @@ LRESULT CFileToolDlg::DoCommand(int id)
             CloseHandle(it->second);
         }
         EndDialog(*this, IDOK);
+        break;
+    case IDC_PATHBROWSE:
+        {
+            CBrowseFolder browse;
+
+            auto path = GetDlgItemText(IDC_PATH);
+            std::unique_ptr<WCHAR[]> pathbuf(new WCHAR[MAX_PATH_NEW]);
+            wcscpy_s(pathbuf.get(), MAX_PATH_NEW, path.get());
+            browse.SetInfo(_T("Select path to create files in"));
+            if (browse.Show(*this, pathbuf.get(), MAX_PATH_NEW, pathbuf.get()) == CBrowseFolder::OK)
+            {
+                SetDlgItemText(*this, IDC_PATH, pathbuf.get());
+            }
+        }
+        break;
+    case IDC_CREATE:
+        CreateFiles();
+        break;
+    case IDC_CLEAN:
+        Clean();
         break;
     }
     return 1;
@@ -235,5 +283,188 @@ void CFileToolDlg::FillLockList()
     RefreshCursor();
 
     RedrawWindow(hListControl, NULL, NULL, RDW_ERASE | RDW_FRAME | RDW_INVALIDATE | RDW_ALLCHILDREN);
+}
+
+void CFileToolDlg::CreateFiles()
+{
+    // get all the data
+    std::wstring sPath          = GetDlgItemText(IDC_PATH).get();
+    std::wstring sCount         = GetDlgItemText(IDC_FILECOUNT).get();
+    std::wstring sName          = GetDlgItemText(IDC_FILENAME).get();
+    std::wstring sSize          = GetDlgItemText(IDC_FILESIZE).get();
+    std::wstring sFillFrom      = GetDlgItemText(IDC_FILLFROM).get();
+    std::wstring sFillTo        = GetDlgItemText(IDC_FILLTO).get();
+    bool bFolders               = (IsDlgButtonChecked(*this, IDC_CREATEFOLDERS) == BST_CHECKED);
+
+    __int64 nCount              = _wtoi64(sCount.c_str());
+    __int64 nSize               = _wtoi64(sSize.c_str());
+    int     nFillFrom           = _wtoi(sFillFrom.c_str());
+    int     nFillTo             = _wtoi(sFillTo.c_str());
+
+    // validate the parameters
+    if (sPath.empty() || !PathIsDirectory(sPath.c_str()))
+    {
+        ShowEditBalloon(IDC_PATH, L"please specify a valid directory path to create the files/folders in", L"invalid path");
+        return;
+    }
+    if (nCount < 0)
+    {
+        ShowEditBalloon(IDC_FILECOUNT, L"The number of files/folders to create must be at least 1", L"invalid file count");
+        return;
+    }
+    if (sName.empty())
+    {
+        ShowEditBalloon(IDC_FILENAME, L"please specify a filename", L"invalid file name");
+        return;
+    }
+    if (nSize < 0)
+    {
+        ShowEditBalloon(IDC_FILESIZE, L"The file size must be positive", L"invalid file size");
+        return;
+    }
+    if (nFillFrom < 0)
+    {
+        ShowEditBalloon(IDC_FILLFROM, L"The fill value must be between 0 and 255", L"invalid fill value");
+        return;
+    }
+    if (nFillTo < 0)
+    {
+        ShowEditBalloon(IDC_FILLTO, L"The fill value must be between 0 and 255", L"invalid fill value");
+        return;
+    }
+    if (bFolders && (nSize > 0))
+    {
+        ShowEditBalloon(IDC_FILESIZE, L"The file size must be zero or empty if folders are to be created", L"invalid file size");
+        return;
+    }
+    size_t pos = sName.find('?');
+
+    if (pos == std::wstring::npos)
+    {
+        sName += L"?";
+        pos = sName.find('?');
+    }
+
+    std::wstring filenameleft = sName.substr(0, pos);
+    std::wstring filenameright;
+    bool    leadzero   = false;
+    int     padding    = 0;
+    __int64 start      = 1;
+    __int64 increment  = 1;
+    ++pos;
+    // format is: ?{0L(start,increment)}
+    if ((sName.size() > pos) && (sName[pos] == '{'))
+    {
+        size_t closepos = sName.find('}');
+        if ((closepos == std::wstring::npos) || (closepos <= pos))
+        {
+            ShowEditBalloon(IDC_FILENAME, L"missing closing bracket '}' in filename", L"invalid file name");
+            return;
+        }
+        ++closepos;
+        if (sName.size() > closepos)
+            filenameright = sName.substr(closepos);
+        ++pos;
+        if (sName.size() > pos)
+        {
+            leadzero = (sName[pos] == '0');
+            if (leadzero)
+                ++pos;
+            if (sName.size() > pos)
+            {
+                padding = _wtoi(sName.substr(pos).c_str());
+                ++pos;
+                if ((sName.size() > pos) && (sName[pos] == '('))
+                {
+                    closepos = sName.find(')');
+                    if ((closepos == std::wstring::npos) || (closepos <= pos))
+                    {
+                        ShowEditBalloon(IDC_FILENAME, L"missing closing bracket ')' in filename", L"invalid file name");
+                        return;
+                    }
+                    ++pos;
+                    start = _wtoi(sName.substr(pos).c_str());
+                    pos = sName.find(',', pos);
+                    if (pos != std::wstring::npos)
+                    {
+                        ++pos;
+                        if (sName.size() > pos)
+                            increment = _wtoi(sName.substr(pos).c_str());
+                    }
+                }
+            }
+        }
+    }
+    srand(time(NULL));
+    CProgressDlg progDlg;
+    progDlg.SetTitle(L"Creating files");
+    progDlg.SetProgress(0, nCount);
+    progDlg.SetTime();
+    progDlg.ShowModeless(*this);
+    for (__int64 i = 0; (i < nCount) && !progDlg.HasUserCancelled(); ++i)
+    {
+        wchar_t format[10] = {0};
+        if (padding)
+        {
+            if (leadzero)
+                swprintf_s(format, _countof(format), L"%%0%dd", padding);
+            else
+                swprintf_s(format, _countof(format), L"%%%dd", padding);
+        }
+        else
+            wcscpy_s(format, L"%d");
+        wchar_t buf[MAX_PATH] = {0};
+        swprintf_s(buf, _countof(buf), format, start);
+        start += increment;
+
+        std::wstring filename = filenameleft + buf + filenameright;
+        CTraceToOutputDebugString::Instance()(L"filename %s\n", filename.c_str());
+        progDlg.SetLine(1, L"Creating file:");
+        progDlg.SetLine(2, filename.c_str(), true);
+        const int writebufsize = 64*1024;
+        std::wstring fullpath = sPath + L"\\" + filename;
+        CAutoFile hFile = CreateFile(fullpath.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+        if (hFile.IsValid())
+        {
+            __int64 bytesToWrite = nSize;
+            std::unique_ptr<BYTE[]> writebuf(new BYTE[writebufsize]);
+            while (bytesToWrite > 0)
+            {
+                // fill the buffer with the random data in the specified range
+                BYTE * pByte = writebuf.get();
+                for (int r = 0; r < writebufsize; ++r)
+                {
+                    *pByte = getrand(nFillFrom, nFillTo);
+                    ++pByte;
+                }
+                // now write the buffer to the file
+                DWORD written = 0;
+                BOOL writeRet = WriteFile(hFile, writebuf.get(), min(writebufsize, bytesToWrite), &written, NULL);
+                bytesToWrite -= written;
+                if (!writeRet)
+                {
+                    CFormatMessageWrapper error(GetLastError());
+                    std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
+                    swprintf_s(message.get(), writebufsize, L"Could not write to file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
+                    MessageBox(*this, message.get(), L"File write error", MB_ICONERROR);
+                    return;
+                }
+            }
+        }
+        else
+        {
+            CFormatMessageWrapper error(GetLastError());
+            std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
+            swprintf_s(message.get(), writebufsize, L"Could not create file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
+            MessageBox(*this, message.get(), L"File create error", MB_ICONERROR);
+            return;
+        }
+        progDlg.SetProgress(i+1, nCount);
+    }
+}
+
+void CFileToolDlg::Clean()
+{
+
 }
 
