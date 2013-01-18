@@ -39,12 +39,15 @@ protected:
 
     void                    LockFile(LPCWSTR path);
     void                    FillLockList();
+    void                    CreateFiles();
+    void                    Clean();
 
 private:
     HWND                    m_hParent;
     AeroControlBase         m_aerocontrols;
     CFileDropTarget *       m_pDropGroup;
     CFileDropTarget *       m_pDropList;
+    CFileDropTarget *       m_pDropTarget;
     std::map<std::wstring,HANDLE>   m_lockedFiles;
     bool                    m_bAscending;
 

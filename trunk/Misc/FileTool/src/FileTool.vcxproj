@@ -92,7 +92,14 @@
     <ClInclude Include="..\..\..\sktoolslib\AeroControls.h" />
     <ClInclude Include="..\..\..\sktoolslib\AeroGlass.h" />
     <ClInclude Include="..\..\..\sktoolslib\BaseDialog.h" />
+    <ClInclude Include="..\..\..\sktoolslib\BrowseFolder.h" />
+    <ClInclude Include="..\..\..\sktoolslib\DebugOutput.h" />
+    <ClInclude Include="..\..\..\sktoolslib\DirFileEnum.h" />
     <ClInclude Include="..\..\..\sktoolslib\FileDropTarget.h" />
+    <ClInclude Include="..\..\..\sktoolslib\FormatMessageWrapper.h" />
+    <ClInclude Include="..\..\..\sktoolslib\ProgressDlg.h" />
+    <ClInclude Include="..\..\..\sktoolslib\Registry.h" />
+    <ClInclude Include="..\..\..\sktoolslib\SmartHandle.h" />
     <ClInclude Include="..\..\..\sktoolslib\SysImageList.h" />
     <ClInclude Include="..\..\..\sktoolslib\UnicodeUtils.h" />
     <ClInclude Include="FileTool.h" />
@@ -105,7 +112,12 @@
     <ClCompile Include="..\..\..\sktoolslib\AeroControls.cpp" />
     <ClCompile Include="..\..\..\sktoolslib\AeroGlass.cpp" />
     <ClCompile Include="..\..\..\sktoolslib\BaseDialog.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\BrowseFolder.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\DebugOutput.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\DirFileEnum.cpp" />
     <ClCompile Include="..\..\..\sktoolslib\FileDropTarget.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\ProgressDlg.cpp" />
+    <ClCompile Include="..\..\..\sktoolslib\Registry.cpp" />
     <ClCompile Include="..\..\..\sktoolslib\SysImageList.cpp" />
     <ClCompile Include="..\..\..\sktoolslib\UnicodeUtils.cpp" />
     <ClCompile Include="FileTool.cpp" />
