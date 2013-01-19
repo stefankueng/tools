@@ -499,15 +499,16 @@ void CFileToolDlg::CreateFiles()
                     while (bytesToWrite > 0)
                     {
                         // fill the buffer with the random data in the specified range
+                        int bb = min(writebufsize, bytesToWrite);
                         BYTE * pByte = writebuf.get();
-                        for (int r = 0; r < writebufsize; ++r)
+                        for (int r = 0; r < bb; ++r)
                         {
                             *pByte = (BYTE)getrand(nFillFrom, nFillTo);
                             ++pByte;
                         }
                         // now write the buffer to the file
                         DWORD written = 0;
-                        BOOL writeRet = WriteFile(hFile, writebuf.get(), (DWORD)min(writebufsize, bytesToWrite), &written, NULL);
+                        BOOL writeRet = WriteFile(hFile, writebuf.get(), (DWORD)bb, &written, NULL);
                         bytesToWrite -= written;
                         if (!writeRet)
                         {
