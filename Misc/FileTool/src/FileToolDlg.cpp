@@ -504,7 +504,7 @@ void CFileToolDlg::CreateFiles()
                     while (bytesToWrite > 0)
                     {
                         // fill the buffer with the random data in the specified range
-                        int bb = min(writebufsize, bytesToWrite);
+                        int bb = (int)min(writebufsize, bytesToWrite);
                         BYTE * pByte = writebuf.get();
                         for (int r = 0; r < bb; ++r)
                         {
