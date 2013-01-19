@@ -501,7 +501,7 @@ void CFileToolDlg::CreateFiles()
                         progDlg.SetProgress64(currentCount+1, nCount*folderlist.size()*writeloops);
                         ++currentCount;
                     }
-                    while (bytesToWrite > 0)
+                    while ((bytesToWrite > 0) && (!progDlg.HasUserCancelled()))
                     {
                         // fill the buffer with the random data in the specified range
                         int bb = (int)min(writebufsize, bytesToWrite);
