@@ -296,6 +296,7 @@ void CFileToolDlg::CreateFiles()
     std::wstring sFillFrom      = GetDlgItemText(IDC_FILLFROM).get();
     std::wstring sFillTo        = GetDlgItemText(IDC_FILLTO).get();
     bool bFolders               = (IsDlgButtonChecked(*this, IDC_CREATEFOLDERS) == BST_CHECKED);
+    bool bRecursive             = (IsDlgButtonChecked(*this, IDC_RECURSE) == BST_CHECKED);
 
     __int64 nCount              = _wtoi64(sCount.c_str());
     __int64 nSize               = _wtoi64(sSize.c_str());
@@ -396,91 +397,113 @@ void CFileToolDlg::CreateFiles()
             }
         }
     }
+
+    std::vector<std::wstring> folderlist;
+    folderlist.push_back(sPath);
+    if (bRecursive)
+    {
+        CDirFileEnum enumerator(sPath);
+        std::wstring dirpath;
+        bool bIsDir = false;
+        while (enumerator.NextFile(dirpath, &bIsDir))
+        {
+            if (bIsDir)
+                folderlist.push_back(dirpath);
+        }
+    }
+
     srand((unsigned int)time(NULL));
     CProgressDlg progDlg;
     if (bFolders)
         progDlg.SetTitle(L"Creating folders");
     else
         progDlg.SetTitle(L"Creating files");
-    progDlg.SetProgress64(0, nCount);
+    progDlg.SetProgress64(0, nCount*folderlist.size());
     progDlg.SetTime();
     progDlg.ShowModeless(*this);
-    for (__int64 i = 0; (i < nCount) && !progDlg.HasUserCancelled(); ++i)
+    __int64 currentCount = 0;
+    __int64 recStart = start;
+    for (auto dirIt = folderlist.cbegin(); dirIt != folderlist.cend(); ++dirIt)
     {
-        wchar_t format[10] = {0};
-        if (padding)
+        start = recStart;
+        for (__int64 i = 0; (i < nCount) && !progDlg.HasUserCancelled(); ++i)
         {
-            if (leadzero)
-                swprintf_s(format, _countof(format), L"%%0%dd", padding);
-            else
-                swprintf_s(format, _countof(format), L"%%%dd", padding);
-        }
-        else
-            wcscpy_s(format, L"%d");
-        wchar_t buf[MAX_PATH] = {0};
-        swprintf_s(buf, _countof(buf), format, start);
-        start += increment;
-
-        std::wstring filename = filenameleft + buf + filenameright;
-        CTraceToOutputDebugString::Instance()(L"filename %s\n", filename.c_str());
-        if (bFolders)
-            progDlg.SetLine(1, L"Creating folder:");
-        else
-            progDlg.SetLine(1, L"Creating file:");
-        progDlg.SetLine(2, filename.c_str(), true);
-        const int writebufsize = 64*1024;
-        std::wstring fullpath = sPath + L"\\" + filename;
-        if (bFolders)
-        {
-            if (!CreateDirectory(fullpath.c_str(), NULL))
+            wchar_t format[10] = {0};
+            if (padding)
             {
-                CFormatMessageWrapper error(GetLastError());
-                std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
-                swprintf_s(message.get(), writebufsize, L"Could not create directory\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
-                MessageBox(*this, message.get(), L"Create dir error", MB_ICONERROR);
-                return;
+                if (leadzero)
+                    swprintf_s(format, _countof(format), L"%%0%dd", padding);
+                else
+                    swprintf_s(format, _countof(format), L"%%%dd", padding);
             }
-        }
-        else
-        {
-            CAutoFile hFile = CreateFile(fullpath.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_SEQUENTIAL_SCAN, NULL);
-            if (hFile.IsValid())
+            else
+                wcscpy_s(format, L"%d");
+            wchar_t buf[MAX_PATH] = {0};
+            swprintf_s(buf, _countof(buf), format, start);
+            start += increment;
+
+            std::wstring filename = filenameleft + buf + filenameright;
+            CTraceToOutputDebugString::Instance()(L"filename %s\n", filename.c_str());
+            if (bFolders)
+                progDlg.SetLine(1, L"Creating folder:");
+            else
+                progDlg.SetLine(1, L"Creating file:");
+            const int writebufsize = 64*1024;
+            std::wstring fullpath = *dirIt + L"\\" + filename;
+            progDlg.SetLine(2, fullpath.c_str(), true);
+            if (bFolders)
             {
-                __int64 bytesToWrite = nSize;
-                std::unique_ptr<BYTE[]> writebuf(new BYTE[writebufsize]);
-                while (bytesToWrite > 0)
+                if (!CreateDirectory(fullpath.c_str(), NULL))
                 {
-                    // fill the buffer with the random data in the specified range
-                    BYTE * pByte = writebuf.get();
-                    for (int r = 0; r < writebufsize; ++r)
-                    {
-                        *pByte = (BYTE)getrand(nFillFrom, nFillTo);
-                        ++pByte;
-                    }
-                    // now write the buffer to the file
-                    DWORD written = 0;
-                    BOOL writeRet = WriteFile(hFile, writebuf.get(), (DWORD)min(writebufsize, bytesToWrite), &written, NULL);
-                    bytesToWrite -= written;
-                    if (!writeRet)
-                    {
-                        CFormatMessageWrapper error(GetLastError());
-                        std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
-                        swprintf_s(message.get(), writebufsize, L"Could not write to file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
-                        MessageBox(*this, message.get(), L"File write error", MB_ICONERROR);
-                        return;
-                    }
+                    CFormatMessageWrapper error(GetLastError());
+                    std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
+                    swprintf_s(message.get(), writebufsize, L"Could not create directory\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
+                    MessageBox(*this, message.get(), L"Create dir error", MB_ICONERROR);
+                    return;
                 }
             }
             else
             {
-                CFormatMessageWrapper error(GetLastError());
-                std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
-                swprintf_s(message.get(), writebufsize, L"Could not create file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
-                MessageBox(*this, message.get(), L"File create error", MB_ICONERROR);
-                return;
+                CAutoFile hFile = CreateFile(fullpath.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+                if (hFile.IsValid())
+                {
+                    __int64 bytesToWrite = nSize;
+                    std::unique_ptr<BYTE[]> writebuf(new BYTE[writebufsize]);
+                    while (bytesToWrite > 0)
+                    {
+                        // fill the buffer with the random data in the specified range
+                        BYTE * pByte = writebuf.get();
+                        for (int r = 0; r < writebufsize; ++r)
+                        {
+                            *pByte = (BYTE)getrand(nFillFrom, nFillTo);
+                            ++pByte;
+                        }
+                        // now write the buffer to the file
+                        DWORD written = 0;
+                        BOOL writeRet = WriteFile(hFile, writebuf.get(), (DWORD)min(writebufsize, bytesToWrite), &written, NULL);
+                        bytesToWrite -= written;
+                        if (!writeRet)
+                        {
+                            CFormatMessageWrapper error(GetLastError());
+                            std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
+                            swprintf_s(message.get(), writebufsize, L"Could not write to file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
+                            MessageBox(*this, message.get(), L"File write error", MB_ICONERROR);
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    CFormatMessageWrapper error(GetLastError());
+                    std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
+                    swprintf_s(message.get(), writebufsize, L"Could not create file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
+                    MessageBox(*this, message.get(), L"File create error", MB_ICONERROR);
+                    return;
+                }
             }
+            progDlg.SetProgress64(currentCount+1, nCount*folderlist.size());
+            ++currentCount;
         }
-        progDlg.SetProgress64(i+1, nCount);
     }
 }
 
