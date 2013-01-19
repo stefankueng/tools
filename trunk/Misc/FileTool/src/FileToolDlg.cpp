@@ -429,7 +429,9 @@ void CFileToolDlg::CreateFiles()
         progDlg.SetTitle(L"Creating folders");
     else
         progDlg.SetTitle(L"Creating files");
-    progDlg.SetProgress64(0, nCount*folderlist.size());
+    const int writebufsize = 512*1024;    // 512KB
+    const __int64 writeloops = max(1, nSize/writebufsize);
+    progDlg.SetProgress64(0, nCount*folderlist.size()*writeloops);
     progDlg.SetTime();
     progDlg.ShowModeless(*this);
     __int64 currentCount = 0;
@@ -465,7 +467,6 @@ void CFileToolDlg::CreateFiles()
                 progDlg.SetLine(1, L"Creating folder:");
             else
                 progDlg.SetLine(1, L"Creating file:");
-            const int writebufsize = 64*1024;
             std::wstring fullpath = *dirIt + L"\\" + filename;
             if (fullpath.substr(0,4).compare(L"\\\\?\\"))
                 fullpath = L"\\\\?\\" + fullpath;
@@ -509,6 +510,8 @@ void CFileToolDlg::CreateFiles()
                             MessageBox(*this, message.get(), L"File write error", MB_ICONERROR);
                             return;
                         }
+                        progDlg.SetProgress64(currentCount+1, nCount*folderlist.size()*writeloops);
+                        ++currentCount;
                     }
                 }
                 else
@@ -520,8 +523,6 @@ void CFileToolDlg::CreateFiles()
                     return;
                 }
             }
-            progDlg.SetProgress64(currentCount+1, nCount*folderlist.size());
-            ++currentCount;
         }
     }
 }
