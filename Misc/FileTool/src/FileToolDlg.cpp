@@ -528,7 +528,7 @@ void CFileToolDlg::Clean()
             folderlist.push_back(fpath);
         else
         {
-            if (DeleteFile(fpath.c_str()))
+            if (!DeleteFile(fpath.c_str()))
             {
                 CFormatMessageWrapper error(GetLastError());
                 std::unique_ptr<wchar_t[]> message(new wchar_t[65535]);
