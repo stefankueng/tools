@@ -430,7 +430,9 @@ void CFileToolDlg::CreateFiles()
     else
         progDlg.SetTitle(L"Creating files");
     const int writebufsize = 512*1024;    // 512KB
-    const __int64 writeloops = max(1, nSize/writebufsize);
+    __int64 writeloops = nSize/writebufsize;
+    if (nSize % writebufsize != 0)
+        ++writeloops;
     progDlg.SetProgress64(0, nCount*folderlist.size()*writeloops);
     progDlg.SetTime();
     progDlg.ShowModeless(*this);
@@ -442,6 +444,7 @@ void CFileToolDlg::CreateFiles()
         nFillFrom = nFillTo;
         nFillTo = temp;
     }
+    std::unique_ptr<BYTE[]> writebuf(new BYTE[writebufsize+1]);
     for (auto dirIt = folderlist.cbegin(); dirIt != folderlist.cend(); ++dirIt)
     {
         start = recStart;
@@ -488,7 +491,11 @@ void CFileToolDlg::CreateFiles()
                 if (hFile.IsValid())
                 {
                     __int64 bytesToWrite = nSize;
-                    std::unique_ptr<BYTE[]> writebuf(new BYTE[writebufsize]);
+                    if (bytesToWrite==0)
+                    {
+                        progDlg.SetProgress64(currentCount+1, nCount*folderlist.size()*writeloops);
+                        ++currentCount;
+                    }
                     while (bytesToWrite > 0)
                     {
                         // fill the buffer with the random data in the specified range
