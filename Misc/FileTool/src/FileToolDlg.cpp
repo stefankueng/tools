@@ -586,5 +586,6 @@ void CFileToolDlg::Clean()
             return;
         }
     }
+    MessageBox(*this, L"Folder cleaned!", L"FileTool", MB_ICONINFORMATION);
 }
 
