@@ -35,6 +35,8 @@
 
 int getrand(int min, int max)
 {
+    if (min==max)
+        return min;
     return (rand()%(max-min)+min);
 }
 
@@ -423,6 +425,12 @@ void CFileToolDlg::CreateFiles()
     progDlg.ShowModeless(*this);
     __int64 currentCount = 0;
     __int64 recStart = start;
+    if (nFillFrom > nFillTo)
+    {
+        int temp = nFillFrom;
+        nFillFrom = nFillTo;
+        nFillTo = temp;
+    }
     for (auto dirIt = folderlist.cbegin(); dirIt != folderlist.cend(); ++dirIt)
     {
         start = recStart;
@@ -450,6 +458,8 @@ void CFileToolDlg::CreateFiles()
                 progDlg.SetLine(1, L"Creating file:");
             const int writebufsize = 64*1024;
             std::wstring fullpath = *dirIt + L"\\" + filename;
+            if (fullpath.substr(0,4).compare(L"\\\\?\\"))
+                fullpath = L"\\\\?\\" + fullpath;
             progDlg.SetLine(2, fullpath.c_str(), true);
             if (bFolders)
             {
@@ -524,6 +534,9 @@ void CFileToolDlg::Clean()
     bool bDir = false;
     while (enumerator.NextFile(fpath, &bDir))
     {
+        if (fpath.substr(0,4).compare(L"\\\\?\\"))
+            fpath = L"\\\\?\\" + fpath;
+
         if (bDir)
             folderlist.push_back(fpath);
         else
