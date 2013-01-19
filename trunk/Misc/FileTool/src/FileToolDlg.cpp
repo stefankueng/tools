@@ -21,6 +21,7 @@
 #include "FileTool.h"
 #include "FileToolDlg.h"
 #include "CleanVerifyDlg.h"
+#include "AboutDlg.h"
 #include "SysImageList.h"
 #include "BrowseFolder.h"
 #include "SmartHandle.h"
@@ -108,6 +109,8 @@ LRESULT CFileToolDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
             SetDlgItemText(*this, IDC_FILESIZE, L"0");
             SetDlgItemText(*this, IDC_FILLFROM, L"0");
             SetDlgItemText(*this, IDC_FILLTO, L"255");
+
+            m_aboutLink.ConvertStaticToHyperlink(*this, IDC_ABOUT, L"");
         }
         return TRUE;
     case WM_COMMAND:
@@ -178,6 +181,12 @@ LRESULT CFileToolDlg::DoCommand(int id)
         break;
     case IDC_CLEAN:
         Clean();
+        break;
+    case IDC_ABOUT:
+        {
+            CAboutDlg dlgAbout(*this);
+            dlgAbout.DoModal(hResource, IDD_ABOUTBOX, *this);
+        }
         break;
     }
     return 1;
