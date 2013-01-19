@@ -18,12 +18,14 @@
 //
 
 #include "stdafx.h"
-#include "resource.h"
+#include "FileTool.h"
 #include "FileToolDlg.h"
+#include "CleanVerifyDlg.h"
 #include "SysImageList.h"
 #include "BrowseFolder.h"
 #include "SmartHandle.h"
 #include "ProgressDlg.h"
+#include "DirFileEnum.h"
 
 #include <time.h>
 #include <Shellapi.h>
@@ -101,7 +103,6 @@ LRESULT CFileToolDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
             ListView_SetColumnWidth(hListControl, 0, LVSCW_AUTOSIZE_USEHEADER);
 
             SetDlgItemText(*this, IDC_FILECOUNT, L"1");
-            SetDlgItemText(*this, IDC_FILECOUNTSTART, L"0");
             SetDlgItemText(*this, IDC_FILESIZE, L"0");
             SetDlgItemText(*this, IDC_FILLFROM, L"0");
             SetDlgItemText(*this, IDC_FILLTO, L"255");
@@ -395,13 +396,13 @@ void CFileToolDlg::CreateFiles()
             }
         }
     }
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
     CProgressDlg progDlg;
     if (bFolders)
         progDlg.SetTitle(L"Creating folders");
     else
         progDlg.SetTitle(L"Creating files");
-    progDlg.SetProgress(0, nCount);
+    progDlg.SetProgress((ULONGLONG)0, (ULONGLONG)nCount);
     progDlg.SetTime();
     progDlg.ShowModeless(*this);
     for (__int64 i = 0; (i < nCount) && !progDlg.HasUserCancelled(); ++i)
@@ -435,8 +436,8 @@ void CFileToolDlg::CreateFiles()
             {
                 CFormatMessageWrapper error(GetLastError());
                 std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
-                swprintf_s(message.get(), writebufsize, L"Could not write to file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
-                MessageBox(*this, message.get(), L"File write error", MB_ICONERROR);
+                swprintf_s(message.get(), writebufsize, L"Could not create directory\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
+                MessageBox(*this, message.get(), L"Create dir error", MB_ICONERROR);
                 return;
             }
         }
@@ -453,12 +454,12 @@ void CFileToolDlg::CreateFiles()
                     BYTE * pByte = writebuf.get();
                     for (int r = 0; r < writebufsize; ++r)
                     {
-                        *pByte = getrand(nFillFrom, nFillTo);
+                        *pByte = (BYTE)getrand(nFillFrom, nFillTo);
                         ++pByte;
                     }
                     // now write the buffer to the file
                     DWORD written = 0;
-                    BOOL writeRet = WriteFile(hFile, writebuf.get(), min(writebufsize, bytesToWrite), &written, NULL);
+                    BOOL writeRet = WriteFile(hFile, writebuf.get(), (DWORD)min(writebufsize, bytesToWrite), &written, NULL);
                     bytesToWrite -= written;
                     if (!writeRet)
                     {
@@ -479,12 +480,52 @@ void CFileToolDlg::CreateFiles()
                 return;
             }
         }
-        progDlg.SetProgress(i+1, nCount);
+        progDlg.SetProgress((ULONGLONG)i+1, (ULONGLONG)nCount);
     }
 }
 
 void CFileToolDlg::Clean()
 {
-
+    std::wstring sPath = GetDlgItemText(IDC_PATH).get();
+    if (sPath.empty())
+    {
+        ShowEditBalloon(IDC_PATH, L"please specify a valid directory path to clean", L"invalid path");
+        return;
+    }
+    CCleanVerifyDlg verDlg(*this, sPath);
+    if (verDlg.DoModal(g_hInst, IDD_CLEANVERIFY, *this)!=IDOK)
+        return;
+    std::vector<std::wstring> folderlist;
+    CDirFileEnum enumerator(sPath);
+    std::wstring fpath;
+    bool bDir = false;
+    while (enumerator.NextFile(fpath, &bDir))
+    {
+        if (bDir)
+            folderlist.push_back(fpath);
+        else
+        {
+            if (DeleteFile(fpath.c_str()))
+            {
+                CFormatMessageWrapper error(GetLastError());
+                std::unique_ptr<wchar_t[]> message(new wchar_t[65535]);
+                swprintf_s(message.get(), 65535, L"Could not delete file\n%s\nError:\n%s", fpath.c_str(), (LPCWSTR)error);
+                MessageBox(*this, message.get(), L"File delete error", MB_ICONERROR);
+                return;
+            }
+        }
+    }
+    // delete the directories in reverse order
+    for (auto it = folderlist.crbegin(); it != folderlist.crend(); ++it)
+    {
+        if (!RemoveDirectory(it->c_str()))
+        {
+            CFormatMessageWrapper error(GetLastError());
+            std::unique_ptr<wchar_t[]> message(new wchar_t[65535]);
+            swprintf_s(message.get(), 65535, L"Could not delete directory\n%s\nError:\n%s", it->c_str(), (LPCWSTR)error);
+            MessageBox(*this, message.get(), L"Directory delete error", MB_ICONERROR);
+            return;
+        }
+    }
 }
 

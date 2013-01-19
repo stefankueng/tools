@@ -75,6 +75,9 @@
     <ClInclude Include="..\..\..\sktoolslib\ProgressDlg.h">
       <Filter>sktoolslib</Filter>
     </ClInclude>
+    <ClInclude Include="CleanVerifyDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -118,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\sktoolslib\ProgressDlg.cpp">
       <Filter>sktoolslib</Filter>
+    </ClCompile>
+    <ClCompile Include="CleanVerifyDlg.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
