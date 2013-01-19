@@ -397,7 +397,10 @@ void CFileToolDlg::CreateFiles()
     }
     srand(time(NULL));
     CProgressDlg progDlg;
-    progDlg.SetTitle(L"Creating files");
+    if (bFolders)
+        progDlg.SetTitle(L"Creating folders");
+    else
+        progDlg.SetTitle(L"Creating files");
     progDlg.SetProgress(0, nCount);
     progDlg.SetTime();
     progDlg.ShowModeless(*this);
@@ -419,45 +422,62 @@ void CFileToolDlg::CreateFiles()
 
         std::wstring filename = filenameleft + buf + filenameright;
         CTraceToOutputDebugString::Instance()(L"filename %s\n", filename.c_str());
-        progDlg.SetLine(1, L"Creating file:");
+        if (bFolders)
+            progDlg.SetLine(1, L"Creating folder:");
+        else
+            progDlg.SetLine(1, L"Creating file:");
         progDlg.SetLine(2, filename.c_str(), true);
         const int writebufsize = 64*1024;
         std::wstring fullpath = sPath + L"\\" + filename;
-        CAutoFile hFile = CreateFile(fullpath.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_SEQUENTIAL_SCAN, NULL);
-        if (hFile.IsValid())
+        if (bFolders)
         {
-            __int64 bytesToWrite = nSize;
-            std::unique_ptr<BYTE[]> writebuf(new BYTE[writebufsize]);
-            while (bytesToWrite > 0)
+            if (!CreateDirectory(fullpath.c_str(), NULL))
             {
-                // fill the buffer with the random data in the specified range
-                BYTE * pByte = writebuf.get();
-                for (int r = 0; r < writebufsize; ++r)
-                {
-                    *pByte = getrand(nFillFrom, nFillTo);
-                    ++pByte;
-                }
-                // now write the buffer to the file
-                DWORD written = 0;
-                BOOL writeRet = WriteFile(hFile, writebuf.get(), min(writebufsize, bytesToWrite), &written, NULL);
-                bytesToWrite -= written;
-                if (!writeRet)
-                {
-                    CFormatMessageWrapper error(GetLastError());
-                    std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
-                    swprintf_s(message.get(), writebufsize, L"Could not write to file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
-                    MessageBox(*this, message.get(), L"File write error", MB_ICONERROR);
-                    return;
-                }
+                CFormatMessageWrapper error(GetLastError());
+                std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
+                swprintf_s(message.get(), writebufsize, L"Could not write to file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
+                MessageBox(*this, message.get(), L"File write error", MB_ICONERROR);
+                return;
             }
         }
         else
         {
-            CFormatMessageWrapper error(GetLastError());
-            std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
-            swprintf_s(message.get(), writebufsize, L"Could not create file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
-            MessageBox(*this, message.get(), L"File create error", MB_ICONERROR);
-            return;
+            CAutoFile hFile = CreateFile(fullpath.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+            if (hFile.IsValid())
+            {
+                __int64 bytesToWrite = nSize;
+                std::unique_ptr<BYTE[]> writebuf(new BYTE[writebufsize]);
+                while (bytesToWrite > 0)
+                {
+                    // fill the buffer with the random data in the specified range
+                    BYTE * pByte = writebuf.get();
+                    for (int r = 0; r < writebufsize; ++r)
+                    {
+                        *pByte = getrand(nFillFrom, nFillTo);
+                        ++pByte;
+                    }
+                    // now write the buffer to the file
+                    DWORD written = 0;
+                    BOOL writeRet = WriteFile(hFile, writebuf.get(), min(writebufsize, bytesToWrite), &written, NULL);
+                    bytesToWrite -= written;
+                    if (!writeRet)
+                    {
+                        CFormatMessageWrapper error(GetLastError());
+                        std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
+                        swprintf_s(message.get(), writebufsize, L"Could not write to file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
+                        MessageBox(*this, message.get(), L"File write error", MB_ICONERROR);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                CFormatMessageWrapper error(GetLastError());
+                std::unique_ptr<wchar_t[]> message(new wchar_t[writebufsize]);
+                swprintf_s(message.get(), writebufsize, L"Could not create file\n%s\nError:\n%s", fullpath.c_str(), (LPCWSTR)error);
+                MessageBox(*this, message.get(), L"File create error", MB_ICONERROR);
+                return;
+            }
         }
         progDlg.SetProgress(i+1, nCount);
     }
