@@ -22,6 +22,7 @@
 #include "BaseDialog.h"
 #include "AeroControls.h"
 #include "FileDropTarget.h"
+#include "hyperlink.h"
 
 /**
  * Main dialog.
@@ -45,6 +46,7 @@ protected:
 private:
     HWND                    m_hParent;
     AeroControlBase         m_aerocontrols;
+    CHyperLink              m_aboutLink;
     CFileDropTarget *       m_pDropGroup;
     CFileDropTarget *       m_pDropList;
     CFileDropTarget *       m_pDropTarget;
