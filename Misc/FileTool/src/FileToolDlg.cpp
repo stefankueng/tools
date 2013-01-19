@@ -409,6 +409,9 @@ void CFileToolDlg::CreateFiles()
         }
     }
 
+    if (sPath.substr(0,4).compare(L"\\\\?\\"))
+        sPath = L"\\\\?\\" + sPath;
+
     std::vector<std::wstring> folderlist;
     folderlist.push_back(sPath);
     if (bRecursive)
@@ -433,6 +436,9 @@ void CFileToolDlg::CreateFiles()
     __int64 writeloops = nSize/writebufsize;
     if (nSize % writebufsize != 0)
         ++writeloops;
+    if (nSize==0)
+        writeloops = 1;
+
     progDlg.SetProgress64(0, nCount*folderlist.size()*writeloops);
     progDlg.SetTime();
     progDlg.ShowModeless(*this);
@@ -471,9 +477,8 @@ void CFileToolDlg::CreateFiles()
             else
                 progDlg.SetLine(1, L"Creating file:");
             std::wstring fullpath = *dirIt + L"\\" + filename;
-            if (fullpath.substr(0,4).compare(L"\\\\?\\"))
-                fullpath = L"\\\\?\\" + fullpath;
-            progDlg.SetLine(2, fullpath.c_str(), true);
+            std::wstring relpath = fullpath.substr(sPath.size()+1);
+            progDlg.SetLine(2, relpath.c_str(), true);
             if (bFolders)
             {
                 if (!CreateDirectory(fullpath.c_str(), NULL))
@@ -543,6 +548,9 @@ void CFileToolDlg::Clean()
         ShowEditBalloon(IDC_PATH, L"please specify a valid directory path to clean", L"invalid path");
         return;
     }
+    if (sPath.substr(0,4).compare(L"\\\\?\\"))
+        sPath = L"\\\\?\\" + sPath;
+
     CCleanVerifyDlg verDlg(*this, sPath);
     if (verDlg.DoModal(g_hInst, IDD_CLEANVERIFY, *this)!=IDOK)
         return;
@@ -552,9 +560,6 @@ void CFileToolDlg::Clean()
     bool bDir = false;
     while (enumerator.NextFile(fpath, &bDir))
     {
-        if (fpath.substr(0,4).compare(L"\\\\?\\"))
-            fpath = L"\\\\?\\" + fpath;
-
         if (bDir)
             folderlist.push_back(fpath);
         else
