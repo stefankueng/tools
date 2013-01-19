@@ -402,7 +402,7 @@ void CFileToolDlg::CreateFiles()
         progDlg.SetTitle(L"Creating folders");
     else
         progDlg.SetTitle(L"Creating files");
-    progDlg.SetProgress((ULONGLONG)0, (ULONGLONG)nCount);
+    progDlg.SetProgress64(0, nCount);
     progDlg.SetTime();
     progDlg.ShowModeless(*this);
     for (__int64 i = 0; (i < nCount) && !progDlg.HasUserCancelled(); ++i)
@@ -480,7 +480,7 @@ void CFileToolDlg::CreateFiles()
                 return;
             }
         }
-        progDlg.SetProgress((ULONGLONG)i+1, (ULONGLONG)nCount);
+        progDlg.SetProgress64(i+1, nCount);
     }
 }
 
