@@ -16,7 +16,7 @@ a:hover {
 }
 
 a,
-.main-table-tr {
+#main-table tr {
     -webkit-transition: color 0.15s linear;
        -moz-transition: color 0.15s linear;
          -o-transition: color 0.15s linear;
@@ -238,8 +238,8 @@ pre {
 }
 
 #main-table,
-.main-table-td,
-.main-table-th {
+#main-table td,
+#main-table th {
     border: 1px inset blue;
 }
 
@@ -247,17 +247,17 @@ pre {
     padding: 2px;
 }
 
-.main-table-li {
+#main-table li {
     margin: 0;
     padding: 0;
 }
 
-.main-table-td,
-.main-table-th {
+#main-table td,
+#main-table th {
     padding: 4px;
 }
 
-.main-table-th {
+#main-table th {
     background-color: #005fbf; /* Old browsers */
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.5, #005fbf), color-stop(0.9, #003f7f)); /* Chrome, Safari4+ */
     background-image: -webkit-linear-gradient(top, #005fbf 50%, #003f7f 90%);       /* Chrome10+, Safari5.1+ */
@@ -265,21 +265,21 @@ pre {
     background-image:     -ms-linear-gradient(top, #005fbf 50%, #003f7f 90%);       /* IE10+ */
     background-image:      -o-linear-gradient(top, #005fbf 50%, #003f7f 90%);       /* Opera 11.10+ */
     background-image:         linear-gradient(to bottom, #005fbf 50%, #003f7f 90%); /* W3C */
-    color: #fff;
+    color: white;
     font-weight: bold;
     text-align: center;
     vertical-align: middle;
 }
 
-.main-table-tr {
+#main-table tr {
     background-color: white;
 }
 
-.main-table-tr:hover {
+#main-table tr:hover {
     background-color: #e4e9ee;
 }
 
-.main-table-ul {
+#main-table ul {
     list-style-type: none;
     margin: 0 4px;
 }
