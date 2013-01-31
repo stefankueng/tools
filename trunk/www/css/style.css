@@ -149,7 +149,6 @@ header {
 
 hgroup > h1 a {
     color: #5e7eff;
-    text-decoration: none;
 }
 
 hgroup > h1 a:hover {
@@ -254,7 +253,7 @@ pre {
 
 #main-table td,
 #main-table th {
-    padding: 4px;
+    padding: 4px 8px;
 }
 
 #main-table th {
@@ -330,7 +329,7 @@ pre {
     width: 90%;
 }
 
-.important-header {
+.important h2 {
     background: none;
     color: #069;
     font-size: 1.05em;
