@@ -53,9 +53,9 @@ code,
 h1,
 h2,
 pre {
-    border-radius: 4px;
     -webkit-border-radius: 4px;
        -moz-border-radius: 4px;
+            border-radius: 4px;
 }
 
 dd {
@@ -147,14 +147,6 @@ header {
     height: 300px;
 }
 
-hgroup > h1 a {
-    color: #5e7eff;
-}
-
-hgroup > h1 a:hover {
-    color: #acacd7;
-}
-
 img {
     border: 0;
     display: inline-block;
@@ -205,9 +197,16 @@ pre {
     text-shadow: none;
 }
 
+#header-title,
+#header-description {
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+}
+
+
 #header-title {
-    background-color: transparent;
-    background-image: inherit;
+    background: transparent none !important;
     color: #5e7eff;
     font-size: 200%;
     font-weight: bold;
@@ -215,11 +214,16 @@ pre {
     padding: 128px 0 0 348px;
 }
 
+#header-title a {
+    color: #5e7eff;
+}
+
+#header-title a:hover {
+    color: #acacd7;
+}
+
 #header-description {
     background: transparent none;
-    border-radius: 0;
-    -webkit-border-radius: 0;
-       -moz-border-radius: 0;
     color: white;
     font-size: 110%;
     font-weight: normal;
@@ -319,13 +323,13 @@ pre {
     background: no-repeat 5px 1.33em url("../img/important.png");
     border-left: 1px solid #069;
     border-top: 5px solid #069;
-    border-top-left-radius: 4px;
     -webkit-border-top-left-radius: 4px;
        -moz-border-radius-topleft: 4px;
+    border-top-left-radius: 4px;
     clear: both;
     margin: 1em 0 0 1em;
     min-height: 52px;
-    padding: 0 0 0 42px;
+    padding-left: 42px;
     width: 90%;
 }
 
