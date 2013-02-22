@@ -4,7 +4,7 @@ import shutil
 
 setpath = 'D:\\Development\\toolssite'
 
-for root, dirs, files in os.walk(setpath, topdown = False):
+for root, dirs, files in os.walk(setpath, topdown=False):
     for name in files:
         os.remove(os.path.join(root, name))
     for name in dirs:
