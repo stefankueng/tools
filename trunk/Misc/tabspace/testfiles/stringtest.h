@@ -31,4 +31,4 @@ private:
     void                Method_4( int variable1,
                                   int variable2);
 
-};
+}; 
