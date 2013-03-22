@@ -1,6 +1,6 @@
 // tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011-2012 - Stefan Kueng
+// Copyright (C) 2011-2013 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -570,6 +570,12 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                     whitespaces++;
                 else
                     whitespaces = 0;
+            }
+            if (whitespaces)
+            {
+                // end space but no newline at the end
+                spacepositions.push_back(pos - whitespaces + 1);
+                totalwhitespaces += whitespaces;
             }
         }
         // now we have the amount of whitespaces we have to remove
