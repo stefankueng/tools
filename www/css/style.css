@@ -7,6 +7,13 @@ body {
     text-align: left;
 }
 
+/* IE 10: Remove grey background on active links
+   https://github.com/necolas/normalize.css/issues/172
+   Remove this when it's in normalize.css */
+a:active {
+    background-color: transparent;
+}
+
 a {
     color: #181818;
 }
@@ -16,7 +23,7 @@ a:hover {
 }
 
 a,
-#main-table tr {
+.main-table tr {
     -webkit-transition: color 0.15s linear;
        -moz-transition: color 0.15s linear;
          -o-transition: color 0.15s linear;
@@ -30,6 +37,9 @@ a:hover.scrollup {
 }
 
 article {
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
     font-size: 110%;
     margin: 10px 8px 0;
     padding: 2px 10px 22px 40px;
@@ -76,7 +86,7 @@ dt {
 }
 
 footer {
-    background: 0 -310px no-repeat url("../img/main_sprite.png");
+    background-position: 0 -310px !important;
     color: white;
     font-size: 85%;
     margin: 0 auto;
@@ -139,7 +149,7 @@ h2 {
 }
 
 header {
-    background: 0 0 no-repeat url("../img/main_sprite.png");
+    background-position: 0 0;
     margin: 0 auto;
     padding: 0;
     text-decoration: none;
@@ -187,6 +197,10 @@ pre {
 /*
  * ID selectors and classes
  */
+.main-sprite {
+    background: url("../img/main_sprite.png") no-repeat;
+}
+
 ::-moz-selection {
     background-color: #b3d4fc;
     text-shadow: none;
@@ -197,15 +211,15 @@ pre {
     text-shadow: none;
 }
 
-#header-title,
-#header-description {
+.header-title,
+.header-description {
     -webkit-border-radius: 0;
        -moz-border-radius: 0;
             border-radius: 0;
 }
 
 
-#header-title {
+.header-title {
     background: transparent none !important;
     color: #5e7eff;
     font-size: 200%;
@@ -214,15 +228,15 @@ pre {
     padding: 128px 0 0 348px;
 }
 
-#header-title a {
+.header-title a {
     color: #5e7eff;
 }
 
-#header-title a:hover {
+.header-title a:hover {
     color: #acacd7;
 }
 
-#header-description {
+.header-description {
     background: transparent none;
     color: white;
     font-size: 110%;
@@ -232,7 +246,7 @@ pre {
 }
 
 /* Homepage's table start */
-#main-table {
+.main-table {
     border-collapse: collapse;
     border-spacing: 0;
     box-shadow: 10px 10px 5px #888888;
@@ -240,27 +254,27 @@ pre {
     margin: 8px 0 2px;
 }
 
-#main-table,
-#main-table td,
-#main-table th {
+.main-table,
+.main-table td,
+.main-table th {
     border: 1px inset blue;
 }
 
-#main-table img {
+.main-table img {
     padding: 2px;
 }
 
-#main-table li {
+.main-table li {
     margin: 0;
     padding: 0;
 }
 
-#main-table td,
-#main-table th {
+.main-table td,
+.main-table th {
     padding: 4px 8px;
 }
 
-#main-table th {
+.main-table th {
     background-color: #005fbf; /* Old browsers */
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.5, #005fbf), color-stop(0.9, #003f7f)); /* Chrome, Safari4+ */
     background-image: -webkit-linear-gradient(top, #005fbf 50%, #003f7f 90%);       /* Chrome10+, Safari5.1+ */
@@ -274,37 +288,41 @@ pre {
     vertical-align: middle;
 }
 
-#main-table tr {
+.main-table tr {
     background-color: white;
 }
 
-#main-table tr:hover {
+.main-table tr:hover {
     background-color: #e4e9ee;
 }
 
-#main-table ul {
+.main-table ul {
     list-style-type: none;
     margin: 0 4px;
 }
 
-#AAClr          { background: 0  0     no-repeat url("../img/app_icons_sprite.png"); }
-#CommitMonitor  { background: 0  -72px no-repeat url("../img/app_icons_sprite.png"); }
-#CryptSync      { background: 0 -146px no-repeat url("../img/app_icons_sprite.png"); }
-#DemoHelper     { background: 0 -222px no-repeat url("../img/app_icons_sprite.png"); }
-#EvImSync       { background: 0 -292px no-repeat url("../img/app_icons_sprite.png"); }
-#FavIconizer    { background: 0 -368px no-repeat url("../img/app_icons_sprite.png"); }
-#FileTool       { background: 0 -442px no-repeat url("../img/app_icons_sprite.png"); }
-#MailNoter      { background: 0 -518px no-repeat url("../img/app_icons_sprite.png"); }
-#SendMessage    { background: 0 -590px no-repeat url("../img/app_icons_sprite.png"); }
-#console        { background: 0 -664px no-repeat url("../img/app_icons_sprite.png"); }
-#grepWin        { background: 0 -740px no-repeat url("../img/app_icons_sprite.png"); }
-#trafficWatcher { background: 0 -812px no-repeat url("../img/app_icons_sprite.png"); }
-.win            { background: 0 -886px no-repeat url("../img/app_icons_sprite.png"); }
+.apps-sprite {
+    background: url("../img/app_icons_sprite.png") no-repeat;
+}
+
+.AAClr          { background-position: 0      0; }
+.CommitMonitor  { background-position: 0  -72px; }
+.CryptSync      { background-position: 0 -146px; }
+.DemoHelper     { background-position: 0 -222px; }
+.EvImSync       { background-position: 0 -292px; }
+.FavIconizer    { background-position: 0 -368px; }
+.FileTool       { background-position: 0 -442px; }
+.MailNoter      { background-position: 0 -518px; }
+.SendMessage    { background-position: 0 -590px; }
+.console        { background-position: 0 -664px; }
+.grepWin        { background-position: 0 -740px; }
+.trafficWatcher { background-position: 0 -812px; }
+.win            { background-position: 0 -886px; }
 
 /* Homepage's table end */
 
 
-#wrapper {
+.wrapper {
     background: repeat-y url("../img/main.png");
     margin: -10px auto 0;
     width: 900px;
@@ -321,6 +339,9 @@ pre {
 
 .important {
     background: no-repeat 5px 1.33em url("../img/important.png");
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
     border-left: 1px solid #069;
     border-top: 5px solid #069;
     -webkit-border-top-left-radius: 4px;
