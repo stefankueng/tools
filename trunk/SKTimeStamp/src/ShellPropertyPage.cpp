@@ -1,6 +1,6 @@
 // SkTimeStamp - Change file dates easily, directly from explorer
 
-// Copyright (C) 2012 - Stefan Kueng
+// Copyright (C) 2012-2013 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -339,11 +339,9 @@ void ReadDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pF
 {
     SYSTEMTIME st = {0}, stDate = {0}, stTime = {0}, stAdjusted = {0};
 
-    if (pFiletime)
-    {
         pFiletime->dwHighDateTime = 0;
         pFiletime->dwLowDateTime = 0;
-    }
+
     if (SendDlgItemMessage(hwnd, idcDatePicker, DTM_GETSYSTEMTIME, 0, (LPARAM)&stDate) != GDT_VALID)
         return;
     if (SendDlgItemMessage(hwnd, idcTimePicker, DTM_GETSYSTEMTIME, 0, (LPARAM)&stTime) != GDT_VALID)
