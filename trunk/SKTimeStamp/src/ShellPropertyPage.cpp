@@ -339,8 +339,8 @@ void ReadDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pF
 {
     SYSTEMTIME st = {0}, stDate = {0}, stTime = {0}, stAdjusted = {0};
 
-        pFiletime->dwHighDateTime = 0;
-        pFiletime->dwLowDateTime = 0;
+    pFiletime->dwHighDateTime = 0;
+    pFiletime->dwLowDateTime = 0;
 
     if (SendDlgItemMessage(hwnd, idcDatePicker, DTM_GETSYSTEMTIME, 0, (LPARAM)&stDate) != GDT_VALID)
         return;
