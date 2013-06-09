@@ -1,3 +1,5 @@
+#pragma once
+
 #define FILEVER        1, 8, 4, $WCREV$
 #define PRODUCTVER     1, 8, 4, $WCREV$
 #define STRFILEVER     "1.8.4.$WCREV$\0"
