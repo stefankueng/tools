@@ -22,14 +22,8 @@ popd
 call ..\serverlogin.bat
 
 cd ..\..\toolssite
-if exist website.zip del website.zip
 
-%ZIP% a -r -tzip website.zip * > NUL
+%PSCP% -l %USERNAME% -pw %PASSWORD% -r *.* web.sourceforge.net:/home/project-web/stefanstools/htdocs/
 
-%PSCP% -r -l %USERNAME% -pw %PASSWORD% website.zip tortoisesvn.net:/var/www/vhosts/tools/
-
-%PLINK% tortoisesvn.net -l %USERNAME% -pw %PASSWORD% unzip -o /var/www/vhosts/tools/website.zip -d /var/www/vhosts/tools/htdocs/;rm -f /var/www/vhosts/tools/website.zip
-
-del website.zip
 
 cd ..\stexbar\www
