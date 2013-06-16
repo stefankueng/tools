@@ -44,7 +44,7 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
             _stprintf_s(buf, _countof(buf), _T("FileTool version %ld.%ld.%ld.%ld"), FILETOOL_VERMAJOR, FILETOOL_VERMINOR, FILETOOL_VERMICRO, FILETOOL_VERBUILD);
             SetDlgItemText(*this, IDC_VERSIONINFO, buf);
             SetDlgItemText(*this, IDC_DATE, _T(FILETOOL_VERDATE));
-            m_link.ConvertStaticToHyperlink(hwndDlg, IDC_WEBLINK, _T("http://tools.tortoisesvn.net"));
+            m_link.ConvertStaticToHyperlink(hwndDlg, IDC_WEBLINK, _T("http://stefanstools.sourceforge.net"));
         }
         return TRUE;
     case WM_COMMAND:
