@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2012 - Stefan Kueng
+// Copyright (C) 2007-2013 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -55,7 +55,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 
             m_hListControl = GetDlgItem(*this, IDC_CUSTCOMMANDS);
 
-            m_link.ConvertStaticToHyperlink(hwndDlg, IDC_LINK, _T("http://tools.tortoisesvn.net"));
+            m_link.ConvertStaticToHyperlink(hwndDlg, IDC_LINK, _T("http://stefanstools.sourceforge.net"));
 
             SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_SETCHECK, DWORD(m_regShowBtnText) ? BST_CHECKED : BST_UNCHECKED, 0);
             SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_SETCHECK, DWORD(m_regUseUNCPaths) ? BST_CHECKED : BST_UNCHECKED, 0);

@@ -1,6 +1,6 @@
 // AAClr - tool to adjust the aero colors according to the desktop wallpaper
 
-// Copyright (C) 2011-2012 - Stefan Kueng
+// Copyright (C) 2011-2013 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
             _stprintf_s(buf, _countof(buf), _T("AAClr (Auto Aero Color) version %ld.%ld.%ld.%ld"), AACLR_VERMAJOR, AACLR_VERMINOR, AACLR_VERMICRO, AACLR_VERBUILD);
             SetDlgItemText(*this, IDC_VERSIONINFO, buf);
             SetDlgItemText(*this, IDC_DATE, _T(AACLR_VERDATE));
-            m_link.ConvertStaticToHyperlink(hwndDlg, IDC_WEBLINK, _T("http://tools.tortoisesvn.net"));
+            m_link.ConvertStaticToHyperlink(hwndDlg, IDC_WEBLINK, _T("http://stefanstools.sourceforge.net"));
         }
         return TRUE;
     case WM_COMMAND:
