@@ -1,5 +1,11 @@
 body {
-    background: #5e7eff top repeat-x url("../img/background.png");
+    background-color: #3D63F2; /* Old browsers */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.08, #3D63F2), color-stop(0.4, #6084FE)); /* Chrome, Safari4+ */
+    background-image: -webkit-linear-gradient(top, #3D63F2 8%, #6084FE 40%);    /* Chrome10+, Safari5.1+ */
+    background-image:    -moz-linear-gradient(top, #3D63F2 8%, #6084FE 40%);    /* FF3.6+ */
+    background-image:     -ms-linear-gradient(top, #3D63F2 8%, #6084FE 40%);    /* IE10+ */
+    background-image:      -o-linear-gradient(top, #3D63F2 8%, #6084FE 40%);    /* Opera 11.10+ */
+    background-image:         linear-gradient(top, #3D63F2 8%, #6084FE 40%);    /* W3C */
     color: #181818;
     font: 80% "Lucida Grande", Verdana, Arial, Sans-Serif;
     margin: 0 auto;
