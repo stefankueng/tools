@@ -52,6 +52,13 @@ tabspace [/path:&quot;path\to\convert&quot;] [/checkonly] [/usetabs]
         <dt>/ext</dt>
         <dd>a list of file extensions to scan, other extensions are ignored.
             Defaults to <code>c;cc;cpp;cs;cxx;h;hpp;hxx</code></dd>
+        <dt>/include</dt>
+        <dd>a list of patterns to include, separated by <code>;</code>.
+            If this is set, <code>/ext</code> must not be set!<br>
+            For example <code>c:\sub1\*.*;*\sub2\*.cpp</code>.</dd>
+        <dt>/exclude</dt>
+        <dd>a list of patterns to ignore, separated by <code>;</code>.<br>
+            For example <code>c:\sub1\*.*;*\sub2\*.cpp</code>.</dd>
     </dl>
     <p>
         You can download the tool from <a href="http://code.google.com/p/stexbar/downloads/list">here</a>.
