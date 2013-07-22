@@ -1,6 +1,6 @@
 // tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011-2012 - Stefan Kueng
+// Copyright (C) 2011-2013 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -130,7 +130,7 @@ int _tmain(int argc, _TCHAR* argv[])
     {
         // print help text and get out
         _fputts(L"usage:\n", stdout);
-        _fputts(L"tabspace [/path:\"path\\to\\check\"] [/checkonly] [/usetabs] [/tabsize:4] [/leaveeol] [/ext:\"extension;list\"\n", stdout);
+        _fputts(L"tabspace [/path:\"path\\to\\check\"] [/checkonly] [/usetabs] [/tabsize:4] [/leaveeol] [/ext:\"extension;list\"]\n", stdout);
         _fputts(L"/path      : the path to scan, defaults to the current directory\n", stdout);
         _fputts(L"/checkonly : if specified, the files are not modified but only an info is shown\n", stdout);
         _fputts(L"/usetabs   : convert spaces to tabs instead of tabs to spaces\n", stdout);
