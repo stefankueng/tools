@@ -218,6 +218,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             long pos = 0;
             long inlinepos = 0;
             long spacestoinsert = 0;
+            bool bhasTabs = false;
             if (file.GetEncoding() == CTextFile::UNICODE_LE)
             {
                 bool inChar = false;
@@ -254,6 +255,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             inlinepostemp = tabsize;
                         spacestoinsert += (inlinepostemp - 1);      // minus one because the tab itself gets replaced
                         inlinepos += inlinepostemp;
+                        bhasTabs = true;
                     }
                 }
             }
@@ -294,10 +296,11 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             inlinepostemp = tabsize;
                         spacestoinsert += (inlinepostemp - 1);      // minus one because the tab itself gets replaced
                         inlinepos += inlinepostemp;
+                        bhasTabs = true;
                     }
                 }
             }
-            if (spacestoinsert)
+            if (bhasTabs)
             {
                 inlinepos = 0;
                 if (file.GetEncoding() == CTextFile::UNICODE_LE)
