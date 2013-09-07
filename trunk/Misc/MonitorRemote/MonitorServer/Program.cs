@@ -17,16 +17,16 @@ namespace MonitorServer
         static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         static int HWND_BROADCAST = 0xffff;
-        //the message is sent to all 
+        //the message is sent to all
         //top-level windows in the system
 
         const int HWND_TOPMOST = -1;
-        //the message is sent to one 
+        //the message is sent to one
         //top-level window in the system
 
         const int HWND_TOP = 0;        //
         const int HWND_BOTTOM = 1;        //limited use
-        const int HWND_NOTOPMOST = -2;       //        
+        const int HWND_NOTOPMOST = -2;       //
 
         const int SC_MONITORPOWER = 0xF170;
         const uint WM_SYSCOMMAND = 0x0112;
