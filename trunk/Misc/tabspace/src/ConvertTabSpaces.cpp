@@ -41,6 +41,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             int spacecount = 0;
             std::vector<long> spacegrouppositions;
             long pos = 0;
+            bool bHasSpacesToConvert = false;
             if (file.GetEncoding() == CTextFile::UNICODE_LE)
             {
                 bool inChar = false;
@@ -77,6 +78,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         {
                             spacegrouppositions.push_back(pos - spacecount + 1);
                             count += (spacecount - 1);
+                            bHasSpacesToConvert = true;
                             spacecount = 0;
                         }
                         if (*it == '\t')
@@ -121,6 +123,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         {
                             spacegrouppositions.push_back(pos - spacecount + 1);
                             count += (spacecount - 1);
+                            bHasSpacesToConvert = true;
                             spacecount = 0;
                         }
                         if (*pBuf == '\t')
@@ -133,7 +136,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
             // now we have the number of space groups we have to convert to tabs
             // create a new file buffer and copy everything over there, replacing those space
             // groups with tabs.
-            if (count)
+            if (bHasSpacesToConvert)
             {
                 if (file.GetEncoding() == CTextFile::UNICODE_LE)
                 {
