@@ -345,7 +345,7 @@ pre {
 }
 
 .important {
-    background: no-repeat 5px 1.33em url("../img/important.png");
+    background: no-repeat 4px 3px url("../img/important.png");
     -webkit-box-sizing: content-box;
        -moz-box-sizing: content-box;
             box-sizing: content-box;
