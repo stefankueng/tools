@@ -312,18 +312,19 @@ pre {
 }
 
 .AAClr          { background-position: 0      0; }
-.CommitMonitor  { background-position: 0  -72px; }
-.CryptSync      { background-position: 0 -146px; }
-.DemoHelper     { background-position: 0 -222px; }
-.EvImSync       { background-position: 0 -292px; }
-.FavIconizer    { background-position: 0 -368px; }
-.FileTool       { background-position: 0 -442px; }
-.MailNoter      { background-position: 0 -518px; }
-.SendMessage    { background-position: 0 -590px; }
-.console        { background-position: 0 -664px; }
-.grepWin        { background-position: 0 -740px; }
-.trafficWatcher { background-position: 0 -812px; }
-.win            { background-position: 0 -886px; }
+.BowPad         { background-position: 0  -74px; }
+.CommitMonitor  { background-position: 0 -148px; }
+.CryptSync      { background-position: 0 -222px; }
+.DemoHelper     { background-position: 0 -296px; }
+.EvImSync       { background-position: 0 -370px; }
+.FavIconizer    { background-position: 0 -444px; }
+.FileTool       { background-position: 0 -518px; }
+.MailNoter      { background-position: 0 -592px; }
+.SendMessage    { background-position: 0 -666px; }
+.console        { background-position: 0 -740px; }
+.grepWin        { background-position: 0 -814px; }
+.trafficwatcher { background-position: 0 -888px; }
+.win            { background-position: 0 -962px; }
 
 /* Homepage's table end */
 

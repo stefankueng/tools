@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BowPad - Translate the UI</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/pack.css">
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!--#include FILE="header.html"-->
+<div class="wrapper">
+<article>
+    <h1>Translate the User Interface</h1>
+    <!--#include FILE="adsense_top.html"-->
+    <p>
+        BowPad can show the UI in various languages, but if your language of
+        choice is not available, you can help creating it.
+    </p>
+    <h2>1. Get the required file</h2>
+    <p>
+        To translate the UI of BowPad into a specific language, you first need
+        the file with all the strings you have to translate.
+    </p>
+    <p>
+        The file is stored in our source repository, you can get it from there:
+        <a href="https://bowpad.googlecode.com/svn/trunk/Languages/BowPad.po">https://bowpad.googlecode.com/svn/trunk/Languages/BowPad.po</a>.<br/>
+        This is the file for the development version, so if you use this to start
+        your translation, you will have all the required strings in there.
+    </p>
+    <p>
+        If you're starting with your translation, then you first have to rename
+        this file to <em>BowPad_XX.po</em> with <em>XX</em> being the
+        <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO-639-1 language code</a>.
+    </p>
+    <h2>2. Start translating</h2>
+    <p>
+        You could translate the strings with a simple text editor (e.g., BowPad),
+        but I recommend a special po-file editor. For example:
+        <ul>
+            <li><a href="http://www.poedit.net/">Poedit</a></li>
+            <li><a href="http://virtaal.translatehouse.org/">Virtaal</a></li>
+            <li>and many others...</li>
+        </ul>
+        Now open the po-file in your tool of choice and start translating
+        the strings.
+    </p>
+    <section class="important">
+    <h2>Careful with special chars</h2>
+    <p>If you encounter special strings or chars in the original English string,
+    make sure you copy that part without changing it. For example tokens like <em>%ld</em>
+    are used to format the output. Make sure you keep those <em>as is</em>, otherwise
+    you will make BowPad crash when it uses your translated string!</p>
+    </section>
+    <h2>3. Send the translated file</h2>
+    <p>When you finished translating all the strings, attach the file to
+    the <a href="http://code.google.com/p/bowpad/issues/detail?id=1">issue number one</a>.
+    </p>
+</article>
+</div>
+<!--#include FILE="footer.html"-->
+</body>
+</html>
