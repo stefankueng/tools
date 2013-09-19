@@ -13,13 +13,6 @@ body {
     text-align: left;
 }
 
-/* IE 10: Remove grey background on active links
-   https://github.com/necolas/normalize.css/issues/172
-   Remove this when it's in normalize.css */
-a:active {
-    background-color: transparent;
-}
-
 a {
     color: #181818;
 }
