@@ -1,6 +1,6 @@
 // AAClr - tool to adjust the aero colors according to the desktop wallpaper
 
-// Copyright (C) 2011-2012 - Stefan Kueng
+// Copyright (C) 2011-2013 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -326,7 +326,7 @@ bool CUtils::SetBrightness(int val)
 
         V_VT(&var) = VT_BSTR;
         WCHAR buf[10]={0};
-        _stprintf_s(buf, _countof(buf), L"%ld", val);
+        _stprintf_s(buf, _countof(buf), L"%d", val);
         V_BSTR(&var) = SysAllocString(buf);
         hr = pInInst->Put(ArgName1, 0, &var, CIM_UINT8);
 
