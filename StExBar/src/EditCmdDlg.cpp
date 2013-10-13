@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2011-2012 - Stefan Kueng
+// Copyright (C) 2007-2009, 2011-2013 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -199,7 +199,7 @@ void CEditCmdDlg::SetupControls()
     SendMessage(GetDlgItem(*this, IDC_NOSELECTION), BM_SETCHECK, m_command.enabled_noselection ? BST_CHECKED : BST_UNCHECKED, 0);
 
     TCHAR buf[40] = {0};
-    _stprintf_s(buf, _countof(buf), _T("%ld"), m_command.enabled_selectedcount);
+    _stprintf_s(buf, _countof(buf), _T("%d"), m_command.enabled_selectedcount);
     SetDlgItemText(*this, IDC_SELECTEDCOUNT, buf);
 
     // disable controls which must not be changed for internal commands

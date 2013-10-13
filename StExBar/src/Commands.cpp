@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2012 - Stefan Kueng
+// Copyright (C) 2007-2013 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -336,9 +336,9 @@ bool CCommands::SaveToFile()
         TCHAR countstr[40] = {0};
         TCHAR keycodestr[40] = {0};
         TCHAR counterstr[40] = {0};
-        _stprintf_s(countstr, _countof(countstr), _T("%ld"), pCmd->enabled_selectedcount);
-        _stprintf_s(keycodestr, _countof(keycodestr), _T("%ld"), pCmd->key.keycode);
-        _stprintf_s(counterstr, _countof(counterstr), _T("%04ld_%s"), counter, pCmd->name.c_str());
+        _stprintf_s(countstr, _countof(countstr), _T("%d"), pCmd->enabled_selectedcount);
+        _stprintf_s(keycodestr, _countof(keycodestr), _T("%u"), pCmd->key.keycode);
+        _stprintf_s(counterstr, _countof(counterstr), _T("%04d_%s"), counter, pCmd->name.c_str());
 
 
         inifile.SetValue(counterstr, _T("name"), pCmd->name.c_str());
