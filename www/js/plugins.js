@@ -28,7 +28,7 @@
 // Place any jQuery/helper plugins in here.
 
 $(document).ready(function() {
-    $(".fancybox").fancybox({});
+    $('.fancybox').fancybox({});
 
     $(window).scroll(function() {
         if ($(this).scrollTop() > 250) {
