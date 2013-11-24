@@ -1,13 +1,16 @@
+html {
+    font: 13px "Lucida Grande", Verdana, Arial, Sans-Serif;
+}
+
 body {
-    background-color: #3D63F2; /* Old browsers */
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.08, #3D63F2), color-stop(0.4, #6084FE)); /* Chrome, Safari4+ */
-    background-image: -webkit-linear-gradient(top, #3D63F2 8%, #6084FE 40%);    /* Chrome10+, Safari5.1+ */
-    background-image:    -moz-linear-gradient(top, #3D63F2 8%, #6084FE 40%);    /* FF3.6+ */
-    background-image:     -ms-linear-gradient(top, #3D63F2 8%, #6084FE 40%);    /* IE10+ */
-    background-image:      -o-linear-gradient(top, #3D63F2 8%, #6084FE 40%);    /* Opera 11.10+ */
-    background-image:         linear-gradient(top, #3D63F2 8%, #6084FE 40%);    /* W3C */
+    background-color: #3d63f2; /* Old browsers */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.08, #3d63f2), color-stop(0.4, #6084fe)); /* Chrome, Safari4+ */
+    background-image: -webkit-linear-gradient(top, #3d63f2 8%, #6084fe 40%);    /* Chrome10+, Safari5.1+ */
+    background-image:    -moz-linear-gradient(top, #3d63f2 8%, #6084fe 40%);    /* FF3.6+ */
+    background-image:     -ms-linear-gradient(top, #3d63f2 8%, #6084fe 40%);    /* IE10+ */
+    background-image:      -o-linear-gradient(top, #3d63f2 8%, #6084fe 40%);    /* Opera 11.10+ */
+    background-image:         linear-gradient(top, #3d63f2 8%, #6084fe 40%);    /* W3C */
     color: #181818;
-    font: 80% "Lucida Grande", Verdana, Arial, Sans-Serif;
     margin: 0 auto;
     padding: 0;
     text-align: left;
@@ -50,12 +53,6 @@ code {
     border: 1px solid #e1e1e8;
     color: #d14;
     padding: 0.5px 4px;
-}
-
-code,
-pre {
-    font-family: monospace, serif;
-    font-size: 1em;
 }
 
 code,
@@ -196,10 +193,6 @@ pre {
 /*
  * ID selectors and classes
  */
-.main-sprite {
-    background: url("../img/main_sprite.png") no-repeat;
-}
-
 ::-moz-selection {
     background-color: #b3d4fc;
     text-shadow: none;
@@ -208,6 +201,10 @@ pre {
 ::selection {
     background-color: #b3d4fc;
     text-shadow: none;
+}
+
+.main-sprite {
+    background: url("../img/main_sprite.png") no-repeat;
 }
 
 .header-title,
@@ -403,6 +400,10 @@ pre {
         content: " (" attr(href) ")";
     }
 
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
     /*
      * Don't show links for images, or javascript/internal links
      */
@@ -412,7 +413,8 @@ pre {
         content: "";
     }
 
-    pre {
+    pre,
+    blockquote {
         border: 1px solid #999;
         page-break-inside: avoid;
     }
@@ -435,14 +437,14 @@ pre {
     }
 
     p,
-    h1,
-    h2 {
+    h2,
+    h3 {
         orphans: 3;
         widows: 3;
     }
 
-    h1,
-    h2 {
+    h2,
+    h3 {
         page-break-after: avoid;
     }
 }
