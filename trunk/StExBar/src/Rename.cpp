@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2012 - Stefan Kueng
+// Copyright (C) 2007-2009, 2012-2013 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #include <regex>
 #include "RenameDlg.h"
 #include "Pidl.h"
+#include "NumberReplacer.h"
 
 void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
 {
@@ -159,6 +160,7 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
         try
         {
             const std::tr1::wregex regCheck(dlg.GetMatchString(), dlg.GetRegexFlags());
+            NumberReplaceHandler handler(dlg.GetReplaceString());
 
             // start renaming the files
             IServiceProvider * pServiceProvider = NULL;
@@ -213,6 +215,7 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                                                         if (m_filelist.find(sDispName) != m_filelist.end())
                                                         {
                                                             replaced = std::tr1::regex_replace(sDispName, regCheck, dlg.GetReplaceString());
+                                                            replaced = handler.ReplaceCounters(replaced);
                                                             if (replaced.compare(sDispName))
                                                             {
                                                                 ITEMIDLIST * pidlrenamed;
