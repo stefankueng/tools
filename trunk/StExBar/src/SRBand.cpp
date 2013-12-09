@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2012 - Stefan Kueng
+// Copyright (C) 2007-2013 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1479,12 +1479,14 @@ HICON CDeskBand::LoadCommandIcon(const Command& cmd)
     {
         hIcon = LoadIcon(g_hInst, cmd.icon.c_str());
         if (hIcon == NULL)
+            hIcon = (HICON)LoadImage(g_hInst, cmd.icon.c_str(), IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
+        if (hIcon == NULL)
         {
             // icon loading failed. Let's try to load it differently:
             // the user might have specified a module path and an icon index
             // like this: c:\windows\explorer.exe,3 (the icon with ID 3 in explorer.exe)
             hIcon = NULL;
-            if (cmd.icon.find(',')>=0)
+            if (cmd.icon.find(',') != std::wstring::npos)
             {
                 size_t pos = cmd.icon.find_last_of(',');
                 std::wstring resourcefile, iconid;
@@ -1500,7 +1502,7 @@ HICON CDeskBand::LoadCommandIcon(const Command& cmd)
                 // loading the icon with an index didn't work either
                 // next we try to use the icon of the application defined in the commandline
                 std::wstring appname;
-                if (cmd.commandline.find(' ')>=0)
+                if (cmd.commandline.find(' ') != std::wstring::npos)
                     appname = cmd.commandline.substr(0, cmd.commandline.find(' '));
                 else
                     appname = cmd.commandline;
@@ -1508,9 +1510,13 @@ HICON CDeskBand::LoadCommandIcon(const Command& cmd)
             }
             if (hIcon == NULL)
             {
-                // if the icon handle is still invalid (no icon found yet),
-                // we use a default icon
-                hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_DEFAULT));
+                hIcon = ExtractIcon(g_hInst, cmd.icon.c_str(), 0);
+                if (hIcon == NULL)
+                {
+                    // if the icon handle is still invalid (no icon found yet),
+                    // we use a default icon
+                    hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_DEFAULT));
+                }
             }
         }
     }
