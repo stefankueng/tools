@@ -139,6 +139,10 @@
         files are located. This parameter is not optional!</dd>
         <dt>/pw:"password"</dt>
         <dd>specifies the password used for the encryption</dd>
+        <dt>/cpy:"pattern"</dt>
+        <dd>file pattern of files that are copied only, not encrypted</dd>
+        <dt>/nsy:"pattern"</dt>
+        <dd>file pattern of files that are not synched at all</dd>
         <dt>/encnames</dt>
         <dd>if specified, the file and foldernames are also encrypted
         in the destination folder</dd>
@@ -146,13 +150,24 @@
         <dd>if specified, the source folder is synched to the destination
         folder but changes in the destination folder are not synchronized
         back to the source folder</dd>
-        <dt>/ign:"ignore|pattern"</dt>
+        <dt>/use7z</dt>
+        <dd>use .7z extension instead of .cryptsync</dd>
+        <dt>/fat</dt>
+        <dd>use FAT write time accuracy (2seconds)</dd>
+        
+        <dt>/ignore:"ignore|pattern"</dt>
         <dd>specifies the ignore patterns to use. If not specified,
         the ignore pattern that has been set before is used.</dd>
         <dt>/progress</dt>
         <dd>if specified, a progress dialog is shown during the synchronization</dd>
         <dt>/syncall</dt>
         <dd>syncs all set up folder pairs, then exits</dd>
+        <dt>/logpath:"path"</dt>
+        <dd>specifies the path to the log file</dd>
+        <dt>/maxlog:nnn</dt>
+        <dd>specifies the maximum number of lines the log file will grow to</dd>
+        <dt>/tray</dt>
+        <dd>starts CryptSync in background, no dialog is shown</dd>
     </dl>
 
     <p>
