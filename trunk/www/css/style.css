@@ -1,5 +1,6 @@
 html {
     font: 13px "Lucida Grande", Verdana, Arial, Sans-Serif;
+    height: 100%;
 }
 
 body {
@@ -10,7 +11,10 @@ body {
     background-image:     -ms-linear-gradient(top, #3d63f2 8%, #6084fe 40%);    /* IE10+ */
     background-image:      -o-linear-gradient(top, #3d63f2 8%, #6084fe 40%);    /* Opera 11.10+ */
     background-image:         linear-gradient(top, #3d63f2 8%, #6084fe 40%);    /* W3C */
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     color: #181818;
+    height: 100%;
     margin: 0 auto;
     padding: 0;
     text-align: left;
@@ -82,7 +86,7 @@ dt {
 }
 
 footer {
-    background-position: 0 -310px !important;
+    background-position: 0 -310px;
     color: white;
     font-size: 85%;
     margin: 0 auto;
@@ -204,7 +208,8 @@ pre {
 }
 
 .main-sprite {
-    background: url("../img/main_sprite.png") no-repeat;
+    background-image: url("../img/main_sprite.png");
+    background-repeat: no-repeat;
 }
 
 .header-title,
@@ -219,7 +224,6 @@ pre {
     background: transparent none !important;
     color: #5e7eff;
     font-size: 200%;
-    font-weight: bold;
     margin: inherit;
     padding: 128px 0 0 348px;
 }
