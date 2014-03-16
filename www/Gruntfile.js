@@ -73,6 +73,21 @@ module.exports = function(grunt) {
             }
         },
 
+        htmlmin: {
+            dist: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                expand: true,
+                cwd: "<%= dirs.dest %>",
+                dest: "<%= dirs.dest %>",
+                src: [
+                    "**/*.html"
+                ]
+            }
+        },
+
         connect: {
             server: {
                 options: {
@@ -138,6 +153,7 @@ module.exports = function(grunt) {
         'copy',
         'includereplace',
         'concat',
+        'htmlmin',
         'cssmin',
         'uglify'
     ]);
