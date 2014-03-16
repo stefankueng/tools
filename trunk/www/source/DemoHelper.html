@@ -10,12 +10,12 @@
     <![endif]-->
 </head>
 <body>
-<!--#include FILE="header.html"-->
+@@include("templates/header.html")
 <div class="wrapper">
 <article>
     <section>
         <h1>DemoHelper</h1>
-        <!--#include FILE="adsense_top.html"-->
+        @@include("templates/adsense_top.html")
         <img src="img/demohelper/DemoHelperIcon.png" alt="DemoHelper Icon" width="128" height="128">
         <p>A tool which helps in demonstrations, presentations or if you
         just need to explain someone something on your computer.</p>
@@ -46,7 +46,7 @@
         <p>The colors are merged together with the screen by default.
         But it's possible to draw with solid colors if needed.</p>
 
-    <!--#include FILE="adsense_inpage.html"-->
+    @@include("templates/adsense_inpage.html")
 
         <h1 id="keyboard">Keyboard shortcuts</h1>
         <h2 id="zooming">Zooming Mode</h2>
@@ -99,6 +99,6 @@
     </section>
 </article>
 </div>
-<!--#include FILE="footer.html"-->
+@@include("templates/footer.html")
 </body>
 </html>

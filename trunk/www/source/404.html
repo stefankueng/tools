@@ -10,11 +10,11 @@
     <![endif]-->
 </head>
 <body>
-<!--#include FILE="header.html"-->
+@@include("templates/header.html")
 <div class="wrapper">
 <article>
     <h1>404 - Page Not Found</h1>
-    <!--#include FILE="adsense_top.html"-->
+    @@include("templates/adsense_top.html")
     <p>
         The page you requested doesn't exist on this server. Maybe it was moved to another place.
     </p>
@@ -24,7 +24,7 @@
     <div class="gcse-searchbox-only"></div>
 </article>
 </div>
-<!--#include FILE="footer.html"-->
+@@include("templates/footer.html")
 <script>
     (function() {
         var cx = 'partner-pub-0430507460695576:cuostksju2b';
