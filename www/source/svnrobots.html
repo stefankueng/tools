@@ -10,11 +10,11 @@
     <![endif]-->
 </head>
 <body>
-<!--#include FILE="header.html"-->
+@@include("templates/header.html")
 <div class="wrapper">
 <article>
     <h1>svnrobots.txt</h1>
-    <!--#include FILE="adsense_top.html"-->
+    @@include("templates/adsense_top.html")
     <p>
         Server administrators and/or committers of a Subversion repository
         can limit <a href="CommitMonitor.html">CommitMonitor</a> from accessing
@@ -49,6 +49,6 @@ disallowautodiff
 </pre>
     </article>
 </div>
-<!--#include FILE="footer.html"-->
+@@include("templates/footer.html")
 </body>
 </html>

@@ -14,16 +14,20 @@ rem set PSCP="C:\Programme\PuttY\pscp.exe"
 rem set PLINK="C:\Programme\Putty\plink.exe"
 rem set ZIP="C:\Programme\7-zip\7z.exe"
 
-if exist ..\..\toolssite rd /s /q ..\..\toolssite
-pushd scripts
-python generatesite.py
-popd
+pushd %~dp0
+
+if not exist ..\serverlogin.bat echo No login information provided! && goto end
+
+if not exist "node_modules" npm install
+cmd /c grunt build
 
 call ..\serverlogin.bat
 
-cd ..\..\toolssite
+pushd dist\
 
 %PSCP% -l %USERNAME% -pw %PASSWORD% -r *.* web.sourceforge.net:/home/project-web/stefanstools/htdocs/
 
+popd
 
-cd ..\stexbar\www
+:end
+exit /b

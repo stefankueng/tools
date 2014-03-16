@@ -10,11 +10,11 @@
     <![endif]-->
 </head>
 <body>
-<!--#include FILE="header.html"-->
+@@include("templates/header.html")
 <div class="wrapper">
 <article>
     <h1>tabspace</h1>
-    <!--#include FILE="adsense_top.html"-->
+    @@include("templates/adsense_top.html")
     <p>
         tabspace is a small command line tool that converts
         tabs to spaces or spaces to tabs automatically in
@@ -66,6 +66,6 @@ tabspace [/path:&quot;path\to\convert&quot;] [/checkonly] [/usetabs]
     </p>
 </article>
 </div>
-<!--#include FILE="footer.html"-->
+@@include("templates/footer.html")
 </body>
 </html>

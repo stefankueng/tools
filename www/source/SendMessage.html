@@ -10,11 +10,11 @@
     <![endif]-->
 </head>
 <body>
-<!--#include FILE="header.html"-->
+@@include("templates/header.html")
 <div class="wrapper">
 <article>
     <h1>SendMessage</h1>
-    <!--#include FILE="adsense_top.html"-->
+    @@include("templates/adsense_top.html")
     <p>
         SendMessage is a little tool to send Windows messages to any window.
     </p>
@@ -100,6 +100,6 @@
     Sends a <code>WM_CLOSE</code> message to all open console windows.
 </article>
 </div>
-<!--#include FILE="footer.html"-->
+@@include("templates/footer.html")
 </body>
 </html>
