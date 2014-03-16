@@ -18,7 +18,7 @@ pushd %~dp0
 
 if not exist ..\serverlogin.bat echo No login information provided! && goto end
 
-if not exist "node_modules" npm install
+if not exist "node_modules" cmd /c npm install
 cmd /c grunt build
 
 call ..\serverlogin.bat
