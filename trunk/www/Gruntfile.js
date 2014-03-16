@@ -92,6 +92,21 @@ module.exports = function(grunt) {
 
         clean: {
             dist: '<%= dirs.dest %>/'
+        },
+
+        validation: {
+            options: {
+                charset: 'utf-8',
+                doctype: 'HTML5',
+                failHard: true,
+                reset: true,
+                relaxerror: [
+                    'Bad value X-UA-Compatible for attribute http-equiv on element meta.'
+                ]
+            },
+            files: {
+                src: '<%= dirs.dest %>/**/*.html'
+            }
         }
 
     });
@@ -110,7 +125,8 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('test', [
-        'build'
+        'build',
+        'validation'
     ]);
 
     grunt.registerTask('dev', [
