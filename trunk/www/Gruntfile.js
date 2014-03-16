@@ -103,6 +103,15 @@ module.exports = function(grunt) {
             ]
         },
 
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc'
+            },
+            grunt: {
+                src: 'Gruntfile.js'
+            }
+        },
+
         validation: {
             options: {
                 charset: 'utf-8',
@@ -136,7 +145,8 @@ module.exports = function(grunt) {
     grunt.registerTask('test', [
         'build',
         'validation',
-        'csslint'
+        'csslint',
+        'jshint'
     ]);
 
     grunt.registerTask('dev', [
