@@ -94,6 +94,15 @@ module.exports = function(grunt) {
             dist: '<%= dirs.dest %>/'
         },
 
+        csslint: {
+            options: {
+                csslintrc: '.csslintrc'
+            },
+            src: [
+                '<%= dirs.src %>/css/style.css'
+            ]
+        },
+
         validation: {
             options: {
                 charset: 'utf-8',
@@ -126,7 +135,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', [
         'build',
-        'validation'
+        'validation',
+        'csslint'
     ]);
 
     grunt.registerTask('dev', [
