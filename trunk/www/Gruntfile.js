@@ -13,6 +13,7 @@ module.exports = function(grunt) {
             dist: {
                 files: [
                     {dest: '<%= dirs.dest %>/', src: '*', filter: 'isFile', expand: true, cwd: '<%= dirs.src %>/'},
+                    {dest: '<%= dirs.dest %>/', src: '.htaccess', expand: true, cwd: '<%= dirs.src %>/'},
                     {dest: '<%= dirs.dest %>/', src: 'img/**', expand: true, cwd: '<%= dirs.src %>/'},
                     {dest: '<%= dirs.dest %>/', src: 'js/html5shiv.js', expand: true, cwd: '<%= dirs.src %>/'},
                 ]
