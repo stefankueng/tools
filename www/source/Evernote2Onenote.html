@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Evernote2Onenote</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/pack.css">
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+@@include("templates/header.html")
+<div class="wrapper">
+<article>
+    <h1>Evernote2Onenote</h1>
+    @@include("templates/adsense_top.html")
+        <p>Evernote2Onenote is a small tool to import
+        <a href="http://www.evernote.com">Evernote</a> notebooks to <a href="http://www.onenote.com">Onenote</a>.
+        </p>
+        <img src="img/Evernote2Onenote/Evernote2Onenote-dialog.png" alt="main dialog" >
+        <p>
+        Evernote2Onenote requires .NET Framework 4. You can get this via Windows
+        update or directly from <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992&amp;displaylang=en">here</a>.
+        </p>
+        <h2 id="details">Details: how it works</h2>
+        <p>
+        Evernote2Onenote uses the Evernote script engine <code>ENScript.exe</code>
+        to export notes. These notes are parsed and then imported into Onenote.
+        </p>
+        <h2>How to use</h2>
+        <p>
+        Start Evernote2Onenote, then select the notebook you want to import into
+        Onenote from the combobox. Then click the <code>Start import</code> button
+        and wait until the import is finished.
+        </p>
+        <section class="important">
+            <h2>Evernote tags</h2>
+            <p>
+                Notes are imported to Onenote in a tab that has the same name as
+                the tag the note has. If a note has multiple tags, that note is
+                imported multiple times to Onenote, so you get duplicate notes!
+            </p>
+            <p>
+                To avoid duplicate notes, you should first remove duplicate tags
+                from your notes in Evernote. The easiest way to do that is to
+                create an empty new notebook, export your real notebook in <code>enex</code>
+                format and uncheck <code>tags</code> from the export options. Then
+                import that enex file into the new notebook. And then of course
+                only import that new notebook into Onenote.
+            </p>
+        </section>
+        <h2 id="installation">Installation</h2>
+        <p>Evernote2Onenote does not require installation. It can be run from any
+        place. Just doubleclick on the file to run it.</p>
+        <h2 id="reports">Report problems</h2>
+        <p>
+        In case you encounter a bug or some other problem, please file an
+        issue in the <a href="http://code.google.com/p/evimsync/issues/list">issue tracker</a>.
+        </p>
+        <h2 id="download">Download</h2>
+        <p>
+        Evernote2Onenote is open source (<a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3</a>). You can get the source code from
+        the Google Code <a href="http://code.google.com/p/evimsync/">project page</a>.
+        The source is in a subfolder for the EvImSync project since a lot of the code
+        is similar to that project.
+        </p>
+        <p>
+        If you just want the compiled application, get it from the
+        <a href="http://code.google.com/p/Evernote2Onenote/downloads/list">download page</a>.
+        </p>
+</article>
+</div>
+@@include("templates/footer.html")
+</body>
+</html>
