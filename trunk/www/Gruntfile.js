@@ -81,10 +81,10 @@ module.exports = function(grunt) {
                     collapseWhitespace: true
                 },
                 expand: true,
-                cwd: "<%= dirs.dest %>",
-                dest: "<%= dirs.dest %>",
+                cwd: '<%= dirs.dest %>',
+                dest: '<%= dirs.dest %>',
                 src: [
-                    "**/*.html"
+                    '**/*.html'
                 ]
             }
         },
