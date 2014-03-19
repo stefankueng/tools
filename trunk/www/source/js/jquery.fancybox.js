@@ -135,7 +135,7 @@
 			content : null,
 			title   : null,
 
-			// HTML templates
+			// HTML _includes
 			tpl: {
 				wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
 				image    : '<img class="fancybox-image" src="{href}" alt="" />',
