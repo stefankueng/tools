@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         copy: {
             dist: {
                 files: [
-                    {dest: '<%= dirs.dest %>/', src: '*', filter: 'isFile', expand: true, cwd: '<%= dirs.src %>/'},
+                    {dest: '<%= dirs.dest %>/', src: ['*', '!*.html'], filter: 'isFile', expand: true, cwd: '<%= dirs.src %>/'},
                     {dest: '<%= dirs.dest %>/', src: '.htaccess', expand: true, cwd: '<%= dirs.src %>/'},
                     {dest: '<%= dirs.dest %>/', src: ['img/**', '!**/_old/**'], expand: true, cwd: '<%= dirs.src %>/'},
                     {dest: '<%= dirs.dest %>/', src: 'js/*.min.js', expand: true, cwd: '<%= dirs.src %>/'}
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
         },
 
         cssmin: {
-            minify: {
+            dist: {
                 options: {
                     keepSpecialComments: 0,
                     report: 'min',
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
                 preserveComments: false,
                 report: 'min'
             },
-            minify: {
+            dist: {
                 files: {
                     '<%= concat.js.dest %>': '<%= concat.js.dest %>'
                 }
@@ -83,9 +83,7 @@ module.exports = function(grunt) {
                 expand: true,
                 cwd: '<%= dirs.dest %>',
                 dest: '<%= dirs.dest %>',
-                src: [
-                    '**/*.html'
-                ]
+                src: ['**/*.html']
             }
         },
 
@@ -99,11 +97,11 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            files: ['<%= dirs.src %>/**/*', '.csslintrc', '.jshintrc', 'Gruntfile.js'],
-            tasks: 'dev',
             options: {
                 livereload: true
-            }
+            },
+            files: ['<%= dirs.src %>/**/*', '.csslintrc', '.jshintrc', 'Gruntfile.js'],
+            tasks: 'dev'
         },
 
         clean: {
@@ -124,7 +122,7 @@ module.exports = function(grunt) {
                 jshintrc: '.jshintrc'
             },
             grunt: {
-                src: 'Gruntfile.js'
+                src: ['Gruntfile.js', '<%= dirs.src %>/js/plugins.js']
             }
         },
 
@@ -133,10 +131,7 @@ module.exports = function(grunt) {
                 charset: 'utf-8',
                 doctype: 'HTML5',
                 failHard: true,
-                reset: true,
-                relaxerror: [
-                    'Bad value X-UA-Compatible for attribute http-equiv on element meta.'
-                ]
+                reset: true
             },
             files: {
                 src: '<%= dirs.dest %>/**/*.html'
@@ -149,11 +144,15 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
     require('time-grunt')(grunt);
 
-    grunt.registerTask('build', [
+    grunt.registerTask('dev', [
         'clean',
         'copy',
         'includereplace',
-        'concat',
+        'concat'
+    ]);
+
+    grunt.registerTask('build', [
+        'dev',
         'htmlmin',
         'cssmin',
         'uglify'
@@ -164,13 +163,6 @@ module.exports = function(grunt) {
         'validation',
         'csslint',
         'jshint'
-    ]);
-
-    grunt.registerTask('dev', [
-        'clean',
-        'copy',
-        'includereplace',
-        'concat'
     ]);
 
     grunt.registerTask('default', [

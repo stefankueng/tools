@@ -1,9 +1,8 @@
-/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true,
-  strict:false, undef:true, unused:true, curly:true, browser:true, jquery:true,
-  trailing:true*/
+/* jshint browser:true, jquery:true */
 
 // Avoid `console` errors in browsers that lack a console.
 (function() {
+    'use strict';
     var method;
     var noop = function () {};
     var methods = [
@@ -28,6 +27,7 @@
 // Place any jQuery/helper plugins in here.
 
 $(document).ready(function() {
+    'use strict';
     $('.fancybox').fancybox({});
 
     $(window).scroll(function() {
