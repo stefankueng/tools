@@ -22,6 +22,12 @@ module.exports = function(grunt) {
 
         includereplace: {
             dist: {
+                options: {
+                    globals: {
+                        metaDescription: '',
+                        metaKeywords: ''
+                    }
+                },
                 files: [
                     {src: '*.html', dest: '<%= dirs.dest %>/', expand: true, cwd: '<%= dirs.src %>/'}
                 ]
