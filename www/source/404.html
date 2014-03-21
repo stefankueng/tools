@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Stefan's Tools - 404</title>
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="css/pack.css">
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-@@include("_includes/header.html")
+@@include("_includes/header.html", {"title": "Error 404"})
 <div class="wrapper">
 <article>
     <h1>404 - Page Not Found</h1>
@@ -24,7 +12,6 @@
     <div class="gcse-searchbox-only"></div>
 </article>
 </div>
-@@include("_includes/footer.html")
 <script>
     (function() {
         var cx = 'partner-pub-0430507460695576:cuostksju2b';
@@ -33,5 +20,4 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
     })();
 </script>
-</body>
-</html>
+@@include("_includes/footer.html")

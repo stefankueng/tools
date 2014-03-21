@@ -1,16 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Stefan's Tools</title>
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="css/pack.css">
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-@@include("_includes/header.html")
+@@include("_includes/header.html", {
+    "title": "Home",
+    "metaDescription": "<meta name=\"description\" content=\"Useful open source tools that make your life easier\">"
+})
 <div class="wrapper">
 <nav>
     <ul>
@@ -262,5 +253,3 @@
 </article>
 </div>
 @@include("_includes/footer.html")
-</body>
-</html>

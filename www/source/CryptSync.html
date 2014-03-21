@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>CryptSync - encrypt your SkyDrive, Google Drive, DropBox files</title>
-    <meta name="description" content="synchronizes folder contents while encrypting it">
-    <meta name="keywords" content="encrypt,SkyDrive,Google Drive,DropBox">
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="css/pack.css">
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-@@include("_includes/header.html")
+@@include("_includes/header.html", {
+    "title": "CryptSync",
+    "metaDescription": "<meta name=\"description\" content=\"Encrypt your SkyDrive, Google Drive, DropBox files\">",
+    "metaKeywords": "<meta name=\"keywords\" content=\"encrypt,SkyDrive,Google Drive,DropBox\">"
+})
 <div class="wrapper">
 <article>
     <h1>CryptSync</h1>
@@ -176,5 +166,3 @@
 </article>
 </div>
 @@include("_includes/footer.html")
-</body>
-</html>
