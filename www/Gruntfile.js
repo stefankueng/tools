@@ -83,8 +83,8 @@ module.exports = function(grunt) {
         htmlmin: {
             dist: {
                 options: {
-                    removeComments: true,
-                    collapseWhitespace: true
+                    collapseWhitespace: true,
+                    removeComments: true
                 },
                 expand: true,
                 cwd: '<%= dirs.dest %>',
