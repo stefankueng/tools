@@ -3,9 +3,7 @@
     "camelcase" : true,
     "curly"     : true,
     "eqeqeq"    : true,
-    "expr"      : true,
     "forin"     : true,
-    "freeze"    : true,
     "indent"    : 4,
     "latedef"   : true,
     "noarg"     : true,
@@ -14,7 +12,6 @@
     "nonbsp"    : true,
     "quotmark"  : "single",
     "strict"    : true,
-    "trailing"  : true,
     "undef"     : true,
     "unused"    : true
 }
