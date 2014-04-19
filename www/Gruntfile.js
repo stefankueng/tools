@@ -52,6 +52,18 @@ module.exports = function(grunt) {
             }
         },
 
+        uncss: {
+            options: {
+                ignore: [/(#|\.)fancybox(\-[a-zA-Z]+)?/],
+                htmlroot: '<%= dirs.dest %>',
+                ignoreSheets: [/fonts.googleapis/]
+            },
+            dist: {
+                src: '<%= dirs.dest %>/**/*.html',
+                dest: '<%= concat.css.dest %>'
+            }
+        },
+
         cssmin: {
             dist: {
                 options: {
@@ -195,6 +207,7 @@ module.exports = function(grunt) {
         'includereplace',
         'useminPrepare',
         'concat',
+        'uncss',
         'cssmin',
         'uglify',
         'filerev',
