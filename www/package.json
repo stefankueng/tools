@@ -27,8 +27,10 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-uglify": "~0.4.0",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-html-validation": "~0.1.14",
+    "grunt-filerev": "~0.2.1",
+    "grunt-html-validation": "~0.1.15",
     "grunt-include-replace": "~1.2.0",
+    "grunt-usemin": "~2.1.1",
     "load-grunt-tasks": "~0.4.0",
     "time-grunt": "~0.3.1"
   },

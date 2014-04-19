@@ -92,6 +92,36 @@ module.exports = function(grunt) {
             }
         },
 
+        filerev: {
+            css: {
+                src: '<%= dirs.dest %>/css/**/{,*/}*.css'
+             },
+            js: {
+                src: [
+                    '<%= dirs.dest %>/js/**/{,*/}*.js',
+                    '!<%= dirs.dest %>/js/jquery*.min.js'
+                ]
+            },
+            images: {
+                src: [
+                    '<%= dirs.dest %>/img/**/*.{jpg,jpeg,gif,png}'
+                ]
+            }
+        },
+
+        useminPrepare: {
+            html: '<%= dirs.dest %>/index.html',
+            options: {
+                dest: '<%= dirs.dest %>',
+                root: '<%= dirs.dest %>'
+            }
+        },
+
+        usemin: {
+            css: '<%= dirs.dest %>/css/pack*.css',
+            html: '<%= dirs.dest %>/**/*.html'
+        },
+
         connect: {
             server: {
                 options: {
@@ -153,21 +183,30 @@ module.exports = function(grunt) {
         'clean',
         'copy',
         'includereplace',
-        'concat'
+        'useminPrepare',
+        'concat',
+        'filerev',
+        'usemin'
     ]);
 
     grunt.registerTask('build', [
-        'dev',
-        'htmlmin',
+        'clean',
+        'copy',
+        'includereplace',
+        'useminPrepare',
+        'concat',
         'cssmin',
-        'uglify'
+        'uglify',
+        'filerev',
+        'usemin',
+        'htmlmin'
     ]);
 
     grunt.registerTask('test', [
         'build',
-        'validation',
         'csslint',
-        'jshint'
+        'jshint',
+        'validation'
     ]);
 
     grunt.registerTask('default', [
