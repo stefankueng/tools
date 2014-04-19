@@ -1,5 +1,6 @@
+'use strict';
+
 module.exports = function(grunt) {
-    'use strict';
 
     // Project configuration.
     grunt.initConfig({
@@ -55,7 +56,6 @@ module.exports = function(grunt) {
             dist: {
                 options: {
                     keepSpecialComments: 0,
-                    report: 'min',
                     compatibility: 'ie8'
                 },
                 files: {
@@ -70,8 +70,7 @@ module.exports = function(grunt) {
                     warnings: false
                 },
                 mangle: true,
-                preserveComments: false,
-                report: 'min'
+                preserveComments: false
             },
             dist: {
                 files: {
@@ -127,7 +126,7 @@ module.exports = function(grunt) {
             options: {
                 jshintrc: '.jshintrc'
             },
-            grunt: {
+            files: {
                 src: ['Gruntfile.js', '<%= dirs.src %>/js/plugins.js']
             }
         },
