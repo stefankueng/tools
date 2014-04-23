@@ -165,7 +165,8 @@
 /* Overlay helper */
 
 .fancybox-lock {
-    overflow: hidden !important;
+    /*overflow: hidden !important;*/
+    overflow: visible !important; /* work around page jumping to the top */
     width: auto;
 }
 
