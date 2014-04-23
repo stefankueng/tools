@@ -30,17 +30,10 @@ $(document).ready(function() {
     'use strict';
     $('.fancybox').fancybox({});
 
-    $(window).scroll(function() {
-        if ($(this).scrollTop() > 250) {
-            $('.scrollup').fadeIn();
-        } else {
-            $('.scrollup').fadeOut();
-        }
-    });
-
-    $('.scrollup').click(function() {
-        $('html, body').animate({ scrollTop: 0 }, 'normal'); /* slow, normal, fast, 600 (ms) */
-        return false;
+    $.scrollUp({
+        scrollDistance: 250,            // Distance from top/bottom before showing element (px)
+        scrollTitle: 'Scroll to top',   // Set a custom <a> title if required.
+        scrollImg: true                 // Set true to use image
     });
 
 });
