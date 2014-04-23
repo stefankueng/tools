@@ -36,12 +36,6 @@ a,
             transition: color 0.15s linear;
 }
 
-a:active.scrollup,
-a:focus.scrollup,
-a:hover.scrollup {
-    outline: 0;
-}
-
 article {
     -webkit-box-sizing: content-box;
        -moz-box-sizing: content-box;
@@ -370,16 +364,13 @@ pre {
     white-space: nowrap;
 }
 
-.scrollup {
-    background: no-repeat url("../img/icon_top.png");
-    display: none;
-    opacity: 0.9;
-    position: fixed;
-    text-indent: -9999px; /*so that the text is hidden*/
-    width: 40px;
-    height: 40px;
-    bottom: 40px;
-    right: 40px;
+/* Image style */
+#scrollUp {
+    background-image: url("../img/icon_top.png");
+    bottom: 2%;
+    right: 2%;
+    width: 40px;    /* Width of image */
+    height: 40px;   /* Height of image */
 }
 
 .superscript {

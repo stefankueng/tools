@@ -45,6 +45,7 @@ module.exports = function(grunt) {
             },
             js: {
                 src: ['<%= dirs.src %>/js/plugins.js',
+                      '<%= dirs.src %>/js/jquery.scrollUp.js',
                       '<%= dirs.src %>/js/jquery.mousewheel.js',
                       '<%= dirs.src %>/js/jquery.fancybox.js'
                 ],
@@ -54,7 +55,7 @@ module.exports = function(grunt) {
 
         uncss: {
             options: {
-                ignore: [/(#|\.)fancybox(\-[a-zA-Z]+)?/],
+                ignore: [/(#|\.)fancybox(\-[a-zA-Z]+)?/, '#scrollUp'],
                 htmlroot: '<%= dirs.dest %>',
                 ignoreSheets: [/fonts.googleapis/]
             },
