@@ -96,6 +96,7 @@ module.exports = function(grunt) {
             dist: {
                 options: {
                     collapseWhitespace: true,
+                    minifyJS: true,
                     removeComments: true
                 },
                 expand: true,
