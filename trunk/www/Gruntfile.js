@@ -68,8 +68,8 @@ module.exports = function(grunt) {
         cssmin: {
             dist: {
                 options: {
-                    keepSpecialComments: 0,
-                    compatibility: 'ie8'
+                    compatibility: 'ie8',
+                    keepSpecialComments: 0
                 },
                 files: {
                     '<%= concat.css.dest %>': '<%= concat.css.dest %>'
@@ -140,7 +140,7 @@ module.exports = function(grunt) {
             options: {
                 hostname: 'localhost',
                 livereload: 35729,
-                port: 8000
+                port: 8001
             },
             livereload: {
                  options: {
