@@ -1,3 +1,16 @@
+* {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+*:before,
+*:after {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
 html {
     font: 13px "Lucida Grande", Verdana, Arial, Sans-Serif;
     height: 100%;
@@ -37,13 +50,10 @@ a,
 }
 
 article {
-    -webkit-box-sizing: content-box;
-       -moz-box-sizing: content-box;
-            box-sizing: content-box;
     font-size: 110%;
     margin: 10px 8px 0;
     padding: 2px 10px 22px 40px;
-    width: 795px;
+    width: 845px;
 }
 
 code {
@@ -335,9 +345,6 @@ pre {
 
 .important {
     background: no-repeat 4px 3px url("../img/important.png");
-    -webkit-box-sizing: content-box;
-       -moz-box-sizing: content-box;
-            box-sizing: content-box;
     border-left: 1px solid #069;
     border-top: 5px solid #069;
     -webkit-border-top-left-radius: 4px;
@@ -347,7 +354,7 @@ pre {
     margin: 1em 0 0 1em;
     min-height: 52px;
     padding-left: 42px;
-    width: 90%;
+    width: 95%;
 }
 
 .important h2 {
