@@ -97,6 +97,7 @@ module.exports = function(grunt) {
                 options: {
                     collapseWhitespace: true,
                     minifyJS: true,
+                    removeAttributeQuotes: true,
                     removeComments: true
                 },
                 expand: true,
