@@ -1,7 +1,7 @@
 @@include("_includes/header.html", {"title": "SendMessage"})
 <div class="wrapper">
-<article>
-    <h1>SendMessage</h1>
+<div class="content">
+    <h2>SendMessage</h2>
     @@include("_includes/adsense_top.html")
     <p>
         SendMessage is a little tool to send Windows messages to any window.
@@ -50,7 +50,7 @@
         To download the tool, go to the <a href="http://code.google.com/p/sendmessage/downloads/list">download page</a>.
     </p>
 
-    <h2 id="commands">Command line usage</h2>
+    <h3 id="commands">Command line usage</h3>
     <p>
         SendMessage can also be used from a command line:
     </p>
@@ -83,9 +83,9 @@
         the message is sent to the top level window of the specified process(es).
     </p>
 
-    <h2 id="example">Example</h2>
+    <h3 id="example">Example</h3>
     <pre>SendMessage.exe /message:16 /processname:cmd.exe</pre>
     Sends a <code>WM_CLOSE</code> message to all open console windows.
-</article>
+</div>
 </div>
 @@include("_includes/footer.html")

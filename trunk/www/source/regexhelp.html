@@ -3,14 +3,15 @@
     "metaKeywords": "<meta name=\"keywords\" content=\"grepWin,regex,tutorial,examples\">"
 })
 <div class="wrapper">
-<article>
-     <h1>Regular expression help and examples for grepWin</h1>
+<div class="content">
+     <h2>Regular expression help and examples for grepWin</h2>
      @@include("_includes/adsense_top.html")
      <p>
          grepWin uses the <a href="http://www.boost.org">boost</a> regex engine to do its work,
          with the <a href="http://www.boost.org/doc/libs/1_51_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html">Perl Regular Expression Syntax</a>.
      </p>
-     <h2 id="intro">Introduction</h2>
+
+     <h3 id="intro">Introduction</h3>
      <p>
          I'll only explain the very basics on how to use regular
          expressions and some special variables you can use
@@ -22,7 +23,8 @@
          please go to <a href="http://www.regular-expressions.info">this site</a>
          - it also explains a lot on how regex engines work internally.
      </p>
-     <h2 id="basics">search basics</h2>
+
+     <h3 id="basics">search basics</h3>
      <dl>
          <dt>. (dot)</dt>
          <dd>
@@ -121,7 +123,8 @@
          finds <code>catfood</code> and <code>dogfood</code>.
          </dd>
      </dl>
-     <h2 id="replacing">replacing</h2>
+
+     <h3 id="replacing">replacing</h3>
      <p>
          replacing strings is not more complicated than searching.
          Whatever the search finds is replaced with the replace
@@ -170,7 +173,7 @@
 
      @@include("_includes/adsense_inpage.html")
 
-     <h2 id="examples">replacing examples</h2>
+     <h3 id="examples">replacing examples</h3>
      <dl>
          <dt>insert line numbers at the start of each line</dt>
          <dd>
@@ -184,6 +187,6 @@
 </pre>
         </dd>
     </dl>
-</article>
+</div>
 </div>
 @@include("_includes/footer.html")
