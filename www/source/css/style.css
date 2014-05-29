@@ -372,14 +372,22 @@ pre {
     width: 95%;
 }
 
-.important h2 {
+.important h2,
+.important h3 {
     background: none;
     color: #069;
-    font-size: 1.05em;
     font-style: italic;
     font-weight: bold;
     margin: 0;
     padding: 4px 0 0 0;
+}
+
+.important h2 {
+    font-size: 1.05em;
+}
+
+.important h3 {
+    font-size: 1.0em
 }
 
 .nowrap {
