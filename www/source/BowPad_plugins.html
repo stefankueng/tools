@@ -4,7 +4,7 @@
 })
 <div class="wrapper">
 <div class="content">
-    <h1>Javascript Plugins</h1>
+    <h2>Javascript Plugins</h2>
     @@include("_includes/adsense_top.html")
     <p>
         BowPad can use plugins and scripts written in javascript (jscript) or
@@ -21,7 +21,7 @@
         and provides a lot of functions a plugin can call.
     </p>
 
-    <h2>Callback functions</h2>
+    <h3>Callback functions</h3>
         <pre class="prettyprint">
 // this is the main function that gets executed when the command is run, i.e.
 // the button is clicked
@@ -63,7 +63,8 @@ function TabNotify(code, tabOrigin)
     return;
 }
         </pre>
-    <h2>BowPad functions</h2>
+
+    <h3>BowPad functions</h3>
     <p>
         To access BowPad and its data, an object named &quot;BowPad&quot; is available
         and provides a lot of functions a plugin can call.
@@ -71,6 +72,7 @@ function TabNotify(code, tabOrigin)
     <p>
         First a list of functions and properties for the main component of BowPad:
     </p>
+
     <pre class="prettyprint">
 // shows a message box with the specified message text
 BowPad.alert("message");
@@ -156,6 +158,7 @@ BowPad.SaveCurrentTab(saveas);
 // the button needs changing.
 BowPad.InvalidateState();
     </pre>
+
     <p>
         BowPad uses the Scintilla editor component. A plugin can access that
         component via special functions provided by the &quot;BowPad&quot; object.
@@ -189,6 +192,7 @@ BowPad.InvalidateState();
         in structs. These are converted differently to &quot;BowPad&quot; functions
         and listed here:
     </p>
+
     <pre class="prettyprint">
 // returns the specified range of text, between the minPos position and the
 // maxPos position
@@ -202,6 +206,7 @@ var sChar = BowPad.SciGetCharAt(position);
 // finds the text
 var foundPos = BowPad.SciFindText(flags, minPos, maxPos, "text to search for");
     </pre>
+
 </div>
 </div>
 <script>window.onload = prettyPrint();</script>
