@@ -1,4 +1,7 @@
-@@include("_includes/header.html", {"title": "BowPad JavaScript Plugins"})
+@@include("_includes/header.html", {
+    "title": "BowPad JavaScript Plugins",
+    "headHTML": "<link rel=\"stylesheet\" href=\"css/prettify.min.css\">\n<script src=\"js/prettify/prettify.js\"></script>"
+})
 <div class="wrapper">
 <div class="content">
     <h1>Javascript Plugins</h1>
@@ -19,7 +22,7 @@
     </p>
 
     <h2>Callback functions</h2>
-        <pre>
+        <pre class="prettyprint">
 // this is the main function that gets executed when the command is run, i.e.
 // the button is clicked
 function Execute()
@@ -68,7 +71,7 @@ function TabNotify(code, tabOrigin)
     <p>
         First a list of functions and properties for the main component of BowPad:
     </p>
-    <pre>
+    <pre class="prettyprint">
 // shows a message box with the specified message text
 BowPad.alert("message");
 // outputs the specified text to the debug output of an attached debugger
@@ -186,7 +189,7 @@ BowPad.InvalidateState();
         in structs. These are converted differently to &quot;BowPad&quot; functions
         and listed here:
     </p>
-    <pre>
+    <pre class="prettyprint">
 // returns the specified range of text, between the minPos position and the
 // maxPos position
 var sText = BowPad.SciGetTextRange(minPos, maxPos);
@@ -201,4 +204,5 @@ var foundPos = BowPad.SciFindText(flags, minPos, maxPos, "text to search for");
     </pre>
 </div>
 </div>
+<script>window.onload = prettyPrint();</script>
 @@include("_includes/footer.html")

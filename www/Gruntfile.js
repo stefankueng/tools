@@ -16,7 +16,7 @@ module.exports = function(grunt) {
                     {dest: '<%= dirs.dest %>/', src: ['*', '!*.html'], filter: 'isFile', expand: true, cwd: '<%= dirs.src %>/'},
                     {dest: '<%= dirs.dest %>/', src: '.htaccess', expand: true, cwd: '<%= dirs.src %>/'},
                     {dest: '<%= dirs.dest %>/', src: ['img/**', '!**/_old/**'], expand: true, cwd: '<%= dirs.src %>/'},
-                    {dest: '<%= dirs.dest %>/', src: 'js/*.min.js', expand: true, cwd: '<%= dirs.src %>/'}
+                    {dest: '<%= dirs.dest %>/', src: ['js/*.min.js', 'js/prettify/**'], expand: true, cwd: '<%= dirs.src %>/'},
                 ]
             }
         },
@@ -25,6 +25,7 @@ module.exports = function(grunt) {
             dist: {
                 options: {
                     globals: {
+                        headHTML: '',
                         metaDescription: '',
                         metaKeywords: ''
                     }
@@ -36,6 +37,10 @@ module.exports = function(grunt) {
         },
 
         concat: {
+            prettify: {
+                src: '<%= dirs.src %>/css/prettify.css',
+                dest: '<%= dirs.dest %>/css/prettify.min.css'
+            },
             css: {
                 src: ['<%= dirs.src %>/css/normalize.css',
                       '<%= dirs.src %>/css/jquery.fancybox.css',
@@ -66,14 +71,17 @@ module.exports = function(grunt) {
         },
 
         cssmin: {
-            dist: {
-                options: {
-                    compatibility: 'ie8',
-                    keepSpecialComments: 0
-                },
-                files: {
-                    '<%= concat.css.dest %>': '<%= concat.css.dest %>'
-                }
+            options: {
+                compatibility: 'ie8',
+                keepSpecialComments: 0
+            },
+            prettify: {
+                src: '<%= concat.prettify.dest %>',
+                dest: '<%= concat.prettify.dest %>'
+            },
+            css: {
+                src: '<%= concat.css.dest %>',
+                dest: '<%= concat.css.dest %>'
             }
         },
 
@@ -114,7 +122,8 @@ module.exports = function(grunt) {
             js: {
                 src: [
                     '<%= dirs.dest %>/js/**/{,*/}*.js',
-                    '!<%= dirs.dest %>/js/jquery*.min.js'
+                    '!<%= dirs.dest %>/js/jquery*.min.js',
+                    '!<%= dirs.dest %>/js/prettify/lang-*.js'
                 ]
             },
             images: {
