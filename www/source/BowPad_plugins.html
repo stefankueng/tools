@@ -8,7 +8,8 @@
     @@include("_includes/adsense_top.html")
     <p>
         BowPad can use plugins and scripts written in javascript (jscript) or
-        VBScript.
+        VBScript. It uses the <a href="http://support.microsoft.com/kb/188135">
+        Windows Scripting Host (WSH)</a> to handle the plugins.
     </p>
     <p>
         To be used as a plugin in BowPad, the script must implement a few callback
@@ -55,6 +56,8 @@
     <h3>Callback functions</h3>
         <pre class="prettyprint">
 // returns the version of the plugin
+// this callback is not optional! If you fail to implement this, the plugin
+// config dialog won't work properly with your plugin
 function Version() { return 100; }
 
 // this is the main function that gets executed when the command is run, i.e.
