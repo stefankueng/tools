@@ -31,8 +31,8 @@
     "grunt-html-validation": "~0.1.18",
     "grunt-include-replace": "~2.0.0",
     "grunt-uncss": "~0.3.4",
-    "grunt-usemin": "~2.2.0",
-    "load-grunt-tasks": "~0.5.0",
+    "grunt-usemin": "~2.3.0",
+    "load-grunt-tasks": "~0.6.0",
     "time-grunt": "~0.3.2"
   },
   "engines": {
