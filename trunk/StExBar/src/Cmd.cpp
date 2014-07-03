@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2012 - Stefan Kueng
+// Copyright (C) 2007-2012, 2014 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,9 +26,9 @@ void CDeskBand::StartCmd(const std::wstring& cwd, std::wstring params, bool elev
 {
     STARTUPINFO startup;
     PROCESS_INFORMATION process;
-    memset(&startup, 0, sizeof(startup));
+    SecureZeroMemory(&startup, sizeof(startup));
     startup.cb = sizeof(startup);
-    memset(&process, 0, sizeof(process));
+    SecureZeroMemory(&process, sizeof(process));
 
     // find the cmd program
     TCHAR buf[MAX_PATH] = {0};
@@ -142,9 +142,9 @@ void CDeskBand::StartApplication(const std::wstring& cwd, std::wstring commandli
 {
     STARTUPINFO startup;
     PROCESS_INFORMATION process;
-    memset(&startup, 0, sizeof(startup));
+    SecureZeroMemory(&startup, sizeof(startup));
     startup.cb = sizeof(startup);
-    memset(&process, 0, sizeof(process));
+    SecureZeroMemory(&process, sizeof(process));
 
     DWORD len = ExpandEnvironmentStrings(commandline.c_str(), NULL, 0);
     TCHAR * nonconst = new TCHAR[len+1];
