@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2013 - Stefan Kueng
+// Copyright (C) 2007-2014 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,6 +30,9 @@
 #include "ChevronMenu.h"
 #include "OptionsDlg.h"
 #include "UnicodeUtils.h"
+#include "PathUtils.h"
+#include "StringUtils.h"
+#include "NameDlg.h"
 #include <commctrl.h>
 
 #pragma comment(lib, "uxtheme.lib")
@@ -995,6 +998,10 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
         {
             Rename(hWnd, items);
         }
+        else if (cmd.name.compare(_T("Move to subfolder")) == 0)
+        {
+            MoveToSubfolder(hWnd, cwd, items);
+        }
         else
             DebugBreak();
     }
@@ -1629,4 +1636,62 @@ TCHAR * CDeskBand::GetEditBoxText(bool sanitized /* = true */)
         }
     }
     return buf;
+}
+
+void CDeskBand::MoveToSubfolder(HWND hWnd, const std::wstring& cwd, const std::map<std::wstring, ULONG>& items)
+{
+    if (cwd.empty())
+        return;
+    if (!PathFileExists(cwd.c_str()))
+        return;
+
+    // try to find a default name for the new folder from the selected files
+    std::wstring foldername;
+    for (const auto& file : items)
+    {
+        std::wstring name = CPathUtils::GetFileNameWithoutExtension(file.first);
+        if (foldername.empty())
+            foldername = name;
+        else
+        {
+            size_t neqpos = 0;
+            size_t shortnamelength = min(foldername.size(), name.size());
+            for (size_t i = 0; i < shortnamelength; ++i)
+            {
+                if (foldername[i] == name[i])
+                    neqpos = i;
+                else
+                    break;
+            }
+            if (neqpos > 3)
+                foldername = name.substr(0, neqpos + 1);
+            else
+            {
+                foldername.clear();
+                break;
+            }
+        }
+    }
+    if (foldername.empty())
+        foldername = L"new folder for files";
+
+    CNameDlg dlg(hWnd);
+    dlg.Name = foldername;
+    if (dlg.DoModal(g_hInst, IDD_NAMEDLG, hWnd) == IDOK)
+    {
+        foldername = dlg.Name;
+        std::wstring folderpath = cwd + L"\\" + foldername;
+        int retrycount = 1;
+        while (PathFileExists(folderpath.c_str()))
+        {
+            folderpath = CStringUtils::Format(L"%s\\%s (%d)", cwd.c_str(), foldername.c_str(), retrycount);
+            ++retrycount;
+        }
+        CreateDirectory(folderpath.c_str(), NULL);
+        for (const auto& file : items)
+        {
+            std::wstring dest = folderpath + L"\\" + CPathUtils::GetFileName(file.first);
+            MoveFile(file.first.c_str(), dest.c_str());
+        }
+    }
 }

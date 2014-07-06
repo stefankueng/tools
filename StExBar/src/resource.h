@@ -22,6 +22,7 @@
 #define IDI_ICON1                       118
 #define IDI_SHOWEXTS                    118
 #define IDI_GOUP                        119
+#define IDD_NAMEDLG                     120
 #define IDC_LIST1                       1001
 #define IDC_FILELIST                    1001
 #define IDC_CUSTCOMMANDS                1001
@@ -75,9 +76,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        120
+#define _APS_NEXT_RESOURCE_VALUE        121
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1044
+#define _APS_NEXT_CONTROL_VALUE         1045
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

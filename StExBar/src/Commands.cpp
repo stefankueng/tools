@@ -235,6 +235,20 @@ bool CCommands::LoadFromFile()
     c.key = key;
     m_commands.push_back(c);
 
+    c.name = _T("Move to subfolder");
+    c.commandline = INTERNALCOMMAND;
+    c.separator = false;
+    c.nIconID = IDI_RENAME;
+    c.enabled_viewpath = true;
+    c.enabled_noviewpath = false;
+    c.enabled_fileselected = true;
+    c.enabled_folderselected = true;
+    c.enabled_selected = true;
+    c.enabled_noselection = false;
+    c.enabled_selectedcount = 0;
+    c.key = nokey;
+    m_commands.push_back(c);
+
     TCHAR szPath[MAX_PATH] = {0};
     if (SUCCEEDED(SHGetFolderPath(NULL,
         CSIDL_APPDATA|CSIDL_FLAG_CREATE,
