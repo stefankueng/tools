@@ -238,8 +238,8 @@ bool CCommands::LoadFromFile()
     c.name = _T("Move to subfolder");
     c.commandline = INTERNALCOMMAND;
     c.separator = false;
-    c.nIconID = IDI_RENAME;
-    c.enabled_viewpath = true;
+    c.nIconID = IDI_MOVETOFOLDER;
+    c.enabled_viewpath = false;
     c.enabled_noviewpath = false;
     c.enabled_fileselected = true;
     c.enabled_folderselected = true;
