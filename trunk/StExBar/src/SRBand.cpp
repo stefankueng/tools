@@ -1673,7 +1673,7 @@ void CDeskBand::MoveToSubfolder(HWND hWnd, const std::wstring& cwd, const std::m
         }
     }
     if (foldername.empty())
-        foldername = L"new folder for files";
+        foldername = L"folder";
 
     CNameDlg dlg(hWnd);
     dlg.Name = foldername;
