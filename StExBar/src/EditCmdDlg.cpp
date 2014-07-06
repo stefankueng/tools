@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2011-2013 - Stefan Kueng
+// Copyright (C) 2007-2009, 2011-2014 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -79,7 +79,8 @@ Special placeholders are available:\r\n\
         {
         case IDOK:
             {
-                SetupCommand();
+                if (!SetupCommand())
+                    return TRUE;
             }
             // fall through
         case IDCANCEL:
@@ -228,14 +229,19 @@ void CEditCmdDlg::SetupControls()
     }
 }
 
-void CEditCmdDlg::SetupCommand()
+bool CEditCmdDlg::SetupCommand()
 {
     m_command.separator = SendMessage(GetDlgItem(*this, IDC_SEPARATOR), BM_GETCHECK, 0, 0) == BST_CHECKED;
     if (m_command.separator)
-        return;     // nothing more to do here
+        return true;     // nothing more to do here
 
     auto buf = GetDlgItemText(IDC_NAME);
     m_command.name = buf.get();
+    if (m_command.name.empty())
+    {
+        ShowEditBalloon(IDC_NAME, L"missing text", L"please enter a name for the command");
+        return false;
+    }
     buf = GetDlgItemText(IDC_ICONPATH);
     m_command.icon = buf.get();
     buf = GetDlgItemText(IDC_COMMANDLINE);
@@ -271,4 +277,5 @@ void CEditCmdDlg::SetupCommand()
             m_command.commandline = INTERNALCOMMAND;
         }
     }
+    return true;
 }
