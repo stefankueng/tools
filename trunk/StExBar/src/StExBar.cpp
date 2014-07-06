@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2012 - Stefan Kueng
+// Copyright (C) 2007-2012, 2014 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -161,15 +161,6 @@ HRESULT CreateRegistryString(LPCTSTR keypath, LPCTSTR name, LPCTSTR value)
 STDAPI DllRegisterServer(void)
 {
     HRESULT result = SELFREG_E_CLASS;
-
-    // check if we're on XP or later
-    OSVERSIONINFOEX osex = {0};
-    osex.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-    GetVersionEx((OSVERSIONINFO *)&osex);
-    bool bIsWindowsXPorLater = ((osex.dwMajorVersion > 5) || ((osex.dwMajorVersion == 5) && (osex.dwMinorVersion >= 1)));
-
-    if (!bIsWindowsXPorLater)
-        return result;
 
     // Register the desk band object.
     if (!RegisterServer(CLSID_StExBand, _T("S&tExBar")))
