@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010, 2012 - Stefan Kueng
+// Copyright (C) 2007-2010, 2012, 2014 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,8 @@
 #include "ItemIDList.h"
 #include "VistaIcons.h"
 #include "resource.h"
+
+#include <VersionHelpers.h>
 
 #define GetPIDLFolder(pida)  (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
 #define GetPIDLItem(pida, i) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[i+1])
@@ -141,12 +143,6 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
             return S_OK;
     }
 
-    OSVERSIONINFOEX inf;
-    SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
-    inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-    GetVersionEx((OSVERSIONINFO *)&inf);
-    WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
-
     UINT idCmd = idCmdFirst;
 
     //create the sub menu
@@ -183,7 +179,7 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
         HICON hIcon = LoadCommandIcon(cmd);
         if (hIcon)
         {
-            menuiteminfo.hbmpItem = (fullver >= 0x600) ? IconToBitmapPARGB32(hIcon) : HBMMENU_CALLBACK;
+            menuiteminfo.hbmpItem = IsWindowsVistaOrGreater() ? IconToBitmapPARGB32(hIcon) : HBMMENU_CALLBACK;
             DestroyIcon(hIcon);
         }
         else

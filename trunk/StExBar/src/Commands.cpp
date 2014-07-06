@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2013 - Stefan Kueng
+// Copyright (C) 2007-2014 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "Commands.h"
 #include "resource.h"
+#include <VersionHelpers.h>
 
 CCommands::CCommands(void)
 {
@@ -31,12 +32,6 @@ CCommands::~CCommands(void)
 
 bool CCommands::LoadFromFile()
 {
-    OSVERSIONINFOEX inf;
-    SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
-    inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-    GetVersionEx((OSVERSIONINFO *)&inf);
-    WORD fullWinver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
-
     m_commands.clear();
     // fill in the default commands first
     Command c;
@@ -121,7 +116,7 @@ bool CCommands::LoadFromFile()
     m_commands.push_back(c);
 
     c.name = _T("Up");
-    c.commandline = fullWinver <= 0x501 ? INTERNALCOMMAND : INTERNALCOMMANDHIDDEN;
+    c.commandline = IsWindowsVistaOrGreater() ? INTERNALCOMMANDHIDDEN : INTERNALCOMMAND;
     c.separator = false;
     c.nIconID = IDI_GOUP;
     c.enabled_viewpath = true;
@@ -195,7 +190,7 @@ bool CCommands::LoadFromFile()
     c.enabled_selected = true;
     c.enabled_noselection = true;
     c.enabled_selectedcount = 0;
-    if (fullWinver < 0x601)
+    if (!IsWindows7OrGreater())
     {
         // Win7 already does create a new folder with Ctrl-Shift-N
         key.control = true;
