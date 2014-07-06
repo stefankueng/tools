@@ -6,7 +6,7 @@
   Id="*"
   Language="1033"
   Codepage="1252"
-  Version="1.8.3"
+  Version="1.8.6"
   Manufacturer="Stefans Tools">
 
     <Package Id="*" Keywords="Installer"
