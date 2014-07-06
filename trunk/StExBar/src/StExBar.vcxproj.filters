@@ -117,6 +117,12 @@
     <ClCompile Include="..\..\sktoolslib\AutoComplete.cpp">
       <Filter>sktoolslib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sktoolslib\PathUtils.cpp">
+      <Filter>sktoolslib</Filter>
+    </ClCompile>
+    <ClCompile Include="NameDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="StExBar.def">
@@ -263,6 +269,12 @@
     </ClInclude>
     <ClInclude Include="maxpath.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sktoolslib\PathUtils.h">
+      <Filter>sktoolslib</Filter>
+    </ClInclude>
+    <ClInclude Include="NameDlg.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

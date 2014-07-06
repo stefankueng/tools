@@ -186,6 +186,7 @@
     <ClCompile Include="..\..\sktoolslib\DlgResizer.cpp" />
     <ClCompile Include="..\..\sktoolslib\hyperlink.cpp" />
     <ClCompile Include="..\..\sktoolslib\ItemIDList.cpp" />
+    <ClCompile Include="..\..\sktoolslib\PathUtils.cpp" />
     <ClCompile Include="..\..\sktoolslib\Pidl.cpp" />
     <ClCompile Include="..\..\sktoolslib\RegHistory.cpp" />
     <ClCompile Include="..\..\sktoolslib\Registry.cpp" />
@@ -201,6 +202,7 @@
     <ClCompile Include="ExPaths.cpp" />
     <ClCompile Include="Filter.cpp" />
     <ClCompile Include="InfoDlg.cpp" />
+    <ClCompile Include="NameDlg.cpp" />
     <ClCompile Include="NewFolder.cpp" />
     <ClCompile Include="OptionsDlg.cpp" />
     <ClCompile Include="Rename.cpp" />
@@ -251,6 +253,7 @@
     <ClInclude Include="..\..\sktoolslib\DlgResizer.h" />
     <ClInclude Include="..\..\sktoolslib\hyperlink.h" />
     <ClInclude Include="..\..\sktoolslib\ItemIDList.h" />
+    <ClInclude Include="..\..\sktoolslib\PathUtils.h" />
     <ClInclude Include="..\..\sktoolslib\Pidl.h" />
     <ClInclude Include="..\..\sktoolslib\RegHistory.h" />
     <ClInclude Include="..\..\sktoolslib\Registry.h" />
@@ -266,6 +269,7 @@
     <ClInclude Include="Guid.h" />
     <ClInclude Include="InfoDlg.h" />
     <ClInclude Include="maxpath.h" />
+    <ClInclude Include="NameDlg.h" />
     <ClInclude Include="NumberReplacer.h" />
     <ClInclude Include="OptionsDlg.h" />
     <ClInclude Include="RenameDlg.h" />
