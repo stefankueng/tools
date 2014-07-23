@@ -444,7 +444,7 @@ RegisterComCat
 BOOL RegisterComCat(CLSID clsid, CATID CatID)
 {
     ICatRegister   *pcr;
-    HRESULT        hr = S_OK ;
+    HRESULT        hr;
 
     CoInitialize(NULL);
 
@@ -468,7 +468,7 @@ BOOL RegisterComCat(CLSID clsid, CATID CatID)
 BOOL UnRegisterComCat(CLSID clsid, CATID CatID)
 {
     ICatRegister   *pcr;
-    HRESULT        hr = S_OK ;
+    HRESULT        hr;
 
     CoInitialize(NULL);
 
@@ -480,8 +480,7 @@ BOOL UnRegisterComCat(CLSID clsid, CATID CatID)
 
     if (SUCCEEDED(hr))
     {
-        hr = pcr->UnRegisterClassImplCategories(clsid, 1, &CatID);
-
+        pcr->UnRegisterClassImplCategories(clsid, 1, &CatID);
         pcr->Release();
     }
 
