@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2012 - Stefan Kueng
+// Copyright (C) 2007-2009, 2012, 2014 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -267,7 +267,7 @@ void CRenameDlg::FillRenamedList()
         return;
     GetWindowText(hMatchstring, buf, _countof(buf));
     m_sMatch = buf;
-    if (m_sMatch.size() == 0)
+    if (m_sMatch.empty())
         return;
     HWND hReplaceString = GetDlgItem(*this, IDC_REPLACESTRING);
     if (hReplaceString == NULL)
