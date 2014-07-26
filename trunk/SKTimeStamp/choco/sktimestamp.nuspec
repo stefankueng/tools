@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata>
+    <id>sktimestamp</id>
+    <title>SKTimeStamp</title>
+    <version>1.3.4.1</version>
+    <authors>Stefan Kueng</authors>
+    <owners>Stefan Kueng</owners>
+    <summary>SKTimeStamp is a very simple shell extension which adds a new tab to the Explorer properties dialog. On that new tab, you can change the file/folder date and time.</summary>
+    <description>SKTimeStamp is a very simple shell extension which adds a new tab to the Explorer properties dialog. On that new tab, you can change the file/folder date and time.</description>
+    <projectUrl>http://stefanstools.sourceforge.net/SKTimeStamp.html</projectUrl>
+    <tags>touch extensions windows explorer admin</tags>
+    <licenseUrl>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
