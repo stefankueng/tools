@@ -25,6 +25,7 @@ module.exports = function(grunt) {
             dist: {
                 options: {
                     globals: {
+                        DATE: '<%= grunt.template.today("dddd, mmmm dS, yyyy, HH:MM:ss Z") %>',
                         headHTML: '',
                         metaDescription: '',
                         metaKeywords: ''
