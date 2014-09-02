@@ -422,7 +422,9 @@ pre {
 
 
 @media print {
-    * {
+    *,
+    *:before,
+    *:after {
         background: transparent !important;
         color: black !important; /* Black prints faster: h5bp.com/s */
         box-shadow: none !important;
