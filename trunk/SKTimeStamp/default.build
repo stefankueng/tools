@@ -16,27 +16,40 @@
       <arg value="src/version.h" />
     </exec>
 
-    <exec program="devenv.com" >
+    <exec program="msbuild.exe" >
       <arg value="SKTimeStamp.sln" />
-      <arg value="/rebuild" />
-      <arg value="debug|win32" />
+      <arg value="/t:Rebuild" />
+      <arg value="/p:Configuration=Debug" />
+      <arg value="/p:Platform=Win32" />
+      <arg value="/verbosity:minimal" />
+      <arg value="/maxcpucount" />
     </exec>
-    <exec program="devenv.com" >
+    <exec program="msbuild.exe" >
       <arg value="SKTimeStamp.sln" />
-      <arg value="/rebuild" />
-      <arg value="release|win32" />
+      <arg value="/t:Rebuild" />
+      <arg value="/p:Configuration=Release" />
+      <arg value="/p:Platform=Win32" />
+      <arg value="/verbosity:minimal" />
+      <arg value="/maxcpucount" />
     </exec>
 
-    <exec program="devenv.com" >
+    <exec program="msbuild.exe" >
       <arg value="SKTimeStamp.sln" />
-      <arg value="/rebuild" />
-      <arg value="debug|x64" />
+      <arg value="/t:Rebuild" />
+      <arg value="/p:Configuration=Debug" />
+      <arg value="/p:Platform=x64" />
+      <arg value="/verbosity:minimal" />
+      <arg value="/maxcpucount" />
     </exec>
-    <exec program="devenv.com" >
+    <exec program="msbuild.exe" >
       <arg value="SKTimeStamp.sln" />
-      <arg value="/rebuild" />
-      <arg value="release|x64" />
+      <arg value="/t:Rebuild" />
+      <arg value="/p:Configuration=Release" />
+      <arg value="/p:Platform=x64" />
+      <arg value="/verbosity:minimal" />
+      <arg value="/maxcpucount" />
     </exec>
+
     <!-- sign all release binaries -->
     <if test="${file::exists('signinfo.txt')}">
       <exec program="signtool">
