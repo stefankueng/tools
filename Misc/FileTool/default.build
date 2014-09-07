@@ -26,15 +26,21 @@
     <description>
       Cleans every subproject.
     </description>
-    <exec program="devenv.com" >
+    <exec program="msbuild.exe" >
       <arg value="FileTool.sln" />
-      <arg value="/clean" />
-      <arg value="${configuration}|win32" />
+      <arg value="/t:Clean" />
+      <arg value="/p:Configuration=${configuration}" />
+      <arg value="/p:Platform=Win32" />
+      <arg value="/verbosity:quiet" />
+      <arg value="/maxcpucount" />
     </exec>
-    <exec program="devenv.com" >
+    <exec program="msbuild.exe" >
       <arg value="FileTool.sln" />
-      <arg value="/clean" />
-      <arg value="${configuration}|x64" />
+      <arg value="/t:Clean" />
+      <arg value="/p:Configuration=${configuration}" />
+      <arg value="/p:Platform=x64" />
+      <arg value="/verbosity:quiet" />
+      <arg value="/maxcpucount" />
     </exec>
   </target>
 
@@ -66,21 +72,27 @@
     <description>
       Builds FileTool.
     </description>
-    <exec program="devenv.com" >
+    <exec program="msbuild.exe" >
       <arg value="FileTool.sln" />
-      <arg value="/rebuild" />
-      <arg value="${configuration}|win32" />
+      <arg value="/t:rebuild" />
+      <arg value="/p:Configuration=${configuration}" />
+      <arg value="/p:Platform=Win32" />
+      <arg value="/verbosity:minimal" />
+      <arg value="/maxcpucount" />
     </exec>
-    <exec program="devenv.com" >
+    <exec program="msbuild.exe" >
       <arg value="FileTool.sln" />
-      <arg value="/rebuild" />
-      <arg value="${configuration}|x64" />
+      <arg value="/t:rebuild" />
+      <arg value="/p:Configuration=${configuration}" />
+      <arg value="/p:Platform=x64" />
+      <arg value="/verbosity:minimal" />
+      <arg value="/maxcpucount" />
     </exec>
     <if test="${file::exists('signinfo.txt')}">
       <exec program="signtool">
         <arg value="sign" />
         <arg value="${signinfo}" />
-        <arg value="bin\release\win32\FileTool.exe" />
+        <arg value="bin\release\Win32\FileTool.exe" />
       </exec>
       <exec program="signtool">
         <arg value="sign" />
@@ -92,7 +104,7 @@
     <property name="verstring" value="${environment::get-variable('MajorVersion')}.${environment::get-variable('MinorVersion')}.${environment::get-variable('MicroVersion')}.${environment::get-variable('WCREV')}" />
 
     <zip zipfile="bin\FileTool-${verstring}.zip" ziplevel="9">
-      <fileset basedir="bin\release\win32">
+      <fileset basedir="bin\release\Win32">
         <include name="FileTool.exe" />
       </fileset>
     </zip>
