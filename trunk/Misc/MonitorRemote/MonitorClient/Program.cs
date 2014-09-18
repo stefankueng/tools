@@ -4,9 +4,9 @@ using System.Net.Sockets;
 
 namespace MonitorClient
 {
-    class MonitorClient
+    internal class MonitorClient
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length == 0)
             {

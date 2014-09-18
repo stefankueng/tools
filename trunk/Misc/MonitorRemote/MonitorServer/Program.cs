@@ -5,37 +5,36 @@ using System.Runtime.InteropServices;
 
 namespace MonitorServer
 {
-    class MonitorServer
+    internal class MonitorServer
     {
         [DllImport("user32.dll")]
-        static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetDesktopWindow();
 
         [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         //the message is sent to all
         //top-level windows in the system
 
-        const int HWND_TOPMOST = -1;
+        private const int HWND_TOPMOST = -1;
         //the message is sent to one
         //top-level window in the system
 
-        const int HWND_TOP = 0;        //
-        const int HWND_BOTTOM = 1;        //limited use
-        const int HWND_NOTOPMOST = -2;       //
+        private const int HWND_TOP = 0;
+        private const int HWND_BOTTOM = 1;        //limited use
+        private const int HWND_NOTOPMOST = -2;
 
-        const int SC_MONITORPOWER = 0xF170;
-        const uint WM_SYSCOMMAND = 0x0112;
+        private const int SC_MONITORPOWER = 0xF170;
+        private const uint WM_SYSCOMMAND = 0x0112;
 
-        const int MONITOR_ON = (-1);
-        const int MONITOR_OFF = 2;
-        const int MONITOR_STANBY = 1;
+        private const int MONITOR_ON = (-1);
+        private const int MONITOR_OFF = 2;
+        private const int MONITOR_STANBY = 1;
 
-
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             for (; ; )
             {
