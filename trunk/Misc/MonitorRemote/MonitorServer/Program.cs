@@ -16,7 +16,6 @@ namespace MonitorServer
         [DllImport("user32.dll", SetLastError = true)]
         static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        static int HWND_BROADCAST = 0xffff;
         //the message is sent to all
         //top-level windows in the system
 
