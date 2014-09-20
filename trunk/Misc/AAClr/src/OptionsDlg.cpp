@@ -1,6 +1,6 @@
 // AAClr - tool to adjust the aero colors according to the desktop wallpaper
 
-// Copyright (C) 2011-2012 - Stefan Kueng
+// Copyright (C) 2011-2012, 2014 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -90,10 +90,10 @@ LRESULT COptionsDlg::DoCommand(int id)
             else
                 regStartWithWindows.removeValue();
 
-            CRegStdDWORD regrandomcolors = CRegStdDWORD(_T("Software\\AAClr\\randomcolors"), 1);
+            CRegStdDWORD regrandomcolors(_T("Software\\AAClr\\randomcolors"), 1);
             randomcolors = !!SendDlgItemMessage(*this, IDC_RANDOMCOLOR, BM_GETCHECK, 0, NULL);
             regrandomcolors = randomcolors;
-            CRegStdDWORD regbrightness = CRegStdDWORD(_T("Software\\AAClr\\brightness"), 1);
+            CRegStdDWORD regbrightness(_T("Software\\AAClr\\brightness"), 1);
             brightness = !!SendDlgItemMessage(*this, IDC_BRIGHTNESS, BM_GETCHECK, 0, NULL);
             regbrightness = brightness;
         }
