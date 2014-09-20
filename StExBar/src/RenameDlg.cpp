@@ -148,8 +148,8 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
                     return (INT_PTR)TRUE;
                 GetWindowText(hReplaceString, buf, _countof(buf));
                 m_sReplace = buf;
-                CRegStdString ren1Reg = CRegStdString(_T("Software\\StExBar\\ren1Text"));
-                CRegStdString ren2Reg = CRegStdString(_T("Software\\StExBar\\ren2Text"));
+                CRegStdString ren1Reg(_T("Software\\StExBar\\ren1Text"));
+                CRegStdString ren2Reg(_T("Software\\StExBar\\ren2Text"));
                 ren1Reg = m_sMatch;
                 ren2Reg = m_sReplace;
                 m_AutoCompleteRen1.AddEntry(m_sMatch.c_str());
@@ -162,8 +162,8 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
             // fall through
         case IDCANCEL:
             {
-                CRegStdDWORD dlgWidth = CRegStdDWORD(_T("Software\\StExBar\\renameWidth"), 0);
-                CRegStdDWORD dlgHeight = CRegStdDWORD(_T("Software\\StExBar\\renameHeight"), 0);
+                CRegStdDWORD dlgWidth(_T("Software\\StExBar\\renameWidth"), 0);
+                CRegStdDWORD dlgHeight(_T("Software\\StExBar\\renameHeight"), 0);
                 RECT rc;
                 ::GetWindowRect(*this, &rc);
                 dlgWidth = rc.right-rc.left;
