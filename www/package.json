@@ -27,7 +27,7 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-uglify": "~0.6.0",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-filerev": "~0.2.1",
+    "grunt-filerev": "~2.0.0",
     "grunt-html-validation": "~0.1.18",
     "grunt-include-replace": "~2.0.0",
     "grunt-uncss": "~0.3.6",
