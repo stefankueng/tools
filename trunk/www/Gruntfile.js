@@ -147,6 +147,12 @@ module.exports = function(grunt) {
             html: '<%= dirs.dest %>/**/*.html'
         },
 
+        sitemap: {
+            dist: {
+                siteRoot: './dist'
+            }
+        },
+
         connect: {
             options: {
                 hostname: 'localhost',
@@ -216,13 +222,15 @@ module.exports = function(grunt) {
         'useminPrepare',
         'concat',
         'filerev',
-        'usemin'
+        'usemin',
+        'sitemap'
     ]);
 
     grunt.registerTask('build', [
         'clean',
         'copy',
         'includereplace',
+        'sitemap',
         'useminPrepare',
         'concat',
         'uncss',
