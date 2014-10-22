@@ -28,6 +28,7 @@
     "grunt-contrib-uglify": "~0.6.0",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-filerev": "~2.1.0",
+    "grunt-sitemap": "XhmikosR/grunt-sitemap#all-patches-merged",
     "grunt-html-validation": "~0.1.18",
     "grunt-include-replace": "~2.0.0",
     "grunt-uncss": "~0.3.7",
