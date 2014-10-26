@@ -15,9 +15,13 @@
 <script>
     (function() {
         var cx = 'partner-pub-0430507460695576:cuostksju2b';
-        var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
-        gcse.src = '//www.google.com/cse/cse.js?cx=' + cx;
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = (document.location.protocol == 'https' ? 'https:' : 'http:') +
+            '//www.google.com/cse/cse.js?cx=' + cx;
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
     })();
 </script>
+
 @@include("_includes/footer.html")
