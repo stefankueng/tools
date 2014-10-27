@@ -10,12 +10,23 @@
     -->
     <loadfile file="signinfo.txt" property="signinfo" failonerror="false" />
 
-    <!-- run SubWCRev to get the revision of the working copy -->
-    <exec program="SubWCRev.exe">
-      <arg value="." />
-      <arg value="src/version.in" />
-      <arg value="src/version.h" />
-    </exec>
+    <nant target="versioninfo">
+      <buildfiles>
+        <include name="versioninfo.build" />
+      </buildfiles>
+    </nant>
+    <loadfile file="src\version.in" property="versionheaderfile">
+      <filterchain>
+        <replacetokens begintoken="$" endtoken="$">
+          <token key="MajorVersion" value="${environment::get-variable('MajorVersion')}" />
+          <token key="MinorVersion" value="${environment::get-variable('MinorVersion')}" />
+          <token key="MicroVersion" value="${environment::get-variable('Microversion')}" />
+          <token key="WCREV" value="${environment::get-variable('WCREV')}" />
+          <token key="WCDATE" value="${environment::get-variable('WCDATE')}" />
+        </replacetokens>
+      </filterchain>
+    </loadfile>
+    <echo file="src\version.h" message="${versionheaderfile}" />
 
     <exec program="msbuild.exe" >
       <arg value="StExBar.sln" />
@@ -116,6 +127,37 @@
         <arg value="bin\StExBar.msi" />
       </exec>
     </if>
+
+    <loadfile file="choco\stexbar.nuspec" property="nuspecfile">
+      <filterchain>
+        <replacetokens begintoken="$" endtoken="$">
+          <token key="MajorVersion" value="${environment::get-variable('MajorVersion')}" />
+          <token key="MinorVersion" value="${environment::get-variable('MinorVersion')}" />
+          <token key="MicroVersion" value="${environment::get-variable('Microversion')}" />
+          <token key="WCREV" value="${environment::get-variable('WCREV')}" />
+          <token key="WCDATE" value="${environment::get-variable('WCDATE')}" />
+        </replacetokens>
+      </filterchain>
+    </loadfile>
+    <echo file="choco\package\stexbar.nuspec" message="${nuspecfile}" />
+    <loadfile file="choco\chocolateyInstall.ps1" property="cinstfile">
+      <filterchain>
+        <replacetokens begintoken="$" endtoken="$">
+          <token key="MajorVersion" value="${environment::get-variable('MajorVersion')}" />
+          <token key="MinorVersion" value="${environment::get-variable('MinorVersion')}" />
+          <token key="MicroVersion" value="${environment::get-variable('Microversion')}" />
+          <token key="WCREV" value="${environment::get-variable('WCREV')}" />
+          <token key="WCDATE" value="${environment::get-variable('WCDATE')}" />
+        </replacetokens>
+      </filterchain>
+    </loadfile>
+    <echo file="choco\package\tools\chocolateyInstall.ps1" message="${cinstfile}" />
+    <echo>
+      now start an admin console in choco\package and then run
+      choco pack
+      to upload the package, run
+      cpush StExBar-x.x.x.nupkg
+    </echo>
 
   </target>
 

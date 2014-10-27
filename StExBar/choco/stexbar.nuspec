@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata>
+    <id>stexbar</id>
+    <title>StExBar</title>
+    <version>$MajorVersion$.$MinorVersion$.$MicroVersion$</version>
+    <authors>Stefan Kueng</authors>
+    <owners>Stefan Kueng</owners>
+    <summary>StExBar - The ultimate extensions for Windows Explorer or: what Microsoft forgot to implement in the explorer.</summary>
+    <description>StExBar - The ultimate extensions for Windows Explorer or: what Microsoft forgot to implement in the explorer. StExBar provides many useful commands for your everyday use of Windows explorer. And you can add as many custom commands on your own as you like.</description>
+    <projectUrl>http://stefanstools.sourceforge.net/BowPad.html</projectUrl>
+    <tags>stexbar extensions windows explorer admin</tags>
+    <licenseUrl>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
