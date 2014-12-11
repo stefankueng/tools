@@ -334,6 +334,8 @@ pre {
 
 .apps-sprite {
     background: url("../img/app_icons_sprite.png") no-repeat;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .AAClr          { background-position: 0      0; }
@@ -359,11 +361,6 @@ pre {
     background: repeat-y url("../img/main.png");
     margin: -10px auto 0;
     width: 900px;
-}
-
-.centered {
-    text-align: center;
-    vertical-align: middle;
 }
 
 .nav-list {
