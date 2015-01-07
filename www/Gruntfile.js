@@ -149,6 +149,7 @@ module.exports = function(grunt) {
 
         sitemap: {
             dist: {
+                pattern: ['**/*.html', '!**/google*.html'],
                 siteRoot: './dist'
             }
         },
