@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2011-2012 - Stefan Kueng
+// Copyright (C) 2007-2009, 2011-2012, 2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -87,8 +87,8 @@ public:
 
     bool                LoadFromFile();
     bool                SaveToFile();
-    int                 GetCount() {return (int)m_commands.size();}
-    Command             GetCommand(int index) {return m_commands[index];}
+    int                 GetCount() const {return (int)m_commands.size();}
+    Command             GetCommand (int index) const {return m_commands[index];}
     Command *           GetCommandPtr(int index) {return &m_commands[index];}
     void                RemoveCommand(int index) {m_commands.erase(m_commands.begin()+index);}
     void                InsertCommand(int index, Command cmd) {m_commands.insert(m_commands.begin()+index, cmd);}
