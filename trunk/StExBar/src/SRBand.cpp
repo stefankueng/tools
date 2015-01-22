@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2014 - Stefan Kueng
+// Copyright (C) 2007-2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -44,23 +44,23 @@ CDeskBand::CDeskBand()
     : m_bFocus(false)
     , m_hwndParent(NULL)
     , m_hWnd(NULL)
-    , m_hWndEdit(NULL)
     , m_hWndToolbar(NULL)
+    , m_hWndEdit(NULL)
     , m_dwViewMode(0)
     , m_dwBandID(0)
     , m_pSite(NULL)
+    , m_hToolbarImgList(NULL)
+    , m_bCompositionState(false)
+    , m_bDialogShown(FALSE)
+    , m_hook(NULL)
+    , m_bFilesSelected(false)
+    , m_bFolderSelected(false)
+    , m_bCmdEditEnabled(false)
     , m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
     , m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
     , m_regEditBoxUsage(_T("Software\\StefansTools\\StExBar\\EditBoxUsage"), IDC_USECONSOLE)
     , m_regHideEditBox(_T("Software\\StefansTools\\StExBar\\HideEditBox"), 0)
-    , m_hToolbarImgList(NULL)
-    , m_bDialogShown(FALSE)
     , m_currentFolder(NULL)
-    , m_hook(NULL)
-    , m_bCompositionState(false)
-    , m_bFilesSelected(false)
-    , m_bFolderSelected(false)
-    , m_bCmdEditEnabled(false)
     , m_hwndListView(NULL)
     , m_newfolderTimeoutCounter(0)
 {

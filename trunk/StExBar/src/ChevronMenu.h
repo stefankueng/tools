@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008, 2012 - Stefan Kueng
+// Copyright (C) 2007-2008, 2012, 2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,9 +34,9 @@ public:
         , m_uMsg(0)
         , m_wParam(0)
         , m_lParam(0)
+        , m_bRun(FALSE)
         , m_hwndToolbar(NULL)
         , hHiddenToolbar(NULL)
-        , m_bRun(FALSE)
     {
     }
 

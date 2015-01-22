@@ -1,6 +1,6 @@
 // AAClr - tool to adjust the aero colors according to the desktop wallpaper
 
-// Copyright (C) 2011-2012, 2014 - Stefan Kueng
+// Copyright (C) 2011-2012, 2014-2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,9 +25,9 @@
 #include <Commdlg.h>
 
 COptionsDlg::COptionsDlg(HWND hParent)
-    : m_hParent(hParent)
-    , randomcolors(false)
+    : randomcolors(false)
     , brightness(false)
+    , m_hParent(hParent)
 {
 }
 
