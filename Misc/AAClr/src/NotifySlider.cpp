@@ -1,6 +1,6 @@
 // AAClr - tool to adjust the aero colors according to the desktop wallpaper
 
-// Copyright (C) 2011-2012 - Stefan Kueng
+// Copyright (C) 2011-2012, 2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,10 +25,10 @@
 
 
 CNotifySlider::CNotifySlider(HWND hParent)
-    : m_hParent(hParent)
-    , currentBright(0)
-    , xPos(0)
+    : xPos(0)
     , yPos(0)
+    , m_hParent(hParent)
+    , currentBright(0)
 {
 }
 

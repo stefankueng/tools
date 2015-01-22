@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2013 - Stefan Kueng
+// Copyright (C) 2007-2013, 2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,13 +30,13 @@
 
 
 COptionsDlg::COptionsDlg(HWND hParent)
-    : m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
+    : m_hParent(hParent)
+    , m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
     , m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
     , m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
     , m_regHideEditBox(_T("Software\\StefansTools\\StExBar\\HideEditBox"), 0)
     , m_regContextMenu(_T("Software\\StefansTools\\StExBar\\ContextMenu"), 1)
     , m_regEditBoxUsage(_T("Software\\StefansTools\\StExBar\\EditBoxUsage"), IDC_USECONSOLE)
-    , m_hParent(hParent)
     , m_hListControl(NULL)
 {
 }
