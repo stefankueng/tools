@@ -63,7 +63,7 @@ module.exports = function(grunt) {
             options: {
                 ignore: [/(#|\.)fancybox(\-[a-zA-Z]+)?/, '#scrollUp'],
                 htmlroot: '<%= dirs.dest %>',
-                ignoreSheets: [/fonts.googleapis/]
+                ignoreSheets: [/fonts.googleapis/, /www.google.com/]
             },
             dist: {
                 src: '<%= dirs.dest %>/**/*.html',
