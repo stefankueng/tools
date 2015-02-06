@@ -32,7 +32,7 @@ module.exports = function(grunt) {
                     }
                 },
                 files: [
-                    {src: '*.html', dest: '<%= dirs.dest %>/', expand: true, cwd: '<%= dirs.src %>/'}
+                    {src: ['*.html', '!**/google*.html'], dest: '<%= dirs.dest %>/', expand: true, cwd: '<%= dirs.src %>/'}
                 ]
             }
         },
@@ -112,7 +112,7 @@ module.exports = function(grunt) {
                 expand: true,
                 cwd: '<%= dirs.dest %>',
                 dest: '<%= dirs.dest %>',
-                src: ['**/*.html']
+                src: ['**/*.html', '!**/google*.html']
             }
         },
 
