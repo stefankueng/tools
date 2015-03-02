@@ -172,8 +172,14 @@ module.exports = function(grunt) {
             options: {
                 livereload: '<%= connect.options.livereload %>'
             },
-            files: ['<%= dirs.src %>/**', '.csslintrc', '.jshintrc', 'Gruntfile.js'],
-            tasks: 'dev'
+            dev: {
+                files: ['<%= dirs.src %>/**', '.csslintrc', '.jshintrc', 'Gruntfile.js'],
+                tasks: 'dev'
+            },
+            build: {
+                files: ['<%= dirs.src %>/**', '.csslintrc', '.jshintrc', 'Gruntfile.js'],
+                tasks: 'build'
+            }
         },
 
         clean: {
@@ -249,10 +255,16 @@ module.exports = function(grunt) {
         'validation'
     ]);
 
+    grunt.registerTask('server', [
+        'build',
+        'connect',
+        'watch:build'
+    ]);
+
     grunt.registerTask('default', [
         'dev',
         'connect',
-        'watch'
+        'watch:dev'
     ]);
 
 };
