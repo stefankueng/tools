@@ -7,7 +7,7 @@
   "homepage": "http://stefanstools.sourceforge.net/",
   "repository": {
     "type": "svn",
-    "url": "https://stexbar.googlecode.com/svn/trunk/"
+    "url": "https://svn.code.sf.net/p/stefanstools/code/trunk/www/"
   },
   "bugs": {
     "url": "http://code.google.com/p/stexbar/issues/"
