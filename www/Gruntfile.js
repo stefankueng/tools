@@ -13,7 +13,7 @@ module.exports = function(grunt) {
         copy: {
             dist: {
                 files: [
-                    {dest: '<%= dirs.dest %>/', src: ['*', '!*.html'], filter: 'isFile', expand: true, cwd: '<%= dirs.src %>/'},
+                    {dest: '<%= dirs.dest %>/', src: ['*', '!*.html', 'google*.html'], filter: 'isFile', expand: true, cwd: '<%= dirs.src %>/'},
                     {dest: '<%= dirs.dest %>/', src: '.htaccess', expand: true, cwd: '<%= dirs.src %>/'},
                     {dest: '<%= dirs.dest %>/', src: ['img/**', '!**/_old/**'], expand: true, cwd: '<%= dirs.src %>/'},
                     {dest: '<%= dirs.dest %>/', src: ['js/*.min.js', 'js/prettify/**'], expand: true, cwd: '<%= dirs.src %>/'},
