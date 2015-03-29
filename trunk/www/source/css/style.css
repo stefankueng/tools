@@ -358,7 +358,7 @@ pre {
 
 
 .wrapper {
-    background: repeat-y url("../img/main.png");
+    background: repeat-y url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA4QAAAABCAMAAACxBZD/AAAAn1BMVEX+/v4uLi40NjM1NjA8NDE9MzQ5MTwzNDhaZ2BZZlxkZWdkX2NoZGFbYn5nf+Fdfv9fff9hfv5ffPxrguD1+f/////9/f3+//39//z//vwzMjj/+//4//z3//z+/v///P///f80NDz2/f9rftphf/tbgP9afv9gff9pf+JGUW1SVE9bUVJaT1VXUlhTVFYqMCwqMSovLzEvLTAuLjD/+v8CXwmMAAAAJUlEQVQoU2OUevubEQiknzOiA6jQA4ZRMApGAXWAEkY2O8fAAABdbQYDt+OrhgAAAABJRU5ErkJggg==");
     margin: -10px auto 0;
     width: 900px;
 }
