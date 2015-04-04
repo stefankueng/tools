@@ -26,14 +26,18 @@ module.exports = function(grunt) {
                 options: {
                     globals: {
                         DATE: '<%= grunt.template.today("dddd, mmmm dS, yyyy, HH:MM:ss Z") %>',
-                        headHTML: '',
+                        bottomHtml: '',
+                        headHtml: '',
                         metaDescription: '',
                         metaKeywords: ''
                     }
                 },
-                files: [
-                    {src: ['*.html', '!**/google*.html'], dest: '<%= dirs.dest %>/', expand: true, cwd: '<%= dirs.src %>/'}
-                ]
+                files: [{
+                    src: ['*.html', '!**/google*.html'],
+                    dest: '<%= dirs.dest %>/',
+                    expand: true,
+                    cwd: '<%= dirs.src %>/'
+                }]
             }
         },
 
@@ -62,7 +66,11 @@ module.exports = function(grunt) {
         uncss: {
             options: {
                 htmlroot: '<%= dirs.dest %>',
-                ignore: [/(#|\.)fancybox(\-[a-zA-Z]+)?/, '#scrollUp'],
+                ignore: [
+                    /(#|\.)fancybox(\-[a-zA-Z]+)?/,
+                    '#scrollUp',
+                    /ad-inpage/
+                ],
                 ignoreSheets: [/fonts.googleapis/, /www.google.com/],
                 stylesheets: ['css/pack.css']
             },
