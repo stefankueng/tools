@@ -1,13 +1,13 @@
 @@include("_includes/header.html", {
     "title": "BowPad JavaScript Plugins",
-    "headHTML": "<link rel=\"stylesheet\" href=\"/css/prettify.min.css\">\n<script src=\"/js/prettify/prettify.js\"></script>"
+    "headHtml": "<link rel=\"stylesheet\" href=\"/css/prettify.min.css\">"
 })
 <div class="wrapper">
 <div class="content">
-    <h2>Javascript Plugins</h2>
+    <h2>JavaScript Plugins</h2>
 
     <p>
-        BowPad can use plugins and scripts written in javascript (jscript) or
+        BowPad can use plugins and scripts written in JavaScript (JScript) or
         VBScript. It uses the <a href="http://support.microsoft.com/kb/188135">
         Windows Scripting Host (WSH)</a> to handle the plugins.
     </p>
@@ -257,5 +257,8 @@ var foundPos = BowPad.SciFindText(flags, minPos, maxPos, "text to search for");
 
 </div>
 </div>
-<script>window.onload = prettyPrint();</script>
-@@include("_includes/footer.html")
+
+
+@@include("_includes/footer.html", {
+    "bottomHtml": "<script src=\"/js/prettify/prettify.js\"></script>\n<script>window.onload = prettyPrint();</script>"
+})

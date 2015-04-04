@@ -65,9 +65,11 @@
         </tbody>
     </table>
 </div>
-<div>
+
+<div class="ad-inpage">
 @@include("_includes/adsense_inpage.html")
 </div>
+
 <div class="content">
     <table class="main-table">
         <tbody>
@@ -257,4 +259,7 @@
     </table>
 </div>
 </div>
-@@include("_includes/footer.html")
+
+@@include("_includes/footer.html", {
+    "bottomHtml": "<script async src=\"//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js\"></script>"
+})
