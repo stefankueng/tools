@@ -83,6 +83,17 @@
         plugin script ready, create a new issue in the issue tracker and attach
         the plugin there.
     </p>
+
+    <h3>Replace Notepad</h3>
+    <p>
+        If you want to replace the Windows NotePad with BowPad, you can do that
+        by modifying the registry:
+        <ol>
+            <li>Start <code>regedit.exe</code></li>
+            <li>go to <code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options</code> and create a new key named <code>notepad.exe</code></li>
+            <li>under the <code>notepad.exe</code> key, create a new string value named <code>Debugger</code> and set the value to <code>&quot;c:\program files\BowPad\BowPad.exe&quot; /z</code></li>
+        </ol>
+    </p>
 </div>
 </div>
 @@include("_includes/footer.html")
