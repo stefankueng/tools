@@ -1,6 +1,6 @@
 // SkTimeStamp - Change file dates easily, directly from explorer
 
-// Copyright (C) 2012 - Stefan Kueng
+// Copyright (C) 2012, 2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -95,12 +95,12 @@ STDAPI DllRegisterServer(void)
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID) _T("InProcServer32"), REG_SZ, szModule, (DWORD)_tcslen(szModule)*sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID) _T("\\InProcServer32"), REG_SZ, szModule, (DWORD)_tcslen(szModule)*sizeof(TCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (SHSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID) _T("InProcServer32"), _T("ThreadingModel"), REG_SZ, _T("Apartment"), 20) != ERROR_SUCCESS)
+    if (SHSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID) _T("\\InProcServer32"), _T("ThreadingModel"), REG_SZ, _T("Apartment"), 20) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
