@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2012, 2014 - Stefan Kueng
+// Copyright (C) 2007-2012, 2014-2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,7 +48,6 @@ BOOL UnRegisterComCat(CLSID, CATID);
 
 HINSTANCE   g_hInst;
 UINT        g_DllRefCount;
-HRESULT     hr;
 
 
 void my_invalid_parameter(const wchar_t * expression,
@@ -272,7 +271,7 @@ BOOL RegisterServer(CLSID clsid, LPTSTR lpszTitle)
 
     if (pwsz)
     {
-        hr = StringCchCopy(szCLSID, _countof(szCLSID), pwsz);
+        HRESULT hr = StringCchCopy(szCLSID, _countof(szCLSID), pwsz);
 
         // Free the string.
         LPMALLOC pMalloc;
@@ -387,7 +386,7 @@ BOOL UnRegisterServer(CLSID clsid, LPTSTR lpszTitle)
 
     if (pwsz)
     {
-        hr = StringCchCopy(szCLSID, _countof(szCLSID), pwsz);
+        HRESULT hr = StringCchCopy(szCLSID, _countof(szCLSID), pwsz);
         // Free the string.
         LPMALLOC pMalloc;
         CoGetMalloc(1, &pMalloc);

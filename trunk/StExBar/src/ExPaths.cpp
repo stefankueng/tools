@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010, 2012-2013 - Stefan Kueng
+// Copyright (C) 2007-2010, 2012-2013, 2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -74,8 +74,8 @@ bool CDeskBand::FindPaths()
                                 if (!m_newfolderPidls.empty())
                                 {
                                     int nCount2 = 0;
-                                    IShellFolder * pShellFolder;
-                                    if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
+                                    IShellFolder * pShellFolder2 = nullptr;
+                                    if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder2)))
                                     {
                                         if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount2)))
                                         {
@@ -86,7 +86,7 @@ bool CDeskBand::FindPaths()
                                                 bool bFound = false;
                                                 for (std::vector<LPITEMIDLIST>::iterator it = m_newfolderPidls.begin(); it != m_newfolderPidls.end(); ++it)
                                                 {
-                                                    HRESULT hr = pShellFolder->CompareIDs(0, pidl, *it);
+                                                    HRESULT hr = pShellFolder2->CompareIDs(0, pidl, *it);
                                                     if (HRESULT_CODE(hr) == 0)
                                                     {
                                                         // this item was there before, so it's not the new folder
@@ -112,7 +112,7 @@ bool CDeskBand::FindPaths()
                                             }
                                             m_newfolderPidls.clear();
                                         }
-                                        pShellFolder->Release();
+                                        pShellFolder2->Release();
                                     }
 
                                 }
@@ -121,7 +121,6 @@ bool CDeskBand::FindPaths()
                                 if (SUCCEEDED(pFolderView->Items(SVGIO_SELECTION, IID_IEnumIDList, (LPVOID*)&pEnum)))
                                 {
                                     LPITEMIDLIST pidl;
-                                    WCHAR buf[MAX_PATH] = {0};
                                     ULONG fetched = 0;
                                     ULONG attribs = 0;
                                     do

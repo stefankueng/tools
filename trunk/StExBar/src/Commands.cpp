@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2014 - Stefan Kueng
+// Copyright (C) 2007-2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -267,11 +267,11 @@ bool CCommands::LoadFromFile()
     inifile.GetAllSections(sections);
     for (CSimpleIni::TNamesDepend::iterator it = sections.begin(); it != sections.end(); ++it)
     {
-        hotkey key;
-        key.control = (std::wstring(inifile.GetValue(*it, _T("control"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        key.shift = (std::wstring(inifile.GetValue(*it, _T("shift"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        key.alt = (std::wstring(inifile.GetValue(*it, _T("alt"), _T(""))).compare(_T("true")) == 0) ? true : false;
-        key.keycode = _tstol(std::wstring(inifile.GetValue(*it, _T("keycode"), _T(""))).c_str());
+        hotkey key2;
+        key2.control = (std::wstring(inifile.GetValue(*it, _T("control"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        key2.shift = (std::wstring(inifile.GetValue(*it, _T("shift"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        key2.alt = (std::wstring(inifile.GetValue(*it, _T("alt"), _T(""))).compare(_T("true")) == 0) ? true : false;
+        key2.keycode = _tstol(std::wstring(inifile.GetValue(*it, _T("keycode"), _T(""))).c_str());
 
         Command cmd;
         cmd.name = inifile.GetValue(*it, _T("name"), _T(""));
@@ -288,7 +288,7 @@ bool CCommands::LoadFromFile()
         cmd.enabled_selected = (std::wstring(inifile.GetValue(*it, _T("selected"), _T(""))).compare(_T("true")) == 0) ? true : false;
         cmd.enabled_noselection = (std::wstring(inifile.GetValue(*it, _T("noselection"), _T(""))).compare(_T("true")) == 0) ? true : false;
         cmd.enabled_selectedcount = _tstol(std::wstring(inifile.GetValue(*it, _T("selectedcount"), _T(""))).c_str());
-        cmd.key = key;
+        cmd.key = key2;
 
         // check if that command already exists
         if (cmd.name.compare(_T("StexBar Internal Edit Box")) != 0)

@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2012-2013 - Stefan Kueng
+// Copyright (C) 2007-2009, 2012-2013, 2015 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -96,7 +96,6 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                                     if (SUCCEEDED(pFolderView->Items(SVGIO_ALLVIEW, IID_IEnumIDList, (LPVOID*)&pEnum)))
                                     {
                                         LPITEMIDLIST pidl;
-                                        WCHAR buf[MAX_PATH] = {0};
                                         ULONG fetched = 0;
                                         ULONG attribs = 0;
                                         do
