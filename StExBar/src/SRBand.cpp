@@ -1007,8 +1007,8 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
     }
     else
     {
-        TCHAR * buf = GetEditBoxText();
-        std::wstring consoletext = buf;
+        TCHAR * editboxtext = GetEditBoxText();
+        std::wstring consoletext = editboxtext;
 
         // replace "%selpaths" with the paths of the selected items
         std::wstring tag(_T("%selpaths"));
@@ -1110,7 +1110,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
             std::wstring::iterator it_end= it_begin + tag.size();
             commandline.replace(it_begin, it_end, tempFilePath);
         }
-        delete [] buf;
+        delete [] editboxtext;
         StartApplication(!cmd.startin.empty() ? cmd.startin : cwd, commandline, (GetKeyState(VK_LWIN)&0x8000)!=0);
     }
 }
