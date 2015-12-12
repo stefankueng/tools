@@ -1,0 +1,124 @@
+@@include("_includes/header.html", {"title": "grepWin command line parameters"})
+
+<div class="wrapper">
+<div class="content">
+    <h2>Command line parameters for grepWin</h2>
+
+    <table class="main-table">
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="nowrap">/help, /?, /about</td>
+                <td>shows the about dialog</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/portable</td>
+                <td>stores ini settings file in the same directory as the one in which grepwin.exe resides</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/searchpath:"path"</td>
+                <td>sets the path to search in</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/searchfor:"regex or text"</td>
+                <td>fills the regex to search with</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/regex:[yes|no]</td>
+                <td>sets whether the /searchfor text is a regex or normal text, default is regex</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+@@include("_includes/adsense_inpage.html")
+<div class="content">
+    <table class="main-table">
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="nowrap">/filemaskregex:"regex"</td>
+                <td>sets the file mask as a regex</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/filemask:"string"</td>
+                <td>sets the file mask</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/filemaskexclude:"string"</td>
+                <td>sets the exclude file mask</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/replacewith:"string"</td>
+                <td>sets the replace-with string</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/execute /executesearch</td>
+                <td>if specified, the search is started immediately without the user having to click the search button first</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/executereplace</td>
+                <td>if specified, the replace is started immediately without the user having to click the replace button first . Note: if <em>/k</em> is not specified, grepWin will ask whether to do the replace without creating backups.</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/closedialog</td>
+                <td>closes the dialog after the command has finished.</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/i:[yes|no]</td>
+                <td>case insensitive</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/n:[yes|no]</td>
+                <td>dot matches newline</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/k:[yes|no]</td>
+                <td>create backups</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/utf8:[yes|no]</td>
+                <td>treat files as utf8</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/size:sizelimit</td>
+                <td>sets the file size limit. Pass -1 to use all sizes</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/sizecmp:[0|1|2]</td>
+                <td>compare setting for the size limit: 0 = less than, 1 = equal to, 2 = greater than</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/s:[yes|no]</td>
+                <td>include system items</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/h:[yes|no]</td>
+                <td>include hidden items</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/u:[yes|no]</td>
+                <td>include subfolders</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/b:[yes|no]</td>
+                <td>include binary files</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+@@include("_includes/footer.html", {
+    "bottomHtml": "<script async src=\"//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js\"></script>"
+})
