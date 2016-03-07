@@ -69,7 +69,7 @@ module.exports = function(grunt) {
                 ignore: [
                     /(#|\.)fancybox(\-[a-zA-Z]+)?/,
                     '#scrollUp',
-                    /ad-inpage/
+                    '.ad-inpage'
                 ],
                 ignoreSheets: [/fonts.googleapis/, /www.google.com/],
                 stylesheets: ['css/pack.css']
