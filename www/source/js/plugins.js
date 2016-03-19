@@ -28,7 +28,8 @@
 
 $(document).ready(function() {
     'use strict';
-    $('.fancybox').fancybox({});
+
+    $('.fancybox').fancybox();
 
     $.scrollUp({
         scrollDistance: 250,            // Distance from top/bottom before showing element (px)

@@ -54,10 +54,10 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest %>/css/pack.css'
             },
             js: {
-                src: ['<%= dirs.src %>/js/plugins.js',
-                      '<%= dirs.src %>/js/jquery.scrollUp.js',
+                src: ['<%= dirs.src %>/js/jquery.scrollUp.js',
                       '<%= dirs.src %>/js/jquery.mousewheel.js',
-                      '<%= dirs.src %>/js/jquery.fancybox.js'
+                      '<%= dirs.src %>/js/jquery.fancybox.js',
+                      '<%= dirs.src %>/js/plugins.js'
                 ],
                 dest: '<%= dirs.dest %>/js/pack.js'
             }
