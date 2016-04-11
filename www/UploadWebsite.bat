@@ -20,6 +20,11 @@ if not exist "..\serverlogin.bat" (
 )
 
 rem Make sure we have all the deps up to date
+if exist "node_modules/" (
+  cmd /c npm prune
+  cmd /c npm update
+)
+
 cmd /c npm install
 if %errorlevel% neq 0 (
   echo `npm install` failed. Please try again later.
