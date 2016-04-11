@@ -113,10 +113,28 @@ module.exports = function(grunt) {
         htmlmin: {
             dist: {
                 options: {
+                    collapseBooleanAttributes: true,
+                    collapseInlineTagWhitespace: false,
                     collapseWhitespace: true,
+                    conservativeCollapse: false,
+                    decodeEntities: true,
+                    minifyCSS: {
+                        compatibility: "ie9",
+                        keepSpecialComments: 0
+                    },
                     minifyJS: true,
+                    minifyURLs: false,
+                    processConditionalComments: true,
                     removeAttributeQuotes: true,
-                    removeComments: true
+                    removeComments: true,
+                    removeOptionalAttributes: true,
+                    removeOptionalTags: true,
+                    removeRedundantAttributes: true,
+                    removeScriptTypeAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    removeTagWhitespace: false,
+                    sortAttributes: true,
+                    sortClassName: true
                 },
                 expand: true,
                 cwd: '<%= dirs.dest %>',

@@ -49,6 +49,14 @@ a,
             transition: color 0.15s linear;
 }
 
+/*a*/.fancybox {
+    display: inline-block;
+}
+
+/*a*/.fancybox + /*a*/.fancybox {
+    margin-left: 5px;
+}
+
 .content {
     font-size: 110%;
     margin: 10px 8px 0;
