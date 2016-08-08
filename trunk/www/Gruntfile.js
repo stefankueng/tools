@@ -12,12 +12,28 @@ module.exports = function(grunt) {
         // Copy files that don't need compilation to dist/
         copy: {
             dist: {
-                files: [
-                    {dest: '<%= dirs.dest %>/', src: ['*', '!*.html', 'google*.html'], filter: 'isFile', expand: true, cwd: '<%= dirs.src %>/'},
-                    {dest: '<%= dirs.dest %>/', src: '.htaccess', expand: true, cwd: '<%= dirs.src %>/'},
-                    {dest: '<%= dirs.dest %>/', src: ['img/**', '!**/_old/**'], expand: true, cwd: '<%= dirs.src %>/'},
-                    {dest: '<%= dirs.dest %>/', src: ['js/*.min.js', 'js/prettify/**'], expand: true, cwd: '<%= dirs.src %>/'},
-                ]
+                files: [{
+                    dest: '<%= dirs.dest %>/',
+                    src: ['*', '!*.html', 'google*.html'],
+                    filter: 'isFile',
+                    expand: true,
+                    cwd: '<%= dirs.src %>/'
+                }, {
+                    dest: '<%= dirs.dest %>/',
+                    src: '.htaccess',
+                    expand: true,
+                    cwd: '<%= dirs.src %>/'
+                }, {
+                    dest: '<%= dirs.dest %>/',
+                    src: ['img/**', '!**/_old/**'],
+                    expand: true,
+                    cwd: '<%= dirs.src %>/'
+                }, {
+                    dest: '<%= dirs.dest %>/',
+                    src: ['js/*.min.js', 'js/prettify/**'],
+                    expand: true,
+                    cwd: '<%= dirs.src %>/'
+                }]
             }
         },
 
@@ -119,7 +135,7 @@ module.exports = function(grunt) {
                     conservativeCollapse: false,
                     decodeEntities: true,
                     minifyCSS: {
-                        compatibility: "ie9",
+                        compatibility: 'ie9',
                         keepSpecialComments: 0
                     },
                     minifyJS: true,
@@ -146,7 +162,7 @@ module.exports = function(grunt) {
         filerev: {
             css: {
                 src: '<%= dirs.dest %>/css/**/{,*/}*.css'
-             },
+            },
             js: {
                 src: [
                     '<%= dirs.dest %>/js/**/{,*/}*.js',
@@ -177,7 +193,7 @@ module.exports = function(grunt) {
         sitemap: {
             dist: {
                 pattern: ['<%= dirs.dest %>/**/*.html', '!<%= dirs.dest %>/**/google*.html'],
-                siteRoot: './dist'
+                siteRoot: '<%= dirs.dest %>/'
             }
         },
 
@@ -188,11 +204,11 @@ module.exports = function(grunt) {
                 port: 8001
             },
             livereload: {
-                 options: {
+                options: {
                     base: '<%= dirs.dest %>/',
                     open: true  // Automatically open the webpage in the default browser
-                 }
-             }
+                }
+            }
         },
 
         watch: {
@@ -233,12 +249,12 @@ module.exports = function(grunt) {
 
         htmllint: {
             src: ['<%= dirs.dest %>/**/*.html', '!<%= dirs.dest %>/**/google*.html']
-        },
+        }
 
     });
 
     // Load any grunt plugins found in package.json.
-    require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
+    require('load-grunt-tasks')(grunt, { scope: 'devDependencies' });
     require('time-grunt')(grunt);
 
     grunt.registerTask('dev', [
