@@ -3,7 +3,7 @@
   <metadata>
     <id>sktimestamp</id>
     <title>SKTimeStamp</title>
-    <version>1.3.4.1</version>
+    <version>1.3.5</version>
     <authors>Stefan Kueng</authors>
     <owners>Stefan Kueng</owners>
     <summary>SKTimeStamp is a very simple shell extension which adds a new tab to the Explorer properties dialog. On that new tab, you can change the file/folder date and time.</summary>

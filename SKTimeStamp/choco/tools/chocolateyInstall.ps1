@@ -1,1 +1,1 @@
-Install-ChocolateyPackage 'SKTimeStamp' 'msi' '/quiet' 'https://stexbar.googlecode.com/files/SKTimeStamp-1.3.4.msi' 'https://stexbar.googlecode.com/files/SKTimeStamp64-1.3.4.msi' 
+Install-ChocolateyPackage 'SKTimeStamp' 'msi' '/quiet' 'https://stexbar.googlecode.com/files/SKTimeStamp-1.3.5.msi' 'https://stexbar.googlecode.com/files/SKTimeStamp64-1.3.5.msi' -checksum '$checksum$' -checksum64 '$checksum64$' -checksumType 'sha256'
