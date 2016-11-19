@@ -115,6 +115,20 @@
         <arg value="bin\SKTimeStamp.msi" />
       </exec>
     </if>
+    <exec program="checksum" output="bin\checksum.txt">
+      <arg value="-t" />
+      <arg value="sha256" />
+      <arg value="-f" />
+      <arg value="bin\SKTimeStamp.msi" />
+    </exec>
+    <loadfile file="bin\checksum.txt" property="checksum" />
+    <exec program="checksum" output="bin\checksum64.txt">
+      <arg value="-t" />
+      <arg value="sha256" />
+      <arg value="-f" />
+      <arg value="bin\SKTimeStamp64.msi" />
+    </exec>
+    <loadfile file="bin\checksum64.txt" property="checksum64" />
 
   </target>
 
