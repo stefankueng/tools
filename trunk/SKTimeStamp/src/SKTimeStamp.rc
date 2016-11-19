@@ -39,7 +39,7 @@ BEGIN
     CONTROL         "",IDC_DATEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_SHOWNONE | WS_TABSTOP,75,104,79,15
     LTEXT           "Last accessed:",IDC_STATIC,7,106,48,8
     CONTROL         "",IDC_TIMEACCESSED,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,167,104,61,15
-    EDITTEXT        IDC_FILEINFO,7,7,221,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    EDITTEXT        IDC_FILEINFO,7,20,221,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
     LTEXT           "Touch : set the ""Last modified"" time to the current time",IDC_STATIC,7,145,176,8
 END
 
@@ -64,6 +64,17 @@ BEGIN
     END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_PROPPAGE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
 
 
 /////////////////////////////////////////////////////////////////////////////
