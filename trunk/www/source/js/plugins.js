@@ -1,4 +1,4 @@
-/* jshint browser:true, jquery:true */
+/* jshint browser:true */
 
 // Avoid `console` errors in browsers that lack a console.
 (function() {
@@ -25,16 +25,3 @@
 }());
 
 // Place any jQuery/helper plugins in here.
-
-$(document).ready(function() {
-    'use strict';
-
-    $('.fancybox').fancybox();
-
-    $.scrollUp({
-        scrollDistance: 250,            // Distance from top/bottom before showing element (px)
-        scrollTitle: 'Scroll to top',   // Set a custom <a> title if required.
-        scrollImg: true                 // Set true to use image
-    });
-
-});

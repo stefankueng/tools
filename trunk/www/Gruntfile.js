@@ -64,18 +64,34 @@ module.exports = function(grunt) {
             },
             css: {
                 src: ['<%= dirs.src %>/css/normalize.css',
-                      '<%= dirs.src %>/css/jquery.fancybox.css',
+                      '<%= dirs.src %>/css/baguetteBox.css',
                       '<%= dirs.src %>/css/style.css'
                 ],
                 dest: '<%= dirs.dest %>/css/pack.css'
             },
             js: {
-                src: ['<%= dirs.src %>/js/jquery.scrollUp.js',
-                      '<%= dirs.src %>/js/jquery.mousewheel.js',
-                      '<%= dirs.src %>/js/jquery.fancybox.js',
-                      '<%= dirs.src %>/js/plugins.js'
+                src: ['<%= dirs.src %>/js/plugins.js',
+                      '<%= dirs.src %>/js/baguetteBox.js',
+                      '<%= dirs.src %>/js/baguetteBox-init.js'
                 ],
                 dest: '<%= dirs.dest %>/js/pack.js'
+            }
+        },
+
+        autoprefixer: {
+            options: {
+                browsers: [
+                    'last 2 version',
+                    '> 1%',
+                    'Edge >= 12',
+                    'Explorer >= 9',
+                    'Firefox ESR',
+                    'Opera 12.1'
+                ]
+            },
+            pack: {
+                src: '<%= concat.css.dest %>',
+                dest: '<%= concat.css.dest %>'
             }
         },
 
@@ -83,7 +99,7 @@ module.exports = function(grunt) {
             options: {
                 htmlroot: '<%= dirs.dest %>',
                 ignore: [
-                    /(#|\.)fancybox(\-[a-zA-Z]+)?/,
+                    /(#|\.)baguetteBox(\-[a-zA-Z]+)?/,
                     '#scrollUp',
                     '.ad-inpage'
                 ],
@@ -98,7 +114,7 @@ module.exports = function(grunt) {
 
         cssmin: {
             options: {
-                compatibility: 'ie8',
+                compatibility: 'ie9',
                 keepSpecialComments: 0
             },
             prettify: {
@@ -166,13 +182,12 @@ module.exports = function(grunt) {
             js: {
                 src: [
                     '<%= dirs.dest %>/js/**/{,*/}*.js',
-                    '!<%= dirs.dest %>/js/jquery*.min.js',
                     '!<%= dirs.dest %>/js/prettify/lang-*.js'
                 ]
             },
             images: {
                 src: [
-                    '<%= dirs.dest %>/img/**/*.{jpg,jpeg,gif,png}'
+                    '<%= dirs.dest %>/img/**/*.{jpg,jpeg,gif,png,svg}'
                 ]
             }
         },
@@ -263,6 +278,7 @@ module.exports = function(grunt) {
         'includereplace',
         'useminPrepare',
         'concat',
+        'autoprefixer',
         'filerev',
         'usemin',
         'sitemap'
@@ -275,6 +291,7 @@ module.exports = function(grunt) {
         'sitemap',
         'useminPrepare',
         'concat',
+        'autoprefixer',
         'uncss',
         'cssmin',
         'uglify',
