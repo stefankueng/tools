@@ -72,7 +72,8 @@ module.exports = function(grunt) {
             js: {
                 src: ['<%= dirs.src %>/js/plugins.js',
                       '<%= dirs.src %>/js/baguetteBox.js',
-                      '<%= dirs.src %>/js/baguetteBox-init.js'
+                      '<%= dirs.src %>/js/baguetteBox-init.js',
+                      '<%= dirs.src %>/js/google-analytics.js'
                 ],
                 dest: '<%= dirs.dest %>/js/pack.js'
             }
