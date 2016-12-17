@@ -148,10 +148,20 @@
         <dd>if specified, the source folder is synched to the destination
         folder but changes in the destination folder are not synchronized
         back to the source folder</dd>
+        <dt>/mirrorback</dt>
+        <dd>if specified, the destination folder is synched back to the
+        source folder, but changes in the source folder are not synchronized
+        to the destination folder.</dd>
+        <dt>/decryptonly</dt>
+        <dd>like /mirrorback, but does not synchronize deletions.</dd>
         <dt>/use7z</dt>
         <dd>use .7z extension instead of .cryptsync</dd>
+        <dt>/useGPG</dt>
+        <dd>uses GnuPG for the encryption. Note: you have to install GnuPG yourself.</dd>
         <dt>/fat</dt>
         <dd>use FAT write time accuracy (2seconds)</dd>
+        <dt>/ignore</dt>
+        <dd>Sets the ignore pattern</dd>
 
         <dt>/ignore:"ignore|pattern"</dt>
         <dd>specifies the ignore patterns to use. If not specified,
