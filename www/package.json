@@ -2,7 +2,7 @@
   "name": "stefanstools.sourceforge.net",
   "private": true,
   "version": "0.1.0",
-  "author": "XhmikosR (https://github.com/XhmikosR)",
+  "author": "XhmikosR (https://xhmikosr.io/)",
   "description": "The dependencies to build http://stefanstools.sourceforge.net/",
   "homepage": "http://stefanstools.sourceforge.net/",
   "repository": {
@@ -20,25 +20,25 @@
     "grunt": "^1.0.1",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-concat": "^1.0.0",
-    "grunt-contrib-connect": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-connect": "^1.0.2",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-csslint": "^2.0.0",
-    "grunt-contrib-cssmin": "^1.0.0",
-    "grunt-contrib-htmlmin": "^2.0.0",
-    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-cssmin": "^1.0.2",
+    "grunt-contrib-htmlmin": "^2.1.0",
+    "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-filerev": "^2.3.1",
-    "grunt-html": "^8.0.2",
+    "grunt-html": "^8.2.0",
     "grunt-include-replace": "^5.0.0",
     "grunt-sitemap": "^1.2.1",
-    "grunt-uncss": "^0.6.0",
+    "grunt-uncss": "^0.6.1",
     "grunt-usemin": "^3.1.1",
-    "load-grunt-tasks": "^3.4.0",
-    "time-grunt": "^1.3.0"
+    "load-grunt-tasks": "^3.5.2",
+    "time-grunt": "^1.4.0"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=4"
   }
 }
