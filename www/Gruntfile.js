@@ -115,8 +115,11 @@ module.exports = function(grunt) {
 
         cssmin: {
             options: {
-                compatibility: 'ie9',
-                keepSpecialComments: 0
+                level: {
+                    1: {
+                        specialComments: 0
+                    }
+                }
             },
             prettify: {
                 src: '<%= concat.prettify.dest %>',
@@ -152,8 +155,11 @@ module.exports = function(grunt) {
                     conservativeCollapse: false,
                     decodeEntities: true,
                     minifyCSS: {
-                        compatibility: 'ie9',
-                        keepSpecialComments: 0
+                        level: {
+                            1: {
+                                specialComments: 0
+                            }
+                        }
                     },
                     minifyJS: true,
                     minifyURLs: false,
