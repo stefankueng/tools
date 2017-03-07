@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2012, 2014 - Stefan Kueng
+// Copyright (C) 2007-2012, 2014, 2017 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -214,6 +214,7 @@ private:
     bool                    WriteStringToClipboard(const std::wstring& sClipdata, HWND hOwningWnd);
     /// starts the console program to run a script
     void                    StartCmd(const std::wstring& cwd, std::wstring params, bool elevated);
+    void                    StartPS(const std::wstring& cwd, std::wstring params, bool elevated);
     /// start a new process with the specified command line
     void                    StartApplication(const std::wstring& cwd, std::wstring commandline, bool elevated);
     /// creates a new folder and starts the editing of it
@@ -239,6 +240,6 @@ private:
     /// returns the list view control
     HWND                    GetListView32(IShellView * shellView);
     static BOOL CALLBACK    EnumChildProc(HWND hwnd, LPARAM lParam);
-    void                    MoveToSubfolder(HWND hWnd, const std::wstring& cwd, const std::map<std::wstring, ULONG>& items);
+    void                    MoveToSubfolder(HWND hWnd, std::wstring cwd, const std::map<std::wstring, ULONG>& items);
 };
 

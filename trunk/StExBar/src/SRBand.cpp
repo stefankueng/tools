@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2015 - Stefan Kueng
+// Copyright (C) 2007-2015, 2017 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -815,13 +815,15 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
                 // If however the user enters a '@' char in front of the command
                 // then the console shall quit after executing the command.
                 {
+                    auto ps = L"-NoExit -Command \"Set-Location '" + cwd + L"'\"";
+
                     std::wstring params;
                     if (buf[0] == '@')
-                        params = _T("-Command ");
+                        params = _T("-Command \"Set-Location '" + cwd + L"'\" ; ");
                     else
-                        params = _T("-NoExit -Command ");
+                        params = _T("-NoExit -Command \"Set-Location '" + cwd + L"'\" ; ");
                     params += buf;
-                    StartCmd(cwd, params, (GetKeyState(VK_LWIN)&0x8000)!=0);
+                    StartPS(cwd, params, (GetKeyState(VK_LWIN) & 0x8000) != 0);
                 }
                 break;
             case IDC_USECONSOLE:
@@ -949,7 +951,11 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
         }
         else if (cmd.name.compare(_T("Console")) == 0)
         {
-            StartCmd(cwd, _T(""), (GetKeyState(VK_LWIN)&0x8000)!=0);
+            StartCmd(cwd, _T(""), (GetKeyState(VK_LWIN) & 0x8000) != 0);
+        }
+        else if (cmd.name.compare(_T("PowerShell")) == 0)
+        {
+            StartPS(cwd, _T(""), (GetKeyState(VK_LWIN) & 0x8000) != 0);
         }
         else if (cmd.name.compare(_T("Copy Names")) == 0)
         {
@@ -1513,6 +1519,13 @@ HICON CDeskBand::LoadCommandIcon(const Command& cmd)
                     appname = cmd.commandline.substr(0, cmd.commandline.find(' '));
                 else
                     appname = cmd.commandline;
+                if (appname.compare(L"INTERNALCOMMAND") == 0)
+                {
+                    if (cmd.name.compare(L"PowerShell") == 0)
+                        appname = L"powershell.exe";
+                    else if (cmd.name.compare(L"Console") == 0)
+                        appname = L"cmd.exe";
+                }
                 hIcon = ExtractIcon(g_hInst, appname.c_str(), 0);
             }
             if (hIcon == NULL)
@@ -1638,12 +1651,15 @@ TCHAR * CDeskBand::GetEditBoxText(bool sanitized /* = true */)
     return buf;
 }
 
-void CDeskBand::MoveToSubfolder(HWND hWnd, const std::wstring& cwd, const std::map<std::wstring, ULONG>& items)
+void CDeskBand::MoveToSubfolder(HWND hWnd, std::wstring cwd, const std::map<std::wstring, ULONG>& items)
 {
-    if (cwd.empty())
-        return;
-    if (!PathFileExists(cwd.c_str()))
-        return;
+    if (cwd.empty() || !PathFileExists(cwd.c_str()))
+    {
+        // use the parent dir of the first item
+        if (items.empty())
+            return;
+        cwd = CPathUtils::GetParentDirectory(items.begin()->first);
+    }
 
     // try to find a default name for the new folder from the selected files
     std::wstring foldername;
@@ -1680,6 +1696,7 @@ void CDeskBand::MoveToSubfolder(HWND hWnd, const std::wstring& cwd, const std::m
     if (dlg.DoModal(g_hInst, IDD_NAMEDLG, hWnd) == IDOK)
     {
         foldername = dlg.Name;
+        CStringUtils::trim(foldername);
         std::wstring folderpath = cwd + L"\\" + foldername;
         int retrycount = 1;
         while (PathFileExists(folderpath.c_str()))
