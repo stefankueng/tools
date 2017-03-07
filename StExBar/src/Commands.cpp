@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2016 - Stefan Kueng
+// Copyright (C) 2007-2017 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -132,7 +132,7 @@ bool CCommands::LoadFromFile()
     c.name = _T("Console");
     c.commandline = INTERNALCOMMAND;
     c.separator = false;
-    c.nIconID = IDI_CMD;
+    c.nIconID = 0;
     c.enabled_viewpath = true;
     c.enabled_noviewpath = false;
     c.enabled_fileselected = true;
@@ -142,6 +142,24 @@ bool CCommands::LoadFromFile()
     c.enabled_selectedcount = 0;
     key.control = true;
     key.shift = false;
+    key.alt = false;
+    key.keycode = WPARAM('M');
+    c.key = key;
+    m_commands.push_back(c);
+
+    c.name = _T("PowerShell");
+    c.commandline = INTERNALCOMMAND;
+    c.separator = false;
+    c.nIconID = 0;
+    c.enabled_viewpath = true;
+    c.enabled_noviewpath = false;
+    c.enabled_fileselected = true;
+    c.enabled_folderselected = true;
+    c.enabled_selected = true;
+    c.enabled_noselection = true;
+    c.enabled_selectedcount = 0;
+    key.control = true;
+    key.shift = true;
     key.alt = false;
     key.keycode = WPARAM('M');
     c.key = key;
@@ -179,29 +197,27 @@ bool CCommands::LoadFromFile()
     c.key = key;
     m_commands.push_back(c);
 
-    c.name = _T("New Folder");
-    c.commandline = INTERNALCOMMAND;
-    c.separator = false;
-    c.nIconID = IDI_NEWFOLDER;
-    c.enabled_viewpath = true;
-    c.enabled_noviewpath = false;
-    c.enabled_fileselected = true;
-    c.enabled_folderselected = true;
-    c.enabled_selected = true;
-    c.enabled_noselection = true;
-    c.enabled_selectedcount = 0;
     if (!IsWindows7OrGreater())
     {
         // Win7 already does create a new folder with Ctrl-Shift-N
+        c.name = _T("New Folder");
+        c.commandline = INTERNALCOMMAND;
+        c.separator = false;
+        c.nIconID = IDI_NEWFOLDER;
+        c.enabled_viewpath = true;
+        c.enabled_noviewpath = false;
+        c.enabled_fileselected = true;
+        c.enabled_folderselected = true;
+        c.enabled_selected = true;
+        c.enabled_noselection = true;
+        c.enabled_selectedcount = 0;
         key.control = true;
         key.shift = true;
         key.alt = false;
         key.keycode = WPARAM('N');
         c.key = key;
+        m_commands.push_back(c);
     }
-    else
-        c.key = nokey;
-    m_commands.push_back(c);
 
     c.name = _T("");
     c.commandline = INTERNALCOMMAND;

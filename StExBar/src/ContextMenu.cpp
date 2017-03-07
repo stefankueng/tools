@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010, 2012, 2014 - Stefan Kueng
+// Copyright (C) 2007-2010, 2012, 2014, 2017 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include "SRBand.h"
 #include "ItemIDList.h"
 #include "VistaIcons.h"
+#include "PathUtils.h"
 #include "resource.h"
 
 #include <VersionHelpers.h>
@@ -245,10 +246,12 @@ STDMETHODIMP CDeskBand::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
                 if (m_ContextItems.size() == 1)
                 {
                     if (PathIsDirectory(m_ContextItems.begin()->first.c_str()))
-                    {
                         m_ContextDirectory = m_ContextItems.begin()->first;
-                    }
+                    else
+                        m_ContextDirectory = CPathUtils::GetParentDirectory(m_ContextItems.begin()->first);
                 }
+                else
+                    m_ContextDirectory = CPathUtils::GetParentDirectory(m_ContextItems.begin()->first);
                 if (m_ContextDirectory.empty())
                     m_ContextDirectory = m_currentDirectory;
             }
