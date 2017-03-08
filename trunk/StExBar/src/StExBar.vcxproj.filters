@@ -175,6 +175,7 @@
     <None Include="res\regexhelp.htm">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChevronMenu.h">
