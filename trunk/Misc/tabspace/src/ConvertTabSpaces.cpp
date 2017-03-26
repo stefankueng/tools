@@ -1,6 +1,6 @@
 // tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011-2013 - Stefan Kueng
+// Copyright (C) 2011-2013, 2017 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 
 #include "stdafx.h"
 #include "ConvertTabSpaces.h"
+#include <iostream>
 
 ConvertTabSpaces::ConvertTabSpaces(void)
 {
@@ -172,7 +173,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                                 _countof(outbuf),
                                 L"converted spaces to tabs in file'%s'\n",
                                 file.GetFileName().c_str());
-                    _fputts(outbuf, stdout);
+                    std::wcout << outbuf;
                     return true;
                 }
                 else if (file.GetEncoding() != CTextFile::BINARY)
@@ -209,7 +210,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                                 _countof(outbuf),
                                 L"converted spaces to tabs in file'%s'\n",
                                 file.GetFileName().c_str());
-                    _fputts(outbuf, stdout);
+                    std::wcout << outbuf;
                     return true;
                 }
             }
@@ -360,7 +361,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                                 _countof(outbuf),
                                 L"converted tabs to spaces in file'%s'\n",
                                 file.GetFileName().c_str());
-                    _fputts(outbuf, stdout);
+                    std::wcout << outbuf;
                     return true;
                 }
                 else if (file.GetEncoding() != CTextFile::BINARY)
@@ -419,7 +420,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                                 _countof(outbuf),
                                 L"converted tabs to spaces in file'%s'\n",
                                 file.GetFileName().c_str());
-                    _fputts(outbuf, stdout);
+                    std::wcout << outbuf;
                     return true;
                 }
             }
@@ -616,7 +617,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                                     L"fixed end-of-line whitespaces in file'%s', line %d\n",
                                     file.GetFileName().c_str(),
                                     file.LineFromPosition(pos));
-                        _fputts(outbuf, stdout);
+                        std::wcout << outbuf;
                         // now skip the rest of the whitespaces
                         while ((*pOldBuf == ' ') || (*pOldBuf == '\t'))
                         {
@@ -650,7 +651,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                                     L"fixed end-of-line whitespaces in file'%s', line %d\n",
                                     file.GetFileName().c_str(),
                                     file.LineFromPosition(pos));
-                        _fputts(outbuf, stdout);
+                        std::wcout << outbuf;
                         // now skip the rest of the whitespaces
                         while ((*pOldBuf == ' ') || (*pOldBuf == '\t'))
                         {
