@@ -1,6 +1,6 @@
 // tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011-2013 - Stefan Kueng
+// Copyright (C) 2011-2013, 2017 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "CmdLineParser.h"
 #include "TextFile.h"
 #include "ConvertTabSpaces.h"
+#include "StringUtils.h"
 #include <string>
 #include <set>
 #include <algorithm>
@@ -31,54 +32,10 @@
 std::set<std::wstring> g_allowedPatterns;
 std::set<std::wstring> g_excludedPatterns;
 
-int wcswildcmp(const wchar_t *wild, const wchar_t *string)
-{
-    const wchar_t *cp = NULL;
-    const wchar_t *mp = NULL;
-    while ((*string) && (*wild != '*'))
-    {
-        if ((*wild != *string) && (*wild != '?'))
-        {
-            return 0;
-        }
-        wild++;
-        string++;
-    }
-    while (*string)
-    {
-        if (*wild == '*')
-        {
-            if (!*++wild)
-            {
-                return 1;
-            }
-            mp = wild;
-            cp = string+1;
-        }
-        else if ((*wild == *string) || (*wild == '?'))
-        {
-            wild++;
-            string++;
-        }
-        else
-        {
-            wild = mp;
-            string = cp++;
-        }
-    }
-
-    while (*wild == '*')
-    {
-        wild++;
-    }
-    return !*wild;
-}
-
-
 bool FileExtensionInPattern(const std::wstring& filepath)
 {
     std::wstring lowercasepath = filepath;
-    std::transform(lowercasepath.begin(), lowercasepath.end(), lowercasepath.begin(), std::tolower);
+    std::transform(lowercasepath.begin(), lowercasepath.end(), lowercasepath.begin(), ::towlower);
 
     std::wstring lowercasename = lowercasepath;
     std::string::size_type lastPos = lowercasepath.find_last_of('\\');
@@ -199,7 +156,7 @@ int _tmain(int argc, _TCHAR* argv[])
         {
             // found a token, add it to the set.
             std::wstring ext = filepattern.substr(lastPos, pos - lastPos);
-            std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower);
+            std::transform(ext.begin(), ext.end(), ext.begin(), ::towlower);
             if (bExtPatterns)
                 ext = L"*." + ext;
             g_allowedPatterns.insert(ext);
@@ -227,7 +184,7 @@ int _tmain(int argc, _TCHAR* argv[])
             {
                 // found a token, add it to the set.
                 std::wstring ext = filepattern.substr(lastPos, pos - lastPos);
-                std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower);
+                std::transform(ext.begin(), ext.end(), ext.begin(), ::towlower);
                 g_excludedPatterns.insert(ext);
 
                 // skip delimiters. Note the "not_of"

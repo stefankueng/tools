@@ -1,6 +1,6 @@
 // tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011-2012 - Stefan Kueng
+// Copyright (C) 2011-2012, 2017 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 #pragma once
 
 #ifndef _WIN32_WINNT            // Specifies that the minimum required platform is Windows XP.
-#define _WIN32_WINNT 0x0501     // Change this to the appropriate value to target other versions of Windows.
+#define _WIN32_WINNT 0x0600     // Change this to the appropriate value to target other versions of Windows.
 #endif
 
 #include <Windows.h>
