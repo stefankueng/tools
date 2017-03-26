@@ -27,6 +27,9 @@
 #include <set>
 #include <algorithm>
 #include <cctype>
+#include <iostream>
+#include <io.h>
+#include <fcntl.h>
 
 
 std::set<std::wstring> g_allowedPatterns;
@@ -79,6 +82,7 @@ int _tmain(int argc, _TCHAR* argv[])
     bool    bCStyle                 =   false;
     std::wstring filepattern        =   L"c;cc;cpp;cs;cxx;h;hpp;hxx";
 
+    _setmode(_fileno(stdout), _O_U16TEXT);
 
     LPWSTR lpCmdLine = GetCommandLine();
     CCmdLineParser parser(lpCmdLine);
