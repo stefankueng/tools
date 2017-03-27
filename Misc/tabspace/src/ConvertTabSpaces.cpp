@@ -146,6 +146,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
                     WCHAR * pBufStart = pBuf;
                     WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
+                    if (file.HasBOM())
+                        *pBuf++ = *pOldBuf++;
                     std::vector<long>::iterator it = spacegrouppositions.begin();
                     for (long i = 0; i < long(file.GetFileLength() / sizeof(WCHAR)); ++i)
                     {
@@ -313,6 +315,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
                     WCHAR * pBufStart = pBuf;
                     WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
+                    if (file.HasBOM())
+                        *pBuf++ = *pOldBuf++;
                     bool inChar = false;
                     bool inString = false;
                     bool escapeChar = false;
