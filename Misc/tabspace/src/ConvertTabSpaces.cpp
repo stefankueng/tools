@@ -63,6 +63,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             inChar = !inChar;
                         if ((!inChar) && (*it == '\"'))
                             inString = !inString;
+                        if ((*it == '\n') || (*it == '\r'))
+                            inChar = false;
                         if (inChar || inString)
                         {
                             spacecount = 0;
@@ -110,6 +112,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             inChar = !inChar;
                         if ((!inChar) && (*pBuf == '\"'))
                             inString = !inString;
+                        if ((*pBuf == '\n') || (*pBuf == '\r'))
+                            inChar = false;
                         if (inChar || inString)
                         {
                             spacecount = 0;
@@ -250,6 +254,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             inChar = !inChar;
                         if ((!inChar) && (*it == '\"'))
                             inString = !inString;
+                        if ((*it == '\n') || (*it == '\r'))
+                            inChar = false;
                         if (inChar || inString)
                             continue;
                     }
@@ -291,6 +297,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                             inChar = !inChar;
                         if ((!inChar) && (*pBuf == '\"'))
                             inString = !inString;
+                        if ((*pBuf == '\n') || (*pBuf == '\r'))
+                            inChar = false;
                         if (inChar || inString)
                             continue;
                     }
@@ -345,6 +353,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                                 inChar = !inChar;
                             if ((!inChar) && (*pOldBuf == '\"'))
                                 inString = !inString;
+                            if ((*pOldBuf == '\n') || (*pOldBuf == '\r'))
+                                inChar = false;
                             if (inChar || inString)
                             {
                                 *pBuf++ = *pOldBuf++;
@@ -402,6 +412,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                                 inChar = !inChar;
                             if ((!inChar) && (*pOldBuf == '\"'))
                                 inString = !inString;
+                            if ((*pOldBuf == '\n') || (*pOldBuf == '\r'))
+                                inChar = false;
                             if (inChar || inString)
                             {
                                 *pBuf++ = *pOldBuf++;
@@ -465,6 +477,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         inChar = !inChar;
                     if ((!inChar) && (*it == '\"'))
                         inString = !inString;
+                    if ((*it == '\n') || (*it == '\r'))
+                        inChar = false;
                     if (inChar || inString)
                         continue;
                 }
@@ -516,6 +530,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         inChar = !inChar;
                     if ((!inChar) && (*it == '\"'))
                         inString = !inString;
+                    if ((*it == '\n') || (*it == '\r'))
+                        inChar = false;
                     if (inChar || inString)
                         continue;
                 }
