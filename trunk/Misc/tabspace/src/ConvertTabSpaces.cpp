@@ -146,10 +146,14 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
                     WCHAR * pBufStart = pBuf;
                     WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
+                    auto wlength = long(file.GetFileLength() / sizeof(WCHAR));
                     if (file.HasBOM())
+                    {
                         *pBuf++ = *pOldBuf++;
+                        --wlength;
+                    }
                     std::vector<long>::iterator it = spacegrouppositions.begin();
-                    for (long i = 0; i < long(file.GetFileLength() / sizeof(WCHAR)); ++i)
+                    for (long i = 0; i < wlength; ++i)
                     {
                         if ((it != spacegrouppositions.end()) && (*it == i))
                         {
@@ -315,12 +319,16 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
                     WCHAR * pBufStart = pBuf;
                     WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
+                    auto wlength = long(file.GetFileLength() / sizeof(WCHAR));
                     if (file.HasBOM())
+                    {
                         *pBuf++ = *pOldBuf++;
+                        --wlength;
+                    }
                     bool inChar = false;
                     bool inString = false;
                     bool escapeChar = false;
-                    for (long i = 0; i < long(file.GetFileLength() / sizeof(WCHAR)); ++i)
+                    for (long i = 0; i < wlength; ++i)
                     {
                         ++inlinepos;
                         if (bCStyle)
@@ -614,10 +622,14 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                 WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
                 WCHAR * pBufStart = pBuf;
                 WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
+                auto wlength = long(file.GetFileLength() / sizeof(WCHAR));
                 if (file.HasBOM())
+                {
                     *pBuf++ = *pOldBuf++;
+                    --wlength;
+                }
                 std::vector<long>::iterator it = spacepositions.begin();
-                for (long i = 0; i < long(file.GetFileLength() / sizeof(WCHAR)); ++i)
+                for (long i = 0; i < wlength; ++i)
                 {
                     ++pos;
                     if ((it != spacepositions.end()) && (pos == *it))
@@ -638,7 +650,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                             pos++;
                         }
                     }
-                    if (i < long(file.GetFileLength()))
+                    if (i < wlength)
                         *pBuf++ = *pOldBuf++;
                 }
                 file.ContentsModified((BYTE*)pBufStart, newfilelen);
