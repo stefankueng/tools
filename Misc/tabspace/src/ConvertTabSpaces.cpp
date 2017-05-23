@@ -181,7 +181,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
                                 _countof(outbuf),
-                                L"converted spaces to tabs in file'%s'\n",
+                                L"converted spaces to tabs in file '%s'\n",
                                 file.GetFileName().c_str());
                     std::wcout << outbuf;
                     return true;
