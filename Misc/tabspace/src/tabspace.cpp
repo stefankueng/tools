@@ -82,10 +82,11 @@ int _tmain(int argc, _TCHAR* argv[])
     bool    bCStyle                 =   false;
     std::wstring filepattern        =   L"c;cc;cpp;cs;cxx;h;hpp;hxx";
 
-    _setmode(_fileno(stdout), _O_U16TEXT);
-
     LPWSTR lpCmdLine = GetCommandLine();
     CCmdLineParser parser(lpCmdLine);
+
+    if (parser.HasVal(L"unicode"))
+        _setmode(_fileno(stdout), _O_U16TEXT);
 
     if (parser.HasKey(L"?") || parser.HasKey(L"help"))
     {
@@ -106,6 +107,7 @@ int _tmain(int argc, _TCHAR* argv[])
         _fputts(L"             for example \"c:\\sub1\\*.*;*\\sub2\\*.cpp\"\n", stdout);
         _fputts(L"/exclude   : a list of patterns to ignore, separated by ';'\n", stdout);
         _fputts(L"             for example \"c:\\sub1\\*.*;*\\sub2\\*.cpp\"\n", stdout);
+        _fputts(L"/unicode   : switches the console output to unicode\n", stdout);
         return 0;
     }
 
