@@ -33,7 +33,7 @@
     "grunt-html": "^8.2.0",
     "grunt-include-replace": "^5.0.0",
     "grunt-sitemap": "^1.2.1",
-    "grunt-uncss": "^0.6.1",
+    "grunt-uncss": "^0.7.1",
     "grunt-usemin": "^3.1.1",
     "load-grunt-tasks": "^3.5.2",
     "time-grunt": "^1.4.0"
