@@ -87,7 +87,8 @@ module.exports = function(grunt) {
                     'Edge >= 12',
                     'Explorer >= 9',
                     'Firefox ESR',
-                    'Opera 12.1'
+                    'iOS >= 8',
+                    'Safari >= 8'
                 ]
             },
             pack: {
