@@ -352,6 +352,9 @@ AddDefaultCharset utf-8
     RewriteRule ^MailNoter$ MailNoter.html [R,NC]
     RewriteRule ^trafficWatcher$ trafficWatcher.html [R,NC]
 
+    # redirect to the new domain
+    RewriteCond %{HTTP_HOST} ^stefanstools\.sourceforge\.net$ [NC]
+    RewriteRule ^(.*)$ http://tools.stefankueng.com/$1 [L,R=301]
 </IfModule>
 
 # ----------------------------------------------------------------------
