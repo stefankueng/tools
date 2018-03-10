@@ -55,7 +55,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 
             m_hListControl = GetDlgItem(*this, IDC_CUSTCOMMANDS);
 
-            m_link.ConvertStaticToHyperlink(hwndDlg, IDC_LINK, _T("http://stefanstools.sourceforge.net"));
+            m_link.ConvertStaticToHyperlink(hwndDlg, IDC_LINK, _T("http://tools.stefankueng.com"));
 
             SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_SETCHECK, DWORD(m_regShowBtnText) ? BST_CHECKED : BST_UNCHECKED, 0);
             SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_SETCHECK, DWORD(m_regUseUNCPaths) ? BST_CHECKED : BST_UNCHECKED, 0);

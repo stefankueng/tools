@@ -11,7 +11,7 @@
 
     <Package Id="*" Keywords="Installer"
       Description="File/Folder Time Stamp Changer"
-      Comments="http://stefanstools.sourceforge.net" Manufacturer="Stefans Tools"
+      Comments="http://tools.stefankueng.com" Manufacturer="Stefans Tools"
       InstallerVersion="100" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
 
     <Upgrade Id="705E17CC-A9E9-4082-96C6-EC08249B63A8" >
