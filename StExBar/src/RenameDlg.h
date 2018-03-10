@@ -43,7 +43,7 @@ public:
     ~CRenameDlg(void);
 
     std::wstring            GetMatchString() {return m_sMatch;}
-    std::tr1::regex_constants::syntax_option_type GetRegexFlags() {return m_fl;}
+    std::regex_constants::syntax_option_type GetRegexFlags() {return m_fl;}
     std::wstring            GetReplaceString() {return m_sReplace;}
     void                    SetFileList(const std::set<std::wstring>& list);
 
@@ -60,5 +60,5 @@ private:
     CAutoComplete           m_AutoCompleteRen1;
     CAutoComplete           m_AutoCompleteRen2;
 
-    std::tr1::regex_constants::syntax_option_type m_fl;
+    std::regex_constants::syntax_option_type m_fl;
 };

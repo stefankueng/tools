@@ -158,7 +158,7 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
     {
         try
         {
-            const std::tr1::wregex regCheck(dlg.GetMatchString(), dlg.GetRegexFlags());
+            const std::wregex regCheck(dlg.GetMatchString(), dlg.GetRegexFlags());
             NumberReplaceHandler handler(dlg.GetReplaceString());
 
             // start renaming the files
@@ -213,7 +213,7 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                                                         // check if the item is in the list of selected items
                                                         if (m_filelist.find(sDispName) != m_filelist.end())
                                                         {
-                                                            replaced = std::tr1::regex_replace(sDispName, regCheck, dlg.GetReplaceString());
+                                                            replaced = std::regex_replace(sDispName, regCheck, dlg.GetReplaceString());
                                                             replaced = handler.ReplaceCounters(replaced);
                                                             if (replaced.compare(sDispName))
                                                             {

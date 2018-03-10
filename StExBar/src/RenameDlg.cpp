@@ -155,9 +155,9 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
                 m_AutoCompleteRen1.AddEntry(m_sMatch.c_str());
                 m_AutoCompleteRen2.AddEntry(m_sReplace.c_str());
 
-                m_fl = std::tr1::regex_constants::ECMAScript;
+                m_fl = std::regex_constants::ECMAScript;
                 if (SendDlgItemMessage(*this, IDC_CASEINSENSITIVE, BM_GETCHECK, 0, 0) == BST_CHECKED)
-                    m_fl |= std::tr1::regex_constants::icase;
+                    m_fl |= std::regex_constants::icase;
             }
             // fall through
         case IDCANCEL:
@@ -281,16 +281,16 @@ void CRenameDlg::FillRenamedList()
 
     try
     {
-        m_fl = std::tr1::regex_constants::ECMAScript;
+        m_fl = std::regex_constants::ECMAScript;
         if (SendDlgItemMessage(*this, IDC_CASEINSENSITIVE, BM_GETCHECK, 0, 0) == BST_CHECKED)
-            m_fl |= std::tr1::regex_constants::icase;
-        const std::tr1::wregex regCheck(m_sMatch, m_fl);
+            m_fl |= std::regex_constants::icase;
+        const std::wregex regCheck(m_sMatch, m_fl);
 
         NumberReplaceHandler handler(m_sReplace);
         std::wstring replaced;
         for (auto it = m_filelist.begin(); it != m_filelist.end(); ++it)
         {
-            replaced = std::tr1::regex_replace(*it, regCheck, m_sReplace);
+            replaced = std::regex_replace(*it, regCheck, m_sReplace);
             replaced = handler.ReplaceCounters(replaced);
             renamedmap[*it] = replaced;
         }
