@@ -218,6 +218,8 @@
     <ClCompile Include="VistaIcons.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\version.build.in" />
+    <None Include="..\versioninfo.build" />
     <None Include=".editorconfig" />
     <None Include="StExBar.def" />
     <None Include="res\cmd.ico" />

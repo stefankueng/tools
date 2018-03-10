@@ -19,6 +19,9 @@
     <Filter Include="sktoolslib">
       <UniqueIdentifier>{f865f70d-855b-48ba-92cf-d19d44dad635}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Build">
+      <UniqueIdentifier>{618388de-5a39-4208-912b-46fecb8a3ae8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChevronMenu.cpp">
@@ -164,8 +167,6 @@
     <None Include="setup\Setup64.wxs">
       <Filter>WiX</Filter>
     </None>
-    <None Include="..\default.build" />
-    <None Include="version.in" />
     <None Include="res\CommandHelp.htm">
       <Filter>Resource Files</Filter>
     </None>
@@ -176,6 +177,18 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include=".editorconfig" />
+    <None Include="..\default.build">
+      <Filter>Build</Filter>
+    </None>
+    <None Include="..\version.build.in">
+      <Filter>Build</Filter>
+    </None>
+    <None Include="..\versioninfo.build">
+      <Filter>Build</Filter>
+    </None>
+    <None Include="version.in">
+      <Filter>Build</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChevronMenu.h">
