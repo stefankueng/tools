@@ -272,8 +272,14 @@ module.exports = function(grunt) {
 
         htmllint: {
             src: ['<%= dirs.dest %>/**/*.html', '!<%= dirs.dest %>/**/google*.html']
-        }
+        },
 
+        'gh-pages': {
+            options: {
+                base: 'dist'
+            },
+            src: ['**']
+        }
     });
 
     // Load any grunt plugins found in package.json.
