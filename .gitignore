@@ -9,3 +9,6 @@
 /SKTimeStamp/obj
 /SKTimeStamp/src/SKTimeStamp.vcxproj.user
 /SKTimeStamp/src/version.h
+/www/.grunt
+/www/dist
+/www/node_modules
