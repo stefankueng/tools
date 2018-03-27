@@ -1,0 +1,19 @@
+<!doctype html><html lang=en><meta charset=utf-8><title>svnrobots.txt - Stefans Tools</title><link href=/favicon.ico rel="shortcut icon"><link href=/apple-touch-icon.png rel=apple-touch-icon><link href=/css/pack.05c8ccad.css rel=stylesheet><header class=main-sprite id=top><h1 class=header-title><a href=/ >Stefans Tools</a></h1><h2 class=header-description>Useful open source tools that make your life easier</h2></header><div class=wrapper><div class=content><h2>svnrobots.txt</h2><p>Server administrators and/or committers of a Subversion repository can limit <a href=/CommitMonitor.html>CommitMonitor</a> from accessing the repository too often or do automatic diffs.<p>This is what the <code>svnrobots.txt</code> file is for. CommitMonitor looks for such a file and uses its content to limit the check interval time and/or disallow automatic diffs.<p>The format of the file is simple:<pre>
+# this is an example svnrobots.txt file
+#
+# the checkinterval line sets the minimum interval in minutes between
+# update checks:
+checkinterval = 90
+# the disallowautodiff line if it's present forces the check apps
+# to *not* do automatic diffs:
+disallowautodiff
+
+# the 'search path' used to find the svnrobots.txt file is as follows,
+# assuming the monitored URL is http://www.example.com/svn/project/trunk
+#
+# http://www.example.com/svnrobots.txt (web root)
+# http://www.example.com/svn/project/svnrobots.txt  (repository root)
+# http://www.example.com/svn/project/trunk/svnrobots.txt
+#
+# the first found file is used to limit the commit monitor.
+</pre></div></div><footer class=main-sprite><ul><li><a href=https://sourceforge.net/projects/stefanstools><img alt="SourceForge logo" class=sf-logo height=15 src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" title="SourceForge Project" width=80></a><li>• © <a href=/about.html>Stefan Küng</a></ul><p>Site last updated: Tuesday, March 27th, 2018, 12:03:42 GMT+0200</footer><script async src=/js/pack.02ce263d.js></script>
