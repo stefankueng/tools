@@ -40,14 +40,7 @@ if %errorlevel% neq 0 (
   goto end
 )
 
-rem Get the login info
-call "..\serverlogin.bat"
-
-pushd "dist\"
-rem Upload the files to the server
-%PSCP% -l %USERNAME% -pw %PASSWORD% -r *.* web.sourceforge.net:/home/project-web/stefanstools/htdocs/
-
-popd
+grunt gh-pages
 
 :end
 exit /b
