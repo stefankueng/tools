@@ -281,7 +281,7 @@ module.exports = function(grunt) {
 
         'gh-pages': {
             options: {
-                base: 'dist'
+                base: '<%= dirs.dest %>'
             },
             src: ['**']
         }
@@ -330,6 +330,11 @@ module.exports = function(grunt) {
         'build',
         'connect',
         'watch:build'
+    ]);
+
+    grunt.registerTask('deploy', [
+        'build',
+        'gh-pages'
     ]);
 
     grunt.registerTask('default', [
