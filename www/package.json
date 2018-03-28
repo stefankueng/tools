@@ -4,15 +4,15 @@
   "version": "0.1.0",
   "author": "XhmikosR (https://xhmikosr.io/)",
   "description": "The dependencies to build http://stefanstools.sourceforge.net/",
-  "homepage": "http://stefanstools.sourceforge.net/",
+  "homepage": "https://tools.stefankueng.com/",
   "repository": {
-    "type": "svn",
-    "url": "https://svn.code.sf.net/p/stefanstools/code/trunk/www/"
+    "type": "git",
+    "url": "git+https://github.com/stefankueng/tools.git"
   },
   "bugs": {
-    "url": "https://sourceforge.net/p/stefanstools/tickets/"
+    "url": "https://github.com/stefankueng/tools/issues"
   },
-  "license": "GPLv2",
+  "license": "GPL-2.0",
   "scripts": {
     "test": "grunt test"
   },
