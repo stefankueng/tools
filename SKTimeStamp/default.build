@@ -10,7 +10,7 @@
 
   <target name="build" depends="VSNET,env">
     <!-- run SubWCRev to get the revision of the working copy -->
-    <exec program="SubWCRev.exe">
+    <exec program="GitWCRev.exe">
       <arg value="." />
       <arg value="src/version.in" />
       <arg value="src/version.h" />

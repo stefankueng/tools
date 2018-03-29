@@ -1,12 +1,12 @@
 #pragma once
 
-#define FILEVER         $MajorVersion$, $MinorVersion$, $MicroVersion$, $WCREV$
-#define PRODUCTVER      $MajorVersion$, $MinorVersion$, $MicroVersion$, $WCREV$
-#define STRFILEVER      "$MajorVersion$.$MinorVersion$.$MicroVersion$.$WCREV$\0"
-#define STRPRODUCTVER   "$MajorVersion$.$MinorVersion$.$MicroVersion$.$WCREV$\0"
+#define FILEVER         $MajorVersion$, $MinorVersion$, $MicroVersion$, $WCLOGCOUNT$
+#define PRODUCTVER      $MajorVersion$, $MinorVersion$, $MicroVersion$, $WCLOGCOUNT$
+#define STRFILEVER      "$MajorVersion$.$MinorVersion$.$MicroVersion$.$WCLOGCOUNT$\0"
+#define STRPRODUCTVER   "$MajorVersion$.$MinorVersion$.$MicroVersion$.$WCLOGCOUNT$\0"
 
 #define VER_MAJOR       $MajorVersion$
 #define VER_MINOR       $MinorVersion$
 #define VER_MICRO       $MicroVersion$
-#define VER_REVISION    $WCREV$
+#define VER_REVISION    $WCLOGCOUNT$
 

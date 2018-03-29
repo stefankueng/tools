@@ -25,3 +25,11 @@
 /Misc/FileTool/src/FileTool.vcxproj.user
 /Misc/FileTool/src/version.h
 /Misc/FileTool/version.build
+/SKTimeStamp/default.build.user
+/Misc/tabspace/.vs
+/Misc/tabspace/bin
+/Misc/tabspace/obj
+/Misc/tabspace/src/tabspace.vcxproj.user
+/StExBar/choco/package
+/StExBar/default.build.user
+/StExBar/version.build

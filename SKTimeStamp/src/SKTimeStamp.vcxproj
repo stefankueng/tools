@@ -197,6 +197,7 @@
     <None Include="..\default.build" />
     <None Include="setup\Setup.wxs" />
     <None Include="setup\Setup64.wxs" />
+    <None Include="version.in" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\sktoolslib\Registry.h" />

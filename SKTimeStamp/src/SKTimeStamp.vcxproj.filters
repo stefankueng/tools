@@ -53,6 +53,9 @@
     <None Include="setup\Setup64.wxs">
       <Filter>Scripts</Filter>
     </None>
+    <None Include="version.in">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">

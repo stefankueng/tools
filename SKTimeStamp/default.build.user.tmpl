@@ -18,9 +18,9 @@
   <!-- These two targets have to exist in doc.build.user                      -->
   <!-- ====================================================================== -->
 
-  <target name="VSNET" description="Checks if the env variables for VS2015 are set">
+  <target name="VSNET" description="Checks if the env variables for VS2017 are set">
     <if test="${not environment::variable-exists('VCINSTALLDIR')}">
-      <fail>You must first call "%VS140COMNTOOLS%\vsvars32.bat"</fail>
+      <fail>You must first call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"</fail>
     </if>
     <!-- Uncomment the line below to allow limited building using VC Express instead of VS.NET. -->
     <!-- <property name="buildtool" value="vcexpress.exe" /> -->
