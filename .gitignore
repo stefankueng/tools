@@ -19,3 +19,9 @@
 /Misc/AAClr/src/AAClr.vcxproj.user
 /Misc/AAClr/src/version.h
 /Misc/AAClr/version.build
+/Misc/FileTool/.vs
+/Misc/FileTool/bin
+/Misc/FileTool/obj
+/Misc/FileTool/src/FileTool.vcxproj.user
+/Misc/FileTool/src/version.h
+/Misc/FileTool/version.build
