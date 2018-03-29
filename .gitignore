@@ -12,3 +12,10 @@
 /www/.grunt
 /www/dist
 /www/node_modules
+/Misc/AAClr/.vs
+/Misc/AAClr/Release
+/Misc/AAClr/default.build.user
+/Misc/AAClr/obj
+/Misc/AAClr/src/AAClr.vcxproj.user
+/Misc/AAClr/src/version.h
+/Misc/AAClr/version.build

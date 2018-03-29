@@ -22,7 +22,10 @@
 #include "CmdLineParser.h"
 #include "MainWindow.h"
 #include "Utils.h"
+#pragma warning(push)
+#pragma warning(disable: 4458) // declaration of 'xx' hides class member
 #include <GdiPlus.h>
+#pragma warning(pop)
 
 
 // Global Variables:
