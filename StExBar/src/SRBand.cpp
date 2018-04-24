@@ -33,6 +33,7 @@
 #include "PathUtils.h"
 #include "StringUtils.h"
 #include "NameDlg.h"
+#include "DPIAware.h"
 #include <commctrl.h>
 
 #pragma comment(lib, "uxtheme.lib")
@@ -1391,7 +1392,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 
     TBBUTTON * tb = new TBBUTTON[m_commands.GetCount()];
     // create an image list containing the icons for the toolbar
-    m_hToolbarImgList = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, m_commands.GetCount(), 1);
+    m_hToolbarImgList = ImageList_Create(int(16 * CDPIAware::Instance().ScaleFactorX()), int(16 * CDPIAware::Instance().ScaleFactorY()), ILC_COLOR32 | ILC_MASK, m_commands.GetCount(), 1);
     if (m_hToolbarImgList == NULL)
     {
         delete [] tb;
@@ -1487,12 +1488,12 @@ HICON CDeskBand::LoadCommandIcon(const Command& cmd)
 {
     HICON hIcon = NULL;
     if (cmd.nIconID)
-        hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(cmd.nIconID));
+        hIcon = (HICON)LoadImage(g_hInst, MAKEINTRESOURCE(cmd.nIconID), IMAGE_ICON, int(16 * CDPIAware::Instance().ScaleFactorX()), int(16 * CDPIAware::Instance().ScaleFactorY()), LR_DEFAULTCOLOR);
     else if (!cmd.separator)
     {
-        hIcon = LoadIcon(g_hInst, cmd.icon.c_str());
+        hIcon = (HICON)LoadImage(g_hInst, cmd.icon.c_str(), IMAGE_ICON, int(16 * CDPIAware::Instance().ScaleFactorX()), int(16 * CDPIAware::Instance().ScaleFactorY()), LR_DEFAULTCOLOR);
         if (hIcon == NULL)
-            hIcon = (HICON)LoadImage(g_hInst, cmd.icon.c_str(), IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
+            hIcon = (HICON)LoadImage(g_hInst, cmd.icon.c_str(), IMAGE_ICON, int(16 * CDPIAware::Instance().ScaleFactorX()), int(16 * CDPIAware::Instance().ScaleFactorY()), LR_LOADFROMFILE);
         if (hIcon == NULL)
         {
             // icon loading failed. Let's try to load it differently:

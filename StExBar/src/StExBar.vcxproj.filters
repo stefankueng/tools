@@ -290,6 +290,9 @@
     <ClInclude Include="NameDlg.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\sktoolslib\DPIAware.h">
+      <Filter>sktoolslib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StExBar.rc">

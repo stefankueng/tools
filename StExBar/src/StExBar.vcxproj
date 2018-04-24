@@ -254,6 +254,7 @@
     <ClInclude Include="..\..\sktoolslib\BaseWindow.h" />
     <ClInclude Include="..\..\sktoolslib\BrowseFolder.h" />
     <ClInclude Include="..\..\sktoolslib\DlgResizer.h" />
+    <ClInclude Include="..\..\sktoolslib\DPIAware.h" />
     <ClInclude Include="..\..\sktoolslib\hyperlink.h" />
     <ClInclude Include="..\..\sktoolslib\ItemIDList.h" />
     <ClInclude Include="..\..\sktoolslib\PathUtils.h" />
