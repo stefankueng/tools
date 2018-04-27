@@ -110,21 +110,6 @@
       <arg value="bin\StExBar64-${verstring}.msi" />
       <arg value="bin\Setup64.wixobj" />
     </exec>
-    <exec program="checksum" output="bin\checksum.txt">
-      <arg value="-t" />
-      <arg value="sha256" />
-      <arg value="-f" />
-      <arg value="bin\StExBar-${verstring}.msi" />
-    </exec>
-    <loadfile file="bin\checksum.txt" property="checksum" />
-    <exec program="checksum" output="bin\checksum64.txt">
-      <arg value="-t" />
-      <arg value="sha256" />
-      <arg value="-f" />
-      <arg value="bin\StExBar64-${verstring}.msi" />
-    </exec>
-    <loadfile file="bin\checksum64.txt" property="checksum64" />
-
     <delete>
       <fileset>
         <include name="bin\*.wixobj" />
@@ -143,6 +128,21 @@
         <arg value="bin\StExBar-${verstring}.msi" />
       </exec>
     </if>
+
+    <exec program="checksum" output="bin\checksum.txt">
+      <arg value="-t" />
+      <arg value="sha256" />
+      <arg value="-f" />
+      <arg value="bin\StExBar-${verstring}.msi" />
+    </exec>
+    <loadfile file="bin\checksum.txt" property="checksum" />
+    <exec program="checksum" output="bin\checksum64.txt">
+      <arg value="-t" />
+      <arg value="sha256" />
+      <arg value="-f" />
+      <arg value="bin\StExBar64-${verstring}.msi" />
+    </exec>
+    <loadfile file="bin\checksum64.txt" property="checksum64" />
 
     <loadfile file="choco\stexbar.nuspec" property="nuspecfile">
       <filterchain>
