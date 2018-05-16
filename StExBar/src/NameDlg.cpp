@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2014 - Stefan Kueng
+// Copyright (C) 2014, 2018 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@ LRESULT CNameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM /*lPara
 
             ::SetFocus(::GetDlgItem(hwndDlg, IDC_NAME));
         }
-            return (INT_PTR)TRUE;
+            return (INT_PTR)FALSE;
         case WM_COMMAND:
         {
             switch (LOWORD(wParam))
