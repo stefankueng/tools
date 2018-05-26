@@ -117,6 +117,18 @@
                 <td class="nowrap">/content</td>
                 <td>if set, the search results are listed by content instead of files</td>
             </tr>
+            <tr>
+                <td class="nowrap">/datelimit:[0|1|2|3]</td>
+                <td>Sets the date filter:
+                <ul>
+                    <li>0 : No date filter</li>
+                    <li>1 : Search for files newer than</li>
+                    <li>2 : Search for files older than</li>
+                    <li>3 : Search for files between date</li>
+                </ul>
+                The date(s) are set with <em>/date1:"YYYY:MM:DD"</em> and <em>/date2:"YYYY:MM:DD"</em>.
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
