@@ -11,7 +11,7 @@
 
     <Package Id="*" Keywords="Installer"
       Description="Stefans Shell Extension Bar"
-      Comments="http://tools.StExBar.net" Manufacturer="Stefans Tools"
+      Comments="https://tools.stefankueng.com" Manufacturer="Stefans Tools"
       InstallerVersion="200" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
 
     <Upgrade Id="8F75040C-433F-4eab-B1F0-2D8FA4153D92" >
