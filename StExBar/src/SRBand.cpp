@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2015, 2017 - Stefan Kueng
+// Copyright (C) 2007-2015, 2017-2018 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -840,7 +840,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
                 break;
             case IDC_USEGREPWIN:
                 {
-                    CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin...\\command\\", L"", 0, HKEY_CLASSES_ROOT);
+                    CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin\\command\\", L"", 0, HKEY_CLASSES_ROOT);
                     std::wstring grepWinPath = regGrepWinPath;
                     grepWinPath = grepWinPath.substr(0, grepWinPath.find_last_of('/'));
                     std::wstring params = grepWinPath;

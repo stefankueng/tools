@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2013, 2015 - Stefan Kueng
+// Copyright (C) 2007-2013, 2015, 2018 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,7 +67,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEPOWERSHELL), !DWORD(m_regHideEditBox));
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEFILTER), !DWORD(m_regHideEditBox));
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEAUTO), !DWORD(m_regHideEditBox));
-            CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin...\\command\\", L"", 0, HKEY_CLASSES_ROOT);
+            CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin\\command\\", L"", 0, HKEY_CLASSES_ROOT);
             std::wstring grepWinPath = regGrepWinPath;
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEGREPWIN), !grepWinPath.empty() && !DWORD(m_regHideEditBox));
 
@@ -126,7 +126,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USEPOWERSHELL), bHide);
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USEFILTER), bHide);
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USEAUTO), bHide);
-                CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin...\\command\\", L"", 0, HKEY_CLASSES_ROOT);
+                CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin\\command\\", L"", 0, HKEY_CLASSES_ROOT);
                 std::wstring grepWinPath = regGrepWinPath;
                 EnableWindow(GetDlgItem(hwndDlg, IDC_USEGREPWIN), !grepWinPath.empty() && bHide);
             }
