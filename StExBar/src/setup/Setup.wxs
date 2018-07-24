@@ -6,7 +6,7 @@
   Id="*"
   Language="1033"
   Codepage="1252"
-  Version="1.9.1"
+  Version="1.9.2"
   Manufacturer="Stefans Tools">
 
     <Package Id="*" Keywords="Installer"
@@ -16,7 +16,7 @@
 
     <Upgrade Id="8F75040C-433F-4eab-B1F0-2D8FA4153D92" >
       <!-- flag is set if the install will trigger an upgrade of an existing install -->
-      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="1.9.1" IncludeMaximum="no" />
+      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="1.9.2" IncludeMaximum="no" />
     </Upgrade>
 
     <Media Id="1" Cabinet="StExBar.cab" EmbedCab="yes" CompressionLevel="high" />
