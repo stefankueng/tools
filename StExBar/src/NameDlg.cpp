@@ -45,10 +45,8 @@ LRESULT CNameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM /*lPara
 
             if (!Name.empty())
                 SetDlgItemText(*this, IDC_NAME, Name.c_str());
-
-            ::SetFocus(::GetDlgItem(hwndDlg, IDC_NAME));
         }
-            return (INT_PTR)FALSE;
+            return (INT_PTR)TRUE;
         case WM_COMMAND:
         {
             switch (LOWORD(wParam))
