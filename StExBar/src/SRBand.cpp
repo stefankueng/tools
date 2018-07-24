@@ -1677,6 +1677,8 @@ void CDeskBand::MoveToSubfolder(HWND hWnd, std::wstring cwd, const std::map<std:
             {
                 if (foldername[i] == name[i])
                     neqpos = i;
+                else if (::towlower(foldername[i]) == ::towlower(name[i]))
+                    neqpos = i;
                 else
                     break;
             }
@@ -1689,6 +1691,11 @@ void CDeskBand::MoveToSubfolder(HWND hWnd, std::wstring cwd, const std::map<std:
             }
         }
     }
+    foldername.erase(std::find_if(foldername.rbegin(), foldername.rend(), [](int ch)
+    {
+        return ch != '\n' || ch != '\r' || ch != ' ' || ch != '\t' || ch != '-' || ch != '_' || ch != '.' || ch != ';';
+    }).base(), foldername.end());
+
     if (foldername.empty())
         foldername = L"folder";
 
