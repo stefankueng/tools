@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include <uxtheme.h>
 #include "ChevronMenu.h"
+#include "../../sktoolslib/DPIAware.h"
 
 #pragma comment(lib, "UxTheme")
 
@@ -120,14 +121,15 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
         if (chevronxy.y + tbsize.cy > (testrect.bottom))
             chevronxy.y = testrect.bottom - tbsize.cy;
         ::ShowWindow(*this, SW_SHOW);
+        auto scaledX = CDPIAware::Instance().ScaleX(10);
         ::SetWindowPos(*this, HWND_TOP,
             chevronxy.x, chevronxy.y,
-            tbsize.cx+10, tbsize.cy+10,
+            tbsize.cx + scaledX, tbsize.cy + scaledX,
             0);
         ::ShowWindow(hHiddenToolbar, SW_SHOW);
         ::SetWindowPos(hHiddenToolbar, HWND_TOP,
             0, 0,
-            tbsize.cx+10, tbsize.cy+10,
+            tbsize.cx + scaledX, tbsize.cy + scaledX,
             0);
 
         m_uMsg = 0;
