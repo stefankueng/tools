@@ -118,6 +118,14 @@ int _tmain(int argc, _TCHAR* argv[])
     if (parser.HasVal(L"path"))
     {
         _tcscpy_s(cwd, _countof(cwd), parser.GetVal(L"path"));
+        auto attributes = GetFileAttributes(cwd);
+        if (attributes == INVALID_FILE_ATTRIBUTES)
+        {
+            _fputts(L"error: the path \"", stderr);
+            _fputts(cwd, stderr);
+            _fputts(L"\" does not exist!", stderr);
+            return -1;
+        }
     }
     if (parser.HasVal(L"ext"))
     {
