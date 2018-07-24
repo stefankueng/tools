@@ -79,38 +79,28 @@ module.exports = function(grunt) {
             }
         },
 
-        autoprefixer: {
+        postcss: {
             options: {
-                browsers: [
-                    'last 2 version',
-                    '> 1%',
-                    'Edge >= 12',
-                    'Explorer >= 9',
-                    'Firefox ESR',
-                    'iOS >= 8',
-                    'Safari >= 8'
+                processors: [
+                    require('autoprefixer')() // add vendor prefixes
                 ]
             },
-            pack: {
-                src: '<%= concat.css.dest %>',
-                dest: '<%= concat.css.dest %>'
+            dist: {
+                src: '<%= concat.css.dest %>'
             }
         },
 
-        uncss: {
-            options: {
-                htmlroot: '<%= dirs.dest %>',
-                ignore: [
-                    /(#|\.)baguetteBox(\-[a-zA-Z]+)?/,
-                    '#scrollUp',
-                    '.ad-inpage'
-                ],
-                ignoreSheets: [/fonts.googleapis/, /www.google.com/],
-                stylesheets: ['css/pack.css']
-            },
+        purgecss: {
             dist: {
-                src: '<%= dirs.dest %>/**/*.html',
-                dest: '<%= concat.css.dest %>'
+                options: {
+                    content: [
+                        '<%= dirs.dest %>/**/*.html',
+                        '<%= dirs.dest %>/js/**/*.js'
+                    ]
+                },
+                files: {
+                    '<%= concat.css.dest %>': ['<%= concat.css.dest %>']
+                }
             }
         },
 
@@ -297,7 +287,7 @@ module.exports = function(grunt) {
         'includereplace',
         'useminPrepare',
         'concat',
-        'autoprefixer',
+        'postcss',
         'filerev',
         'usemin',
         'sitemap'
@@ -310,8 +300,8 @@ module.exports = function(grunt) {
         'sitemap',
         'useminPrepare',
         'concat',
-        'autoprefixer',
-        'uncss',
+        'postcss',
+        'purgecss',
         'cssmin',
         'uglify',
         'filerev',
