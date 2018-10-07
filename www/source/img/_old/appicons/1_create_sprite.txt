@@ -1,2 +1,2 @@
 http://spritegen.website-performance.org/
-vertical/horizontal offsets: 10px
+vertical/horizontal offsets: 10px (padding 5px)
