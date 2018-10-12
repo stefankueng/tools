@@ -1,7 +1,8 @@
 'use strict';
 
-module.exports = function(grunt) {
+var imageminJpegoptim = require('imagemin-jpegoptim');
 
+module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         dirs: {
@@ -173,6 +174,71 @@ module.exports = function(grunt) {
             }
         },
 
+        imagemin: {
+            dist: {
+                options: {
+                    optimizationLevel: 3,
+                    svgoPlugins: [
+                        { cleanupAttrs: true },
+                        { cleanupEnableBackground: true },
+                        { cleanupIDs: true },
+                        { cleanupListOfValues: true },
+                        { cleanupNumericValues: true },
+                        { collapseGroups: true },
+                        { convertColors: true },
+                        { convertPathData: true },
+                        { convertShapeToPath: true },
+                        { convertStyleToAttrs: true },
+                        { convertTransform: true },
+                        { inlineStyles: true },
+                        { mergePaths: true },
+                        { minifyStyles: true },
+                        { moveElemsAttrsToGroup: true },
+                        { moveGroupAttrsToElems: true },
+                        { removeComments: true },
+                        { removeDesc: true },
+                        { removeDoctype: true },
+                        { removeEditorsNSData: true },
+                        { removeEmptyAttrs: true },
+                        { removeEmptyContainers: true },
+                        { removeEmptyText: true },
+                        { removeHiddenElems: true },
+                        { removeMetadata: true },
+                        { removeNonInheritableGroupAttrs: true },
+                        { removeTitle: true },
+                        { removeUnknownsAndDefaults: true },
+                        { removeUnusedNS: true },
+                        { removeUselessDefs: true },
+                        { removeUselessStrokeAndFill: true },
+                        { removeViewBox: false },
+                        { removeXMLNS: false },
+                        { removeXMLProcInst: true },
+                        { sortAttrs: true }
+                    ]
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= dirs.dest %>',
+                    src: ['**/*.{gif,png,svg}'],
+                    dest: '<%= dirs.dest %>'
+                }]
+            },
+            jpeg: {
+                options: {
+                    progressive : true,
+                    use: [
+                        imageminJpegoptim({ progressive: true })
+                    ]
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= dirs.dest %>',
+                    src: ['**/*.{jpg,jpeg}'],
+                    dest: '<%= dirs.dest %>'
+                }]
+            },
+        },
+
         filerev: {
             css: {
                 src: '<%= dirs.dest %>/css/**/{,*/}*.css'
@@ -298,6 +364,7 @@ module.exports = function(grunt) {
         'copy',
         'includereplace',
         'sitemap',
+        'imagemin',
         'useminPrepare',
         'concat',
         'postcss',
