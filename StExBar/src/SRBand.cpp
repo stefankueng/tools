@@ -1291,6 +1291,16 @@ LRESULT CDeskBand::OnMove(LPARAM /*lParam*/)
 void CDeskBand::SetTheme()
 {
     m_bDark = (m_bCanHaveDarkMode && m_pShouldAppsUseDarkMode) ? m_pShouldAppsUseDarkMode() : false;
+    HIGHCONTRAST info = { 0 };
+    info.cbSize = sizeof(HIGHCONTRAST);
+    if (SystemParametersInfoW(SPI_GETHIGHCONTRAST, 0, &info, 0))
+    {
+        // no dark mode in high-contrast mode
+        if (info.dwFlags & HCF_HIGHCONTRASTON)
+        {
+            m_bDark = false;
+        }
+    }
     if (m_bCanHaveDarkMode)
     {
         // first set the AllowDarkModeForWindow() to true/false depending on mode
