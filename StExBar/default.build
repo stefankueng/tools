@@ -2,6 +2,7 @@
 <project name="StExBar" default="build">
 
   <include buildfile="default.build.user" />
+  <property name="signtool" value="signtool.exe" />
 
   <target name="build" depends="VSNET,env">
     <!-- the signinfo.txt file has to contain one line with parameters for signtool.exe,
@@ -66,12 +67,12 @@
 
     <!-- sign all release binaries -->
     <if test="${file::exists('signinfo.txt')}">
-      <exec program="signtool">
+      <exec program="${signtool}">
         <arg value="sign" />
         <arg value="${signinfo}" />
         <arg value="bin/release/StExBar.dll" />
       </exec>
-      <exec program="signtool">
+      <exec program="${signtool}">
         <arg value="sign" />
         <arg value="${signinfo}" />
         <arg value="bin/release_x64/StExBar.dll" />
@@ -117,12 +118,12 @@
       </fileset>
     </delete>
     <if test="${file::exists('signinfo.txt')}">
-      <exec program="signtool">
+      <exec program="${signtool}">
         <arg value="sign" />
         <arg value="${signinfo}" />
         <arg value="bin\StExBar64-${verstring}.msi" />
       </exec>
-      <exec program="signtool">
+      <exec program="${signtool}">
         <arg value="sign" />
         <arg value="${signinfo}" />
         <arg value="bin\StExBar-${verstring}.msi" />
