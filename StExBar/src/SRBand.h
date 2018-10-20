@@ -54,6 +54,8 @@
 #define ENABLED_SELECTED (ENABLED_FOLDERSELECTED|ENABLED_FILESELECTED)
 #define ENABLED_ALWAYS  (ENABLED_VIEWPATH|ENABLED_NOVIEWPATH|ENABLED_FOLDERSELECTED|ENABLED_FILESELECTED|ENABLED_NOSELECTION)
 
+typedef void(WINAPI *AllowDarkModeForWindowFPN)(HWND hwnd, BOOL allow);
+typedef BOOL(WINAPI *ShouldAppsUseDarkModeFPN)();
 
 
 /**
@@ -170,6 +172,12 @@ private:
 
     std::vector<LPITEMIDLIST>   m_newfolderPidls;   ///< PIDLs of all items in a folder *before* the new folder was created
     int                         m_newfolderTimeoutCounter;   ///< Timeout counter for the timer task to retry setting the new folder into editing mode
+
+    AllowDarkModeForWindowFPN m_pAllowDarkModeForWindow;
+    ShouldAppsUseDarkModeFPN m_pShouldAppsUseDarkMode;
+    HMODULE m_hUxthemeLib;
+    bool m_bDark;
+    bool m_bCanHaveDarkMode;
 private:
     /// window procedure of the sub classed desk band control
     static LRESULT CALLBACK DeskBandProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
@@ -178,6 +186,10 @@ private:
 
     static LRESULT CALLBACK KeyboardHookProc(int code, WPARAM wParam, LPARAM lParam);
 
+    static BOOL CALLBACK DarkChildProc(HWND hwnd, LPARAM lParam);
+
+    /// set the theme (dark/normal) according to the explorer theme
+    void SetTheme();
     /// change the focus
     void                    FocusChange(BOOL);
     /// called when the deskband looses focus

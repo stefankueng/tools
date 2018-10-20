@@ -34,6 +34,7 @@
 #include "StringUtils.h"
 #include "NameDlg.h"
 #include "DPIAware.h"
+#include "GDIHelpers.h"
 #include <commctrl.h>
 
 #pragma comment(lib, "uxtheme.lib")
@@ -64,6 +65,11 @@ CDeskBand::CDeskBand()
     , m_currentFolder(NULL)
     , m_hwndListView(NULL)
     , m_newfolderTimeoutCounter(0)
+    , m_pShouldAppsUseDarkMode(nullptr)
+    , m_pAllowDarkModeForWindow(nullptr)
+    , m_hUxthemeLib(0)
+    , m_bDark(false)
+    , m_bCanHaveDarkMode(false)
 {
     m_ObjRefCount = 1;
     g_DllRefCount++;
@@ -76,6 +82,49 @@ CDeskBand::CDeskBand()
         ICC_STANDARD_CLASSES | ICC_BAR_CLASSES | ICC_COOL_CLASSES
     };
     InitCommonControlsEx(&used);
+
+    m_bCanHaveDarkMode = false;
+    PWSTR sysPath = nullptr;
+    if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_System, 0, nullptr, &sysPath)))
+    {
+        std::wstring dllPath = sysPath;
+        CoTaskMemFree(sysPath);
+        dllPath += L"\\uxtheme.dll";
+        auto version = CPathUtils::GetVersionFromFile(L"uxtheme.dll");
+        std::vector<std::wstring> tokens;
+        stringtok(tokens, version, false, L".");
+        if (tokens.size() == 4)
+        {
+            auto major = std::stol(tokens[0]);
+            //auto minor = std::stol(tokens[1]);
+            auto micro = std::stol(tokens[2]);
+            //auto build = std::stol(tokens[3]);
+
+            // the windows 10 update 1809 has the version
+            // number as 10.0.17763.1
+            if (major == 10 && micro > 17762)
+                m_bCanHaveDarkMode = true;
+        }
+    }
+
+    m_hUxthemeLib = LoadLibrary(L"uxtheme.dll");
+    if (m_hUxthemeLib && m_bCanHaveDarkMode)
+    {
+        // Note: these functions are undocumented! Which meas I shouldn't even use them.
+        // But the explorer dark mode in Win10 1809 makes the StExBar look ugly and out of place
+        // if I don't do anything to make the toolbar dark as well.
+        // So, since MS decided to keep this new feature to themselves, I have to use
+        // undocumented functions to adjust.
+        // Let's just hope they change their minds and document these functions one day...
+
+        // first try with the names, just in case MS decides to properly export these functions
+        m_pAllowDarkModeForWindow = (AllowDarkModeForWindowFPN)GetProcAddress(m_hUxthemeLib, "AllowDarkModeForWindow");
+        m_pShouldAppsUseDarkMode = (ShouldAppsUseDarkModeFPN)GetProcAddress(m_hUxthemeLib, "ShouldAppsUseDarkMode");
+        if (m_pAllowDarkModeForWindow == nullptr)
+            m_pAllowDarkModeForWindow = (AllowDarkModeForWindowFPN)GetProcAddress(m_hUxthemeLib, MAKEINTRESOURCEA(133));
+        if (m_pShouldAppsUseDarkMode == nullptr)
+            m_pShouldAppsUseDarkMode = (ShouldAppsUseDarkModeFPN)GetProcAddress(m_hUxthemeLib, MAKEINTRESOURCEA(132));
+    }
 }
 
 CDeskBand::~CDeskBand()
@@ -112,6 +161,8 @@ CDeskBand::~CDeskBand()
         DestroyWindow(m_hWnd);
         m_hWnd = NULL;
     }
+
+    FreeLibrary(m_hUxthemeLib);
 
     g_DllRefCount--;
 }
@@ -390,6 +441,8 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown* punkSite)
         if (!BuildToolbarButtons())
             return E_FAIL;
 
+        SetTheme();
+
         // Get and keep the IInputObjectSite pointer.
         if (FAILED(punkSite->QueryInterface(IID_IInputObjectSite,
             (LPVOID*)&m_pSite)))
@@ -467,12 +520,24 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
         {
             // We want chevrons
             pdbi->dwModeFlags = DBIMF_NORMAL|DBIMF_USECHEVRON;
+            if (m_bDark)
+                pdbi->dwModeFlags |= DBIMF_BKCOLOR;
         }
 
         if (pdbi->dwMask & DBIM_BKCOLOR)
         {
-            // Use the default background color by removing this flag.
-            pdbi->dwMask &= ~DBIM_BKCOLOR;
+            if (m_bDark)
+            {
+                // unfortunately, this doesn't really do anything.
+                // at least in my tests.
+                // but since the docs say this is the way to do it...
+                pdbi->crBkgnd = GetSysColor(COLOR_WINDOWTEXT);
+            }
+            else
+            {
+                // Use the default background color by removing this flag.
+                pdbi->dwMask &= ~DBIM_BKCOLOR;
+            }
         }
 
         return S_OK;
@@ -645,11 +710,26 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
         }
         break;
 
+    case WM_CTLCOLOREDIT:
+        if (pThis->m_bDark)
+        {
+            // while the edit control gets the style "SearchBoxEditComposited", that's not
+            // enough: the text color still stays black. So we have to change that here.
+            SetTextColor((HDC)wParam, GetSysColor(COLOR_WINDOW));
+            return TRUE;
+        }
+        break;
     case WM_ERASEBKGND:
         {
             HDC hDC = (HDC)wParam;
             RECT rc;
             ::GetClientRect(pThis->m_hWnd, &rc);
+            if (pThis->m_bDark)
+            {
+                // in dark mode, just paint the whole background in black
+                GDIHelpers::FillSolidRect(hDC, &rc, GetSysColor(COLOR_WINDOWTEXT));
+                return TRUE;
+            }
             // only draw the themed background if themes are enabled
             if (IsThemeActive())
             {
@@ -669,7 +749,11 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
             }
             // just do nothing so the system knows that we haven't erased the background
         }
-
+        break;
+    case WM_SETTINGCHANGE:
+    case WM_SYSCOLORCHANGE:
+        pThis->SetTheme();
+        break;
     }
 
     return DefWindowProc(hWnd, uMessage, wParam, lParam);
@@ -866,6 +950,7 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
                 m_regUseUNCPaths.read();
                 m_regShowBtnText.read();
                 BuildToolbarButtons();
+                SetTheme();
                 OnMove(0);
             }
             m_bDialogShown = FALSE;
@@ -1203,6 +1288,34 @@ LRESULT CDeskBand::OnMove(LPARAM /*lParam*/)
     return 0;
 }
 
+void CDeskBand::SetTheme()
+{
+    m_bDark = (m_bCanHaveDarkMode && m_pShouldAppsUseDarkMode) ? m_pShouldAppsUseDarkMode() : false;
+    if (m_bCanHaveDarkMode)
+    {
+        // first set the AllowDarkModeForWindow() to true/false depending on mode
+        // without this, the button texts stays black in dark mode
+        EnumChildWindows(m_hWnd, DarkChildProc, (LPARAM)this);
+        if (m_bDark)
+        {
+            // set the themes for the controls:
+            // the edit box needs SearchBoxEditComposited to draw
+            // correctly on the dark background,
+            // and the toolbar and rebar need to have their default
+            // style removed so they don't draw in "explorer" style
+            SetWindowTheme(m_hWndEdit, L"SearchBoxEditComposited", nullptr);
+            SetWindowTheme(m_hWndToolbar, nullptr, nullptr);
+            SetWindowTheme(m_hwndParent, nullptr, nullptr);
+        }
+        else
+        {
+            SetWindowTheme(m_hWndEdit, L"Explorer", nullptr);
+            SetWindowTheme(m_hWndToolbar, L"Explorer", nullptr);
+            SetWindowTheme(m_hwndParent, L"Explorer", nullptr);
+        }
+    }
+}
+
 void CDeskBand::FocusChange(BOOL bFocus)
 {
     m_bFocus = bFocus;
@@ -1227,7 +1340,18 @@ LRESULT CDeskBand::OnKillFocus(void)
 
     return 0;
 }
+BOOL CALLBACK CDeskBand::DarkChildProc(HWND hwnd, LPARAM lParam)
+{
+    CDeskBand *pThis = (CDeskBand*)lParam;
+    if (pThis == nullptr)
+        return FALSE;
 
+    if (pThis->m_pAllowDarkModeForWindow)
+    {
+        pThis->m_pAllowDarkModeForWindow(hwnd, pThis->m_bDark);
+    }
+    return TRUE;
+}
 BOOL CDeskBand::RegisterAndCreateWindow(void)
 {
     // If the window doesn't exist yet, create it now.

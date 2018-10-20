@@ -184,6 +184,7 @@
     <ClCompile Include="..\..\sktoolslib\BaseWindow.cpp" />
     <ClCompile Include="..\..\sktoolslib\BrowseFolder.cpp" />
     <ClCompile Include="..\..\sktoolslib\DlgResizer.cpp" />
+    <ClCompile Include="..\..\sktoolslib\GDIHelpers.cpp" />
     <ClCompile Include="..\..\sktoolslib\hyperlink.cpp" />
     <ClCompile Include="..\..\sktoolslib\ItemIDList.cpp" />
     <ClCompile Include="..\..\sktoolslib\PathUtils.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="..\..\sktoolslib\BrowseFolder.h" />
     <ClInclude Include="..\..\sktoolslib\DlgResizer.h" />
     <ClInclude Include="..\..\sktoolslib\DPIAware.h" />
+    <ClInclude Include="..\..\sktoolslib\GDIHelpers.h" />
     <ClInclude Include="..\..\sktoolslib\hyperlink.h" />
     <ClInclude Include="..\..\sktoolslib\ItemIDList.h" />
     <ClInclude Include="..\..\sktoolslib\PathUtils.h" />

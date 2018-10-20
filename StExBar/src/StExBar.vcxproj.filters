@@ -126,6 +126,9 @@
     <ClCompile Include="NameDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sktoolslib\GDIHelpers.cpp">
+      <Filter>sktoolslib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="StExBar.def">
@@ -291,6 +294,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\sktoolslib\DPIAware.h">
+      <Filter>sktoolslib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sktoolslib\GDIHelpers.h">
       <Filter>sktoolslib</Filter>
     </ClInclude>
   </ItemGroup>
