@@ -18,7 +18,7 @@
     "test": "grunt test"
   },
   "devDependencies": {
-    "autoprefixer": "^9.3.1",
+    "autoprefixer": "^9.4.1",
     "grunt": "^1.0.3",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
@@ -27,21 +27,21 @@
     "grunt-contrib-csslint": "^2.0.0",
     "grunt-contrib-cssmin": "^3.0.0",
     "grunt-contrib-htmlmin": "^3.0.0",
-    "grunt-contrib-imagemin": "^3.0.0",
+    "grunt-contrib-imagemin": "^3.1.0",
     "grunt-contrib-jshint": "^2.0.0",
     "grunt-contrib-uglify": "^4.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-filerev": "^2.3.1",
     "grunt-gh-pages": "^3.1.0",
-    "grunt-html": "^9.3.0",
+    "grunt-html": "^10.1.0",
     "grunt-include-replace": "^5.0.0",
     "grunt-postcss": "^0.9.0",
     "grunt-purgecss": "^1.0.0",
-    "grunt-sitemap": "^1.2.1",
+    "grunt-sitemap": "^2.0.1",
     "grunt-usemin": "^3.1.1",
-    "imagemin-jpegoptim": "^5.2.0",
+    "imagemin-jpegoptim": "^6.0.0",
     "load-grunt-tasks": "^4.0.0",
-    "time-grunt": "^1.4.0"
+    "time-grunt": "^2.0.0"
   },
   "engines": {
     "node": ">=10"
