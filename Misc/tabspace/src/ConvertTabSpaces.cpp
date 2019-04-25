@@ -1,6 +1,6 @@
-// tabspace - converts tabs to spaces and vice-versa in multiple files
+﻿// tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011-2013, 2017 - Stefan Kueng
+// Copyright (C) 2011-2013, 2017, 2019 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -147,8 +147,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 {
                     long newfilelen = file.GetFileLength();
                     newfilelen -= (count * sizeof(WCHAR));
-                    WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
-                    WCHAR * pBufStart = pBuf;
+                    auto pBufStart = std::make_unique<BYTE[]>(newfilelen);
+                    WCHAR * pBuf = (WCHAR*)pBufStart.get();
                     WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
                     auto wlength = long(file.GetFileLength() / sizeof(WCHAR));
                     if (file.HasBOM())
@@ -177,7 +177,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         else
                             *pBuf++ = *pOldBuf++;
                     }
-                    file.ContentsModified((BYTE*)pBufStart, newfilelen);
+                    file.ContentsModified(std::move(pBufStart), newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
                                 _countof(outbuf),
@@ -190,8 +190,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 {
                     long newfilelen = file.GetFileLength();
                     newfilelen -= count;
-                    char * pBuf = new char[newfilelen];
-                    char * pBufStart = pBuf;
+                    auto pBufStart = std::make_unique<BYTE[]>(newfilelen);
+                    char * pBuf = (char*)pBufStart.get();
                     char * pOldBuf = (char*)file.GetFileContent();
                     std::vector<long>::iterator it = spacegrouppositions.begin();
                     for (long i = 0; i < (file.GetFileLength()); ++i)
@@ -214,7 +214,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         else
                             *pBuf++ = *pOldBuf++;
                     }
-                    file.ContentsModified((BYTE*)pBufStart, newfilelen);
+                    file.ContentsModified(std::move(pBufStart), newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
                                 _countof(outbuf),
@@ -324,8 +324,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 if (file.GetEncoding() == CTextFile::UNICODE_LE)
                 {
                     long newfilelen = file.GetFileLength() + (spacestoinsert * sizeof(WCHAR));
-                    WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
-                    WCHAR * pBufStart = pBuf;
+                    auto pBufStart = std::make_unique<BYTE[]>(newfilelen);
+                    WCHAR* pBuf = (WCHAR*)pBufStart.get();
                     WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
                     auto wlength = long(file.GetFileLength() / sizeof(WCHAR));
                     if (file.HasBOM())
@@ -377,7 +377,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         else
                             *pBuf++ = *pOldBuf++;
                     }
-                    file.ContentsModified((BYTE*)pBufStart, newfilelen);
+                    file.ContentsModified(std::move(pBufStart), newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
                                 _countof(outbuf),
@@ -389,8 +389,8 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                 else if (file.GetEncoding() != CTextFile::BINARY)
                 {
                     long newfilelen = file.GetFileLength() + spacestoinsert;
-                    char * pBuf = new char[newfilelen];
-                    char * pBufStart = pBuf;
+                    auto pBufStart = std::make_unique<BYTE[]>(newfilelen);
+                    char* pBuf = (char*)pBufStart.get();
                     char * pOldBuf = (char*)file.GetFileContent();
                     bool inChar = false;
                     bool inString = false;
@@ -438,7 +438,7 @@ bool ConvertTabSpaces::Convert(CTextFile& file, bool useSpaces, int tabsize, boo
                         else
                             *pBuf++ = *pOldBuf++;
                     }
-                    file.ContentsModified((BYTE*)pBufStart, newfilelen);
+                    file.ContentsModified(std::move(pBufStart), newfilelen);
                     TCHAR outbuf[MAX_PATH * 2];
                     _stprintf_s(outbuf,
                                 _countof(outbuf),
@@ -635,8 +635,8 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
             {
                 long newfilelen = file.GetFileLength();
                 newfilelen -= (totalwhitespaces * sizeof(WCHAR));
-                WCHAR * pBuf = new WCHAR[newfilelen / sizeof(WCHAR)];
-                WCHAR * pBufStart = pBuf;
+                auto pBufStart = std::make_unique<BYTE[]>(newfilelen);
+                WCHAR* pBuf = (WCHAR*)pBufStart.get();
                 WCHAR * pOldBuf = (WCHAR*)file.GetFileContent();
                 auto wlength = long(file.GetFileLength() / sizeof(WCHAR));
                 if (file.HasBOM())
@@ -669,15 +669,15 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                     if (i < wlength)
                         *pBuf++ = *pOldBuf++;
                 }
-                file.ContentsModified((BYTE*)pBufStart, newfilelen);
+                file.ContentsModified(std::move(pBufStart), newfilelen);
                 return true;
             }
             else
             {
                 long newfilelen = file.GetFileLength();
                 newfilelen -= totalwhitespaces;
-                char * pBuf = new char[newfilelen];
-                char * pBufStart = pBuf;
+                auto pBufStart = std::make_unique<BYTE[]>(newfilelen);
+                char* pBuf = (char*)pBufStart.get();
                 char * pOldBuf = (char*)file.GetFileContent();
                 std::vector<long>::iterator it = spacepositions.begin();
                 for (long i = 0; i < long(file.GetFileLength()); ++i)
@@ -704,7 +704,7 @@ bool ConvertTabSpaces::RemoveEndSpaces(CTextFile& file, bool checkonly)
                     if (i < long(file.GetFileLength()))
                         *pBuf++ = *pOldBuf++;
                 }
-                file.ContentsModified((BYTE*)pBufStart, newfilelen);
+                file.ContentsModified(std::move(pBufStart), newfilelen);
                 return true;
             }
         }
