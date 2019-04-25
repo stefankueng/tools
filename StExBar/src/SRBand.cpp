@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2015, 2017-2018 - Stefan Kueng
+// Copyright (C) 2007-2015, 2017-2019 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1427,7 +1427,7 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
             WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_CLIPSIBLINGS | WS_BORDER | ES_LEFT | ES_AUTOHSCROLL,
             rc.left,
             rc.top,
-            rc.right - rc.left - CDPIAware::Instance().ScaleX(EDITBOXSIZEX) - SPACEBETWEENEDITANDBUTTON,
+            rc.right - rc.left - CDPIAware::Instance().Scale(EDITBOXSIZEX) - SPACEBETWEENEDITANDBUTTON,
             rc.bottom - rc.top,
             m_hWnd,
             NULL,
@@ -1449,9 +1449,9 @@ BOOL CDeskBand::RegisterAndCreateWindow(void)
             TOOLBARCLASSNAME,
             NULL,
             WS_CHILD|TBSTYLE_TOOLTIPS|TBSTYLE_WRAPABLE|TBSTYLE_LIST|TBSTYLE_FLAT|TBSTYLE_TRANSPARENT|CCS_NORESIZE|CCS_NODIVIDER|CCS_NOPARENTALIGN,
-            rc.right - CDPIAware::Instance().ScaleX(EDITBOXSIZEX),
+            rc.right - CDPIAware::Instance().Scale(EDITBOXSIZEX),
             rc.top,
-            CDPIAware::Instance().ScaleX(EDITBOXSIZEX),
+            CDPIAware::Instance().Scale(EDITBOXSIZEX),
             rc.bottom - rc.top,
             m_hWnd,
             NULL,
@@ -1526,7 +1526,7 @@ BOOL CDeskBand::BuildToolbarButtons()
 
     TBBUTTON * tb = new TBBUTTON[m_commands.GetCount()];
     // create an image list containing the icons for the toolbar
-    m_hToolbarImgList = ImageList_Create(int(16 * CDPIAware::Instance().ScaleFactorX()), int(16 * CDPIAware::Instance().ScaleFactorY()), ILC_COLOR32 | ILC_MASK, m_commands.GetCount(), 1);
+    m_hToolbarImgList = ImageList_Create(int(16 * CDPIAware::Instance().ScaleFactor()), int(16 * CDPIAware::Instance().ScaleFactor()), ILC_COLOR32 | ILC_MASK, m_commands.GetCount(), 1);
     if (m_hToolbarImgList == NULL)
     {
         delete [] tb;
@@ -1622,12 +1622,12 @@ HICON CDeskBand::LoadCommandIcon(const Command& cmd)
 {
     HICON hIcon = NULL;
     if (cmd.nIconID)
-        hIcon = (HICON)LoadImage(g_hInst, MAKEINTRESOURCE(cmd.nIconID), IMAGE_ICON, int(16 * CDPIAware::Instance().ScaleFactorX()), int(16 * CDPIAware::Instance().ScaleFactorY()), LR_DEFAULTCOLOR);
+        hIcon = (HICON)LoadImage(g_hInst, MAKEINTRESOURCE(cmd.nIconID), IMAGE_ICON, int(16 * CDPIAware::Instance().ScaleFactor()), int(16 * CDPIAware::Instance().ScaleFactor()), LR_DEFAULTCOLOR);
     else if (!cmd.separator)
     {
-        hIcon = (HICON)LoadImage(g_hInst, cmd.icon.c_str(), IMAGE_ICON, int(16 * CDPIAware::Instance().ScaleFactorX()), int(16 * CDPIAware::Instance().ScaleFactorY()), LR_DEFAULTCOLOR);
+        hIcon = (HICON)LoadImage(g_hInst, cmd.icon.c_str(), IMAGE_ICON, int(16 * CDPIAware::Instance().ScaleFactor()), int(16 * CDPIAware::Instance().ScaleFactor()), LR_DEFAULTCOLOR);
         if (hIcon == NULL)
-            hIcon = (HICON)LoadImage(g_hInst, cmd.icon.c_str(), IMAGE_ICON, int(16 * CDPIAware::Instance().ScaleFactorX()), int(16 * CDPIAware::Instance().ScaleFactorY()), LR_LOADFROMFILE);
+            hIcon = (HICON)LoadImage(g_hInst, cmd.icon.c_str(), IMAGE_ICON, int(16 * CDPIAware::Instance().ScaleFactor()), int(16 * CDPIAware::Instance().ScaleFactor()), LR_LOADFROMFILE);
         if (hIcon == NULL)
         {
             // icon loading failed. Let's try to load it differently:
