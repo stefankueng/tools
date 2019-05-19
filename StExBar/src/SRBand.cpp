@@ -68,6 +68,8 @@ CDeskBand::CDeskBand()
     , m_pShouldAppsUseDarkMode(nullptr)
     , m_pAllowDarkModeForWindow(nullptr)
     , m_pIsDarkModeAllowedForWindow(nullptr)
+    , m_pIsDarkModeAllowedForApp(nullptr)
+    , m_pShouldSystemUseDarkMode(nullptr)
     , m_hUxthemeLib(0)
     , m_bDark(false)
     , m_bCanHaveDarkMode(false)
@@ -121,12 +123,19 @@ CDeskBand::CDeskBand()
         // first try with the names, just in case MS decides to properly export these functions
         m_pAllowDarkModeForWindow = (AllowDarkModeForWindowFPN)GetProcAddress(m_hUxthemeLib, "AllowDarkModeForWindow");
         m_pShouldAppsUseDarkMode = (ShouldAppsUseDarkModeFPN)GetProcAddress(m_hUxthemeLib, "ShouldAppsUseDarkMode");
+        m_pIsDarkModeAllowedForWindow = (IsDarkModeAllowedForWindowFPN)GetProcAddress(m_hUxthemeLib, "IsDarkModeAllowedForWindow");
+        m_pIsDarkModeAllowedForApp = (IsDarkModeAllowedForAppFPN)GetProcAddress(m_hUxthemeLib, "IsDarkModeAllowedForApp");
+        m_pShouldSystemUseDarkMode = (ShouldSystemUseDarkModeFPN)GetProcAddress(m_hUxthemeLib, "ShouldSystemUseDarkMode");
         if (m_pAllowDarkModeForWindow == nullptr)
             m_pAllowDarkModeForWindow = (AllowDarkModeForWindowFPN)GetProcAddress(m_hUxthemeLib, MAKEINTRESOURCEA(133));
         if (m_pShouldAppsUseDarkMode == nullptr)
             m_pShouldAppsUseDarkMode = (ShouldAppsUseDarkModeFPN)GetProcAddress(m_hUxthemeLib, MAKEINTRESOURCEA(132));
         if (m_pIsDarkModeAllowedForWindow == nullptr)
             m_pIsDarkModeAllowedForWindow = (IsDarkModeAllowedForWindowFPN)GetProcAddress(m_hUxthemeLib, MAKEINTRESOURCEA(137));
+        if (m_pIsDarkModeAllowedForApp == nullptr)
+            m_pIsDarkModeAllowedForApp = (IsDarkModeAllowedForAppFPN)GetProcAddress(m_hUxthemeLib, MAKEINTRESOURCEA(139));
+        if (m_pShouldSystemUseDarkMode == nullptr)
+            m_pShouldSystemUseDarkMode = (ShouldSystemUseDarkModeFPN)GetProcAddress(m_hUxthemeLib, MAKEINTRESOURCEA(138));
     }
 }
 
@@ -1293,8 +1302,12 @@ LRESULT CDeskBand::OnMove(LPARAM /*lParam*/)
 
 void CDeskBand::SetTheme()
 {
-    auto parent = ::GetParent(::GetParent(m_hwndParent));
+    auto parent = ::GetParent(::GetParent(::GetParent(m_hwndParent)));
     m_bDark = (m_bCanHaveDarkMode && m_pShouldAppsUseDarkMode && m_pIsDarkModeAllowedForWindow) ? m_pShouldAppsUseDarkMode() && m_pIsDarkModeAllowedForWindow(parent) : false;
+    if (m_pIsDarkModeAllowedForApp)
+        m_bDark = m_bDark && m_pIsDarkModeAllowedForApp();
+    if (m_pShouldSystemUseDarkMode)
+        m_bDark = m_bDark && m_pShouldSystemUseDarkMode();
     HIGHCONTRAST info = { 0 };
     info.cbSize = sizeof(HIGHCONTRAST);
     if (SystemParametersInfoW(SPI_GETHIGHCONTRAST, 0, &info, 0))

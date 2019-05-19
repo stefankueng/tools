@@ -57,6 +57,8 @@
 typedef void(WINAPI *AllowDarkModeForWindowFPN)(HWND hwnd, BOOL allow);
 typedef BOOL(WINAPI *ShouldAppsUseDarkModeFPN)();
 typedef BOOL(WINAPI *IsDarkModeAllowedForWindowFPN)(HWND hwnd);
+typedef BOOL(WINAPI *IsDarkModeAllowedForAppFPN)();
+typedef BOOL(WINAPI *ShouldSystemUseDarkModeFPN)();
 
 /**
  * Desk Band.
@@ -176,6 +178,8 @@ private:
     AllowDarkModeForWindowFPN m_pAllowDarkModeForWindow;
     ShouldAppsUseDarkModeFPN m_pShouldAppsUseDarkMode;
     IsDarkModeAllowedForWindowFPN m_pIsDarkModeAllowedForWindow;
+    IsDarkModeAllowedForAppFPN m_pIsDarkModeAllowedForApp;
+    ShouldSystemUseDarkModeFPN m_pShouldSystemUseDarkMode;
     HMODULE m_hUxthemeLib;
     bool m_bDark;
     bool m_bCanHaveDarkMode;
