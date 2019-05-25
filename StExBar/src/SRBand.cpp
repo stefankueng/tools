@@ -1303,11 +1303,16 @@ LRESULT CDeskBand::OnMove(LPARAM /*lParam*/)
 void CDeskBand::SetTheme()
 {
     auto parent = ::GetParent(::GetParent(::GetParent(m_hwndParent)));
-    m_bDark = (m_bCanHaveDarkMode && m_pShouldAppsUseDarkMode && m_pIsDarkModeAllowedForWindow) ? m_pShouldAppsUseDarkMode() && m_pIsDarkModeAllowedForWindow(parent) : false;
+    m_bDark = (m_bCanHaveDarkMode && m_pIsDarkModeAllowedForWindow) ? m_pIsDarkModeAllowedForWindow(parent) : false;
     if (m_pIsDarkModeAllowedForApp)
         m_bDark = m_bDark && m_pIsDarkModeAllowedForApp();
-    if (m_pShouldSystemUseDarkMode)
-        m_bDark = m_bDark && m_pShouldSystemUseDarkMode();
+    //if (m_pShouldSystemUseDarkMode)
+    //    m_bDark = m_bDark && m_pShouldSystemUseDarkMode();
+    if (m_pShouldAppsUseDarkMode)
+    {
+        auto usedark = (m_pShouldAppsUseDarkMode() & 0x01) != 0;
+        m_bDark = m_bDark && usedark;
+    }
     HIGHCONTRAST info = { 0 };
     info.cbSize = sizeof(HIGHCONTRAST);
     if (SystemParametersInfoW(SPI_GETHIGHCONTRAST, 0, &info, 0))
