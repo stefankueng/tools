@@ -195,6 +195,11 @@ module.exports = function(grunt) {
                         { minifyStyles: true },
                         { moveElemsAttrsToGroup: true },
                         { moveGroupAttrsToElems: true },
+                        {
+                            removeAttrs: {
+                                attrs: 'data-name'
+                            }
+                        },
                         { removeComments: true },
                         { removeDesc: true },
                         { removeDoctype: true },
@@ -206,7 +211,11 @@ module.exports = function(grunt) {
                         { removeMetadata: true },
                         { removeNonInheritableGroupAttrs: true },
                         { removeTitle: true },
-                        { removeUnknownsAndDefaults: true },
+                        {
+                            removeUnknownsAndDefaults: {
+                                keepRoleAttr: true
+                            }
+                        },
                         { removeUnusedNS: true },
                         { removeUselessDefs: true },
                         { removeUselessStrokeAndFill: true },
