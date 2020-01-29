@@ -18,7 +18,8 @@
     "test": "grunt test"
   },
   "devDependencies": {
-    "autoprefixer": "^9.6.1",
+    "@lodder/grunt-postcss": "^2.0.0",
+    "autoprefixer": "^9.7.3",
     "grunt": "^1.0.4",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
@@ -33,9 +34,8 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-filerev": "^2.3.1",
     "grunt-gh-pages": "^3.1.0",
-    "grunt-html": "^11.1.1",
+    "grunt-html": "^12.0.0",
     "grunt-include-replace": "^5.0.0",
-    "grunt-postcss": "^0.9.0",
     "grunt-purgecss": "^1.0.0",
     "grunt-sitemap": "^2.0.1",
     "grunt-usemin": "^3.1.1",
