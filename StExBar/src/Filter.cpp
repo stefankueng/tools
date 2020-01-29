@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010, 2012 - Stefan Kueng
+// Copyright (C) 2007-2010, 2012, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,11 +21,6 @@
 #include "SRBand.h"
 #include "StringUtils.h"
 #include <regex>
-
-#define MIDL_DEFINE_GUID(type,name,l,w1,w2,b1,b2,b3,b4,b5,b6,b7,b8) \
-    const type name = {l,w1,w2,{b1,b2,b3,b4,b5,b6,b7,b8}}
-
-MIDL_DEFINE_GUID(IID, IID_IShellFolderView,0x37A378C0, 0xF82D, 0x11CE,0xAE,0x65,0x08,0x00,0x2B,0x2E,0x12,0x62);
 
 bool CDeskBand::Filter(LPTSTR filter)
 {
@@ -116,6 +111,7 @@ bool CDeskBand::Filter(LPTSTR filter)
                                         SendMessage(listView, LVM_SETVIEW, LV_VIEW_DETAILS, 0);
                                     }
                                     std::vector<LPITEMIDLIST> noShows;
+                                    noShows.reserve(nCount);
                                     for (int i=0; i<nCount; ++i)
                                     {
                                         LPITEMIDLIST pidl;
@@ -163,10 +159,12 @@ bool CDeskBand::Filter(LPTSTR filter)
                                             CoTaskMemFree(pidlNoShow);
                                         }
                                     }
-                                    for (size_t i=0; i<noShows.size(); ++i)
-                                    {
-                                        m_noShows.push_back(noShows[i]);
-                                    }
+                                    m_noShows.insert(
+                                        m_noShows.end(),
+                                        std::make_move_iterator(noShows.begin()),
+                                        std::make_move_iterator(noShows.end())
+                                    );
+                                    noShows.clear();
                                     if (listView)
                                     {
                                         SendMessage(listView, LVM_SETVIEW, viewType, 0);

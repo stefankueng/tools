@@ -42,9 +42,9 @@ public:
     CRenameDlg(HWND hParent);
     ~CRenameDlg(void);
 
-    std::wstring            GetMatchString() {return m_sMatch;}
-    std::regex_constants::syntax_option_type GetRegexFlags() {return m_fl;}
-    std::wstring            GetReplaceString() {return m_sReplace;}
+    const std::wstring&     GetMatchString() {return m_sMatch;}
+    std::regex_constants::syntax_option_type GetRegexFlags() const {return m_fl;}
+    const std::wstring&     GetReplaceString() const {return m_sReplace;}
     void                    SetFileList(const std::set<std::wstring>& list);
 
 protected:

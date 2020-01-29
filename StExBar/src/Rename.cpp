@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2012-2013, 2015 - Stefan Kueng
+// Copyright (C) 2007-2009, 2012-2013, 2015, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -192,46 +192,50 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                                     int nCount = 0;
                                     if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
                                     {
-                                        for (int i=0; i<nCount; ++i)
+                                        IShellFolderView* pShellFolderView;
+                                        if (SUCCEEDED(pShellView->QueryInterface(IID_IShellFolderView, (LPVOID*)&pShellFolderView)))
                                         {
-                                            LPITEMIDLIST pidl;
-                                            if (SUCCEEDED(pFolderView->Item(i, &pidl)))
-                                            {
-                                                STRRET str;
-                                                if (SUCCEEDED(pShellFolder->GetDisplayNameOf(pidl,
-                                                    // SHGDN_FORPARSING needed to get the extensions even if they're not shown
-                                                    SHGDN_INFOLDER|SHGDN_FORPARSING,
-                                                    &str)))
-                                                {
-                                                    TCHAR dispname[MAX_PATH];
-                                                    StrRetToBuf(&str, pidl, dispname, _countof(dispname));
+                                            pShellFolderView->SetRedraw(FALSE);
 
-                                                    std::wstring replaced;
-                                                    try
+                                            for (int i = 0; i < nCount; ++i)
+                                            {
+                                                LPITEMIDLIST pidl;
+                                                if (SUCCEEDED(pFolderView->Item(i, &pidl)))
+                                                {
+                                                    STRRET str;
+                                                    if (SUCCEEDED(pShellFolder->GetDisplayNameOf(pidl,
+                                                        // SHGDN_FORPARSING needed to get the extensions even if they're not shown
+                                                        SHGDN_INFOLDER | SHGDN_FORPARSING,
+                                                        &str)))
                                                     {
-                                                        std::wstring sDispName = dispname;
-                                                        // check if the item is in the list of selected items
-                                                        if (m_filelist.find(sDispName) != m_filelist.end())
+                                                        TCHAR dispname[MAX_PATH];
+                                                        StrRetToBuf(&str, pidl, dispname, _countof(dispname));
+
+                                                        std::wstring replaced;
+                                                        try
                                                         {
-                                                            replaced = std::regex_replace(sDispName, regCheck, dlg.GetReplaceString());
-                                                            replaced = handler.ReplaceCounters(replaced);
-                                                            if (replaced.compare(sDispName))
+                                                            std::wstring sDispName = dispname;
+                                                            // check if the item is in the list of selected items
+                                                            if (m_filelist.find(sDispName) != m_filelist.end())
                                                             {
-                                                                ITEMIDLIST * pidlrenamed;
-                                                                pShellFolder->SetNameOf(NULL, pidl, replaced.c_str(), SHGDN_FORPARSING|SHGDN_INFOLDER, &pidlrenamed);
-                                                                // if the rename was successful, select the renamed item
-                                                                if (pidlrenamed)
-                                                                    pFolderView->SelectItem(i, SVSI_CHECK|SVSI_SELECT);
+                                                                replaced = std::regex_replace(sDispName, regCheck, dlg.GetReplaceString());
+                                                                replaced = handler.ReplaceCounters(replaced);
+                                                                if (replaced.compare(sDispName))
+                                                                {
+                                                                    pShellFolder->SetNameOf(NULL, pidl, replaced.c_str(), SHGDN_FORPARSING | SHGDN_INFOLDER, nullptr);
+                                                                }
                                                             }
                                                         }
+                                                        catch (std::exception)
+                                                        {
+                                                        }
                                                     }
-                                                    catch (std::exception)
-                                                    {
-                                                    }
+                                                    CoTaskMemFree(pidl);
                                                 }
-                                                CoTaskMemFree(pidl);
                                             }
                                         }
+                                        pShellFolderView->SetRedraw(TRUE);
+                                        pShellFolderView->Release();
                                     }
                                     pShellFolder->Release();
                                 }

@@ -275,6 +275,7 @@ void CRenameDlg::FillRenamedList()
     GetWindowText(hReplaceString, buf, _countof(buf));
     m_sReplace = buf;
 
+    SendMessage(hListCtrl, WM_SETREDRAW, FALSE, 0);
     ListView_DeleteAllItems(hListCtrl);
     // we also need a map which assigns each file its renamed equivalent
     std::map<std::wstring, std::wstring, __lesscasecmp> renamedmap;
@@ -338,6 +339,7 @@ void CRenameDlg::FillRenamedList()
         ListView_SetColumnWidth(hListCtrl, 0, LVSCW_AUTOSIZE_USEHEADER);
         ListView_SetColumnWidth(hListCtrl, 1, LVSCW_AUTOSIZE_USEHEADER);
     }
+    SendMessage(hListCtrl, WM_SETREDRAW, TRUE, 0);
 }
 
 void CRenameDlg::SetFileList( const std::set<std::wstring>& list )

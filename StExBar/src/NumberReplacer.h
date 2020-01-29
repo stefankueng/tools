@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2011-2012 - Stefan Kueng
+// Copyright (C) 2011-2012, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -108,9 +108,9 @@ public:
 
     std::wstring ReplaceCounters(const std::wstring& sText)
     {
-        std::wstring sReplace = sText;
         if (!m_incVec.empty())
         {
+            std::wstring sReplace = sText;
             for (auto it = m_incVec.begin(); it != m_incVec.end(); ++it)
             {
                 auto it_begin = std::search(sReplace.begin(), sReplace.end(), it->expression.begin(), it->expression.end());
@@ -140,9 +140,9 @@ public:
                     };
                 }
             }
+            return sReplace;
         }
-
-        return sReplace;
+        return sText;
     }
 
 private:
