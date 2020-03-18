@@ -97,6 +97,10 @@ module.exports = function(grunt) {
                     content: [
                         '<%= dirs.dest %>/**/*.html',
                         '<%= dirs.dest %>/js/**/*.js'
+                    ],
+                    keyframes: true,
+                    whitelistPatternsChildren: [
+                        /bounce-from-/
                     ]
                 },
                 files: {
