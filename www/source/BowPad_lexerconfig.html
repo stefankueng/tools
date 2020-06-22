@@ -1,0 +1,243 @@
+@@include("_includes/header.html", {
+    "title": "BowPad user defined lexers",
+    "headHtml": "<link rel=\"stylesheet\" href=\"./css/prettify.min.css\">"
+})
+
+<div class="wrapper">
+<div class="content">
+    <h2>User configurable color styles</h2>
+
+    <p>
+        While BowPad as a huge list of ready available lexers and coloring styles which you can use
+        to get the proper coloring for your files, it might be necessary to
+        create a new one that suits your own files.
+    </p>
+    <p>
+        For example, you might have your own XML based file format, which has
+        custom keywords and attributes which you want to have colored
+        separately. The default XML style of course doesn't know about your
+        own keywords and attributes, so you need to configure your own styling
+        setup.
+    </p>
+    <p>
+        We're going through creating a custom style setup for an XML based language
+        as an example. You should be able to use this as a base in case you need
+        another style as the base for your customization.
+    </p>
+    <p>
+        Once you have your custom lexer styling file done, you can drag and drop
+        that file over the BowPad window: BowPad will ask whether
+        you want to edit the file or import it. For this to work, the file
+        needs to have the extension set to <code>*.bplex</code>.
+    </p>
+
+    <h3>Start</h3>
+    <p>
+        First, get the template for a custom lexer styling from
+        <a href=".template.bplex">here</a>. Open the file in BowPad for editing. 
+    </p>
+    <p>
+        You can see several sections in that file. First replace all <code>YourLanguage</code>
+        strings with the name of your own file language, e.g. <code>myXML</code>.
+        Then set the file extensions of your own files, so BowPad knows to apply
+        your custom styling for these files.
+    </p>
+    <p>
+        Next you can define your own keywords the lexer should use. As a starting
+        point, have a look at the styling file BowPad uses for all the available
+        lexers <a href="https://github.com/stefankueng/BowPad/blob/main/src/res/Properties.ini">here</a>.
+    </p>
+    <p>
+        As you can see from the <code>Properties.ini</code> file, different lexers
+        have different keywords set. Under the section <code>[lang_Vxml]</code>
+        you can see that BowPad has two keyword sets set up. So how do you know
+        how many keyword sets a lexer provides? Unfortunately, that's not quite easy:
+        you have to actually check the sourcecode of the lexer. In our case,
+        the lexer that provides XML styling is the html-lexer, which you can find
+        <a href="https://github.com/stefankueng/BowPad/blob/main/ext/scintilla/lexers/LexHTML.cxx">here</a>.
+        The other lexers you might want to use are listed <a href="https://github.com/stefankueng/BowPad/blob/main/ext/scintilla/lexers">here</a>.
+    </p>
+    <p>
+        The html lexer uses 7 keyword sets. But for styling xml files, only the first
+        two are used, and even the second one is only used in special situations.
+        You can get some information by looking at the <code>htmlWordListDesc</code>
+        string in the file <code>LexHTML.cxx</code>.
+        So you have to add your own XML elements and attribute names in the first
+        keyword set.
+    </p>
+    <p>
+        The other options under the <code>[lang_myXML]</code> section are:
+        <dl>
+            <dt>CommentLine</dt>
+            <dd>Configures which chars are used to mark a line comment.
+            in many programming languages that would be <code>//</code>.
+            </dd>
+            
+            <dt>CommentLineAtStart</dt>
+            <dd>0 if the comment line can start anywhere on a line, 1 if such
+            comments must start at the beginning of a line.</dd>
+            
+            <dt>CommentStreamStart/CommentStreamEnd</dt>
+            <dd>Marks the inline comment chars. For example <code>/*</code>
+            and <code>*/</code></dd>
+            
+            <dt>FunctionRegex</dt>
+            <dd>A regular expression which captures function names</dd>
+            
+            <dt>UserFunctions</dt>
+            <dd>if not zero, the function regex is used to add the found
+            function names to the keywords for styling</dd>
+        </dl>
+    </p>
+    <p>
+        So for an XML based language, you would specify
+        <pre class="prettyprint">
+CommentStreamStart=&lt;!--
+CommentStreamEnd=--&gt;</pre>
+    </p>
+    <p>
+        And at last, under the section <code>[Lexer_myXML]</code> we can specify
+        the colors to use. But first, you need to specify here which lexer
+        to use. For the XML lexer, the value to use would be <code>5</code>,
+        so you have to specify <code>Lexer=5</code> there.
+    </p>
+    <p>
+        You can find the value for the lexer in Scintillas <a href="https://github.com/stefankueng/BowPad/blob/main/ext/scintilla/include/SciLexer.h">SciLexer.h</a>
+        file. The value for <code>SCLEX_XML</code> is defined as 5, so that's the
+        value we have to use.
+    </p>
+    <p>
+        Each lexer has a specific amount of color styles. They're numbered from
+        0-n. Since the XML lexer is basically the HTML lexer, look for <code>SCE_HTML_</code>
+        in the <a href="https://github.com/stefankueng/BowPad/blob/main/ext/scintilla/include/SciLexer.h">SciLexer.h</a>
+        file.
+    </p>
+    <p>
+        The format for the coloring style is:<br>
+        <code>StyleN=Name;Foregroundcolor;Backgroundcolor;fontname;fontstyle;fontsize</code><br>
+        The colors are RGB values in HEX, and the font style is a combination of the following values:<br>
+        0 = none<br>
+        1 = bold<br>
+        2 = italic<br>
+        4 = underlined<br>
+        leave the values empty if you want to use the default.
+    </p>
+
+
+    <h3>Simple lexer</h3>
+    <p>
+        BowPad also has a simple lexer, which can be used if none of the language specific
+        lexers fit your file format.
+    </p>
+    <p>
+        The simple lexer doesn't do much, but it has 9 keyword sets, colors numbers, strings
+        and comments. This means while the lexer does not know anything about your file
+        format, you can still use the keyword sets to color statements, attributes, ...
+    </p>
+    <p>
+        For example, if you specify <code>if for else while return</code> for a keyword set,
+        you'll get coloring for such statements even though the lexer doesn't know about which
+        of the words are such statements.
+    </p>
+    <p>
+        Here's a template for a custom style using the simple lexer:
+<pre class="prettyprint">
+[language]
+ABCDE=pkt;hdd
+
+[lang_ABCDE]
+keywords1=
+keywords2=
+keywords3=
+keywords4=
+keywords5=
+keywords6=
+keywords7=
+keywords8=
+CommentLine=#
+CommentStreamStart=
+CommentStreamEnd=
+
+[lexers]
+Lexer_ABCDE=ABCDE
+
+[Lexer_ABCDE]
+Lexer=1100
+Style0=DEFAULT;$(DEFAULT)
+Style1=COMMENT;$(COMMENT)
+Style2=COMMENTLINE;$(COMMENT LINE)
+Style3=NUMBER;$(NUMBER)
+Style4=STRING;$(STRING)
+Style5=OPERATOR;$(OPERATOR)
+Style6=IDENTIFIER;$(IDENTIFIER)
+Style7=WORD1;$(KEYWORDS)
+Style8=WORD2;$(KEYWORD2)
+Style9=WORD3;$(KEYWORD3)
+Style10=WORD4;$(KEYWORD4)
+Style11=WORD5;$(KEYWORD5)
+Style12=WORD6;$(KEYWORD6)
+Style13=WORD7;$(KEYWORD7)
+Style14=WORD8;$(KEYWORD8)
+Style15=WORD9;$(KEYWORD9)
+Style16=MARKEDWORDS1;0000A0;FFFFFF;;1;
+Style17=MARKEDWORDS2;0000A0;FFFFFF;;0;
+
+Prop_fold=1
+Prop_foldComments=1
+Prop_ws1CaseSensitive=1
+Prop_ws2CaseSensitive=1
+Prop_ws3CaseSensitive=1
+Prop_ws4CaseSensitive=1
+Prop_foldAtWS1=0
+Prop_foldAtWS2=0
+Prop_foldAtWS3=0
+Prop_foldAtWS4=1
+Prop_foldAtWS5=0
+Prop_foldAtWS6=0
+Prop_stringchars=&quot;&apos;
+Prop_stylenumbers=1
+Prop_operators=+ - / * &lt; &gt; &lt;= &gt;= = == === ! != ~
+Prop_linecomment=#
+Prop_inlineCommentStart=/*
+Prop_inlineCommentEnd=*/
+Prop_eol=\
+Prop_markedWords1=$
+</pre>
+    </p>
+    <p>
+        the options:
+        <dl>
+            <dt>Prop_foldComments</dt>
+            <dd>1 to fold comments</dd>
+            
+            <dt>Prop_wsNCaseSensitive</dt>
+            <dd>1 to have the keyword set behave case-sensitive.
+            Note: if not set or set to 0 (case-insensitive), the keywords must
+            be set in lowercase.</dd>
+            
+            <dt>Prop_foldAtWS1</dt>
+            <dd>if 1, every keyword is a folding point</dd>
+            
+            <dt>Prop_stringchars</dt>
+            <dd>the chars that mark a string, usually " and '</dd>
+            
+            <dt>Prop_stylenumbers</dt>
+            <dd>1 to style numbers, otherwise numbers are not colored</dd>
+            
+            <dt>Prop_operators</dt>
+            <dd>the operators</dd>
+            
+            <dt>Prop_markedWords1</dt>
+            <dd>a char or string that marks a special word which is colored separately.
+            For example you can mark all words that start with a <code>$</code> separately,
+            or if you specify e.g. <code>Gtk_</code> every word that starts with that
+            will be colored as well.</dd>
+        </dl>
+    </p>
+</div>
+</div>
+
+
+@@include("_includes/footer.html", {
+    "bottomHtml": "<script src=\"./js/prettify/prettify.js\"></script>\n<script>window.onload = prettyPrint();</script>"
+})
