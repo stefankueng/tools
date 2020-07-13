@@ -43,6 +43,7 @@
         overlay text is shown in the bottom left of the active monitor showing the mouse clicks and
         keystrokes. Only keystrokes are shown that are typed together with
         <kbd>Ctrl</kbd>, <kbd>Shift</kbd>, <kbd>Alt</kbd> and <kbd>Win</kbd>.</p>
+        <img src="./img/demohelper/DemoHelperOverlay.png" alt="DemoHelper Overlay" width="374" height="356">
 
 
 
@@ -59,6 +60,25 @@
             <dd>cancels zooming mode</dd>
         </dl>
         Zooming is also possible using the mouse wheel.
+
+        <h4 id="zooming">Live Zooming Mode</h4>
+        <p>
+        In live zooming mode the screen is magnified live, which means you
+        can interact with the magnified part as usual. The mouse/touch and
+        keyboard work with the magnified windows.
+        However, this also means that keyboard shortcuts are also passed on
+        to the other windows, and DemoHelper can't use the normal keys. So
+        in this mode, special keys are used to avoid conflicts with the usual
+        applications:
+        </p>
+        <dl>
+            <dt>Win+Shift+Mousewheel</dt>
+            <dd>zooms in/out</dd>
+            <dt>Win+Shift+Mousemove</dt>
+            <dd>Moves the magnified part</dd>
+            <dt>live zoom hotkey</dt>
+            <dd>ends live zoom mode</dd>
+        </dl>
 
         <h4 id="drawing">Drawing Mode</h4>
         <dl>
