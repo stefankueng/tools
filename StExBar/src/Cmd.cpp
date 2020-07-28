@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2012, 2014, 2017 - Stefan Kueng
+// Copyright (C) 2007-2012, 2014, 2017, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -106,7 +106,7 @@ void CDeskBand::StartPS(const std::wstring& cwd, std::wstring params, bool eleva
 
     if (params.empty())
     {
-        params = _T("-NoExit -Command \"Set-Location '" + cwd + L"'\"");
+        params = _T("-NoExit -Command \"Set-Location -LiteralPath '" + cwd + L"'\"");
     }
 
     TCHAR * nonconstparams = new TCHAR[params.size() + MAX_PATH];

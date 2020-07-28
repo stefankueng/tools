@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2015, 2017-2019 - Stefan Kueng
+// Copyright (C) 2007-2015, 2017-2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -912,13 +912,13 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
                 // If however the user enters a '@' char in front of the command
                 // then the console shall quit after executing the command.
                 {
-                    auto ps = L"-NoExit -Command \"Set-Location '" + cwd + L"'\"";
+                    auto ps = L"-NoExit -Command \"Set-Location -LiteralPath '" + cwd + L"'\"";
 
                     std::wstring params;
                     if (buf[0] == '@')
-                        params = _T("-Command \"Set-Location '" + cwd + L"'\" ; ");
+                        params = _T("-Command \"Set-Location -LiteralPath '" + cwd + L"'\" ; ");
                     else
-                        params = _T("-NoExit -Command \"Set-Location '" + cwd + L"'\" ; ");
+                        params = _T("-NoExit -Command \"Set-Location -LiteralPath '" + cwd + L"'\" ; ");
                     params += buf;
                     StartPS(cwd, params, (GetKeyState(VK_LWIN) & 0x8000) != 0);
                 }
