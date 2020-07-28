@@ -55,6 +55,8 @@
 
             <RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{6c7a85a7-27c6-49ce-98b2-a8479b0dd63d}" Value="StExBar" Type="string" />
 
+            <RegistryValue Root="HKLM" Key="Software\Policies\Microsoft\Internet Explorer\Main" Name="Enable Browser Extensions" Value="yes" Type="string" />
+
             <!-- clear the toolband cache to make sure the toolband appears in the context menu -->
             <RemoveRegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\Component Categories\{00021493-0000-0000-C000-000000000046}\Enum" Action="removeOnInstall" />
             <RemoveRegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\Component Categories\{00021494-0000-0000-C000-000000000046}\Enum" Action="removeOnInstall" />
