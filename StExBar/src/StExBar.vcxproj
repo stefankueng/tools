@@ -289,6 +289,9 @@
   <ItemGroup>
     <Image Include="res\movetofolder.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\..\compatibility.manifest" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
