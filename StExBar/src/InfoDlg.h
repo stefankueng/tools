@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2008 - Stefan Kueng
+// Copyright (C) 2008, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,6 @@ public:
     CInfoDlg();
     virtual ~CInfoDlg();
 public:
-    static BOOL ShowDialog(UINT idAboutHTMLID, HINSTANCE hInstance);
+    static BOOL ShowDialog(HWND hParent, UINT idAboutHTMLID, HINSTANCE hInstance);
 
 };

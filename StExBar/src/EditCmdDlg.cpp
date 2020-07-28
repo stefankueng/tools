@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2011-2014 - Stefan Kueng
+// Copyright (C) 2007-2009, 2011-2014, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -149,7 +149,7 @@ Special placeholders are available:\r\n\
             SetSeparator(m_command.separator);
             break;
         case IDC_COMMANDSHELP:
-            CInfoDlg::ShowDialog(IDR_COMMANDSHELP, hResource);
+            CInfoDlg::ShowDialog(hwndDlg, IDR_COMMANDSHELP, hResource);
             break;
         }
         break;

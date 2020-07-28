@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2013, 2015, 2018 - Stefan Kueng
+// Copyright (C) 2007-2013, 2015, 2018, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -117,7 +117,7 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             EndDialog(*this, LOWORD(wParam));
             return (INT_PTR)TRUE;
         case IDC_OPTIONSHELP:
-            CInfoDlg::ShowDialog(IDR_OPTIONSHELP, hResource);
+            CInfoDlg::ShowDialog(hwndDlg, IDR_OPTIONSHELP, hResource);
             break;
         case IDC_HIDEEDITBOX:
             {

@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2012, 2014 - Stefan Kueng
+// Copyright (C) 2007-2009, 2012, 2014, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -182,7 +182,7 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
             }
             return (INT_PTR)TRUE;
         case IDHELP:
-            CInfoDlg::ShowDialog(IDR_REGEXHELP, hResource);
+            CInfoDlg::ShowDialog(hwndDlg, IDR_REGEXHELP, hResource);
             return (INT_PTR)TRUE;
         }
         break;
@@ -233,7 +233,7 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
         break;
     case WM_HELP:
         {
-            CInfoDlg::ShowDialog(IDR_REGEXHELP, hResource);
+            CInfoDlg::ShowDialog(hwndDlg, IDR_REGEXHELP, hResource);
             return (INT_PTR)TRUE;
         }
         break;
