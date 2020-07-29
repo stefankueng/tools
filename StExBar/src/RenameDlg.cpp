@@ -23,7 +23,7 @@
 #include "version.h"
 #include <algorithm>
 #include "RenameDlg.h"
-#include "InfoDlg.h"
+#include "InfoRtfDialog.h"
 #include "NumberReplacer.h"
 #include <string>
 
@@ -182,7 +182,10 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
             }
             return (INT_PTR)TRUE;
         case IDHELP:
-            CInfoDlg::ShowDialog(hwndDlg, IDR_REGEXHELP, hResource);
+            {
+                CInfoRtfDialog dlg;
+                dlg.DoModal(hResource, *this, "StExBar Regex help", IDR_REGEXHELP, L"RTF", IDI_OPTIONS, 300, 400);
+            }
             return (INT_PTR)TRUE;
         }
         break;
@@ -231,9 +234,10 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
             }
         }
         break;
-    case WM_HELP:
+        case WM_HELP:
         {
-            CInfoDlg::ShowDialog(hwndDlg, IDR_REGEXHELP, hResource);
+            CInfoRtfDialog dlg;
+            dlg.DoModal(hResource, *this, "StExBar Regex help", IDR_REGEXHELP, L"rtf", IDI_OPTIONS, 300, 400);
             return (INT_PTR)TRUE;
         }
         break;

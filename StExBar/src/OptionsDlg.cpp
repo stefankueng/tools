@@ -24,7 +24,7 @@
 #include <algorithm>
 #include "OptionsDlg.h"
 #include "EditCmdDlg.h"
-#include "InfoDlg.h"
+#include "InfoRtfDialog.h"
 #include <string>
 #include <regex>
 
@@ -117,7 +117,10 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             EndDialog(*this, LOWORD(wParam));
             return (INT_PTR)TRUE;
         case IDC_OPTIONSHELP:
-            CInfoDlg::ShowDialog(hwndDlg, IDR_OPTIONSHELP, hResource);
+            {
+                CInfoRtfDialog dlg;
+                dlg.DoModal(hResource, *this, "StExBar Options", IDR_OPTIONSHELP, L"rtf", IDI_OPTIONS, 300, 400);
+            }
             break;
         case IDC_HIDEEDITBOX:
             {

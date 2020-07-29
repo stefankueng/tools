@@ -185,6 +185,7 @@
     <ClCompile Include="..\..\sktoolslib\DlgResizer.cpp" />
     <ClCompile Include="..\..\sktoolslib\GDIHelpers.cpp" />
     <ClCompile Include="..\..\sktoolslib\hyperlink.cpp" />
+    <ClCompile Include="..\..\sktoolslib\InfoRtfDialog.cpp" />
     <ClCompile Include="..\..\sktoolslib\ItemIDList.cpp" />
     <ClCompile Include="..\..\sktoolslib\PathUtils.cpp" />
     <ClCompile Include="..\..\sktoolslib\Pidl.cpp" />
@@ -221,6 +222,9 @@
     <None Include="..\version.build.in" />
     <None Include="..\versioninfo.build" />
     <None Include=".editorconfig" />
+    <None Include="res\CommandHelp.rtf" />
+    <None Include="res\OptionsHelp.rtf" />
+    <None Include="res\regexhelp.rtf" />
     <None Include="StExBar.def" />
     <None Include="res\cmd.ico" />
     <None Include="res\copyname.ico" />
@@ -234,16 +238,7 @@
     <None Include="res\up.ico" />
     <None Include="setup\Setup.wxs" />
     <None Include="setup\Setup64.wxs" />
-    <None Include="res\CommandHelp.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="..\default.build" />
-    <None Include="res\OptionsHelp.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="res\regexhelp.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="version.in" />
   </ItemGroup>
   <ItemGroup>
@@ -257,6 +252,7 @@
     <ClInclude Include="..\..\sktoolslib\DPIAware.h" />
     <ClInclude Include="..\..\sktoolslib\GDIHelpers.h" />
     <ClInclude Include="..\..\sktoolslib\hyperlink.h" />
+    <ClInclude Include="..\..\sktoolslib\InfoRtfDialog.h" />
     <ClInclude Include="..\..\sktoolslib\ItemIDList.h" />
     <ClInclude Include="..\..\sktoolslib\PathUtils.h" />
     <ClInclude Include="..\..\sktoolslib\Pidl.h" />

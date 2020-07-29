@@ -129,6 +129,9 @@
     <ClCompile Include="..\..\sktoolslib\GDIHelpers.cpp">
       <Filter>sktoolslib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sktoolslib\InfoRtfDialog.cpp">
+      <Filter>sktoolslib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="StExBar.def">
@@ -170,15 +173,6 @@
     <None Include="setup\Setup64.wxs">
       <Filter>WiX</Filter>
     </None>
-    <None Include="res\CommandHelp.htm">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\OptionsHelp.htm">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\regexhelp.htm">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include=".editorconfig" />
     <None Include="..\default.build">
       <Filter>Build</Filter>
@@ -191,6 +185,15 @@
     </None>
     <None Include="version.in">
       <Filter>Build</Filter>
+    </None>
+    <None Include="res\CommandHelp.rtf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\regexhelp.rtf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\OptionsHelp.rtf">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +300,9 @@
       <Filter>sktoolslib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\sktoolslib\GDIHelpers.h">
+      <Filter>sktoolslib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sktoolslib\InfoRtfDialog.h">
       <Filter>sktoolslib</Filter>
     </ClInclude>
   </ItemGroup>

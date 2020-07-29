@@ -23,7 +23,7 @@
 #include "version.h"
 #include <algorithm>
 #include "EditCmdDlg.h"
-#include "InfoDlg.h"
+#include "InfoRtfDialog.h"
 #include "BrowseFolder.h"
 #include <string>
 
@@ -149,7 +149,10 @@ Special placeholders are available:\r\n\
             SetSeparator(m_command.separator);
             break;
         case IDC_COMMANDSHELP:
-            CInfoDlg::ShowDialog(hwndDlg, IDR_COMMANDSHELP, hResource);
+            {
+                CInfoRtfDialog dlg;
+                dlg.DoModal(hResource, *this, "StExBar Commands", IDR_COMMANDSHELP, L"rtf", IDI_OPTIONS, 300, 400);
+            }
             break;
         }
         break;
