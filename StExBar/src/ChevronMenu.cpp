@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008, 2012, 2019 - Stefan Kueng
+// Copyright (C) 2007-2008, 2012, 2019-2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -121,7 +121,7 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
         if (chevronxy.y + tbsize.cy > (testrect.bottom))
             chevronxy.y = testrect.bottom - tbsize.cy;
         ::ShowWindow(*this, SW_SHOW);
-        auto scaledX = CDPIAware::Instance().Scale(10);
+        auto scaledX = CDPIAware::Instance().Scale(*this, 10);
         ::SetWindowPos(*this, HWND_TOP,
             chevronxy.x, chevronxy.y,
             tbsize.cx + scaledX, tbsize.cy + scaledX,
