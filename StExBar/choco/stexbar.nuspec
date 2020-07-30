@@ -11,7 +11,9 @@
     <projectUrl>https://tools.stefankueng.com/StExBar.html</projectUrl>
     <tags>stexbar extensions windows explorer admin</tags>
     <licenseUrl>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</licenseUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/stefankueng/tools</projectSourceUrl>
+    <bugTrackerUrl>https://github.com/stefankueng/tools/issues</bugTrackerUrl>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
