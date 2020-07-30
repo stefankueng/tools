@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2014, 2018 - Stefan Kueng
+// Copyright (C) 2014, 2018, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,15 +25,14 @@
 #include "NameDlg.h"
 #include <string>
 
-
-
-
 CNameDlg::CNameDlg(HWND hParent)
     : m_hParent(hParent)
-{}
+{
+}
 
 CNameDlg::~CNameDlg(void)
-{}
+{
+}
 
 LRESULT CNameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM /*lParam*/)
 {

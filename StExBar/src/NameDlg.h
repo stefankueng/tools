@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2014 - Stefan Kueng
+// Copyright (C) 2014, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,7 +23,6 @@
 #include "DlgResizer.h"
 #include <string>
 
-
 /**
 * name dialog.
 */
@@ -33,10 +32,11 @@ public:
     CNameDlg(HWND hParent);
     ~CNameDlg(void);
 
-    std::wstring            Name;
+    std::wstring Name;
 
 protected:
-    LRESULT CALLBACK        DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    LRESULT CALLBACK DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 private:
-    HWND                    m_hParent;
+    HWND m_hParent;
 };

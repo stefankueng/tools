@@ -28,15 +28,14 @@
 #include <string>
 #include <regex>
 
-
 COptionsDlg::COptionsDlg(HWND hParent)
     : m_hParent(hParent)
-    , m_regShowBtnText(_T("Software\\StefansTools\\StExBar\\ShowButtonText"), 1)
-    , m_regUseUNCPaths(_T("Software\\StefansTools\\StExBar\\UseUNCPaths"), 1)
-    , m_regUseSelector(_T("Software\\StefansTools\\StExBar\\UseSelector"), 1)
-    , m_regHideEditBox(_T("Software\\StefansTools\\StExBar\\HideEditBox"), 0)
-    , m_regContextMenu(_T("Software\\StefansTools\\StExBar\\ContextMenu"), 1)
-    , m_regEditBoxUsage(_T("Software\\StefansTools\\StExBar\\EditBoxUsage"), IDC_USECONSOLE)
+    , m_regShowBtnText(L"Software\\StefansTools\\StExBar\\ShowButtonText", 1)
+    , m_regUseUNCPaths(L"Software\\StefansTools\\StExBar\\UseUNCPaths", 1)
+    , m_regUseSelector(L"Software\\StefansTools\\StExBar\\UseSelector", 1)
+    , m_regHideEditBox(L"Software\\StefansTools\\StExBar\\HideEditBox", 0)
+    , m_regContextMenu(L"Software\\StefansTools\\StExBar\\ContextMenu", 1)
+    , m_regEditBoxUsage(L"Software\\StefansTools\\StExBar\\EditBoxUsage", IDC_USECONSOLE)
     , m_hListControl(NULL)
 {
 }
@@ -49,13 +48,13 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
     switch (uMsg)
     {
-    case WM_INITDIALOG:
+        case WM_INITDIALOG:
         {
             InitDialog(hwndDlg, IDI_OPTIONS);
 
             m_hListControl = GetDlgItem(*this, IDC_CUSTCOMMANDS);
 
-            m_link.ConvertStaticToHyperlink(hwndDlg, IDC_LINK, _T("http://tools.stefankueng.com"));
+            m_link.ConvertStaticToHyperlink(hwndDlg, IDC_LINK, L"http://tools.stefankueng.com");
 
             SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_SETCHECK, DWORD(m_regShowBtnText) ? BST_CHECKED : BST_UNCHECKED, 0);
             SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_SETCHECK, DWORD(m_regUseUNCPaths) ? BST_CHECKED : BST_UNCHECKED, 0);
@@ -68,107 +67,107 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEFILTER), !DWORD(m_regHideEditBox));
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEAUTO), !DWORD(m_regHideEditBox));
             CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin\\command\\", L"", 0, HKEY_CLASSES_ROOT);
-            std::wstring grepWinPath = regGrepWinPath;
+            std::wstring  grepWinPath    = regGrepWinPath;
             EnableWindow(GetDlgItem(hwndDlg, IDC_USEGREPWIN), !grepWinPath.empty() && !DWORD(m_regHideEditBox));
 
-            AddToolTip(IDC_SHOWTEXT, _T("shows the name of the button below the icon"));
-            AddToolTip(IDC_USEUNCCHECK, _T("For mounted network drives, copies the UNC path for files/folders\r\ninstead of the path with the mounted drive letter"));
-            AddToolTip(IDC_SELECTORCHECK, _T("Determines whether the edit box on the right behaves as a shortcut for the console\r\nor whether it filters items according to the entered mask.\r\nDoes not work on Win7 for folders in a library and\r\ncan be very slow if not in detailed view!"));
-            AddToolTip(IDC_HIDEEDITBOX, _T("Hides the edit box on the right of the toolbar"));
-            AddToolTip(IDC_CONTEXTMENU, _T("Adds the commands also to the right-click context menu"));
-            AddToolTip(IDC_USECONSOLE, _T("The edit box text is sent to the console (cmd.exe)"));
-            AddToolTip(IDC_USEPOWERSHELL, _T("The edit box text is sent to the Powershell"));
-            AddToolTip(IDC_USEGREPWIN, _T("The edit box text is sent to the grepWin tool if it is installed"));
-            AddToolTip(IDC_USEFILTER, _T("The edit box text is used to filter the content in the explorer"));
-            AddToolTip(IDC_USEAUTO, _T("The first char determines the function:\nf filtertext\ng grepWin search text\nc console command\np powershell command"));
+            AddToolTip(IDC_SHOWTEXT, L"shows the name of the button below the icon");
+            AddToolTip(IDC_USEUNCCHECK, L"For mounted network drives, copies the UNC path for files/folders\r\ninstead of the path with the mounted drive letter");
+            AddToolTip(IDC_SELECTORCHECK, L"Determines whether the edit box on the right behaves as a shortcut for the console\r\nor whether it filters items according to the entered mask.\r\nDoes not work on Win7 for folders in a library and\r\ncan be very slow if not in detailed view!");
+            AddToolTip(IDC_HIDEEDITBOX, L"Hides the edit box on the right of the toolbar");
+            AddToolTip(IDC_CONTEXTMENU, L"Adds the commands also to the right-click context menu");
+            AddToolTip(IDC_USECONSOLE, L"The edit box text is sent to the console (cmd.exe)");
+            AddToolTip(IDC_USEPOWERSHELL, L"The edit box text is sent to the Powershell");
+            AddToolTip(IDC_USEGREPWIN, L"The edit box text is sent to the grepWin tool if it is installed");
+            AddToolTip(IDC_USEFILTER, L"The edit box text is used to filter the content in the explorer");
+            AddToolTip(IDC_USEAUTO, L"The first char determines the function:\nf filtertext\ng grepWin search text\nc console command\np powershell command");
 
-            TCHAR buf[MAX_PATH] = {0};
-            _stprintf_s(buf, _countof(buf), _T("StExBar %ld.%ld.%ld.%ld"), VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
+            wchar_t buf[MAX_PATH] = {0};
+            swprintf_s(buf, _countof(buf), L"StExBar %ld.%ld.%ld.%ld", VER_MAJOR, VER_MINOR, VER_MICRO, VER_REVISION);
             SetDlgItemText(hwndDlg, IDC_VERSIONSTRING, buf);
 
             m_commands.LoadFromFile();
             InitCustomCommandsList();
         }
-        return (INT_PTR)TRUE;
-    case WM_COMMAND:
-        switch (LOWORD(wParam))
-        {
-        case IDOK:
-            {
-                m_regShowBtnText = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_GETCHECK, 0, 0);
-                m_regUseUNCPaths = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_GETCHECK, 0, 0);
-                m_regUseSelector = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_GETCHECK, 0, 0);
-                m_regHideEditBox = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_GETCHECK, 0, 0);
-                m_regContextMenu = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_CONTEXTMENU), BM_GETCHECK, 0, 0);
-                if (IsDlgButtonChecked(hwndDlg, IDC_USECONSOLE))
-                    m_regEditBoxUsage = IDC_USECONSOLE;
-                else if (IsDlgButtonChecked(hwndDlg, IDC_USEPOWERSHELL))
-                    m_regEditBoxUsage = IDC_USEPOWERSHELL;
-                else if (IsDlgButtonChecked(hwndDlg, IDC_USEGREPWIN))
-                    m_regEditBoxUsage = IDC_USEGREPWIN;
-                else if (IsDlgButtonChecked(hwndDlg, IDC_USEFILTER))
-                    m_regEditBoxUsage = IDC_USEFILTER;
-                else //if (IsDlgButtonChecked(hwndDlg, IDC_USEAUTO))
-                    m_regEditBoxUsage = IDC_USEAUTO;
-                m_commands.SaveToFile();
-            }
-            // fall through
-        case IDCANCEL:
-            EndDialog(*this, LOWORD(wParam));
             return (INT_PTR)TRUE;
-        case IDC_OPTIONSHELP:
+        case WM_COMMAND:
+            switch (LOWORD(wParam))
             {
-                CInfoRtfDialog dlg;
-                dlg.DoModal(hResource, *this, "StExBar Options", IDR_OPTIONSHELP, L"rtf", IDI_OPTIONS, 300, 400);
-            }
-            break;
-        case IDC_HIDEEDITBOX:
-            {
-                bool bHide = SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_GETCHECK, 0, 0) != BST_CHECKED;
-                EnableWindow(GetDlgItem(hwndDlg, IDC_USECONSOLE), bHide);
-                EnableWindow(GetDlgItem(hwndDlg, IDC_USEPOWERSHELL), bHide);
-                EnableWindow(GetDlgItem(hwndDlg, IDC_USEFILTER), bHide);
-                EnableWindow(GetDlgItem(hwndDlg, IDC_USEAUTO), bHide);
-                CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin\\command\\", L"", 0, HKEY_CLASSES_ROOT);
-                std::wstring grepWinPath = regGrepWinPath;
-                EnableWindow(GetDlgItem(hwndDlg, IDC_USEGREPWIN), !grepWinPath.empty() && bHide);
-            }
-            break;
-        case IDC_EDITCMD:
-            EditSelectedItem();
-            break;
-        case IDC_ADD:
-            {
-                Command cmd;
-                cmd.separator = false;
-                CEditCmdDlg dlg(*this);
-                dlg.SetCommand(cmd);
-                if (dlg.DoModal(hResource, IDD_EDITCMD, *this) == IDOK)
+                case IDOK:
                 {
-                    m_commands.InsertCommand(m_commands.GetCount(), dlg.GetCommand());
-                    InitCustomCommandsList();
+                    m_regShowBtnText = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_SHOWTEXT), BM_GETCHECK, 0, 0);
+                    m_regUseUNCPaths = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_USEUNCCHECK), BM_GETCHECK, 0, 0);
+                    m_regUseSelector = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_SELECTORCHECK), BM_GETCHECK, 0, 0);
+                    m_regHideEditBox = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_GETCHECK, 0, 0);
+                    m_regContextMenu = (DWORD)SendMessage(GetDlgItem(hwndDlg, IDC_CONTEXTMENU), BM_GETCHECK, 0, 0);
+                    if (IsDlgButtonChecked(hwndDlg, IDC_USECONSOLE))
+                        m_regEditBoxUsage = IDC_USECONSOLE;
+                    else if (IsDlgButtonChecked(hwndDlg, IDC_USEPOWERSHELL))
+                        m_regEditBoxUsage = IDC_USEPOWERSHELL;
+                    else if (IsDlgButtonChecked(hwndDlg, IDC_USEGREPWIN))
+                        m_regEditBoxUsage = IDC_USEGREPWIN;
+                    else if (IsDlgButtonChecked(hwndDlg, IDC_USEFILTER))
+                        m_regEditBoxUsage = IDC_USEFILTER;
+                    else //if (IsDlgButtonChecked(hwndDlg, IDC_USEAUTO))
+                        m_regEditBoxUsage = IDC_USEAUTO;
+                    m_commands.SaveToFile();
                 }
+                    // fall through
+                case IDCANCEL:
+                    EndDialog(*this, LOWORD(wParam));
+                    return (INT_PTR)TRUE;
+                case IDC_OPTIONSHELP:
+                {
+                    CInfoRtfDialog dlg;
+                    dlg.DoModal(hResource, *this, "StExBar Options", IDR_OPTIONSHELP, L"rtf", IDI_OPTIONS, 300, 400);
+                }
+                break;
+                case IDC_HIDEEDITBOX:
+                {
+                    bool bHide = SendMessage(GetDlgItem(hwndDlg, IDC_HIDEEDITBOX), BM_GETCHECK, 0, 0) != BST_CHECKED;
+                    EnableWindow(GetDlgItem(hwndDlg, IDC_USECONSOLE), bHide);
+                    EnableWindow(GetDlgItem(hwndDlg, IDC_USEPOWERSHELL), bHide);
+                    EnableWindow(GetDlgItem(hwndDlg, IDC_USEFILTER), bHide);
+                    EnableWindow(GetDlgItem(hwndDlg, IDC_USEAUTO), bHide);
+                    CRegStdString regGrepWinPath = CRegStdString(L"*\\Shell\\grepWin\\command\\", L"", 0, HKEY_CLASSES_ROOT);
+                    std::wstring  grepWinPath    = regGrepWinPath;
+                    EnableWindow(GetDlgItem(hwndDlg, IDC_USEGREPWIN), !grepWinPath.empty() && bHide);
+                }
+                break;
+                case IDC_EDITCMD:
+                    EditSelectedItem();
+                    break;
+                case IDC_ADD:
+                {
+                    Command cmd;
+                    cmd.separator = false;
+                    CEditCmdDlg dlg(*this);
+                    dlg.SetCommand(cmd);
+                    if (dlg.DoModal(hResource, IDD_EDITCMD, *this) == IDOK)
+                    {
+                        m_commands.InsertCommand(m_commands.GetCount(), dlg.GetCommand());
+                        InitCustomCommandsList();
+                    }
+                }
+                break;
+                case IDC_REMOVE:
+                    RemoveSelectedItem();
+                    break;
+                case IDC_MOVEUP:
+                    MoveSelectedUp();
+                    break;
+                case IDC_MOVEDOWN:
+                    MoveSelectedDown();
+                    break;
             }
             break;
-        case IDC_REMOVE:
-            RemoveSelectedItem();
-            break;
-        case IDC_MOVEUP:
-            MoveSelectedUp();
-            break;
-        case IDC_MOVEDOWN:
-            MoveSelectedDown();
-            break;
-        }
-        break;
-    case WM_NOTIFY:
+        case WM_NOTIFY:
         {
             LPNMHDR lpnmhdr = (LPNMHDR)lParam;
-            if ((lpnmhdr->code == LVN_ITEMCHANGED)&&(lpnmhdr->hwndFrom == m_hListControl))
+            if ((lpnmhdr->code == LVN_ITEMCHANGED) && (lpnmhdr->hwndFrom == m_hListControl))
             {
                 OnSelectListItem((LPNMLISTVIEW)lParam);
             }
-            if ((lpnmhdr->code == LVN_KEYDOWN)&&(lpnmhdr->hwndFrom == m_hListControl))
+            if ((lpnmhdr->code == LVN_KEYDOWN) && (lpnmhdr->hwndFrom == m_hListControl))
             {
                 LPNMLVKEYDOWN pnkd = (LPNMLVKEYDOWN)lParam;
                 if (pnkd->wVKey == VK_DELETE)
@@ -176,11 +175,11 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                     RemoveSelectedItem();
                 }
             }
-            if ((lpnmhdr->code == NM_DBLCLK)&&(lpnmhdr->hwndFrom == m_hListControl))
+            if ((lpnmhdr->code == NM_DBLCLK) && (lpnmhdr->hwndFrom == m_hListControl))
             {
                 EditSelectedItem();
             }
-            if ((lpnmhdr->code == NM_CUSTOMDRAW)&&(lpnmhdr->hwndFrom == m_hListControl))
+            if ((lpnmhdr->code == NM_CUSTOMDRAW) && (lpnmhdr->hwndFrom == m_hListControl))
             {
                 return OnCustomDrawListItem((LPNMLVCUSTOMDRAW)lParam);
             }
@@ -191,7 +190,6 @@ LRESULT COptionsDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
     return (INT_PTR)FALSE;
 }
 
-
 void COptionsDlg::InitCustomCommandsList()
 {
     if (m_hListControl == NULL)
@@ -200,46 +198,46 @@ void COptionsDlg::InitCustomCommandsList()
     DWORD exStyle = LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER;
     ListView_DeleteAllItems(m_hListControl);
 
-    int c = Header_GetItemCount(ListView_GetHeader(m_hListControl))-1;
-    while (c>=0)
+    int c = Header_GetItemCount(ListView_GetHeader(m_hListControl)) - 1;
+    while (c >= 0)
         ListView_DeleteColumn(m_hListControl, c--);
 
     ListView_SetExtendedListViewStyle(m_hListControl, exStyle);
     LVCOLUMN lvc = {0};
-    lvc.mask = LVCF_TEXT;
-    lvc.fmt = LVCFMT_LEFT;
-    lvc.cx = -1;
-    lvc.pszText = _T("Command");
+    lvc.mask     = LVCF_TEXT;
+    lvc.fmt      = LVCFMT_LEFT;
+    lvc.cx       = -1;
+    lvc.pszText  = L"Command";
     ListView_InsertColumn(m_hListControl, 0, &lvc);
-    lvc.pszText = _T("Hotkey");
+    lvc.pszText = L"Hotkey";
     ListView_InsertColumn(m_hListControl, 1, &lvc);
 
-    LVITEM item = {0};
-    TCHAR buf[1024];
-    TCHAR buf2[1024];
-    for (int i = 0; i < m_commands.GetCount()-1; ++i)
+    LVITEM  item = {0};
+    wchar_t buf[1024];
+    wchar_t buf2[1024];
+    for (int i = 0; i < m_commands.GetCount() - 1; ++i)
     {
-        Command cmd = m_commands.GetCommand(i+1);
-        item.mask = LVIF_TEXT|LVIF_PARAM;
-        item.iItem = i;
+        Command cmd = m_commands.GetCommand(i + 1);
+        item.mask   = LVIF_TEXT | LVIF_PARAM;
+        item.iItem  = i;
         item.lParam = i;
         if (cmd.separator)
-            _tcscpy_s(buf, _countof(buf), _T("----------"));
+            wcscpy_s(buf, _countof(buf), L"----------");
         else
-            _tcscpy_s(buf, _countof(buf), cmd.name.c_str());
+            wcscpy_s(buf, _countof(buf), cmd.name.c_str());
         item.pszText = buf;
         ListView_InsertItem(m_hListControl, &item);
-        if ((!cmd.separator)&&(cmd.key.keycode))
+        if ((!cmd.separator) && (cmd.key.keycode))
         {
             std::wstring sKeyText;
             if (cmd.key.control)
-                sKeyText += _T("Ctrl+");
+                sKeyText += L"Ctrl+";
             if (cmd.key.shift)
-                sKeyText += _T("Shift+");
+                sKeyText += L"Shift+";
             if (cmd.key.alt)
-                sKeyText += _T("Alt+");
+                sKeyText += L"Alt+";
             sKeyText += (wchar_t)cmd.key.keycode;
-            _tcscpy_s(buf2, _countof(buf2), sKeyText.c_str());
+            wcscpy_s(buf2, _countof(buf2), sKeyText.c_str());
             ListView_SetItemText(m_hListControl, i, 1, buf2);
         }
     }
@@ -256,30 +254,30 @@ void COptionsDlg::InitCustomCommandsList()
 
 void COptionsDlg::OnSelectListItem(LPNMLISTVIEW /*lpNMListView*/)
 {
-    LVITEM item = {0};
-    UINT nCount = ListView_GetSelectedCount(m_hListControl);
-    bool bIsSeparator = false;
-    bool bIsHidden = false;
-    bool bIsOptions = false;
-    for (int i=0; i<ListView_GetItemCount(m_hListControl); ++i)
+    LVITEM item         = {0};
+    UINT   nCount       = ListView_GetSelectedCount(m_hListControl);
+    bool   bIsSeparator = false;
+    bool   bIsHidden    = false;
+    bool   bIsOptions   = false;
+    for (int i = 0; i < ListView_GetItemCount(m_hListControl); ++i)
     {
-        item.mask = LVIF_PARAM|LVIF_STATE;
+        item.mask      = LVIF_PARAM | LVIF_STATE;
         item.stateMask = LVIS_SELECTED;
-        item.iItem = i;
+        item.iItem     = i;
         ListView_GetItem(m_hListControl, &item);
         if (item.state & LVIS_SELECTED)
         {
-            Command * pCmd = m_commands.GetCommandPtr(i+1);
-            bIsSeparator = pCmd->separator;
-            bIsHidden = pCmd->commandline.compare(INTERNALCOMMANDHIDDEN)==0;
-            bIsOptions = pCmd->name.compare(_T("Options")) == 0;
+            Command* pCmd = m_commands.GetCommandPtr(i + 1);
+            bIsSeparator  = pCmd->separator;
+            bIsHidden     = pCmd->commandline.compare(INTERNALCOMMANDHIDDEN) == 0;
+            bIsOptions    = pCmd->name.compare(L"Options") == 0;
         }
     }
 
     if (bIsHidden)
-        ::SetWindowText(GetDlgItem(*this, IDC_REMOVE), _T("Activate"));
+        ::SetWindowText(GetDlgItem(*this, IDC_REMOVE), L"Activate");
     else
-        ::SetWindowText(GetDlgItem(*this, IDC_REMOVE), _T("Remove"));
+        ::SetWindowText(GetDlgItem(*this, IDC_REMOVE), L"Remove");
 
     if (bIsOptions)
     {
@@ -300,25 +298,25 @@ void COptionsDlg::OnSelectListItem(LPNMLISTVIEW /*lpNMListView*/)
 void COptionsDlg::MoveSelectedUp()
 {
     LVITEM item = {0};
-    for (int i=0; i<ListView_GetItemCount(m_hListControl); ++i)
+    for (int i = 0; i < ListView_GetItemCount(m_hListControl); ++i)
     {
-        item.mask = LVIF_PARAM|LVIF_STATE;
+        item.mask      = LVIF_PARAM | LVIF_STATE;
         item.stateMask = LVIS_SELECTED;
-        item.iItem = i;
+        item.iItem     = i;
         ListView_GetItem(m_hListControl, &item);
         if (item.state & LVIS_SELECTED)
         {
             if (i > 1)
             {
                 Command c1 = m_commands.GetCommand(i);
-                m_commands.SetCommand(i, m_commands.GetCommand(i+1));
-                m_commands.SetCommand(i+1, c1);
+                m_commands.SetCommand(i, m_commands.GetCommand(i + 1));
+                m_commands.SetCommand(i + 1, c1);
                 InitCustomCommandsList();
-                item.mask = LVIF_PARAM|LVIF_STATE;
+                item.mask      = LVIF_PARAM | LVIF_STATE;
                 item.stateMask = LVIS_SELECTED;
-                item.iItem = i-1;
+                item.iItem     = i - 1;
                 ListView_SetItem(m_hListControl, &item);
-                ListView_EnsureVisible(m_hListControl, i-1, FALSE);
+                ListView_EnsureVisible(m_hListControl, i - 1, FALSE);
             }
             return;
         }
@@ -328,25 +326,25 @@ void COptionsDlg::MoveSelectedUp()
 void COptionsDlg::MoveSelectedDown()
 {
     LVITEM item = {0};
-    for (int i=0; i<ListView_GetItemCount(m_hListControl); ++i)
+    for (int i = 0; i < ListView_GetItemCount(m_hListControl); ++i)
     {
-        item.mask = LVIF_PARAM|LVIF_STATE;
+        item.mask      = LVIF_PARAM | LVIF_STATE;
         item.stateMask = LVIS_SELECTED;
-        item.iItem = i;
+        item.iItem     = i;
         ListView_GetItem(m_hListControl, &item);
         if (item.state & LVIS_SELECTED)
         {
-            if (i < m_commands.GetCount()-3)
+            if (i < m_commands.GetCount() - 3)
             {
-                Command c1 = m_commands.GetCommand(i+2);
-                m_commands.SetCommand(i+2, m_commands.GetCommand(i+1));
-                m_commands.SetCommand(i+1, c1);
+                Command c1 = m_commands.GetCommand(i + 2);
+                m_commands.SetCommand(i + 2, m_commands.GetCommand(i + 1));
+                m_commands.SetCommand(i + 1, c1);
                 InitCustomCommandsList();
-                item.mask = LVIF_PARAM|LVIF_STATE;
+                item.mask      = LVIF_PARAM | LVIF_STATE;
                 item.stateMask = LVIS_SELECTED;
-                item.iItem = i+1;
+                item.iItem     = i + 1;
                 ListView_SetItem(m_hListControl, &item);
-                ListView_EnsureVisible(m_hListControl, i+1, FALSE);
+                ListView_EnsureVisible(m_hListControl, i + 1, FALSE);
             }
             return;
         }
@@ -356,27 +354,27 @@ void COptionsDlg::MoveSelectedDown()
 void COptionsDlg::RemoveSelectedItem()
 {
     LVITEM item = {0};
-    for (int i=0; i<ListView_GetItemCount(m_hListControl); ++i)
+    for (int i = 0; i < ListView_GetItemCount(m_hListControl); ++i)
     {
-        item.mask = LVIF_PARAM|LVIF_STATE;
+        item.mask      = LVIF_PARAM | LVIF_STATE;
         item.stateMask = LVIS_SELECTED;
-        item.iItem = i;
+        item.iItem     = i;
         ListView_GetItem(m_hListControl, &item);
         if (item.state & LVIS_SELECTED)
         {
-            Command * pCmd = m_commands.GetCommandPtr(i+1);
-            if ((pCmd)&&(pCmd->commandline.compare(INTERNALCOMMAND)==0))
+            Command* pCmd = m_commands.GetCommandPtr(i + 1);
+            if ((pCmd) && (pCmd->commandline.compare(INTERNALCOMMAND) == 0))
             {
                 pCmd->commandline = INTERNALCOMMANDHIDDEN;
             }
-            else if ((pCmd)&&(pCmd->commandline.compare(INTERNALCOMMANDHIDDEN)==0))
+            else if ((pCmd) && (pCmd->commandline.compare(INTERNALCOMMANDHIDDEN) == 0))
             {
                 pCmd->commandline = INTERNALCOMMAND;
             }
             else
-                m_commands.RemoveCommand(i+1);
+                m_commands.RemoveCommand(i + 1);
             InitCustomCommandsList();
-            ListView_EnsureVisible(m_hListControl, i-1, FALSE);
+            ListView_EnsureVisible(m_hListControl, i - 1, FALSE);
             return;
         }
     }
@@ -385,25 +383,24 @@ void COptionsDlg::RemoveSelectedItem()
 void COptionsDlg::EditSelectedItem()
 {
     LVITEM item = {0};
-    for (int i=0; i<ListView_GetItemCount(m_hListControl); ++i)
+    for (int i = 0; i < ListView_GetItemCount(m_hListControl); ++i)
     {
-        item.mask = LVIF_PARAM|LVIF_STATE;
+        item.mask      = LVIF_PARAM | LVIF_STATE;
         item.stateMask = LVIS_SELECTED;
-        item.iItem = i;
+        item.iItem     = i;
         ListView_GetItem(m_hListControl, &item);
         if (item.state & LVIS_SELECTED)
         {
-            Command cmd = m_commands.GetCommand(i+1);
+            Command cmd = m_commands.GetCommand(i + 1);
             if (cmd.separator)
                 continue;
             CEditCmdDlg dlg(*this);
             dlg.SetCommand(cmd);
             if (dlg.DoModal(hResource, IDD_EDITCMD, *this) == IDOK)
             {
-                m_commands.SetCommand(i+1, dlg.GetCommand());
+                m_commands.SetCommand(i + 1, dlg.GetCommand());
                 InitCustomCommandsList();
             }
-
         }
     }
 }
@@ -412,19 +409,19 @@ LRESULT COptionsDlg::OnCustomDrawListItem(LPNMLVCUSTOMDRAW lpNMCustomDraw)
 {
     // First thing - check the draw stage. If it's the control's prepaint
     // stage, then tell Windows we want messages for every item.
-    LRESULT result =  CDRF_DODEFAULT;
+    LRESULT result = CDRF_DODEFAULT;
     switch (lpNMCustomDraw->nmcd.dwDrawStage)
     {
-    case CDDS_PREPAINT:
-        result = CDRF_NOTIFYITEMDRAW;
-        break;
-    case CDDS_ITEMPREPAINT:
+        case CDDS_PREPAINT:
+            result = CDRF_NOTIFYITEMDRAW;
+            break;
+        case CDDS_ITEMPREPAINT:
         {
             COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
-            if (m_commands.GetCommand((int)lpNMCustomDraw->nmcd.dwItemSpec+1).commandline.compare(INTERNALCOMMANDHIDDEN) == 0)
+            if (m_commands.GetCommand((int)lpNMCustomDraw->nmcd.dwItemSpec + 1).commandline.compare(INTERNALCOMMANDHIDDEN) == 0)
                 crText = GetSysColor(COLOR_GRAYTEXT);
             lpNMCustomDraw->clrText = crText;
-            result = CDRF_NOTIFYSUBITEMDRAW;
+            result                  = CDRF_NOTIFYSUBITEMDRAW;
         }
         break;
     }

@@ -14,7 +14,6 @@
 #include <commctrl.h>
 #include <Shlobj.h>
 #include <Shlwapi.h>
-#include <tchar.h>
 
 #include <ole2.h>
 #include <comcat.h>

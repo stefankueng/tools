@@ -24,22 +24,22 @@
 
 bool CDeskBand::Filter(LPTSTR filter)
 {
-    bool bReturn = false;
-    IServiceProvider * pServiceProvider;
+    bool              bReturn = false;
+    IServiceProvider* pServiceProvider;
     if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
     {
-        IShellBrowser * pShellBrowser;
+        IShellBrowser* pShellBrowser;
         if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
         {
-            IShellView * pShellView;
+            IShellView* pShellView;
             if (SUCCEEDED(pShellBrowser->QueryActiveShellView(&pShellView)))
             {
-                IFolderView * pFolderView;
+                IFolderView* pFolderView;
                 if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView)))
                 {
                     // hooray! we got the IFolderView interface!
                     // that means the explorer is active and well :)
-                    IShellFolderView * pShellFolderView;
+                    IShellFolderView* pShellFolderView;
                     if (SUCCEEDED(pShellView->QueryInterface(IID_IShellFolderView, (LPVOID*)&pShellFolderView)))
                     {
                         // the first thing we do is to deselect all already selected entries
@@ -47,7 +47,7 @@ bool CDeskBand::Filter(LPTSTR filter)
 
                         // but we also need the IShellFolder interface because
                         // we need its GetDisplayNameOf() method
-                        IPersistFolder2 * pPersistFolder;
+                        IPersistFolder2* pPersistFolder;
                         if (SUCCEEDED(pFolderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&pPersistFolder)))
                         {
                             LPITEMIDLIST curFolder;
@@ -60,13 +60,13 @@ bool CDeskBand::Filter(LPTSTR filter)
                             {
                                 CoTaskMemFree(m_currentFolder);
                                 m_currentFolder = curFolder;
-                                for (size_t i=0; i<m_noShows.size(); ++i)
+                                for (size_t i = 0; i < m_noShows.size(); ++i)
                                 {
                                     CoTaskMemFree(m_noShows[i]);
                                 }
                                 m_noShows.clear();
                             }
-                            IShellFolder * pShellFolder;
+                            IShellFolder* pShellFolder;
                             if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
                             {
                                 // our next task is to enumerate all the
@@ -87,10 +87,10 @@ bool CDeskBand::Filter(LPTSTR filter)
                                 if (!bUseRegex)
                                 {
                                     // force the filter to lowercase
-                                    TCHAR * pString = filter;
+                                    wchar_t* pString = filter;
                                     while (*pString)
                                     {
-                                        *pString = _totlower(*pString);
+                                        *pString = towlower(*pString);
                                         pString++;
                                     }
                                 }
@@ -99,7 +99,7 @@ bool CDeskBand::Filter(LPTSTR filter)
                                 if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
                                 {
                                     pShellFolderView->SetRedraw(FALSE);
-                                    HWND listView = GetListView32(pShellView);
+                                    HWND    listView = GetListView32(pShellView);
                                     LRESULT viewType = 0;
                                     if (listView)
                                     {
@@ -112,7 +112,7 @@ bool CDeskBand::Filter(LPTSTR filter)
                                     }
                                     std::vector<LPITEMIDLIST> noShows;
                                     noShows.reserve(nCount);
-                                    for (int i=0; i<nCount; ++i)
+                                    for (int i = 0; i < nCount; ++i)
                                     {
                                         LPITEMIDLIST pidl;
                                         if (SUCCEEDED(pFolderView->Item(i, &pidl)))
@@ -122,9 +122,9 @@ bool CDeskBand::Filter(LPTSTR filter)
                                                 // remove now shown items which are in the no-show list
                                                 // this is necessary since we don't get a notification
                                                 // if the shell refreshes its view
-                                                for (std::vector<LPITEMIDLIST>::iterator it = m_noShows.begin(); it != m_noShows.end(); ++it )
+                                                for (std::vector<LPITEMIDLIST>::iterator it = m_noShows.begin(); it != m_noShows.end(); ++it)
                                                 {
-                                                    if (HRESULT_CODE(pShellFolder->CompareIDs(SHCIDS_CANONICALONLY, *it, pidl))==0)
+                                                    if (HRESULT_CODE(pShellFolder->CompareIDs(SHCIDS_CANONICALONLY, *it, pidl)) == 0)
                                                     {
                                                         m_noShows.erase(it);
                                                         break;
@@ -147,7 +147,7 @@ bool CDeskBand::Filter(LPTSTR filter)
                                     // now add all those items again which were removed by a previous filter string
                                     // but don't match this new one
                                     //pShellFolderView->SetObjectCount(5000, SFVSOC_INVALIDATE_ALL|SFVSOC_NOSCROLL);
-                                    for (size_t i=0; i<m_noShows.size(); ++i)
+                                    for (size_t i = 0; i < m_noShows.size(); ++i)
                                     {
                                         LPITEMIDLIST pidlNoShow = m_noShows[i];
                                         if (CheckDisplayName(pShellFolder, pidlNoShow, filter, bUseRegex))
@@ -162,8 +162,7 @@ bool CDeskBand::Filter(LPTSTR filter)
                                     m_noShows.insert(
                                         m_noShows.end(),
                                         std::make_move_iterator(noShows.begin()),
-                                        std::make_move_iterator(noShows.end())
-                                    );
+                                        std::make_move_iterator(noShows.end()));
                                     noShows.clear();
                                     if (listView)
                                     {
@@ -189,24 +188,23 @@ bool CDeskBand::Filter(LPTSTR filter)
     return bReturn;
 }
 
-bool CDeskBand::CheckDisplayName(IShellFolder * shellFolder, LPITEMIDLIST pidl, LPCTSTR filter, bool bUseRegex)
+bool CDeskBand::CheckDisplayName(IShellFolder* shellFolder, LPITEMIDLIST pidl, LPCTSTR filter, bool bUseRegex)
 {
     STRRET str;
     if (SUCCEEDED(shellFolder->GetDisplayNameOf(pidl,
-        // SHGDN_FORPARSING needed to get the extensions even if they're not shown
-        SHGDN_INFOLDER|SHGDN_FORPARSING,
-        &str)))
+                                                // SHGDN_FORPARSING needed to get the extensions even if they're not shown
+                                                SHGDN_INFOLDER | SHGDN_FORPARSING,
+                                                &str)))
     {
-        TCHAR dispname[MAX_PATH];
+        wchar_t dispname[MAX_PATH];
         StrRetToBuf(&str, pidl, dispname, _countof(dispname));
 
         if (bUseRegex)
         {
-
             try
             {
                 const std::wregex regCheck(&filter[1], std::regex_constants::icase | std::regex_constants::ECMAScript);
-                std::wstring s = dispname;
+                std::wstring      s = dispname;
 
                 return std::regex_search(s, regCheck);
             }
@@ -221,14 +219,14 @@ bool CDeskBand::CheckDisplayName(IShellFolder * shellFolder, LPITEMIDLIST pidl, 
             // since the windows file system is case-insensitive
             // we have to force the display name to lowercase
             // so the filter matches case-insensitive too
-            TCHAR * pString = dispname;
+            wchar_t* pString = dispname;
             while (*pString)
             {
-                *pString = _totlower(*pString);
+                *pString = towlower(*pString);
                 pString++;
             }
             // check if the item name matches the text of the edit control
-            return (_tcsstr(dispname, filter) != NULL);
+            return (wcsstr(dispname, filter) != NULL);
         }
     }
     return false;

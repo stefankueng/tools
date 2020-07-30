@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008, 2012, 2015 - Stefan Kueng
+// Copyright (C) 2007-2008, 2012, 2015, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -55,12 +55,13 @@ public:
      */
     bool Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar);
 
-    UINT m_uMsg;
+    UINT   m_uMsg;
     WPARAM m_wParam;
     LPARAM m_lParam;
+
 private:
-    bool m_bRun;
-    HWND m_hwndToolbar;
-    HWND hHiddenToolbar;
+    bool             m_bRun;
+    HWND             m_hwndToolbar;
+    HWND             hHiddenToolbar;
     LRESULT CALLBACK WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };

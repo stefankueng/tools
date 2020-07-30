@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2008, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,32 +26,31 @@ bool CDeskBand::WriteStringToClipboard(const std::wstring& sClipdata, HWND hOwni
 
     // convert the unicode string to ASCII
     std::string sClipdataA;
-    int len = (int)sClipdata.size();
-    if (len==0)
+    int         len = (int)sClipdata.size();
+    if (len == 0)
         return false;
 
-    int size = len*4;
-    char * narrow = new char[size];
-    int ret = WideCharToMultiByte(CP_ACP, 0, sClipdata.c_str(), len, narrow, size-1, NULL, NULL);
+    int  size   = len * 4;
+    auto narrow = std::make_unique<char[]>(size);
+    int  ret    = WideCharToMultiByte(CP_ACP, 0, sClipdata.c_str(), len, narrow.get(), size - 1, NULL, NULL);
     narrow[ret] = 0;
-    sClipdataA = std::string(narrow);
-    delete [] narrow;
+    sClipdataA  = std::string(narrow.get());
 
     if (OpenClipboard(hOwningWnd))
     {
         EmptyClipboard();
         HGLOBAL hClipboardData;
-        hClipboardData = GlobalAlloc(GMEM_DDESHARE, sClipdataA.size()+1);
+        hClipboardData = GlobalAlloc(GMEM_DDESHARE, sClipdataA.size() + 1);
         if (hClipboardData)
         {
-            char * pchData;
+            char* pchData;
             pchData = (char*)GlobalLock(hClipboardData);
             if (pchData)
             {
-                strcpy_s(pchData, sClipdataA.size()+1, sClipdataA.c_str());
+                strcpy_s(pchData, sClipdataA.size() + 1, sClipdataA.c_str());
                 if (GlobalUnlock(hClipboardData))
                 {
-                    if (SetClipboardData(CF_TEXT,hClipboardData)==NULL)
+                    if (SetClipboardData(CF_TEXT, hClipboardData) == NULL)
                     {
                         CloseClipboard();
                         return false;
@@ -75,17 +74,17 @@ bool CDeskBand::WriteStringToClipboard(const std::wstring& sClipdata, HWND hOwni
             return false;
         }
 
-        hClipboardData = GlobalAlloc(GMEM_DDESHARE, sClipdataA.size()*sizeof(TCHAR)+2);
+        hClipboardData = GlobalAlloc(GMEM_DDESHARE, sClipdataA.size() * sizeof(wchar_t) + 2);
         if (hClipboardData)
         {
-            TCHAR * pchData;
-            pchData = (TCHAR*)GlobalLock(hClipboardData);
+            wchar_t* pchData;
+            pchData = (wchar_t*)GlobalLock(hClipboardData);
             if (pchData)
             {
-                _tcscpy_s(pchData, sClipdata.size()+1, sClipdata.c_str());
+                wcscpy_s(pchData, sClipdata.size() + 1, sClipdata.c_str());
                 if (GlobalUnlock(hClipboardData))
                 {
-                    if (SetClipboardData(CF_UNICODETEXT,hClipboardData)==NULL)
+                    if (SetClipboardData(CF_UNICODETEXT, hClipboardData) == NULL)
                     {
                         CloseClipboard();
                         return false;

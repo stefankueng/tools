@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008, 2012, 2014 - Stefan Kueng
+// Copyright (C) 2007-2008, 2012, 2014, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,7 +23,6 @@
 #include "Commands.h"
 #include <string>
 
-
 #define EDITCMDDLG_MAXBUF 4096
 
 /**
@@ -35,15 +34,17 @@ public:
     CEditCmdDlg(HWND hParent);
     ~CEditCmdDlg(void);
 
-    void                    SetCommand(Command cmd) {m_command = cmd;}
-    Command                 GetCommand() {return m_command;}
-protected:
-    LRESULT CALLBACK        DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    void    SetCommand(Command cmd) { m_command = cmd; }
+    Command GetCommand() { return m_command; }
 
-    void                    SetupControls();
-    bool                    SetupCommand();
-    void                    SetSeparator(bool bSeparator);
+protected:
+    LRESULT CALLBACK DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+    void SetupControls();
+    bool SetupCommand();
+    void SetSeparator(bool bSeparator);
+
 private:
-    HWND                    m_hParent;
-    Command                 m_command;
+    HWND    m_hParent;
+    Command m_command;
 };

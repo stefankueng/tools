@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008 - Stefan Kueng
+// Copyright (C) 2007-2008, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -44,12 +44,12 @@ STDMETHODIMP CClassFactory::QueryInterface(REFIID riid, LPVOID *ppReturn)
 
     else if (IsEqualIID(riid, IID_IClassFactory))
     {
-        *ppReturn = (IClassFactory*)this;
+        *ppReturn = (IClassFactory *)this;
     }
 
     if (*ppReturn)
     {
-        (*(LPUNKNOWN*)ppReturn)->AddRef();
+        (*(LPUNKNOWN *)ppReturn)->AddRef();
         return S_OK;
     }
 
@@ -57,12 +57,14 @@ STDMETHODIMP CClassFactory::QueryInterface(REFIID riid, LPVOID *ppReturn)
     return E_NOINTERFACE;
 }
 
-STDMETHODIMP_(DWORD) CClassFactory::AddRef()
+STDMETHODIMP_(DWORD)
+CClassFactory::AddRef()
 {
     return ++m_ObjRefCount;
 }
 
-STDMETHODIMP_(DWORD) CClassFactory::Release()
+STDMETHODIMP_(DWORD)
+CClassFactory::Release()
 {
     if (--m_ObjRefCount == 0)
     {
@@ -74,11 +76,11 @@ STDMETHODIMP_(DWORD) CClassFactory::Release()
 }
 
 STDMETHODIMP CClassFactory::CreateInstance(LPUNKNOWN pUnknown,
-                                           REFIID riid,
-                                           LPVOID *ppObject)
+                                           REFIID    riid,
+                                           LPVOID *  ppObject)
 {
-    HRESULT  hResult = E_FAIL;
-    LPVOID   pTemp = NULL;
+    HRESULT hResult = E_FAIL;
+    LPVOID  pTemp   = NULL;
 
     *ppObject = NULL;
 

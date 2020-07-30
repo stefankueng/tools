@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010, 2012, 2014, 2017 - Stefan Kueng
+// Copyright (C) 2007-2010, 2012, 2014, 2017, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,14 +26,14 @@
 
 #include <VersionHelpers.h>
 
-#define GetPIDLFolder(pida)  (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
-#define GetPIDLItem(pida, i) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[i+1])
+#define GetPIDLFolder(pida)  (LPCITEMIDLIST)(((LPBYTE)pida) + (pida)->aoffset[0])
+#define GetPIDLItem(pida, i) (LPCITEMIDLIST)(((LPBYTE)pida) + (pida)->aoffset[i + 1])
 
-int         g_shellidlist   = RegisterClipboardFormat(CFSTR_SHELLIDLIST);
-LPCTSTR     g_MenuIDString  = _T("StEx");
+int     g_shellidlist  = RegisterClipboardFormat(CFSTR_SHELLIDLIST);
+LPCTSTR g_MenuIDString = L"StEx";
 
 STDMETHODIMP CDeskBand::Initialize(LPCITEMIDLIST pIDFolder,
-                                   LPDATAOBJECT pDataObj,
+                                   LPDATAOBJECT  pDataObj,
                                    HKEY /* hRegKey */)
 {
     m_ContextItems.clear();
@@ -43,31 +43,31 @@ STDMETHODIMP CDeskBand::Initialize(LPCITEMIDLIST pIDFolder,
     {
         STGMEDIUM medium;
         FORMATETC fmte = {(CLIPFORMAT)g_shellidlist,
-            (DVTARGETDEVICE FAR *)NULL,
-            DVASPECT_CONTENT,
-            -1,
-            TYMED_HGLOBAL};
-        HRESULT hres = pDataObj->GetData(&fmte, &medium);
+                          (DVTARGETDEVICE FAR*)NULL,
+                          DVASPECT_CONTENT,
+                          -1,
+                          TYMED_HGLOBAL};
+        HRESULT   hres = pDataObj->GetData(&fmte, &medium);
 
         if (SUCCEEDED(hres) && medium.hGlobal)
         {
             //Enumerate PIDLs which the user has selected
-            CIDA* cida = (CIDA*)GlobalLock(medium.hGlobal);
-            ItemIDList parent( GetPIDLFolder (cida));
+            CIDA*      cida = (CIDA*)GlobalLock(medium.hGlobal);
+            ItemIDList parent(GetPIDLFolder(cida));
 
             int count = cida->cidl;
             for (int i = 0; i < count; ++i)
             {
-                ItemIDList child (GetPIDLItem (cida, i), &parent);
-                tstring str = child.toString();
+                ItemIDList child(GetPIDLItem(cida, i), &parent);
+                tstring    str = child.toString();
                 if (str.empty() == false)
                 {
-                    m_ContextItems[str] = ENABLED_VIEWPATH|ENABLED_FOLDERSELECTED|ENABLED_FILESELECTED;
+                    m_ContextItems[str] = ENABLED_VIEWPATH | ENABLED_FOLDERSELECTED | ENABLED_FILESELECTED;
                 }
             }
             GlobalUnlock(medium.hGlobal);
 
-            ReleaseStgMedium ( &medium );
+            ReleaseStgMedium(&medium);
             if (medium.pUnkForRelease)
             {
                 IUnknown* relInterface = (IUnknown*)medium.pUnkForRelease;
@@ -87,58 +87,57 @@ STDMETHODIMP CDeskBand::Initialize(LPCITEMIDLIST pIDFolder,
 }
 
 STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
-                                         UINT indexMenu,
-                                         UINT idCmdFirst,
+                                         UINT  indexMenu,
+                                         UINT  idCmdFirst,
                                          UINT /*idCmdLast*/,
                                          UINT uFlags)
 {
-    if ((uFlags & CMF_DEFAULTONLY)!=0)
-        return S_OK;                    //we don't change the default action
+    if ((uFlags & CMF_DEFAULTONLY) != 0)
+        return S_OK; //we don't change the default action
 
-    if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
+    if (((uFlags & 0x000f) != CMF_NORMAL) && (!(uFlags & CMF_EXPLORE)) && (!(uFlags & CMF_VERBSONLY)))
         return S_OK;
 
     if ((m_ContextDirectory.empty()) && (m_ContextItems.empty()))
         return S_OK;
 
-
     if (m_ContextDirectory.empty())
     {
         // folder is empty, but maybe files are selected
         if (m_ContextItems.empty())
-            return S_OK;    // nothing selected - we don't have a menu to show
+            return S_OK; // nothing selected - we don't have a menu to show
         // check whether a selected entry is an UID - those are namespace extensions
         // which we can't handle
         for (std::map<tstring, ULONG>::const_iterator it = m_ContextItems.begin(); it != m_ContextItems.end(); ++it)
         {
-            if (_tcsncmp(it->first.c_str(), _T("::{"), 3)==0)
+            if (wcsncmp(it->first.c_str(), L"::{", 3) == 0)
                 return S_OK;
         }
     }
     else
     {
         // ignore namespace extensions
-        if (_tcsncmp(m_ContextDirectory.c_str(), _T("::{"), 3)==0)
+        if (wcsncmp(m_ContextDirectory.c_str(), L"::{", 3) == 0)
             return S_OK;
     }
 
-    if (DWORD(CRegStdDWORD(_T("Software\\StefansTools\\StExBar\\ContextMenu"), TRUE)) == FALSE)
+    if (DWORD(CRegStdDWORD(L"Software\\StefansTools\\StExBar\\ContextMenu", TRUE)) == FALSE)
         return S_OK;
 
     //check if we already added our menu entry for a folder.
     //we check that by iterating through all menu entries and check if
     //the dwItemData member points to our global ID string. That string is set
     //by our shell extension when the folder menu is inserted.
-    TCHAR menubuf[MAX_PATH];
-    int count = GetMenuItemCount(hMenu);
-    for (int i=0; i<count; ++i)
+    wchar_t menubuf[MAX_PATH];
+    int     count = GetMenuItemCount(hMenu);
+    for (int i = 0; i < count; ++i)
     {
         MENUITEMINFO miif;
         SecureZeroMemory(&miif, sizeof(MENUITEMINFO));
-        miif.cbSize = sizeof(MENUITEMINFO);
-        miif.fMask = MIIM_DATA;
+        miif.cbSize     = sizeof(MENUITEMINFO);
+        miif.fMask      = MIIM_DATA;
         miif.dwTypeData = menubuf;
-        miif.cch = _countof(menubuf);
+        miif.cch        = _countof(menubuf);
         GetMenuItemInfo(hMenu, i, TRUE, &miif);
         if (miif.dwItemData == (ULONG_PTR)g_MenuIDString)
             return S_OK;
@@ -147,9 +146,8 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
     UINT idCmd = idCmdFirst;
 
     //create the sub menu
-    HMENU subMenu = CreateMenu();
-    int indexSubMenu = 0;
-
+    HMENU subMenu      = CreateMenu();
+    int   indexSubMenu = 0;
 
     m_commands.LoadFromFile();
 
@@ -158,16 +156,16 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
     {
         MENUITEMINFO menuiteminfo = {0};
 
-        Command cmd = m_commands.GetCommand(j);
+        Command cmd        = m_commands.GetCommand(j);
         m_hotkeys[cmd.key] = j;
-        if ((cmd.commandline.compare(INTERNALCOMMANDHIDDEN)==0)&&(cmd.name.compare(_T("Options")) == 0))
+        if ((cmd.commandline.compare(INTERNALCOMMANDHIDDEN) == 0) && (cmd.name.compare(L"Options") == 0))
         {
-            cmd.commandline = INTERNALCOMMAND;  // make sure the options button is never hidden.
+            cmd.commandline = INTERNALCOMMAND; // make sure the options button is never hidden.
             m_commands.SetCommand(j, cmd);
         }
-        if ((cmd.name.compare(_T("StexBar Internal Edit Box")) == 0)||
-            (cmd.commandline.compare(INTERNALCOMMANDHIDDEN) == 0)||
-            (cmd.name.compare(_T("New Folder")) == 0))
+        if ((cmd.name.compare(L"StexBar Internal Edit Box") == 0) ||
+            (cmd.commandline.compare(INTERNALCOMMANDHIDDEN) == 0) ||
+            (cmd.name.compare(L"New Folder") == 0))
         {
             continue;
         }
@@ -189,16 +187,16 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
             m_tooltips[j] = cmd.name.c_str();
 
         myIDMap[idCmd - idCmdFirst] = j;
-        myIDMap[idCmd] = j;
+        myIDMap[idCmd]              = j;
 
         menuiteminfo.cbSize = sizeof(menuiteminfo);
-        menuiteminfo.fMask = cmd.separator ? MIIM_FTYPE : MIIM_FTYPE | MIIM_ID | MIIM_BITMAP | MIIM_STRING | MIIM_STATE;
-        menuiteminfo.fType = cmd.separator ? MFT_SEPARATOR : MFT_STRING;
+        menuiteminfo.fMask  = cmd.separator ? MIIM_FTYPE : MIIM_FTYPE | MIIM_ID | MIIM_BITMAP | MIIM_STRING | MIIM_STATE;
+        menuiteminfo.fType  = cmd.separator ? MFT_SEPARATOR : MFT_STRING;
         menuiteminfo.fState = bEnabled ? MFS_ENABLED : MFS_DISABLED;
-        TCHAR menutextbuf[100];
-        _tcscpy_s(menutextbuf, _countof(menutextbuf), m_commands.GetCommandPtr(j)->name.c_str());
+        wchar_t menutextbuf[100];
+        wcscpy_s(menutextbuf, _countof(menutextbuf), m_commands.GetCommandPtr(j)->name.c_str());
         menuiteminfo.dwTypeData = menutextbuf;
-        menuiteminfo.wID = idCmd++;
+        menuiteminfo.wID        = idCmd++;
         InsertMenuItem(subMenu, indexSubMenu++, TRUE, &menuiteminfo);
         index++;
     }
@@ -208,19 +206,18 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
     //see http://support.microsoft.com/default.aspx?scid=kb;en-us;214477 for details of that.
     MENUITEMINFO menuiteminfo = {0};
     SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
-    menuiteminfo.cbSize = sizeof(menuiteminfo);
-    menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING;
-    menuiteminfo.fType = MFT_STRING;
-    menuiteminfo.dwTypeData = _T("StEx");
+    menuiteminfo.cbSize     = sizeof(menuiteminfo);
+    menuiteminfo.fMask      = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING;
+    menuiteminfo.fType      = MFT_STRING;
+    menuiteminfo.dwTypeData = L"StEx";
 
     menuiteminfo.hSubMenu = subMenu;
-    menuiteminfo.wID = idCmd++;
+    menuiteminfo.wID      = idCmd++;
     InsertMenuItem(hMenu, indexMenu++, TRUE, &menuiteminfo);
 
     //return number of menu items added
     return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(idCmd - idCmdFirst)));
 }
-
 
 // This is called when you invoke a command on the menu:
 STDMETHODIMP CDeskBand::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
@@ -268,27 +265,26 @@ STDMETHODIMP CDeskBand::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 
 // This is for the status bar and things like that:
 STDMETHODIMP CDeskBand::GetCommandString(UINT_PTR idCmd,
-                                         UINT uFlags,
-                                         UINT FAR * /*reserved*/,
-                                         LPSTR pszName,
-                                         UINT cchMax)
+                                         UINT     uFlags,
+                                         UINT     FAR* /*reserved*/,
+                                         LPSTR    pszName,
+                                         UINT     cchMax)
 {
     HRESULT hr = E_INVALIDARG;
     //do we know the id?
     std::map<UINT_PTR, UINT_PTR>::const_iterator id_it = myIDMap.lower_bound(idCmd);
     if (id_it == myIDMap.end() || id_it->first != idCmd)
     {
-        return hr;      //no, we don't
+        return hr; //no, we don't
     }
 
     if (m_tooltips.find((int)id_it->first) == m_tooltips.end())
         return hr;
 
-
-    const TCHAR * desc = m_tooltips[(int)id_it->first].c_str();
-    switch(uFlags)
+    const wchar_t* desc = m_tooltips[(int)id_it->first].c_str();
+    switch (uFlags)
     {
-    case GCS_HELPTEXTW:
+        case GCS_HELPTEXTW:
         {
             std::wstring help = desc;
             lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax);
@@ -305,7 +301,7 @@ STDMETHODIMP CDeskBand::HandleMenuMsg(UINT uMsg, WPARAM wParam, LPARAM lParam)
     return HandleMenuMsg2(uMsg, wParam, lParam, &res);
 }
 
-STDMETHODIMP CDeskBand::HandleMenuMsg2(UINT uMsg, WPARAM /*wParam*/, LPARAM lParam, LRESULT *pResult)
+STDMETHODIMP CDeskBand::HandleMenuMsg2(UINT uMsg, WPARAM /*wParam*/, LPARAM lParam, LRESULT* pResult)
 {
     LRESULT res;
     if (pResult == NULL)
@@ -314,10 +310,10 @@ STDMETHODIMP CDeskBand::HandleMenuMsg2(UINT uMsg, WPARAM /*wParam*/, LPARAM lPar
 
     switch (uMsg)
     {
-    case WM_MEASUREITEM:
+        case WM_MEASUREITEM:
         {
             MEASUREITEMSTRUCT* lpmis = (MEASUREITEMSTRUCT*)lParam;
-            if (lpmis==NULL)
+            if (lpmis == NULL)
                 break;
             lpmis->itemWidth += 2;
             if (lpmis->itemHeight < 16)
@@ -326,34 +322,34 @@ STDMETHODIMP CDeskBand::HandleMenuMsg2(UINT uMsg, WPARAM /*wParam*/, LPARAM lPar
         }
         break;
 
-    case WM_DRAWITEM:
+        case WM_DRAWITEM:
         {
             DRAWITEMSTRUCT* lpdis = (DRAWITEMSTRUCT*)lParam;
-            if ((lpdis==NULL)||(lpdis->CtlType != ODT_MENU))
-                return S_OK;        //not for a menu
+            if ((lpdis == NULL) || (lpdis->CtlType != ODT_MENU))
+                return S_OK; //not for a menu
 
             int cmdID = (int)myIDMap[lpdis->itemID];
             if (m_commands.GetCount() <= cmdID)
                 return S_OK;
 
-            Command cmd = m_commands.GetCommand(cmdID);
-            HICON hIcon = LoadCommandIcon(cmd);
+            Command cmd   = m_commands.GetCommand(cmdID);
+            HICON   hIcon = LoadCommandIcon(cmd);
 
             if (hIcon == NULL)
                 return S_OK;
 
             DrawIconEx(lpdis->hDC,
-                lpdis->rcItem.left - 16,
-                lpdis->rcItem.top + (lpdis->rcItem.bottom - lpdis->rcItem.top - 16) / 2,
-                hIcon, 16, 16,
-                0, NULL, DI_NORMAL);
+                       lpdis->rcItem.left - 16,
+                       lpdis->rcItem.top + (lpdis->rcItem.bottom - lpdis->rcItem.top - 16) / 2,
+                       hIcon, 16, 16,
+                       0, NULL, DI_NORMAL);
             DestroyIcon(hIcon);
             *pResult = TRUE;
         }
         break;
 
-    default:
-        return S_OK;
+        default:
+            return S_OK;
     }
 
     return S_OK;

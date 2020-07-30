@@ -79,7 +79,7 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                             if (SUCCEEDED(pPersistFolder->GetCurFolder(&folderpidl)))
                             {
                                 // we have the current folder
-                                TCHAR buf[MAX_PATH] = {0};
+                                wchar_t buf[MAX_PATH] = {0};
                                 // find the path of the folder
                                 if (SHGetPathFromIDList(folderpidl, buf))
                                 {
@@ -215,7 +215,7 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                                                                                              SHGDN_INFOLDER | SHGDN_FORPARSING,
                                                                                              &str)))
                                                 {
-                                                    TCHAR dispname[MAX_PATH];
+                                                    wchar_t dispname[MAX_PATH];
                                                     StrRetToBuf(&str, pidl, dispname, _countof(dispname));
 
                                                     std::wstring replaced;

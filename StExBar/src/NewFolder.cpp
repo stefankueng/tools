@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2008, 2010, 2012 - Stefan Kueng
+// Copyright (C) 2007-2008, 2010, 2012, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,17 +29,17 @@ bool CDeskBand::CreateNewFolder()
         return false;
 
     // first step: get a list of all folder items, then create the new folder
-    IServiceProvider * pServiceProvider;
+    IServiceProvider* pServiceProvider;
     if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
     {
-        IShellBrowser * pShellBrowser;
+        IShellBrowser* pShellBrowser;
         if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
         {
-            IShellView * pShellView;
+            IShellView* pShellView;
             if (SUCCEEDED(pShellBrowser->QueryActiveShellView(&pShellView)))
             {
                 // get the context menu for the shell view background
-                IContextMenu * pContextMenu;
+                IContextMenu* pContextMenu;
                 if (SUCCEEDED(pShellView->GetItemObject(SVGIO_BACKGROUND, IID_IContextMenu, (LPVOID*)&pContextMenu)))
                 {
                     HMENU hMenu = ::CreateMenu();
@@ -47,14 +47,14 @@ bool CDeskBand::CreateNewFolder()
                     {
                         if (SUCCEEDED(pContextMenu->QueryContextMenu(hMenu, 0, 0, 1000, CMF_NORMAL)))
                         {
-                            IFolderView * pFolderView;
+                            IFolderView* pFolderView;
                             if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView)))
                             {
                                 int nCount = 0;
                                 if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount)))
                                 {
                                     // de-select all entries
-                                    for (int i=0; i<nCount; ++i)
+                                    for (int i = 0; i < nCount; ++i)
                                     {
                                         pFolderView->SelectItem(i, SVSI_DESELECT);
                                         LPITEMIDLIST pidl;
@@ -62,14 +62,14 @@ bool CDeskBand::CreateNewFolder()
                                         m_newfolderPidls.push_back(pidl);
                                     }
                                     m_newfolderTimeoutCounter = 20;
-                                    IPersistFolder2 * pPersistFolder;
+                                    IPersistFolder2* pPersistFolder;
                                     if (SUCCEEDED(pFolderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&pPersistFolder)))
                                     {
                                         LPITEMIDLIST folderpidl;
                                         if (SUCCEEDED(pPersistFolder->GetCurFolder(&folderpidl)))
                                         {
                                             // we have the current folder
-                                            TCHAR buf[MAX_PATH] = {0};
+                                            wchar_t buf[MAX_PATH] = {0};
                                             // find the path of the folder
                                             if (SHGetPathFromIDList(folderpidl, buf))
                                             {
@@ -78,12 +78,12 @@ bool CDeskBand::CreateNewFolder()
                                                 if (buf[0])
                                                 {
                                                     CMINVOKECOMMANDINFOEX cici = {0};
-                                                    cici.cbSize = sizeof(CMINVOKECOMMANDINFOEX);
-                                                    cici.lpVerb = CMDSTR_NEWFOLDERA;
-                                                    cici.lpVerbW = CMDSTR_NEWFOLDER;
-                                                    cici.nShow = SW_SHOWNORMAL;
-                                                    cici.hwnd = m_hwndParent;
-                                                    cici.fMask = CMIC_MASK_UNICODE | CMIC_MASK_FLAG_NO_UI;
+                                                    cici.cbSize                = sizeof(CMINVOKECOMMANDINFOEX);
+                                                    cici.lpVerb                = CMDSTR_NEWFOLDERA;
+                                                    cici.lpVerbW               = CMDSTR_NEWFOLDER;
+                                                    cici.nShow                 = SW_SHOWNORMAL;
+                                                    cici.hwnd                  = m_hwndParent;
+                                                    cici.fMask                 = CMIC_MASK_UNICODE | CMIC_MASK_FLAG_NO_UI;
                                                     // create the new folder
                                                     if (SUCCEEDED(pContextMenu->InvokeCommand((CMINVOKECOMMANDINFO*)&cici)))
                                                     {
@@ -96,9 +96,9 @@ bool CDeskBand::CreateNewFolder()
                                                         // Note: for network drives, even waiting 10 seconds in the following loop
                                                         // didn't help - seems the window message loop has first to run
                                                         // before such a view really refreshes.
-                                                        int nCount2 = 0;
+                                                        int nCount2        = 0;
                                                         int timeoutCounter = 100;
-                                                        while (((nCount2 == 0)||(nCount2 == nCount)) && (timeoutCounter-- > 0))
+                                                        while (((nCount2 == 0) || (nCount2 == nCount)) && (timeoutCounter-- > 0))
                                                         {
                                                             pFolderView->Release();
                                                             pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView);
@@ -107,17 +107,17 @@ bool CDeskBand::CreateNewFolder()
                                                         }
                                                         // but we also need the IShellFolder interface because
                                                         // we need its CompareIDs() method
-                                                        IShellFolder * pShellFolder;
+                                                        IShellFolder* pShellFolder;
                                                         if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
                                                         {
                                                             // now compare the items of the refreshed view with the items
                                                             // of the view before the new folder was created.
                                                             // The difference should be the new folder...
-                                                            nCount2 = 0;
+                                                            nCount2       = 0;
                                                             bool bEditing = false;
                                                             if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount2)))
                                                             {
-                                                                for (int i=0; i<nCount2; ++i)
+                                                                for (int i = 0; i < nCount2; ++i)
                                                                 {
                                                                     LPITEMIDLIST pidl;
                                                                     pFolderView->Item(i, &pidl);
@@ -179,7 +179,6 @@ bool CDeskBand::CreateNewFolder()
         }
         pServiceProvider->Release();
     }
-
 
     return true;
 }

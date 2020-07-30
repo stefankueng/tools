@@ -30,21 +30,21 @@ bool CDeskBand::FindPaths()
     auto oldCurrentDir = m_currentDirectory;
     m_currentDirectory.clear();
     m_selectedItems.clear();
-    m_bFilesSelected = false;
+    m_bFilesSelected  = false;
     m_bFolderSelected = false;
 
     if (m_pSite == NULL)
         return false;
-    IServiceProvider * pServiceProvider;
+    IServiceProvider* pServiceProvider;
     if (SUCCEEDED(m_pSite->QueryInterface(IID_IServiceProvider, (LPVOID*)&pServiceProvider)))
     {
-        IShellBrowser * pShellBrowser;
+        IShellBrowser* pShellBrowser;
         if (SUCCEEDED(pServiceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, (LPVOID*)&pShellBrowser)))
         {
-            IShellView * pShellView;
+            IShellView* pShellView;
             if (SUCCEEDED(pShellBrowser->QueryActiveShellView(&pShellView)))
             {
-                IFolderView * pFolderView;
+                IFolderView* pFolderView;
                 if (SUCCEEDED(pShellView->QueryInterface(IID_IFolderView, (LPVOID*)&pFolderView)))
                 {
                     // hooray! we got the IFolderView interface!
@@ -52,14 +52,14 @@ bool CDeskBand::FindPaths()
 
                     // but we also need the IShellFolder interface because
                     // we need its GetCurFolder() method
-                    IPersistFolder2 * pPersistFolder;
+                    IPersistFolder2* pPersistFolder;
                     if (SUCCEEDED(pFolderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&pPersistFolder)))
                     {
                         LPITEMIDLIST folderpidl;
                         if (SUCCEEDED(pPersistFolder->GetCurFolder(&folderpidl)))
                         {
                             // we have the current folder
-                            TCHAR buf[MAX_PATH] = {0};
+                            wchar_t buf[MAX_PATH] = {0};
                             // find the path of the folder
                             if (SHGetPathFromIDList(folderpidl, buf))
                             {
@@ -68,20 +68,20 @@ bool CDeskBand::FindPaths()
                             // if m_currentDirectory is empty here, that means
                             // the current directory is a virtual path
 
-                            IShellFolder * pShellFolder;
+                            IShellFolder* pShellFolder;
                             if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder)))
                             {
                                 // if there was a new folder created but not found to set into editing mode,
                                 // we try here to do that
                                 if (!m_newfolderPidls.empty())
                                 {
-                                    int nCount2 = 0;
-                                    IShellFolder * pShellFolder2 = nullptr;
+                                    int           nCount2       = 0;
+                                    IShellFolder* pShellFolder2 = nullptr;
                                     if (SUCCEEDED(pPersistFolder->QueryInterface(IID_IShellFolder, (LPVOID*)&pShellFolder2)))
                                     {
                                         if (SUCCEEDED(pFolderView->ItemCount(SVGIO_ALLVIEW, &nCount2)))
                                         {
-                                            for (int i=0; i<nCount2; ++i)
+                                            for (int i = 0; i < nCount2; ++i)
                                             {
                                                 LPITEMIDLIST pidl;
                                                 pFolderView->Item(i, &pidl);
@@ -105,7 +105,7 @@ bool CDeskBand::FindPaths()
                                                 CoTaskMemFree(pidl);
                                             }
                                         }
-                                        if ((nCount2)||(m_newfolderTimeoutCounter-- <= 0))
+                                        if ((nCount2) || (m_newfolderTimeoutCounter-- <= 0))
                                         {
                                             m_newfolderTimeoutCounter = 0;
                                             for (std::vector<LPITEMIDLIST>::iterator it = m_newfolderPidls.begin(); it != m_newfolderPidls.end(); ++it)
@@ -116,15 +116,14 @@ bool CDeskBand::FindPaths()
                                         }
                                         pShellFolder2->Release();
                                     }
-
                                 }
                                 // find all selected items
-                                IEnumIDList * pEnum;
+                                IEnumIDList* pEnum;
                                 if (SUCCEEDED(pFolderView->Items(SVGIO_SELECTION, IID_IEnumIDList, (LPVOID*)&pEnum)))
                                 {
                                     LPITEMIDLIST pidl;
-                                    ULONG fetched = 0;
-                                    ULONG attribs = 0;
+                                    ULONG        fetched = 0;
+                                    ULONG        attribs = 0;
                                     do
                                     {
                                         pidl = NULL;
@@ -133,7 +132,7 @@ bool CDeskBand::FindPaths()
                                             if (fetched)
                                             {
                                                 // the pidl we get here is relative!
-                                                attribs = SFGAO_FILESYSTEM|SFGAO_FOLDER;
+                                                attribs = SFGAO_FILESYSTEM | SFGAO_FOLDER;
                                                 if (SUCCEEDED(pShellFolder->GetAttributesOf(1, (LPCITEMIDLIST*)&pidl, &attribs)))
                                                 {
                                                     if (attribs & SFGAO_FILESYSTEM)
@@ -148,7 +147,7 @@ bool CDeskBand::FindPaths()
                                                                 if (m_currentDirectory.empty())
                                                                 {
                                                                     // remove the last part of the path of the selected item
-                                                                    WCHAR * pSlash = _tcsrchr(buf, '\\');
+                                                                    WCHAR* pSlash = wcsrchr(buf, '\\');
                                                                     if (pSlash)
                                                                         *pSlash = 0;
                                                                     m_currentDirectory = std::wstring(buf);
@@ -165,7 +164,7 @@ bool CDeskBand::FindPaths()
                                             }
                                             CoTaskMemFree(pidl);
                                         }
-                                    } while(fetched);
+                                    } while (fetched);
                                     pEnum->Release();
                                 }
                                 pShellFolder->Release();
@@ -188,12 +187,12 @@ bool CDeskBand::FindPaths()
 std::wstring CDeskBand::GetFileNames(const std::map<std::wstring, ULONG>& items, std::wstring separator, bool quotespaces, bool includefiles, bool includefolders)
 {
     std::wstring sRet;
-    WCHAR buf[MAX_PATH+2];
+    WCHAR        buf[MAX_PATH + 2];
     if (!items.empty())
     {
         for (std::map<std::wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
         {
-            if (((it->second & SFGAO_FOLDER)&&(includefolders))||(((it->second & SFGAO_FOLDER)==0)&&(includefiles)))
+            if (((it->second & SFGAO_FOLDER) && (includefolders)) || (((it->second & SFGAO_FOLDER) == 0) && (includefiles)))
             {
                 size_t pos = it->first.find_last_of('\\');
                 if (pos != std::string::npos)
@@ -202,12 +201,12 @@ std::wstring CDeskBand::GetFileNames(const std::map<std::wstring, ULONG>& items,
                         sRet += separator;
                     if (quotespaces)
                     {
-                        _tcscpy_s(buf, _countof(buf), it->first.substr(pos+1).c_str());
+                        wcscpy_s(buf, _countof(buf), it->first.substr(pos + 1).c_str());
                         PathQuoteSpaces(buf);
                         sRet += buf;
                     }
                     else
-                        sRet += it->first.substr(pos+1);
+                        sRet += it->first.substr(pos + 1);
                 }
             }
         }
@@ -217,13 +216,13 @@ std::wstring CDeskBand::GetFileNames(const std::map<std::wstring, ULONG>& items,
 
 std::wstring CDeskBand::GetFilePaths(const std::map<std::wstring, ULONG>& items, std::wstring separator, bool quotespaces, bool includefiles, bool includefolders, bool useunc)
 {
-    WCHAR buf[MAX_PATH+2];
+    WCHAR        buf[MAX_PATH + 2];
     std::wstring sRet;
     if (!items.empty())
     {
         for (std::map<std::wstring, ULONG>::const_iterator it = items.begin(); it != items.end(); ++it)
         {
-            if (((it->second & SFGAO_FOLDER)&&(includefolders))||(((it->second & SFGAO_FOLDER)==0)&&(includefiles)))
+            if (((it->second & SFGAO_FOLDER) && (includefolders)) || (((it->second & SFGAO_FOLDER) == 0) && (includefiles)))
             {
                 if (!sRet.empty())
                     sRet += separator;
@@ -234,7 +233,7 @@ std::wstring CDeskBand::GetFilePaths(const std::map<std::wstring, ULONG>& items,
                 }
                 if (quotespaces)
                 {
-                    _tcscpy_s(buf, _countof(buf), sPath.c_str());
+                    wcscpy_s(buf, _countof(buf), sPath.c_str());
                     PathQuoteSpaces(buf);
                     sRet += buf;
                 }
@@ -248,26 +247,25 @@ std::wstring CDeskBand::GetFilePaths(const std::map<std::wstring, ULONG>& items,
 
 std::wstring CDeskBand::ConvertToUNC(std::wstring sPath)
 {
-    WCHAR temp;
-    DWORD bufsize = 0;
-    std::wstring sRet = sPath;
+    WCHAR        temp;
+    DWORD        bufsize = 0;
+    std::wstring sRet    = sPath;
     //Call WNetGetUniversalName using UNIVERSAL_NAME_INFO_LEVEL option
     if (WNetGetUniversalName(sPath.c_str(),
-        UNIVERSAL_NAME_INFO_LEVEL,
-        (LPVOID) &temp,
-        &bufsize) == ERROR_MORE_DATA)
+                             UNIVERSAL_NAME_INFO_LEVEL,
+                             (LPVOID)&temp,
+                             &bufsize) == ERROR_MORE_DATA)
     {
         // now we have the size required to hold the UNC path
-        WCHAR * buf = new WCHAR[bufsize+1];
-        UNIVERSAL_NAME_INFO * puni = (UNIVERSAL_NAME_INFO *)buf;
+        auto                 buf  = std::make_unique<WCHAR[]>(bufsize + 1);
+        UNIVERSAL_NAME_INFO* puni = (UNIVERSAL_NAME_INFO*)buf.get();
         if (WNetGetUniversalName(sPath.c_str(),
                                  UNIVERSAL_NAME_INFO_LEVEL,
-                                 (LPVOID) puni,
+                                 (LPVOID)puni,
                                  &bufsize) == NO_ERROR)
         {
             sRet = std::wstring(puni->lpUniversalName);
         }
-        delete [] buf;
     }
 
     return sRet;

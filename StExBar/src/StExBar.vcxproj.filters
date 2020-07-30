@@ -293,9 +293,6 @@
     <ClInclude Include="..\..\sktoolslib\PathUtils.h">
       <Filter>sktoolslib</Filter>
     </ClInclude>
-    <ClInclude Include="NameDlg.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\sktoolslib\DPIAware.h">
       <Filter>sktoolslib</Filter>
     </ClInclude>
@@ -304,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="..\..\sktoolslib\InfoRtfDialog.h">
       <Filter>sktoolslib</Filter>
+    </ClInclude>
+    <ClInclude Include="NameDlg.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

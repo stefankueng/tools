@@ -27,9 +27,7 @@
 #include "NumberReplacer.h"
 #include <string>
 
-
 #define IDT_RENAME 101
-
 
 CRenameDlg::CRenameDlg(HWND hParent)
     : m_hParent(hParent)
@@ -44,7 +42,7 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 {
     switch (uMsg)
     {
-    case WM_INITDIALOG:
+        case WM_INITDIALOG:
         {
             InitDialog(hwndDlg, IDI_RENAME);
 
@@ -60,29 +58,29 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
             m_resizer.AddControl(hwndDlg, IDCANCEL, RESIZER_BOTTOMRIGHT);
 
             // set up the list control
-            DWORD exStyle = LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER;
-            HWND hListCtrl = GetDlgItem(hwndDlg, IDC_FILELIST);
+            DWORD exStyle   = LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER;
+            HWND  hListCtrl = GetDlgItem(hwndDlg, IDC_FILELIST);
             if (hListCtrl)
             {
                 ListView_DeleteAllItems(hListCtrl);
                 ListView_SetExtendedListViewStyle(hListCtrl, exStyle);
                 LVCOLUMN lvc = {0};
-                lvc.mask = LVCF_TEXT;
-                lvc.fmt = LVCFMT_LEFT;
-                lvc.cx = -1;
-                lvc.pszText = _T("filename");
+                lvc.mask     = LVCF_TEXT;
+                lvc.fmt      = LVCFMT_LEFT;
+                lvc.cx       = -1;
+                lvc.pszText  = L"filename";
                 ListView_InsertColumn(hListCtrl, 0, &lvc);
-                lvc.pszText = _T("renamed");
+                lvc.pszText = L"renamed";
                 ListView_InsertColumn(hListCtrl, 1, &lvc);
             }
             FillRenamedList();
-            CRegStdDWORD dlgWidth = CRegStdDWORD(_T("Software\\StExBar\\renameWidth"), 0);
-            CRegStdDWORD dlgHeight = CRegStdDWORD(_T("Software\\StExBar\\renameHeight"), 0);
+            CRegStdDWORD dlgWidth  = CRegStdDWORD(L"Software\\StExBar\\renameWidth", 0);
+            CRegStdDWORD dlgHeight = CRegStdDWORD(L"Software\\StExBar\\renameHeight", 0);
 
             if (DWORD(dlgWidth) && DWORD(dlgHeight))
             {
                 // change the width and height of the dialog to the saved size
-                ::SetWindowPos(*this, NULL, 0, 0, DWORD(dlgWidth), DWORD(dlgHeight), SWP_NOMOVE|SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOZORDER);
+                ::SetWindowPos(*this, NULL, 0, 0, DWORD(dlgWidth), DWORD(dlgHeight), SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
                 // and center the dialog again on the parent window (usually the explorer)
                 HWND hwndOwner = ::GetParent(hwndDlg);
@@ -103,15 +101,15 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
                 SetWindowPos(hwndDlg, HWND_TOP, rcOwner.left + (rc.right / 2), rcOwner.top + (rc.bottom / 2), 0, 0, SWP_NOSIZE);
             }
 
-            m_AutoCompleteRen1.Load(_T("Software\\StExBar\\History"), _T("Ren1"));
+            m_AutoCompleteRen1.Load(L"Software\\StExBar\\History", L"Ren1");
             m_AutoCompleteRen1.Init(GetDlgItem(hwndDlg, IDC_MATCHSTRING));
-            m_AutoCompleteRen2.Load(_T("Software\\StExBar\\History"), _T("Ren2"));
+            m_AutoCompleteRen2.Load(L"Software\\StExBar\\History", L"Ren2");
             m_AutoCompleteRen2.Init(GetDlgItem(hwndDlg, IDC_REPLACESTRING));
 
-            CRegStdString ren1Reg = CRegStdString(_T("Software\\StExBar\\ren1Text"));
-            CRegStdString ren2Reg = CRegStdString(_T("Software\\StExBar\\ren2Text"));
-            std::wstring ren1Text = ren1Reg;
-            std::wstring ren2Text = ren2Reg;
+            CRegStdString ren1Reg  = CRegStdString(L"Software\\StExBar\\ren1Text");
+            CRegStdString ren2Reg  = CRegStdString(L"Software\\StExBar\\ren2Text");
+            std::wstring  ren1Text = ren1Reg;
+            std::wstring  ren2Text = ren2Reg;
             if (ren1Text.size())
                 SetDlgItemText(*this, IDC_MATCHSTRING, ren1Text.c_str());
             if (ren2Text.size())
@@ -120,87 +118,87 @@ LRESULT CRenameDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
             SendDlgItemMessage(hwndDlg, IDC_CASEINSENSITIVE, BM_SETCHECK, BST_CHECKED, 0);
             ::SetFocus(::GetDlgItem(hwndDlg, IDC_MATCHSTRING));
         }
-        return (INT_PTR)TRUE;
-    case WM_SIZE:
-        m_resizer.DoResize(LOWORD(lParam), HIWORD(lParam));
-        return (INT_PTR)TRUE;
-    case WM_GETMINMAXINFO:
+            return (INT_PTR)TRUE;
+        case WM_SIZE:
+            m_resizer.DoResize(LOWORD(lParam), HIWORD(lParam));
+            return (INT_PTR)TRUE;
+        case WM_GETMINMAXINFO:
         {
-            MINMAXINFO * mmi = (MINMAXINFO*)lParam;
+            MINMAXINFO* mmi       = (MINMAXINFO*)lParam;
             mmi->ptMinTrackSize.x = m_resizer.GetDlgRect()->right;
             mmi->ptMinTrackSize.y = m_resizer.GetDlgRect()->bottom;
             return (INT_PTR)0;
         }
         break;
-    case WM_COMMAND:
-        switch (LOWORD(wParam))
-        {
-        case IDOK:
+        case WM_COMMAND:
+            switch (LOWORD(wParam))
             {
-                TCHAR buf[MAX_PATH];
-                HWND hMatchstring = GetDlgItem(*this, IDC_MATCHSTRING);
-                if (hMatchstring == NULL)
-                    return (INT_PTR)TRUE;
-                GetWindowText(hMatchstring, buf, _countof(buf));
-                m_sMatch = buf;
-                HWND hReplaceString = GetDlgItem(*this, IDC_REPLACESTRING);
-                if (hReplaceString == NULL)
-                    return (INT_PTR)TRUE;
-                GetWindowText(hReplaceString, buf, _countof(buf));
-                m_sReplace = buf;
-                CRegStdString ren1Reg(_T("Software\\StExBar\\ren1Text"));
-                CRegStdString ren2Reg(_T("Software\\StExBar\\ren2Text"));
-                ren1Reg = m_sMatch;
-                ren2Reg = m_sReplace;
-                m_AutoCompleteRen1.AddEntry(m_sMatch.c_str());
-                m_AutoCompleteRen2.AddEntry(m_sReplace.c_str());
+                case IDOK:
+                {
+                    wchar_t buf[MAX_PATH];
+                    HWND    hMatchstring = GetDlgItem(*this, IDC_MATCHSTRING);
+                    if (hMatchstring == NULL)
+                        return (INT_PTR)TRUE;
+                    GetWindowText(hMatchstring, buf, _countof(buf));
+                    m_sMatch            = buf;
+                    HWND hReplaceString = GetDlgItem(*this, IDC_REPLACESTRING);
+                    if (hReplaceString == NULL)
+                        return (INT_PTR)TRUE;
+                    GetWindowText(hReplaceString, buf, _countof(buf));
+                    m_sReplace = buf;
+                    CRegStdString ren1Reg(L"Software\\StExBar\\ren1Text");
+                    CRegStdString ren2Reg(L"Software\\StExBar\\ren2Text");
+                    ren1Reg = m_sMatch;
+                    ren2Reg = m_sReplace;
+                    m_AutoCompleteRen1.AddEntry(m_sMatch.c_str());
+                    m_AutoCompleteRen2.AddEntry(m_sReplace.c_str());
 
-                m_fl = std::regex_constants::ECMAScript;
-                if (SendDlgItemMessage(*this, IDC_CASEINSENSITIVE, BM_GETCHECK, 0, 0) == BST_CHECKED)
-                    m_fl |= std::regex_constants::icase;
-            }
-            // fall through
-        case IDCANCEL:
-            {
-                CRegStdDWORD dlgWidth(_T("Software\\StExBar\\renameWidth"), 0);
-                CRegStdDWORD dlgHeight(_T("Software\\StExBar\\renameHeight"), 0);
-                RECT rc;
-                ::GetWindowRect(*this, &rc);
-                dlgWidth = rc.right-rc.left;
-                dlgHeight = rc.bottom-rc.top;
-                m_AutoCompleteRen1.Save();
-                m_AutoCompleteRen2.Save();
+                    m_fl = std::regex_constants::ECMAScript;
+                    if (SendDlgItemMessage(*this, IDC_CASEINSENSITIVE, BM_GETCHECK, 0, 0) == BST_CHECKED)
+                        m_fl |= std::regex_constants::icase;
+                }
+                    // fall through
+                case IDCANCEL:
+                {
+                    CRegStdDWORD dlgWidth(L"Software\\StExBar\\renameWidth", 0);
+                    CRegStdDWORD dlgHeight(L"Software\\StExBar\\renameHeight", 0);
+                    RECT         rc;
+                    ::GetWindowRect(*this, &rc);
+                    dlgWidth  = rc.right - rc.left;
+                    dlgHeight = rc.bottom - rc.top;
+                    m_AutoCompleteRen1.Save();
+                    m_AutoCompleteRen2.Save();
 
-                EndDialog(*this, LOWORD(wParam));
+                    EndDialog(*this, LOWORD(wParam));
+                }
+                    return (INT_PTR)TRUE;
+                case IDC_MATCHSTRING:
+                case IDC_REPLACESTRING:
+                    if (HIWORD(wParam) == EN_CHANGE)
+                    {
+                        ::SetTimer(*this, IDT_RENAME, 500, NULL);
+                    }
+                    return (INT_PTR)TRUE;
+                case IDHELP:
+                {
+                    CInfoRtfDialog dlg;
+                    dlg.DoModal(hResource, *this, "StExBar Regex help", IDR_REGEXHELP, L"RTF", IDI_OPTIONS, 300, 400);
+                }
+                    return (INT_PTR)TRUE;
             }
-            return (INT_PTR)TRUE;
-        case IDC_MATCHSTRING:
-        case IDC_REPLACESTRING:
-            if (HIWORD(wParam)==EN_CHANGE)
-            {
-                ::SetTimer(*this, IDT_RENAME, 500, NULL);
-            }
-            return (INT_PTR)TRUE;
-        case IDHELP:
-            {
-                CInfoRtfDialog dlg;
-                dlg.DoModal(hResource, *this, "StExBar Regex help", IDR_REGEXHELP, L"RTF", IDI_OPTIONS, 300, 400);
-            }
-            return (INT_PTR)TRUE;
-        }
-        break;
-    case WM_TIMER:
+            break;
+        case WM_TIMER:
         {
             ::KillTimer(*this, IDT_RENAME);
             FillRenamedList();
         }
         break;
-    case WM_NOTIFY:
+        case WM_NOTIFY:
         {
             LPNMHDR pnmhdr = (LPNMHDR)lParam;
             switch (pnmhdr->code)
             {
-            case NM_CUSTOMDRAW:
+                case NM_CUSTOMDRAW:
                 {
                     if (pnmhdr->idFrom == IDC_FILELIST)
                     {
@@ -251,7 +249,7 @@ bool CRenameDlg::PreTranslateMessage(MSG* pMsg)
     {
         switch (pMsg->wParam)
         {
-        case VK_DELETE:
+            case VK_DELETE:
             {
                 m_AutoCompleteRen1.RemoveSelected();
                 m_AutoCompleteRen2.RemoveSelected();
@@ -264,9 +262,9 @@ bool CRenameDlg::PreTranslateMessage(MSG* pMsg)
 
 void CRenameDlg::FillRenamedList()
 {
-    HWND hListCtrl = GetDlgItem(*this, IDC_FILELIST);
-    TCHAR buf[MAX_PATH];
-    HWND hMatchstring = GetDlgItem(*this, IDC_MATCHSTRING);
+    HWND    hListCtrl = GetDlgItem(*this, IDC_FILELIST);
+    wchar_t buf[MAX_PATH];
+    HWND    hMatchstring = GetDlgItem(*this, IDC_MATCHSTRING);
     if (hMatchstring == NULL)
         return;
     GetWindowText(hMatchstring, buf, _countof(buf));
@@ -292,29 +290,29 @@ void CRenameDlg::FillRenamedList()
         const std::wregex regCheck(m_sMatch, m_fl);
 
         NumberReplaceHandler handler(m_sReplace);
-        std::wstring replaced;
+        std::wstring         replaced;
         for (auto it = m_filelist.begin(); it != m_filelist.end(); ++it)
         {
-            replaced = std::regex_replace(*it, regCheck, m_sReplace);
-            replaced = handler.ReplaceCounters(replaced);
+            replaced        = std::regex_replace(*it, regCheck, m_sReplace);
+            replaced        = handler.ReplaceCounters(replaced);
             renamedmap[*it] = replaced;
         }
         // now fill in the list of files which got renamed
-        int iItem = 0;
-        TCHAR textbuf[MAX_PATH] = {0};
+        int     iItem             = 0;
+        wchar_t textbuf[MAX_PATH] = {0};
         for (std::map<std::wstring, std::wstring, __lesscasecmp>::iterator it = renamedmap.begin(); it != renamedmap.end(); ++it)
         {
             LVITEM lvi = {0};
-            lvi.mask = LVIF_TEXT|LVIF_PARAM;
-            _tcscpy_s(textbuf, _countof(textbuf), it->first.c_str());
+            lvi.mask   = LVIF_TEXT | LVIF_PARAM;
+            wcscpy_s(textbuf, _countof(textbuf), it->first.c_str());
             lvi.pszText = textbuf;
-            lvi.iItem = iItem;
+            lvi.iItem   = iItem;
             // we use the lParam to store the result of the comparison of the original and renamed string
             // later in the NM_CUSTOMDRAW handler, we use that information to draw items which stay the
             // same in the rename grayed out.
             lvi.lParam = it->first.compare(it->second);
             ListView_InsertItem(hListCtrl, &lvi);
-            _tcscpy_s(textbuf, _countof(textbuf), it->second.c_str());
+            wcscpy_s(textbuf, _countof(textbuf), it->second.c_str());
             ListView_SetItemText(hListCtrl, iItem, 1, textbuf);
             iItem++;
         }
@@ -323,15 +321,15 @@ void CRenameDlg::FillRenamedList()
     }
     catch (const std::exception&)
     {
-        int iItem = 0;
-        TCHAR textbuf[MAX_PATH] = {0};
+        int     iItem             = 0;
+        wchar_t textbuf[MAX_PATH] = {0};
         for (auto it = m_filelist.begin(); it != m_filelist.end(); ++it)
         {
             LVITEM lvi = {0};
-            lvi.mask = LVIF_TEXT|LVIF_PARAM;
-            _tcscpy_s(textbuf, _countof(textbuf), it->c_str());
+            lvi.mask   = LVIF_TEXT | LVIF_PARAM;
+            wcscpy_s(textbuf, _countof(textbuf), it->c_str());
             lvi.pszText = textbuf;
-            lvi.iItem = iItem;
+            lvi.iItem   = iItem;
             // we use the lParam to store the result of the comparison of the original and renamed string
             // later in the NM_CUSTOMDRAW handler, we use that information to draw items which stay the
             // same in the rename grayed out.
@@ -346,7 +344,7 @@ void CRenameDlg::FillRenamedList()
     SendMessage(hListCtrl, WM_SETREDRAW, TRUE, 0);
 }
 
-void CRenameDlg::SetFileList( const std::set<std::wstring>& list )
+void CRenameDlg::SetFileList(const std::set<std::wstring>& list)
 {
     m_filelist.clear();
     for (auto it = list.cbegin(); it != list.cend(); ++it)

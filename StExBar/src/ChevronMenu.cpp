@@ -28,19 +28,19 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
 {
     m_hwndToolbar = hToolbar;
     // create our popup window
-    RegisterWindow(CS_HREDRAW|CS_VREDRAW, NULL, NULL, NULL, NULL, _T("ChevronMenuToolBar"), NULL);
-    CreateEx(0, WS_POPUP|WS_CHILD|WS_CLIPCHILDREN, lpRebarChevron->hdr.hwndFrom, NULL);
+    RegisterWindow(CS_HREDRAW | CS_VREDRAW, NULL, NULL, NULL, NULL, L"ChevronMenuToolBar", NULL);
+    CreateEx(0, WS_POPUP | WS_CHILD | WS_CLIPCHILDREN, lpRebarChevron->hdr.hwndFrom, NULL);
     ::SetParent(*this, NULL);
     // Retrieve the current bounding rectangle for the selected band
     RECT rebarrect;
     ::SendMessage(lpRebarChevron->hdr.hwndFrom, RB_GETRECT, lpRebarChevron->uBand, (LPARAM)&rebarrect);
     ::MapWindowPoints(lpRebarChevron->hdr.hwndFrom, NULL, (LPPOINT)&rebarrect, 2);
-    rebarrect.right -= (lpRebarChevron->rc.right-lpRebarChevron->rc.left);
+    rebarrect.right -= (lpRebarChevron->rc.right - lpRebarChevron->rc.left);
     // Retrieve the total number of buttons
     int nButtons = (int)::SendMessage(hToolbar, TB_BUTTONCOUNT, 0, 0);
     // check for every button if it's completely visible
     int iFirstHidden = -1;
-    for (int i=0; i<nButtons; ++i)
+    for (int i = 0; i < nButtons; ++i)
     {
         RECT buttonrect;
         ::SendMessage(hToolbar, TB_GETITEMRECT, i, (LPARAM)&buttonrect);
@@ -48,7 +48,7 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
 
         RECT intersect;
         IntersectRect(&intersect, &buttonrect, &rebarrect);
-        if (EqualRect(&intersect, &buttonrect)==FALSE)
+        if (EqualRect(&intersect, &buttonrect) == FALSE)
         {
             // this is the first button which is not completely visible
             // but make sure that it's not a separator
@@ -65,33 +65,33 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
     {
         // create a popup window to hold our toolbar
         // create a vertical toolbar with all the hidden buttons on it
-        hHiddenToolbar = CreateWindowEx(TBSTYLE_EX_MIXEDBUTTONS|TBSTYLE_EX_HIDECLIPPEDBUTTONS|TBSTYLE_EX_DRAWDDARROWS,
-            TOOLBARCLASSNAME,
-            NULL,
-            WS_CHILD|TBSTYLE_TOOLTIPS|TBSTYLE_WRAPABLE|TBSTYLE_LIST|TBSTYLE_TRANSPARENT|TBSTYLE_FLAT|CCS_NODIVIDER|CCS_LEFT|CCS_NORESIZE,
-            0,
-            0,
-            0,
-            0,
-            (*this),
-            NULL,
-            hResource,
-            NULL);
+        hHiddenToolbar = CreateWindowEx(TBSTYLE_EX_MIXEDBUTTONS | TBSTYLE_EX_HIDECLIPPEDBUTTONS | TBSTYLE_EX_DRAWDDARROWS,
+                                        TOOLBARCLASSNAME,
+                                        NULL,
+                                        WS_CHILD | TBSTYLE_TOOLTIPS | TBSTYLE_WRAPABLE | TBSTYLE_LIST | TBSTYLE_TRANSPARENT | TBSTYLE_FLAT | CCS_NODIVIDER | CCS_LEFT | CCS_NORESIZE,
+                                        0,
+                                        0,
+                                        0,
+                                        0,
+                                        (*this),
+                                        NULL,
+                                        hResource,
+                                        NULL);
 
         // Send the TB_BUTTONSTRUCTSIZE message, which is required for
         // backward compatibility.
-        SendMessage(hHiddenToolbar, TB_BUTTONSTRUCTSIZE, (WPARAM) sizeof(TBBUTTON), 0);
+        SendMessage(hHiddenToolbar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
         // Get ImageList from the toolbar
-        HIMAGELIST  hHot = (HIMAGELIST)::SendMessage(hToolbar, TB_GETIMAGELIST, 0, 0);
+        HIMAGELIST hHot = (HIMAGELIST)::SendMessage(hToolbar, TB_GETIMAGELIST, 0, 0);
 
         // Create a duplicate of the image list
-        HIMAGELIST  hImageList = ImageList_Duplicate(hHot);
+        HIMAGELIST hImageList = ImageList_Duplicate(hHot);
 
         // Set the image list for our new toolbar
         ::SendMessage(hHiddenToolbar, TB_SETIMAGELIST, 0, (LPARAM)hImageList);
 
         // add all the invisible buttons to the new toolbar
-        for (int i=iFirstHidden; i<nButtons; ++i)
+        for (int i = iFirstHidden; i < nButtons; ++i)
         {
             TBBUTTON tb = {0};
             ::SendMessage(hToolbar, TB_GETBUTTON, i, (LPARAM)&tb);
@@ -110,10 +110,10 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
         chevronxy.y = lpRebarChevron->rc.bottom;
         ::ClientToScreen(lpRebarChevron->hdr.hwndFrom, &chevronxy);
         // make sure that the toolbar does not leave the screen on the right
-        RECT testrect = {chevronxy.x, chevronxy.y, chevronxy.x+tbsize.cx, chevronxy.y+tbsize.cy};
-        HMONITOR hMonitor = MonitorFromRect(&testrect, MONITOR_DEFAULTTONEAREST);
-        MONITORINFO mi = {0};
-        mi.cbSize = sizeof(mi);
+        RECT        testrect = {chevronxy.x, chevronxy.y, chevronxy.x + tbsize.cx, chevronxy.y + tbsize.cy};
+        HMONITOR    hMonitor = MonitorFromRect(&testrect, MONITOR_DEFAULTTONEAREST);
+        MONITORINFO mi       = {0};
+        mi.cbSize            = sizeof(mi);
         GetMonitorInfo(hMonitor, &mi);
         testrect = mi.rcWork;
         if (chevronxy.x + tbsize.cx > (testrect.right))
@@ -123,16 +123,16 @@ bool CChevronMenu::Show(LPNMREBARCHEVRON lpRebarChevron, HWND hToolbar)
         ::ShowWindow(*this, SW_SHOW);
         auto scaledX = CDPIAware::Instance().Scale(*this, 10);
         ::SetWindowPos(*this, HWND_TOP,
-            chevronxy.x, chevronxy.y,
-            tbsize.cx + scaledX, tbsize.cy + scaledX,
-            0);
+                       chevronxy.x, chevronxy.y,
+                       tbsize.cx + scaledX, tbsize.cy + scaledX,
+                       0);
         ::ShowWindow(hHiddenToolbar, SW_SHOW);
         ::SetWindowPos(hHiddenToolbar, HWND_TOP,
-            0, 0,
-            tbsize.cx + scaledX, tbsize.cy + scaledX,
-            0);
+                       0, 0,
+                       tbsize.cx + scaledX, tbsize.cy + scaledX,
+                       0);
 
-        m_uMsg = 0;
+        m_uMsg   = 0;
         m_wParam = 0;
         m_lParam = 0;
 
@@ -162,9 +162,9 @@ LRESULT CChevronMenu::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 {
     switch (uMsg)
     {
-    case WM_ERASEBKGND:
+        case WM_ERASEBKGND:
         {
-            HDC hDC = (HDC)wParam;
+            HDC  hDC = (HDC)wParam;
             RECT rc;
             ::GetClientRect(hwnd, &rc);
             // only draw the themed background if themes are enabled
@@ -176,23 +176,23 @@ LRESULT CChevronMenu::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
                     // now draw the themed background of a rebar control, because
                     // that's what we're actually in and should look like.
                     DrawThemeBackground(hTheme, hDC, 0, 0, &rc, NULL);
-                    return TRUE;    // we've drawn the background
+                    return TRUE; // we've drawn the background
                 }
             }
             // just do nothing so the system knows that we haven't erased the background
         }
         break;
-    case WM_KILLFOCUS:
-        ::SendMessage(*this, WM_CLOSE, 0, 0);
-        return 0L;
-    case WM_CLOSE:
-        DestroyWindow(*this);
-        PostMessage(*this, WM_QUIT, 0, 0);
-        m_bRun = false;
-        return 0L;
-    case WM_COMMAND:
+        case WM_KILLFOCUS:
+            ::SendMessage(*this, WM_CLOSE, 0, 0);
+            return 0L;
+        case WM_CLOSE:
+            DestroyWindow(*this);
+            PostMessage(*this, WM_QUIT, 0, 0);
+            m_bRun = false;
+            return 0L;
+        case WM_COMMAND:
         {
-            m_uMsg = uMsg;
+            m_uMsg   = uMsg;
             m_wParam = wParam;
             m_lParam = lParam;
             DestroyWindow(*this);

@@ -37,16 +37,14 @@ public:
         , start(1)
         , increment(1)
     {
-
     }
 
-    bool            leadzero;
-    int             padding;
-    int             start;
-    int             increment;
-    std::wstring    expression;
+    bool         leadzero;
+    int          padding;
+    int          start;
+    int          increment;
+    std::wstring expression;
 };
-
 
 class NumberReplaceHandler
 {
@@ -65,18 +63,18 @@ public:
         // 0 and L are optional and specify the size of the right-aligned
         // number string. If 0 is specified, zeros are used for padding, otherwise spaces.
         //std::wregex expression = std::wregex(L"(?<!\\\\)\\$\\{count(?<leadzero>0)?(?<length>\\d+)?(\\((?<startval>[-0-9]+)\\)||\\((?<startval>[-0-9]+),(?<increment>[-0-9]+)\\))?\\}", std::regex::normal);
-        std::wregex expression = std::wregex(L"\\$\\{count(0)?(\\d+)?(\\(([-0-9]+)\\)||\\(([-0-9]+),([-0-9]+)\\))?\\}", std::regex_constants::ECMAScript);
+        std::wregex                                      expression = std::wregex(L"\\$\\{count(0)?(\\d+)?(\\(([-0-9]+)\\)||\\(([-0-9]+),([-0-9]+)\\))?\\}", std::regex_constants::ECMAScript);
         std::match_results<std::wstring::const_iterator> whatc;
-        std::wstring::const_iterator start, end;
+        std::wstring::const_iterator                     start, end;
         start = m_sReplace.begin();
-        end = m_sReplace.end();
+        end   = m_sReplace.end();
         while (std::regex_search(start, end, whatc, expression))
         {
             if (whatc[0].matched)
             {
                 NumberReplacer nr;
-                nr.leadzero = (((std::wstring)whatc[1]) == L"0");
-                nr.padding = _wtoi(((std::wstring)whatc[2]).c_str());
+                nr.leadzero    = (((std::wstring)whatc[1]) == L"0");
+                nr.padding     = _wtoi(((std::wstring)whatc[2]).c_str());
                 std::wstring s = (std::wstring)whatc[4];
                 if (s.size())
                     nr.start = _wtoi(s.c_str());
@@ -116,9 +114,9 @@ public:
                 auto it_begin = std::search(sReplace.begin(), sReplace.end(), it->expression.begin(), it->expression.end());
                 if (it_begin != sReplace.end())
                 {
-                    if ((it_begin == sReplace.begin())||((*(it_begin-1)) != '\\'))
+                    if ((it_begin == sReplace.begin()) || ((*(it_begin - 1)) != '\\'))
                     {
-                        auto it_end= it_begin + it->expression.size();
+                        auto    it_end     = it_begin + it->expression.size();
                         wchar_t format[10] = {0};
                         if (it->padding)
                         {
@@ -134,9 +132,9 @@ public:
                         sReplace.replace(it_begin, it_end, buf);
                         it->start += it->increment;
                     }
-                    else if ((*(it_begin-1)) == '\\')
+                    else if ((*(it_begin - 1)) == '\\')
                     {
-                        sReplace.erase(it_begin-1);
+                        sReplace.erase(it_begin - 1);
                     };
                 }
             }

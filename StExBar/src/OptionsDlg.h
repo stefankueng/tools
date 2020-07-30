@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2012, 2015 - Stefan Kueng
+// Copyright (C) 2007-2012, 2015, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,7 +24,6 @@
 #include "Commands.h"
 #include <string>
 
-
 /**
 * bookmarks dialog.
 */
@@ -35,25 +34,26 @@ public:
     ~COptionsDlg(void);
 
 protected:
-    LRESULT CALLBACK        DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    LRESULT CALLBACK DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-    void                    InitCustomCommandsList();
-    void                    OnSelectListItem(LPNMLISTVIEW lpNMListView);
-    LRESULT                 OnCustomDrawListItem(LPNMLVCUSTOMDRAW lpNMCustomDraw);
-    void                    EditSelectedItem();
-    void                    RemoveSelectedItem();
-    void                    MoveSelectedUp();
-    void                    MoveSelectedDown();
+    void    InitCustomCommandsList();
+    void    OnSelectListItem(LPNMLISTVIEW lpNMListView);
+    LRESULT OnCustomDrawListItem(LPNMLVCUSTOMDRAW lpNMCustomDraw);
+    void    EditSelectedItem();
+    void    RemoveSelectedItem();
+    void    MoveSelectedUp();
+    void    MoveSelectedDown();
+
 private:
-    HWND                    m_hParent;
-    CRegStdDWORD            m_regShowBtnText;   ///< config setting whether to show the text for the toolbar buttons or not
-    CRegStdDWORD            m_regUseUNCPaths;   ///< config setting whether to copy the UNC paths of mapped paths or not
-    CRegStdDWORD            m_regUseSelector;   ///< config setting whether to use the selector or the cmd.exe replacement
-    CRegStdDWORD            m_regHideEditBox;   ///< config setting whether to show the edit box or not
-    CRegStdDWORD            m_regContextMenu;   ///< config setting whether to show the commands in the context menu or not
-    CRegStdDWORD            m_regEditBoxUsage;  ///< config setting whether to use the powershell or Console
-    CHyperLink              m_link;             ///< the hyperlink used in the options dialog
+    HWND         m_hParent;
+    CRegStdDWORD m_regShowBtnText;  ///< config setting whether to show the text for the toolbar buttons or not
+    CRegStdDWORD m_regUseUNCPaths;  ///< config setting whether to copy the UNC paths of mapped paths or not
+    CRegStdDWORD m_regUseSelector;  ///< config setting whether to use the selector or the cmd.exe replacement
+    CRegStdDWORD m_regHideEditBox;  ///< config setting whether to show the edit box or not
+    CRegStdDWORD m_regContextMenu;  ///< config setting whether to show the commands in the context menu or not
+    CRegStdDWORD m_regEditBoxUsage; ///< config setting whether to use the powershell or Console
+    CHyperLink   m_link;            ///< the hyperlink used in the options dialog
 
-    CCommands               m_commands;
-    HWND                    m_hListControl;
+    CCommands m_commands;
+    HWND      m_hListControl;
 };
