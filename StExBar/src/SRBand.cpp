@@ -639,7 +639,15 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND hWnd,
     case WM_TIMER:
         if (wParam == TID_IDLE)
         {
-            pThis->FindPaths();
+            if (pThis->FindPaths())
+            {
+                // current path changed, clear the filter
+                if (DWORD(pThis->GetEditBoxUsage()) == IDC_USEFILTER)
+                {
+                    SetWindowText(pThis->m_hWndEdit, L"");
+                    SetTimer(pThis->m_hWnd, TID_FILTER, 200, NULL);
+                }
+            }
             // now enable/disable the commands depending
             // on view and the selected items
 

@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010, 2012-2013, 2015 - Stefan Kueng
+// Copyright (C) 2007-2010, 2012-2013, 2015, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,8 +24,10 @@
 
 #pragma comment(lib, "Mpr")
 
+// returns true if the m_currentDirectory changed
 bool CDeskBand::FindPaths()
 {
+    auto oldCurrentDir = m_currentDirectory;
     m_currentDirectory.clear();
     m_selectedItems.clear();
     m_bFilesSelected = false;
@@ -180,7 +182,7 @@ bool CDeskBand::FindPaths()
         }
         pServiceProvider->Release();
     }
-    return ((!m_currentDirectory.empty()) || (!m_selectedItems.empty()));
+    return (oldCurrentDir != m_currentDirectory);
 }
 
 std::wstring CDeskBand::GetFileNames(const std::map<std::wstring, ULONG>& items, std::wstring separator, bool quotespaces, bool includefiles, bool includefolders)
