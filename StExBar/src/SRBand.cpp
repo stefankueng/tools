@@ -314,7 +314,7 @@ STDMETHODIMP CDeskBand::ShowDW(BOOL fShow)
         {
             // show our window
             ShowWindow(m_hWnd, SW_SHOW);
-            ::SetTimer(m_hWnd, TID_IDLE, 100, NULL);
+            ::SetTimer(m_hWnd, TID_IDLE, 3000, NULL);
         }
         else
         {
@@ -684,6 +684,7 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND   hWnd,
                         ::SendMessage(pThis->m_hWndToolbar, TB_CHECKBUTTON, i, (LPARAM)shellstate.fShowExtensions);
                     }
                 }
+                ::SetTimer(pThis->m_hWnd, TID_IDLE, 500, NULL);
             }
             if (wParam == TID_FILTER)
             {
