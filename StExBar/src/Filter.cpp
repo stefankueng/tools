@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "SRBand.h"
 #include "StringUtils.h"
+#include "OnOutOfScope.h"
 #include <regex>
 
 bool CDeskBand::Filter(LPTSTR filter)
@@ -190,21 +191,21 @@ bool CDeskBand::Filter(LPTSTR filter)
 
 bool CDeskBand::CheckDisplayName(IShellFolder* shellFolder, LPITEMIDLIST pidl, LPCTSTR filter, bool bUseRegex)
 {
+    if (filter == nullptr || filter[0] == 0)
+        return true;
     STRRET str;
     if (SUCCEEDED(shellFolder->GetDisplayNameOf(pidl,
                                                 // SHGDN_FORPARSING needed to get the extensions even if they're not shown
                                                 SHGDN_INFOLDER | SHGDN_FORPARSING,
                                                 &str)))
     {
-        wchar_t dispname[MAX_PATH];
-        StrRetToBuf(&str, pidl, dispname, _countof(dispname));
-
+        OnOutOfScope(CoTaskMemFree(str.pOleStr));
         if (bUseRegex)
         {
             try
             {
                 const std::wregex regCheck(&filter[1], std::regex_constants::icase | std::regex_constants::ECMAScript);
-                std::wstring      s = dispname;
+                std::wstring      s = str.pOleStr;
 
                 return std::regex_search(s, regCheck);
             }
@@ -214,19 +215,8 @@ bool CDeskBand::CheckDisplayName(IShellFolder* shellFolder, LPITEMIDLIST pidl, L
         }
         else
         {
-            // we now have the display name of the item
-            // i.e. the way the item is shown
-            // since the windows file system is case-insensitive
-            // we have to force the display name to lowercase
-            // so the filter matches case-insensitive too
-            wchar_t* pString = dispname;
-            while (*pString)
-            {
-                *pString = towlower(*pString);
-                pString++;
-            }
             // check if the item name matches the text of the edit control
-            return (wcsstr(dispname, filter) != NULL);
+            return (StrStrIW(str.pOleStr, filter) != NULL);
         }
     }
     return false;

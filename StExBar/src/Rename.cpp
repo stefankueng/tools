@@ -20,10 +20,11 @@
 #include "stdafx.h"
 #include "SRBand.h"
 #include "resource.h"
-#include <regex>
 #include "RenameDlg.h"
 #include "Pidl.h"
 #include "NumberReplacer.h"
+#include "OnOutOfScope.h"
+#include <regex>
 
 void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
 {
@@ -97,7 +98,6 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                                     {
                                         LPITEMIDLIST pidl;
                                         ULONG        fetched = 0;
-                                        ULONG        attribs = 0;
                                         do
                                         {
                                             pidl = NULL;
@@ -105,28 +105,14 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                                             {
                                                 if (fetched)
                                                 {
-                                                    // the pidl we get here is relative!
-                                                    attribs = SFGAO_FILESYSTEM | SFGAO_FOLDER;
-                                                    if (SUCCEEDED(pShellFolder->GetAttributesOf(1, (LPCITEMIDLIST*)&pidl, &attribs)))
+                                                    STRRET str;
+                                                    if (SUCCEEDED(pShellFolder->GetDisplayNameOf(pidl,
+                                                        // SHGDN_FORPARSING needed to get the extensions even if they're not shown
+                                                        SHGDN_INFOLDER | SHGDN_FORPARSING,
+                                                        &str)))
                                                     {
-                                                        if (attribs & SFGAO_FILESYSTEM)
-                                                        {
-                                                            // create an absolute pidl with the pidl we got above
-                                                            LPITEMIDLIST abspidl = CPidl::Append(folderpidl, pidl);
-                                                            if (abspidl)
-                                                            {
-                                                                if (SHGetPathFromIDList(abspidl, buf))
-                                                                {
-                                                                    std::wstring p   = buf;
-                                                                    size_t       pos = p.find_last_of('\\');
-                                                                    if (pos != std::wstring::npos)
-                                                                    {
-                                                                        m_filelist.insert(p.substr(pos + 1));
-                                                                    }
-                                                                }
-                                                                CoTaskMemFree(abspidl);
-                                                            }
-                                                        }
+                                                        m_filelist.insert(str.pOleStr);
+                                                        CoTaskMemFree(str.pOleStr);
                                                     }
                                                 }
                                                 CoTaskMemFree(pidl);
@@ -215,13 +201,11 @@ void CDeskBand::Rename(HWND hwnd, const std::map<std::wstring, ULONG>& items)
                                                                                              SHGDN_INFOLDER | SHGDN_FORPARSING,
                                                                                              &str)))
                                                 {
-                                                    wchar_t dispname[MAX_PATH];
-                                                    StrRetToBuf(&str, pidl, dispname, _countof(dispname));
-
+                                                    OnOutOfScope(CoTaskMemFree(str.pOleStr));
                                                     std::wstring replaced;
                                                     try
                                                     {
-                                                        std::wstring sDispName = dispname;
+                                                        std::wstring sDispName = str.pOleStr;
                                                         // check if the item is in the list of selected items
                                                         if (m_filelist.find(sDispName) != m_filelist.end())
                                                         {
