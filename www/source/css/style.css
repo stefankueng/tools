@@ -413,6 +413,11 @@ pre {
     position: relative !important;
 }
 
+.footer-icon {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 
 /* ==========================================================================
    Print styles.
