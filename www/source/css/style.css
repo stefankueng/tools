@@ -204,13 +204,13 @@ li {
     padding: 2px;
 }
 
-nav {
+.nav-right {
     margin: 0 60px 0 0;
     float: right;
     position: relative;
 }
 
-navleft {
+.nav-left {
     margin: 0 60px 0 0;
     float: left;
     position: relative;
