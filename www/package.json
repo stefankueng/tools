@@ -39,7 +39,6 @@
     "grunt-purgecss": "^3.0.0",
     "grunt-sitemap": "^2.0.1",
     "grunt-usemin": "^3.1.1",
-    "imagemin-jpegoptim": "^7.0.0",
     "load-grunt-tasks": "^5.1.0",
     "postcss": "^8.1.1",
     "time-grunt": "^2.0.0"

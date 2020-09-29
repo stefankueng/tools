@@ -1,7 +1,6 @@
 'use strict';
 
 var autoprefixer = require('autoprefixer');
-var imageminJpegoptim = require('imagemin-jpegoptim');
 
 module.exports = function(grunt) {
     // Load any grunt plugins found in package.json.
@@ -186,6 +185,7 @@ module.exports = function(grunt) {
         imagemin: {
             dist: {
                 options: {
+                    progressive : true,
                     optimizationLevel: 3,
                     svgoPlugins: [
                         { cleanupAttrs: true },
@@ -237,24 +237,10 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%= dirs.dest %>',
-                    src: ['**/*.{gif,png,svg}'],
+                    src: ['**/*.{gif,jpg,jpeg,png,svg}'],
                     dest: '<%= dirs.dest %>'
                 }]
-            },
-            jpeg: {
-                options: {
-                    progressive : true,
-                    use: [
-                        imageminJpegoptim({ progressive: true })
-                    ]
-                },
-                files: [{
-                    expand: true,
-                    cwd: '<%= dirs.dest %>',
-                    src: ['**/*.{jpg,jpeg}'],
-                    dest: '<%= dirs.dest %>'
-                }]
-            },
+            }
         },
 
         filerev: {
