@@ -206,6 +206,15 @@ BowPad.SaveCurrentTab(saveas);
 // Invalidates the state of the plugin button. Call this if the look of
 // the button needs changing.
 BowPad.InvalidateState();
+// saves the document with the specified DocID. If the second param is true,
+// the save-as dialog is shown.
+BowPad.SaveDoc(docID, false);
+// updates the with of the line-number column. Call this if you've added or removed
+// a lot of lines.
+BowPad.UpdateLineNumberWidth();
+// opens a new empty tab and makes that tab active.
+BowPad.OpenNewTab();
+
     </pre>
 
     <p>
