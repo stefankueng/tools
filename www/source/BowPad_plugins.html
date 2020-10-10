@@ -262,7 +262,9 @@ var sText = BowPad.SciGetTextRange(minPos, maxPos);
 // use SciGetTextRange() instead if you're dealing with non-ASCII text
 var sChar = BowPad.SciGetCharAt(position);
 // finds the text
-var foundPos = BowPad.SciFindText(flags, minPos, maxPos, "text to search for");
+var foundPos = BowPad.SciFindText(flags, minPos, maxPos, "text to search for").toArray();
+var startPos = foundPos[0];
+var endPos = foundPos[1];
     </pre>
 
 </div>
