@@ -214,6 +214,15 @@ BowPad.SaveDoc(docID, false);
 BowPad.UpdateLineNumberWidth();
 // opens a new empty tab and makes that tab active.
 BowPad.OpenNewTab();
+// puts the text and html to the clipboard.
+// the html format is documented <a href="https://docs.microsoft.com/en-us/windows/win32/dataxchg/html-clipboard-format">here</a>.
+// you only need to pass the fragment part, the rest is done automatically
+// pass an empty string if you don't need to put the html format on the clipboard
+BowPad.SetClipboardData("clipboardtext", "&lt;b&gt;clipboard&lt;/b&gt; text");
+// returns the text that's in the clipboard
+var text = BowPad.GetClipboardText();
+// returns the string of a html format in the clipboard
+var html = BowPad.GetClipboardHtml();
 
     </pre>
 
