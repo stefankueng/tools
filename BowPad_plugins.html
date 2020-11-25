@@ -146,6 +146,18 @@ BowPad.SaveDoc(docID, false);
 BowPad.UpdateLineNumberWidth();
 // opens a new empty tab and makes that tab active.
 BowPad.OpenNewTab();
+// puts the text and html to the clipboard.
+// the html format is documented <a href=https://docs.microsoft.com/en-us/windows/win32/dataxchg/html-clipboard-format>here</a>.
+// you only need to pass the fragment part, the rest is done automatically
+// pass an empty string if you don't need to put the html format on the clipboard
+BowPad.SetClipboardData("clipboardtext", "&lt;b>clipboard&lt;/b> text");
+// returns the text that's in the clipboard
+var text = BowPad.GetClipboardText();
+// returns the string of a html format in the clipboard
+var html = BowPad.GetClipboardHtml();
+// returns true if the specified key is pressed
+// the key codes are documented <a href=https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes>here</a>.
+var isKeyPressed = BowPad.GetKeyState(key);
 
     </pre><p>BowPad uses the Scintilla editor component. A plugin can access that component via special functions provided by the "BowPad" object. Please refer to the Scintilla documentation for detailed information about the available commands and parameters: <a href=http://www.scintilla.org/ScintillaDoc.html>http://www.scintilla.org/ScintillaDoc.html</a><p>The "BowPad" component provides most of the Scintilla functions. The naming of the functions is a modified version of the <code>SCI_</code> functions of the Scintilla component.<p>For example, the Scintilla function <code>SCI_SETSELECTIONSTART(int position)</code> is named <code>SciSetSelectionStart(int)</code> in the BowPad object. Basically the function names are the names of the original Scintilla functions without the <code>_</code> in the name. The parameters are either interger, bools or strings and the same as in the Scintilla documentation.<p>Parameters in the Scintilla docs that are shown as <code>&lt;unused></code> are omitted in the BowPad object function. Also "Get" functions that have a <code>char * text</code> parameter are treated differently: the strings are returned directly by the BowPad object function as the return value, so the pointer param must be omitted. For example: <code>SCI_GETSELTEXT(&lt;unused>, char *text)</code> becomes <code>var selText = SciGetSelText()</code>.<p>Some Scintilla functions take structs as parameters or return values in structs. These are converted differently to "BowPad" functions and listed here:<pre class=prettyprint>
 // returns the specified range of text, between the minPos position and the
@@ -161,4 +173,4 @@ var sChar = BowPad.SciGetCharAt(position);
 var foundPos = BowPad.SciFindText(flags, minPos, maxPos, "text to search for").toArray();
 var startPos = foundPos[0];
 var endPos = foundPos[1];
-    </pre></div></div><footer class=main-sprite><ul><li><a href=https://pages.github.com/ aria-label=GitHub><svg class=footer-icon focusable=false height=15 role=img viewBox="12 12 40 40" width=15 xmlns=http://www.w3.org/2000/svg><title>GitHub</title><path d="M32 13.4c-10.5 0-19 8.5-19 19 0 8.4 5.5 15.5 13 18 1 .2 1.3-.4 1.3-.9v-3.2c-5.3 1.1-6.4-2.6-6.4-2.6-.9-2.1-2.1-2.7-2.1-2.7-1.7-1.2.1-1.1.1-1.1 1.9.1 2.9 2 2.9 2 1.7 2.9 4.5 2.1 5.5 1.6.2-1.2.7-2.1 1.2-2.6-4.2-.5-8.7-2.1-8.7-9.4 0-2.1.7-3.7 2-5.1-.2-.5-.8-2.4.2-5 0 0 1.6-.5 5.2 2 1.5-.4 3.1-.7 4.8-.7 1.6 0 3.3.2 4.7.7 3.6-2.4 5.2-2 5.2-2 1 2.6.4 4.6.2 5 1.2 1.3 2 3 2 5.1 0 7.3-4.5 8.9-8.7 9.4.7.6 1.3 1.7 1.3 3.5v5.2c0 .5.4 1.1 1.3.9 7.5-2.6 13-9.7 13-18.1 0-10.5-8.5-19-19-19z" fill=#aaa /></svg></a><li>• © <a href=./about.html>Stefan Küng</a></ul><p>Site last updated: Monday, November 2nd, 2020, 17:14:40 UTC</footer><script src=./js/pack.f9b02f91.js async></script><script src=./js/prettify/prettify.d435ff18.js></script><script>window.onload=prettyPrint()</script>
+    </pre></div></div><footer class=main-sprite><ul><li><a href=https://pages.github.com/ aria-label=GitHub><svg class=footer-icon focusable=false height=15 role=img viewBox="12 12 40 40" width=15 xmlns=http://www.w3.org/2000/svg><title>GitHub</title><path d="M32 13.4c-10.5 0-19 8.5-19 19 0 8.4 5.5 15.5 13 18 1 .2 1.3-.4 1.3-.9v-3.2c-5.3 1.1-6.4-2.6-6.4-2.6-.9-2.1-2.1-2.7-2.1-2.7-1.7-1.2.1-1.1.1-1.1 1.9.1 2.9 2 2.9 2 1.7 2.9 4.5 2.1 5.5 1.6.2-1.2.7-2.1 1.2-2.6-4.2-.5-8.7-2.1-8.7-9.4 0-2.1.7-3.7 2-5.1-.2-.5-.8-2.4.2-5 0 0 1.6-.5 5.2 2 1.5-.4 3.1-.7 4.8-.7 1.6 0 3.3.2 4.7.7 3.6-2.4 5.2-2 5.2-2 1 2.6.4 4.6.2 5 1.2 1.3 2 3 2 5.1 0 7.3-4.5 8.9-8.7 9.4.7.6 1.3 1.7 1.3 3.5v5.2c0 .5.4 1.1 1.3.9 7.5-2.6 13-9.7 13-18.1 0-10.5-8.5-19-19-19z" fill=#aaa /></svg></a><li>• © <a href=./about.html>Stefan Küng</a></ul><p>Site last updated: Wednesday, November 25th, 2020, 17:51:06 UTC</footer><script src=./js/pack.f9b02f91.js async></script><script src=./js/prettify/prettify.d435ff18.js></script><script>window.onload=prettyPrint()</script>
