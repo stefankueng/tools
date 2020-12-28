@@ -643,8 +643,12 @@ LRESULT CALLBACK CDeskBand::WndProc(HWND   hWnd,
                     // current path changed, clear the filter
                     if (DWORD(pThis->GetEditBoxUsage()) == IDC_USEFILTER)
                     {
-                        SetWindowText(pThis->m_hWndEdit, L"");
-                        SetTimer(pThis->m_hWnd, TID_FILTER, 200, NULL);
+                        auto buf = pThis->GetEditBoxText();
+                        if (buf.get() && buf.get()[0])
+                        {
+                            SetWindowText(pThis->m_hWndEdit, L"");
+                            SetTimer(pThis->m_hWnd, TID_FILTER, 200, NULL);
+                        }
                     }
                 }
                 // now enable/disable the commands depending
