@@ -21,16 +21,39 @@
                 <td>stores ini settings file in the same directory as the one in which grepwin.exe resides</td>
             </tr>
             <tr>
-                <td class="nowrap">/searchpath:"path"</td>
+                <td class="nowrap">/searchpath:&quot;path&quot;</td>
                 <td>sets the path to search in</td>
             </tr>
             <tr>
-                <td class="nowrap">/searchfor:"regex or text"</td>
+                <td class="nowrap">/searchfor:&quot;regex or text&quot;</td>
                 <td>fills the regex to search with</td>
             </tr>
             <tr>
                 <td class="nowrap">/regex:[yes|no]</td>
                 <td>sets whether the /searchfor text is a regex or normal text, default is regex</td>
+            </tr>
+            <tr>
+                <td class="nowrap">/searchini:&quot;path/to/inifile&quot;</td>
+                <td>
+                    <p>specifies an ini file which contains all the values usually passed on the command line</p>
+                    <p>
+                        you can use sections to specifiy different sets of commands. To specify which section is used,
+                        pass the <em>/name:&quot;sectionname&quot;</em> argument
+                    </p>
+                    <p>the entries in the ini file are named the same as the command line arguments</p>
+                    <pre class="prettyprint">
+searchpath=d:\work|d:\documents
+regex=yes
+filemask=*.txt
+searchfor=this(is)what[I]want(?to)search|for
+[CodeSearch]
+searchpath=e:\sourcecode
+filemask=*.cpp|*.h|*.cs|*.java
+searchfor=this(is)what[I]want(?to)search|for
+i=yes
+</pre>
+                    <p>the ini file must be saved in utf8 format</p>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -118,7 +141,7 @@
                 <td>if set, the search results are listed by content instead of files</td>
             </tr>
             <tr>
-                <td class="nowrap">/preset:"name"</td>
+                <td class="nowrap">/preset:&quot;name&quot;</td>
                 <td>if set, uses the settings from the named preset</td>
             </tr>
             <tr>
@@ -130,7 +153,7 @@
                     <li>2 : Search for files older than</li>
                     <li>3 : Search for files between date</li>
                 </ul>
-                The date(s) are set with <em>/date1:"YYYY:MM:DD"</em> and <em>/date2:"YYYY:MM:DD"</em>.
+                The date(s) are set with <em>/date1:&quot;YYYY:MM:DD&quot;</em> and <em>/date2:&quot;YYYY:MM:DD&quot;</em>.
                 </td>
             </tr>
         </tbody>
