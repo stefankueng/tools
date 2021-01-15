@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2015, 2017-2020 - Stefan Kueng
+// Copyright (C) 2007-2015, 2017-2021 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -950,10 +950,14 @@ void CDeskBand::HandleCommand(HWND hWnd, const Command& cmd, const std::wstring&
                     std::wstring  grepWinPath    = regGrepWinPath;
                     grepWinPath                  = grepWinPath.substr(0, grepWinPath.find_last_of('/'));
                     std::wstring params          = grepWinPath;
+                    auto         slashCwd        = cwd;
+                    SearchReplace(slashCwd, L"\\", L"/");
+                    std::wstring searchFor = buf.get();
+                    SearchReplace(searchFor, L"\"", L"\\\"");
                     params += L" /searchpath:\"";
-                    params += cwd;
+                    params += slashCwd;
                     params += L"\" /searchfor:\"";
-                    params += buf.get();
+                    params += searchFor;
                     params += L"\"";
                     StartApplication(cwd, params, (GetKeyState(VK_LWIN) & 0x8000) != 0);
                 }
