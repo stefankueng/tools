@@ -1,19 +1,21 @@
 <?xml version="1.0"?>
-<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>sktimestamp</id>
-    <title>SKTimeStamp</title>
-    <version>1.3.5</version>
+    <version>1.3.6</version>
+    <title>sktimestamp (Install)</title>
     <authors>Stefan Kueng</authors>
-    <owners>Stefan Kueng</owners>
-    <summary>SKTimeStamp is a very simple shell extension which adds a new tab to the Explorer properties dialog. On that new tab, you can change the file/folder date and time.</summary>
-    <description>SKTimeStamp is a very simple shell extension which adds a new tab to the Explorer properties dialog. On that new tab, you can change the file/folder date and time.</description>
-    <projectUrl>http://stefanstools.sourceforge.net/SKTimeStamp.html</projectUrl>
-    <tags>touch extensions windows explorer admin</tags>
+    <owners>Stefan Kueng, Teknowledgist</owners>
     <licenseUrl>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</licenseUrl>
+    <projectUrl>https://tools.stefankueng.com/StExBar.html</projectUrl>
+    <iconUrl>https://cdn.rawgit.com/teknowledgist/Chocolatey-packages/master/Icons/sktimestamp_icon.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>SKTimeStamp is a very simple shell extension which adds a new tab to the Windows Explorer properties dialog. On that new tab, you can change the file/folder date and time.
+![screenshot](http://stefanstools.sourceforge.net/img/sktimestamp/SKTimeStamp_multiple.0d479249.png)</description>
+    <summary>A shell extension to TimeStamp file/folders</summary>
+    <tags>sktimestamp timestamp touch explorer shell extension admin</tags>
+    <projectSourceUrl>https://github.com/stefankueng/tools/tree/main/SKTimeStamp</projectSourceUrl>
+    <packageSourceUrl>https://github.com/stefankueng/tools/tree/main/SKTimeStamp/choco</packageSourceUrl>
+    <bugTrackerUrl>https://github.com/stefankueng/tools/issues</bugTrackerUrl>
   </metadata>
-  <files>
-    <file src="tools\**" target="tools" />
-  </files>
 </package>
