@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2017, 2020 - Stefan Kueng
+// Copyright (C) 2007-2017, 2020-2021 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -288,7 +288,7 @@ bool CCommands::LoadFromFile()
         key2.control = (std::wstring(inifile.GetValue(*it, L"control", L"")).compare(L"true") == 0) ? true : false;
         key2.shift   = (std::wstring(inifile.GetValue(*it, L"shift", L"")).compare(L"true") == 0) ? true : false;
         key2.alt     = (std::wstring(inifile.GetValue(*it, L"alt", L"")).compare(L"true") == 0) ? true : false;
-        key2.keycode = _tstol(std::wstring(inifile.GetValue(*it, L"keycode", L"")).c_str());
+        key2.keycode = _wtol(std::wstring(inifile.GetValue(*it, L"keycode", L"")).c_str());
 
         Command cmd;
         cmd.name        = inifile.GetValue(*it, L"name", L"");
@@ -304,7 +304,7 @@ bool CCommands::LoadFromFile()
         cmd.enabled_folderselected = (std::wstring(inifile.GetValue(*it, L"folderselected", L"")).compare(L"true") == 0) ? true : false;
         cmd.enabled_selected       = (std::wstring(inifile.GetValue(*it, L"selected", L"")).compare(L"true") == 0) ? true : false;
         cmd.enabled_noselection    = (std::wstring(inifile.GetValue(*it, L"noselection", L"")).compare(L"true") == 0) ? true : false;
-        cmd.enabled_selectedcount  = _tstol(std::wstring(inifile.GetValue(*it, L"selectedcount", L"")).c_str());
+        cmd.enabled_selectedcount  = _wtol(std::wstring(inifile.GetValue(*it, L"selectedcount", L"")).c_str());
         cmd.key                    = key2;
 
         // check if that command already exists
@@ -387,7 +387,7 @@ bool CCommands::SaveToFile()
     }
 
     FILE* file = NULL;
-    _tfopen_s(&file, szPath, L"w");
+    _wfopen_s(&file, szPath, L"w");
     inifile.SaveFile(file);
     fclose(file);
 

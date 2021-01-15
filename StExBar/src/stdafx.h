@@ -18,8 +18,7 @@
 #include <ole2.h>
 #include <comcat.h>
 #include <olectl.h>
-
-#include "tstring.h"
+#include <string>
 
 #define MIDL_DEFINE_GUID(type,name,l,w1,w2,b1,b2,b3,b4,b5,b6,b7,b8) \
     const type name = {l,w1,w2,{b1,b2,b3,b4,b5,b6,b7,b8}}

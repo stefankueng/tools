@@ -1,6 +1,6 @@
-// tabspace - converts tabs to spaces and vice-versa in multiple files
+﻿// tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011-2013, 2017 - Stefan Kueng
+// Copyright (C) 2011-2013, 2017, 2021 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +31,6 @@
 #include <io.h>
 #include <fcntl.h>
 
-
 std::set<std::wstring> g_allowedPatterns;
 std::set<std::wstring> g_excludedPatterns;
 
@@ -40,10 +39,10 @@ bool FileExtensionInPattern(const std::wstring& filepath)
     std::wstring lowercasepath = filepath;
     std::transform(lowercasepath.begin(), lowercasepath.end(), lowercasepath.begin(), ::towlower);
 
-    std::wstring lowercasename = lowercasepath;
-    std::string::size_type lastPos = lowercasepath.find_last_of('\\');
+    std::wstring           lowercasename = lowercasepath;
+    std::string::size_type lastPos       = lowercasepath.find_last_of('\\');
     if (lastPos != std::wstring::npos)
-        lowercasename = lowercasepath.substr(lastPos+1);
+        lowercasename = lowercasepath.substr(lastPos + 1);
 
     for (auto it = g_excludedPatterns.cbegin(); it != g_excludedPatterns.cend(); ++it)
     {
@@ -74,15 +73,15 @@ int _tmain(int argc, _TCHAR* argv[])
     UNREFERENCED_PARAMETER(argc);
     UNREFERENCED_PARAMETER(argv);
     // options and their default values
-    bool    bCheckOnly              =   false;
-    bool    bUseSpaces              =   true;
-    int     tabsize                 =   4;
-    bool    bRemoveEOLWhitespaces   =   true;
-    bool    bExtPatterns            =   true;
-    bool    bCStyle                 =   false;
-    std::wstring filepattern        =   L"c;cc;cpp;cs;cxx;h;hpp;hxx";
+    bool         bCheckOnly            = false;
+    bool         bUseSpaces            = true;
+    int          tabsize               = 4;
+    bool         bRemoveEOLWhitespaces = true;
+    bool         bExtPatterns          = true;
+    bool         bCStyle               = false;
+    std::wstring filepattern           = L"c;cc;cpp;cs;cxx;h;hpp;hxx";
 
-    LPWSTR lpCmdLine = GetCommandLine();
+    LPWSTR         lpCmdLine = GetCommandLine();
     CCmdLineParser parser(lpCmdLine);
 
     if (parser.HasVal(L"unicode"))
@@ -110,7 +109,6 @@ int _tmain(int argc, _TCHAR* argv[])
         _fputts(L"/unicode   : switches the console output to unicode\n", stdout);
         return 0;
     }
-
 
     TCHAR cwd[MAX_PATH] = {0};
     GetCurrentDirectory(_countof(cwd), cwd);
@@ -144,7 +142,7 @@ int _tmain(int argc, _TCHAR* argv[])
             return -1;
         }
         bExtPatterns = false;
-        filepattern = parser.GetVal(L"include");
+        filepattern  = parser.GetVal(L"include");
     }
     if (parser.HasKey(L"checkonly"))
         bCheckOnly = true;
@@ -213,7 +211,7 @@ int _tmain(int argc, _TCHAR* argv[])
     CDirFileEnum filelister((cwd));
 
     std::wstring filepath;
-    bool bIsDir = false;
+    bool         bIsDir = false;
     while (filelister.NextFile(filepath, &bIsDir, true))
     {
         if (!bIsDir)
@@ -221,15 +219,16 @@ int _tmain(int argc, _TCHAR* argv[])
             if (!FileExtensionInPattern(filepath))
                 continue;
 
-            CTextFile file;
+            CTextFile              file;
             CTextFile::UnicodeType ut;
-            if (file.Load(filepath.c_str(), ut, false))
+            volatile LONG          cancelled = FALSE;
+            if (file.Load(filepath.c_str(), ut, false, &cancelled))
             {
                 if (ConvertTabSpaces::Convert(file, bUseSpaces, tabsize, bCheckOnly, bCStyle))
                 {
                     // the file was modified, we have to reload it for the next conversion
                     file.Save(filepath.c_str());
-                    file.Load(filepath.c_str(), ut, false);
+                    file.Load(filepath.c_str(), ut, false, &cancelled);
                 }
                 if (bRemoveEOLWhitespaces)
                 {
@@ -247,7 +246,6 @@ int _tmain(int argc, _TCHAR* argv[])
             }
         }
     }
-
 
     return 0;
 }

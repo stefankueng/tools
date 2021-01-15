@@ -1251,7 +1251,7 @@ std::wstring CDeskBand::WriteFileListToTempFile(bool bUnicode, const std::wstrin
                                0);
 
     if (file == INVALID_HANDLE_VALUE)
-        return tstring();
+        return {};
 
     DWORD written = 0;
     if (bUnicode)
@@ -1671,7 +1671,7 @@ HICON CDeskBand::LoadCommandIcon(const Command& cmd)
                 {
                     resourcefile = cmd.icon.substr(0, pos);
                     iconid       = cmd.icon.substr(pos + 1);
-                    hIcon        = ExtractIcon(g_hInst, resourcefile.c_str(), _ttoi(iconid.c_str()));
+                    hIcon        = ExtractIcon(g_hInst, resourcefile.c_str(), _wtoi(iconid.c_str()));
                 }
             }
             if (hIcon == NULL)

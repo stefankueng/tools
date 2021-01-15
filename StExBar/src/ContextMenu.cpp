@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2010, 2012, 2014, 2017, 2020 - Stefan Kueng
+// Copyright (C) 2007-2010, 2012, 2014, 2017, 2020-2021 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -59,7 +59,7 @@ STDMETHODIMP CDeskBand::Initialize(LPCITEMIDLIST pIDFolder,
             for (int i = 0; i < count; ++i)
             {
                 ItemIDList child(GetPIDLItem(cida, i), &parent);
-                tstring    str = child.toString();
+                auto       str = child.toString();
                 if (str.empty() == false)
                 {
                     m_ContextItems[str] = ENABLED_VIEWPATH | ENABLED_FOLDERSELECTED | ENABLED_FILESELECTED;
@@ -108,7 +108,7 @@ STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hMenu,
             return S_OK; // nothing selected - we don't have a menu to show
         // check whether a selected entry is an UID - those are namespace extensions
         // which we can't handle
-        for (std::map<tstring, ULONG>::const_iterator it = m_ContextItems.begin(); it != m_ContextItems.end(); ++it)
+        for (std::map<std::wstring, ULONG>::const_iterator it = m_ContextItems.begin(); it != m_ContextItems.end(); ++it)
         {
             if (wcsncmp(it->first.c_str(), L"::{", 3) == 0)
                 return S_OK;

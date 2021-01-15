@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2009, 2011-2014, 2020 - Stefan Kueng
+// Copyright (C) 2007-2009, 2011-2014, 2020-2021 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -265,7 +265,7 @@ bool CEditCmdDlg::SetupCommand()
     m_command.enabled_noselection    = SendMessage(GetDlgItem(*this, IDC_NOSELECTION), BM_GETCHECK, 0, 0) == BST_CHECKED;
 
     buf                             = GetDlgItemText(IDC_SELECTEDCOUNT);
-    m_command.enabled_selectedcount = _ttol(buf.get());
+    m_command.enabled_selectedcount = _wtol(buf.get());
 
     if ((m_command.commandline.compare(INTERNALCOMMAND) == 0) || (m_command.commandline.compare(INTERNALCOMMANDHIDDEN) == 0))
     {
