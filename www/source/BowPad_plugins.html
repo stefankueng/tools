@@ -226,6 +226,10 @@ var html = BowPad.GetClipboardHtml();
 // returns true if the specified key is pressed
 // the key codes are documented <a href="https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes">here</a>.
 var isKeyPressed = BowPad.GetKeyState(key);
+// adds a space separated string (words) for the specified docId to the auto completion list
+BowPad.AddDocAutoCompleteWords(docId, words);
+// adds a space separated string (words) for the specified language/lexer to the auto completion list
+BowPad.AddLangAutoCompleteWords(lang, words);
 
     </pre>
 
