@@ -29,9 +29,13 @@
 <pre class="prettyprint">
 [language]
 code=word1 word2 word3
-snippet_do=do\n{\n} while(^);
-snippet_for=for (^)\n{\n}
-snippet_while=while (^)\n{\n}
+snippet_do=do\n{\n} while(^0true^);
+snippet_for=for (^0size_t^ ^1i^ = 0; ^1i^ < ^2count^; ++^1i^)\n{\n}
+snippet_while=while (^0true^)\n{\n}
+snippet_class=class ^0MyClass^\n{\npublic:\n\t^0MyClass^();\n~^0MyClass^();\n\b\n\bprotected:\n\nprivate:\n\n};\n
+snippet_enum=enum ^0MyEnum^\n{\n};\n
+snippet_switch=switch (^0switch_on^)\n{\tdefault:\nbreak;\n}\n
+snippet_try=try\n{\n}\ncatch (const std::exception&)\n{\n}\n
 </pre>
     </p>
     <p>
@@ -46,10 +50,16 @@ snippet_while=while (^)\n{\n}
     <p>
         The <code>snippet_</code> lines contain the code snippets. The part after
         the <code>_</code> char is the snippet trigger, and the value is
-        the string/snippet to insert. The <code>^</code> char marks the place
-        where the cursor is placed after the snipped is inserted.
+        the string/snippet to insert. The <code>^nTEXT^</code> marks an insert
+        point where e.g. a variable can be modified. The user can then tab through
+        those insert points until the end. The <code>n</code> marks the number
+        of the insertion point. See the <code>snippet_for</code> example above.
     </p>
-
+    <p>
+        You can use <code>\n</code> to insert newlines, <code>\t</code> to insert
+        a tab, and <code>\b</code> to insert a backspace.
+        Since the <code>^</code> char is used to mark insertion
+        points, you can use <code>\^</code> to insert a real <code>^</code> char.
 </div>
 </div>
 
