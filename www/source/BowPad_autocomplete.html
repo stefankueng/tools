@@ -30,12 +30,12 @@
 [language]
 code=word1 word2 word3
 snippet_do=do\n{\n} while(^0true^);
-snippet_for=for (^0size_t^ ^1i^ = 0; ^1i^ < ^2count^; ++^1i^)\n{\n}
-snippet_while=while (^0true^)\n{\n}
+snippet_for=for (^1size_t^ ^2i^ = 0; ^2i^ < ^3count^; ++^2i^)\n{\n\t^0^\b}
+snippet_while=while (^0true^)\n{\n\t^0^\b}
 snippet_class=class ^0MyClass^\n{\npublic:\n\t^0MyClass^();\n~^0MyClass^();\n\b\n\bprotected:\n\nprivate:\n\n};\n
-snippet_enum=enum ^0MyEnum^\n{\n};\n
+snippet_enum=enum ^0MyEnum^\n{\n\t^0^\b};\n
 snippet_switch=switch (^0switch_on^)\n{\tdefault:\nbreak;\n}\n
-snippet_try=try\n{\n}\ncatch (const std::exception&)\n{\n}\n
+snippet_try=try\n{\n\t^0^\b}\ncatch (const std::exception&)\n{\n}\n
 </pre>
     </p>
     <p>
@@ -51,7 +51,9 @@ snippet_try=try\n{\n}\ncatch (const std::exception&)\n{\n}\n
         The <code>snippet_</code> lines contain the code snippets. The part after
         the <code>_</code> char is the snippet trigger, and the value is
         the string/snippet to insert. The <code>^nTEXT^</code> marks an insert
-        point where e.g. a variable can be modified. The user can then tab through
+        point where e.g. a variable can be modified. The insert point 0 is special:
+        it marks the position where the cursor is placed after the snippet has
+        been inserted fully. So use 1...9 for the real insert points. The user can then tab through
         those insert points until the end. The <code>n</code> marks the number
         of the insertion point. See the <code>snippet_for</code> example above.
     </p>
