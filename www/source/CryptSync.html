@@ -48,6 +48,11 @@
     the same for both pairs.
     </p>
     <p>
+    Of course, you can use CryptSync for backups to an external drive
+    as well. You can even use CryptSync from a command line to trigger
+    your encrypted backups.
+    </p>
+    <p>
     CryptSync works by synchronizing folder pairs. One folder
     is called the <em>original</em> folder: that's where
     your unencrypted files are stored and where you work
@@ -61,7 +66,8 @@
     The encryption is done using the <a href="https://www.7-zip.org/sdk.html">LZMA SDK</a>,
     which also compress them at the same time. That means you
     not only get encryption but also compression for free,
-    which reduces the storage space you use in the cloud.</p>
+    which reduces the storage space you use in the cloud or the backup space
+    on your external harddrive.</p>
     <p>
     That also means that if you ever need to access your encrypted
     files directly from the cloud, you can save them locally
@@ -100,8 +106,8 @@
     </p>
     <section class="important">
     <h2>Long paths</h2>
-    <p>When encrypting the file and folder names, you have
-    to make sure that the original file and folder names
+    <p>When encrypting the file and folder names without the new filename encryptions,
+    you have to make sure that the original file and folder names
     are not longer than about 120 characters. Because
     encrypting those names approximately doubles their length,
     and Windows has a limit of 255 chars per file or folder name.</p>
@@ -131,54 +137,78 @@
         <dt>/src:"path"</dt>
         <dd>specifies the path to the source folder where the unencrypted
         files are located. This parameter is not optional!</dd>
+
         <dt>/dst:"path"</dt>
         <dd>specifies the path to the destination folder where the encrypted
         files are located. This parameter is not optional!</dd>
+
         <dt>/pw:"password"</dt>
         <dd>specifies the password used for the encryption</dd>
+
         <dt>/cpy:"pattern"</dt>
         <dd>file pattern of files that are copied only, not encrypted</dd>
+
         <dt>/nsy:"pattern"</dt>
         <dd>file pattern of files that are not synched at all</dd>
+
         <dt>/encnames</dt>
         <dd>if specified, the file and foldernames are also encrypted
         in the destination folder</dd>
+
+        <dt>/encnamesNew</dt>
+        <dd>if specified, the file and foldernames are also encrypted
+        in the destination folder with the new filename encryption</dd>
+
         <dt>/mirror</dt>
         <dd>if specified, the source folder is synched to the destination
         folder but changes in the destination folder are not synchronized
         back to the source folder</dd>
+
         <dt>/mirrorback</dt>
         <dd>if specified, the destination folder is synched back to the
         source folder, but changes in the source folder are not synchronized
         to the destination folder.</dd>
+
         <dt>/decryptonly</dt>
         <dd>like /mirrorback, but does not synchronize deletions.</dd>
+
         <dt>/use7z</dt>
         <dd>use .7z extension instead of .cryptsync</dd>
+
         <dt>/useGPG</dt>
         <dd>uses GnuPG for the encryption. Note: you have to install GnuPG yourself.</dd>
+
         <dt>/fat</dt>
         <dd>use FAT write time accuracy (2seconds)</dd>
+
         <dt>/ignore</dt>
         <dd>Sets the ignore pattern</dd>
 
         <dt>/ignore:"ignore|pattern"</dt>
         <dd>specifies the ignore patterns to use. If not specified,
         the ignore pattern that has been set before is used.</dd>
+
         <dt>/progress</dt>
         <dd>if specified, a progress dialog is shown during the synchronization</dd>
+
         <dt>/syncall</dt>
         <dd>syncs all set up folder pairs, then exits</dd>
+
         <dt>/logpath:"path"</dt>
         <dd>specifies the path to the log file</dd>
+
         <dt>/maxlog:nnn</dt>
         <dd>specifies the maximum number of lines the log file will grow to</dd>
+
         <dt>/tray</dt>
         <dd>starts CryptSync in background, no dialog is shown</dd>
+
         <dt>/ncp</dt>
         <dd>encrypt only/don't compress pattern</dd>
+
         <dt>/compresssize</dt>
         <dd>turn off compression for files bigger than this size in MB</dd>
+
         <dt>/nosyncdelete</dt>
         <dd>if specified, deletions are not synchronized. Only useful if also /mirror or /mirrorback is specified</dd>
     </dl>
