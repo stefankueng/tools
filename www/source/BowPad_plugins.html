@@ -238,6 +238,10 @@ BowPad.AddDocAutoCompleteWords(docId, words);
 BowPad.AddLangAutoCompleteWords(lang, words);
 // returns the path of the plugin itself
 var path = BowPad.PluginPath;
+// returns a string from the settings
+var value = BowPad.ReadSetting("mysettingkey");
+// writes a value to the settings
+BowPad.WriteSetting("mysettingkey", "valuetostore");
 
     </pre>
 
