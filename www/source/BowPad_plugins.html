@@ -134,6 +134,11 @@ BowPad.alert("message");
 // outputs the specified text to the debug output of an attached debugger
 // or tools like dbgView (https://technet.microsoft.com/en-us/sysinternals/bb896647.aspx)
 BowPad.debugprint("message");
+// returns the BowPad version
+var verString = BowPad.Version;
+var nMajor = BowPad.VersionMajor;
+var nMinor = BowPad.VersionMinor;
+var nMicro = BowPad.VersionMicro;
 // Sets the tab index at which the next new tab/document is inserted
 BowPad.SetInsertionIndex(int);
 // activates the tab at the specified index
