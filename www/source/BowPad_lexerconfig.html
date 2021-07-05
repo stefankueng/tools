@@ -140,6 +140,11 @@ CommentStreamEnd=--&gt;</pre>
         of the words are such statements.
     </p>
     <p>
+        The simple lexer also allows you to specify end-of-line annotations. These are
+        defined with a regex that has to match the whole line, and an annotation text for
+        that matching line.
+    </p>
+    <p>
         Here's a template for a custom style using the simple lexer:
 <pre class="prettyprint">
 [language]
@@ -202,6 +207,11 @@ Prop_inlineCommentStart=/*
 Prop_inlineCommentEnd=*/
 Prop_eol=\
 Prop_markedWords1=$
+
+ann00regex=^ci\d+(,\d+)*
+ann00text=draw a circle
+ann01regex=^mv\d+(,\d+)*
+ann01text=move to
 </pre>
     </p>
     <p>
