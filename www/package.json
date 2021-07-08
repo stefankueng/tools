@@ -34,13 +34,13 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-filerev": "^2.3.1",
     "grunt-gh-pages": "^4.0.0",
-    "grunt-html": "^14.4.1",
+    "grunt-html": "^14.4.2",
     "grunt-include-replace": "^5.0.0",
     "grunt-purgecss": "^4.0.3",
     "grunt-sitemap": "^2.0.1",
     "grunt-usemin": "^3.1.1",
     "load-grunt-tasks": "^5.1.0",
-    "postcss": "^8.3.2",
+    "postcss": "^8.3.5",
     "time-grunt": "^2.0.0"
   },
   "engines": {
