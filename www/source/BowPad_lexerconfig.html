@@ -54,8 +54,8 @@
         how many keyword sets a lexer provides? Unfortunately, that's not quite easy:
         you have to actually check the sourcecode of the lexer. In our case,
         the lexer that provides XML styling is the html-lexer, which you can find
-        <a href="https://github.com/stefankueng/BowPad/blob/main/ext/scintilla/lexers/LexHTML.cxx">here</a>.
-        The other lexers you might want to use are listed <a href="https://github.com/stefankueng/BowPad/blob/main/ext/scintilla/lexers">here</a>.
+        <a href="https://raw.githubusercontent.com/ScintillaOrg/lexilla/master/lexers/LexHTML.cxx">here</a>.
+        The other lexers you might want to use are listed <a href="https://github.com/ScintillaOrg/lexilla/tree/master/lexers">here</a>.
     </p>
     <p>
         The html lexer uses 7 keyword sets. But for styling xml files, only the first
@@ -102,14 +102,14 @@ CommentStreamEnd=--&gt;</pre>
         so you have to specify <code>Lexer=5</code> there.
     </p>
     <p>
-        You can find the value for the lexer in Scintillas <a href="https://github.com/stefankueng/BowPad/blob/main/ext/scintilla/include/SciLexer.h">SciLexer.h</a>
+        You can find the value for the lexer in Scintillas <a href="https://github.com/ScintillaOrg/lexilla/blob/master/include/SciLexer.h">SciLexer.h</a>
         file. The value for <code>SCLEX_XML</code> is defined as 5, so that's the
         value we have to use.
     </p>
     <p>
         Each lexer has a specific amount of color styles. They're numbered from
         0-n. Since the XML lexer is basically the HTML lexer, look for <code>SCE_HTML_</code>
-        in the <a href="https://github.com/stefankueng/BowPad/blob/main/ext/scintilla/include/SciLexer.h">SciLexer.h</a>
+        in the <a href="https://github.com/ScintillaOrg/lexilla/blob/master/include/SciLexer.h">SciLexer.h</a>
         file.
     </p>
     <p>
