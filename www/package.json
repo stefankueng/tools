@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@lodder/grunt-postcss": "^3.1.1",
+    "@lodder/time-grunt": "^4.0.0",
     "autoprefixer": "^10.4.0",
     "grunt": "^1.4.1",
     "grunt-contrib-clean": "^2.0.0",
@@ -40,8 +41,7 @@
     "grunt-sitemap": "^2.0.1",
     "grunt-usemin": "^3.1.1",
     "load-grunt-tasks": "^5.1.0",
-    "postcss": "^8.3.11",
-    "time-grunt": "^2.0.0"
+    "postcss": "^8.3.11"
   },
   "engines": {
     "node": ">=12"
