@@ -10,6 +10,7 @@ on:
 
 env:
   NODE: 16
+  FORCE_COLOR: 2
 
 defaults:
   run:
