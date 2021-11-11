@@ -9,7 +9,7 @@ on:
       - "www/**"
 
 env:
-  NODE: 14.x
+  NODE: 16
 
 defaults:
   run:
@@ -27,15 +27,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "${{ env.NODE }}"
-
-      - name: Set up npm cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-v${{ env.NODE }}-${{ hashFiles('www/package.json') }}-${{ hashFiles('www/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-v${{ env.NODE }}-${{ hashFiles('www/package.json') }}-${{ hashFiles('www/package-lock.json') }}
-            ${{ runner.os }}-node-v${{ env.NODE }}-
+          cache: npm
+          cache-dependency-path: www/package-lock.json
 
       - run: java -version
 
@@ -58,7 +51,8 @@ jobs:
     if: github.repository == 'stefankueng/tools' && github.ref == 'refs/heads/main'
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Clone repository
+        uses: actions/checkout@v2
 
       - name: Download files
         uses: actions/download-artifact@v2
