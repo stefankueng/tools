@@ -18,35 +18,32 @@
     "test": "grunt test"
   },
   "devDependencies": {
-    "@lodder/grunt-postcss": "^3.0.1",
-    "autoprefixer": "^10.3.1",
+    "@lodder/grunt-postcss": "^3.1.1",
+    "autoprefixer": "^10.4.0",
     "grunt": "^1.4.1",
     "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-concat": "^2.0.0",
     "grunt-contrib-connect": "^3.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-csslint": "^2.0.0",
     "grunt-contrib-cssmin": "^4.0.0",
     "grunt-contrib-htmlmin": "^3.1.0",
     "grunt-contrib-imagemin": "^4.0.0",
-    "grunt-contrib-jshint": "^3.0.0",
+    "grunt-contrib-jshint": "^3.1.1",
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-filerev": "^2.3.1",
     "grunt-gh-pages": "^4.0.0",
-    "grunt-html": "^14.4.2",
+    "grunt-html": "^15.1.0",
     "grunt-include-replace": "^5.0.0",
     "grunt-purgecss": "^4.0.3",
     "grunt-sitemap": "^2.0.1",
     "grunt-usemin": "^3.1.1",
     "load-grunt-tasks": "^5.1.0",
-    "postcss": "^8.3.6",
-    "time-grunt": "^2.0.0",
-    "nth-check": ">=2.0.1",
-    "semver-regex": ">=3.1.3",
-    "set-value": ">=4.0.1"
+    "postcss": "^8.3.11",
+    "time-grunt": "^2.0.0"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   }
 }
