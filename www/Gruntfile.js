@@ -182,67 +182,6 @@ module.exports = function(grunt) {
             }
         },
 
-        imagemin: {
-            dist: {
-                options: {
-                    progressive : true,
-                    optimizationLevel: 3,
-                    svgoPlugins: [
-                        { cleanupAttrs: true },
-                        { cleanupEnableBackground: true },
-                        { cleanupIDs: true },
-                        { cleanupListOfValues: true },
-                        { cleanupNumericValues: true },
-                        { collapseGroups: true },
-                        { convertColors: true },
-                        { convertPathData: true },
-                        { convertShapeToPath: true },
-                        { convertStyleToAttrs: true },
-                        { convertTransform: true },
-                        { inlineStyles: true },
-                        { mergePaths: true },
-                        { minifyStyles: true },
-                        { moveElemsAttrsToGroup: true },
-                        { moveGroupAttrsToElems: true },
-                        {
-                            removeAttrs: {
-                                attrs: 'data-name'
-                            }
-                        },
-                        { removeComments: true },
-                        { removeDesc: true },
-                        { removeDoctype: true },
-                        { removeEditorsNSData: true },
-                        { removeEmptyAttrs: true },
-                        { removeEmptyContainers: true },
-                        { removeEmptyText: true },
-                        { removeHiddenElems: true },
-                        { removeMetadata: true },
-                        { removeNonInheritableGroupAttrs: true },
-                        { removeTitle: true },
-                        {
-                            removeUnknownsAndDefaults: {
-                                keepRoleAttr: true
-                            }
-                        },
-                        { removeUnusedNS: true },
-                        { removeUselessDefs: true },
-                        { removeUselessStrokeAndFill: true },
-                        { removeViewBox: false },
-                        { removeXMLNS: false },
-                        { removeXMLProcInst: true },
-                        { sortAttrs: true }
-                    ]
-                },
-                files: [{
-                    expand: true,
-                    cwd: '<%= dirs.dest %>',
-                    src: ['**/*.{gif,jpg,jpeg,png,svg}'],
-                    dest: '<%= dirs.dest %>'
-                }]
-            }
-        },
-
         filerev: {
             css: {
                 src: '<%= dirs.dest %>/css/**/{,*/}*.css'
@@ -364,7 +303,6 @@ module.exports = function(grunt) {
         'copy',
         'includereplace',
         'sitemap',
-        'imagemin',
         'useminPrepare',
         'concat',
         'postcss',
