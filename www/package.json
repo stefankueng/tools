@@ -26,7 +26,6 @@
     "grunt-contrib-concat": "^2.0.0",
     "grunt-contrib-connect": "^3.0.0",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-csslint": "^2.0.0",
     "grunt-contrib-cssmin": "^4.0.0",
     "grunt-contrib-htmlmin": "^3.1.0",
     "grunt-contrib-jshint": "^3.1.1",
@@ -40,7 +39,7 @@
     "grunt-sitemap": "^2.0.1",
     "grunt-usemin": "^3.1.1",
     "load-grunt-tasks": "^5.1.0",
-    "postcss": "^8.3.11"
+    "postcss": "^8.4.1"
   },
   "engines": {
     "node": ">=12"

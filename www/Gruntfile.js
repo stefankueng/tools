@@ -238,26 +238,17 @@ module.exports = function(grunt) {
                 livereload: '<%= connect.options.livereload %>'
             },
             dev: {
-                files: ['<%= dirs.src %>/**', '.csslintrc', '.jshintrc', 'Gruntfile.js'],
+                files: ['<%= dirs.src %>/**', '.jshintrc', 'Gruntfile.js'],
                 tasks: 'dev'
             },
             build: {
-                files: ['<%= dirs.src %>/**', '.csslintrc', '.jshintrc', 'Gruntfile.js'],
+                files: ['<%= dirs.src %>/**', '.jshintrc', 'Gruntfile.js'],
                 tasks: 'build'
             }
         },
 
         clean: {
             dist: '<%= dirs.dest %>/'
-        },
-
-        csslint: {
-            options: {
-                csslintrc: '.csslintrc'
-            },
-            src: [
-                '<%= dirs.src %>/css/style.css'
-            ]
         },
 
         jshint: {
@@ -316,7 +307,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', [
         'build',
-        'csslint',
         'jshint',
         'htmllint'
     ]);
