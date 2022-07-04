@@ -1,6 +1,6 @@
 // StExBar - an explorer toolbar
 
-// Copyright (C) 2007-2015, 2017-2021 - Stefan Kueng
+// Copyright (C) 2007-2015, 2017-2022 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1312,8 +1312,9 @@ LRESULT CDeskBand::OnMove(LPARAM /*lParam*/)
 
 void CDeskBand::SetTheme()
 {
-    auto parent = ::GetParent(::GetParent(::GetParent(m_hwndParent)));
-    m_bDark     = (m_bCanHaveDarkMode && m_pIsDarkModeAllowedForWindow) ? m_pIsDarkModeAllowedForWindow(parent) : false;
+    auto parent = ::GetParent(::GetParent(m_hwndParent));
+    auto grandParent = ::GetParent(parent);
+    m_bDark          = (m_bCanHaveDarkMode && m_pIsDarkModeAllowedForWindow) ? (m_pIsDarkModeAllowedForWindow(parent) || m_pIsDarkModeAllowedForWindow(grandParent)) : false;
     if (m_pIsDarkModeAllowedForApp)
         m_bDark = m_bDark && m_pIsDarkModeAllowedForApp();
     //if (m_pShouldSystemUseDarkMode)
@@ -1337,7 +1338,18 @@ void CDeskBand::SetTheme()
     {
         // first set the AllowDarkModeForWindow() to true/false depending on mode
         // without this, the button texts stays black in dark mode
-        EnumChildWindows(m_hWnd, DarkChildProc, (LPARAM)this);
+        HWND    hDarkParent = m_hWnd;
+        wchar_t    cName[100];
+        if (GetClassName(parent, cName, 100))
+        {
+            if (wcscmp(cName, L"ShellTabWindowClass") == 0)
+            {
+                // Windows 11 explorer with tabs:
+                // try to set the menu to dark mode as well - doesn't work though...
+                hDarkParent = parent;
+            }
+        }
+        EnumChildWindows(hDarkParent, DarkChildProc, (LPARAM)this);
         if (m_bDark)
         {
             // set the themes for the controls:
