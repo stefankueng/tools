@@ -18,3 +18,4 @@ version.build
 /StExBar/src/version.h
 /www/dist/
 /SKTimeStamp/choco/*.nupkg
+/StExBar/_ReSharper.Caches
