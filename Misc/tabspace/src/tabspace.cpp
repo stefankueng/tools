@@ -1,6 +1,6 @@
 ﻿// tabspace - converts tabs to spaces and vice-versa in multiple files
 
-// Copyright (C) 2011-2013, 2017, 2021 - Stefan Kueng
+// Copyright (C) 2011-2013, 2017, 2021-2022 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,14 +27,16 @@
 #include <set>
 #include <algorithm>
 #include <cctype>
-#include <iostream>
 #include <io.h>
 #include <fcntl.h>
+#include <Shlwapi.h>
+
+#pragma comment(lib, "Shlwapi.lib")
 
 std::set<std::wstring> g_allowedPatterns;
 std::set<std::wstring> g_excludedPatterns;
 
-bool FileExtensionInPattern(const std::wstring& filepath)
+bool                   FileExtensionInPattern(const std::wstring& filepath)
 {
     std::wstring lowercasepath = filepath;
     std::transform(lowercasepath.begin(), lowercasepath.end(), lowercasepath.begin(), ::towlower);
@@ -73,15 +75,15 @@ int _tmain(int argc, _TCHAR* argv[])
     UNREFERENCED_PARAMETER(argc);
     UNREFERENCED_PARAMETER(argv);
     // options and their default values
-    bool         bCheckOnly            = false;
-    bool         bUseSpaces            = true;
-    int          tabsize               = 4;
-    bool         bRemoveEOLWhitespaces = true;
-    bool         bExtPatterns          = true;
-    bool         bCStyle               = false;
-    std::wstring filepattern           = L"c;cc;cpp;cs;cxx;h;hpp;hxx";
+    bool           bCheckOnly            = false;
+    bool           bUseSpaces            = true;
+    int            tabsize               = 4;
+    bool           bRemoveEOLWhitespaces = true;
+    bool           bExtPatterns          = true;
+    bool           bCStyle               = false;
+    std::wstring   filepattern           = L"c;cc;cpp;cs;cxx;h;hpp;hxx";
 
-    LPWSTR         lpCmdLine = GetCommandLine();
+    LPWSTR         lpCmdLine             = GetCommandLine();
     CCmdLineParser parser(lpCmdLine);
 
     if (parser.HasVal(L"unicode"))
@@ -92,7 +94,7 @@ int _tmain(int argc, _TCHAR* argv[])
         // print help text and get out
         _fputts(L"usage:\n", stdout);
         _fputts(L"tabspace [/path:\"path\\to\\check\"] [/checkonly] [/usetabs] [/tabsize:4] [/leaveeol] [/ext:\"extension;list\"]\n", stdout);
-        _fputts(L"/path      : the path to scan, defaults to the current directory\n", stdout);
+        _fputts(L"/path      : the path to scan (file or dir), defaults to the current directory\n", stdout);
         _fputts(L"/checkonly : if specified, the files are not modified but only an info is shown\n", stdout);
         _fputts(L"/usetabs   : convert spaces to tabs instead of tabs to spaces\n", stdout);
         _fputts(L"/tabsize   : specifies the tab size, defaults to 4\n", stdout);
@@ -162,7 +164,7 @@ int _tmain(int argc, _TCHAR* argv[])
         std::string::size_type lastPos = filepattern.find_first_not_of(L";", 0);
 
         // find first "non-delimiter".
-        std::string::size_type pos = filepattern.find_first_of(L";", lastPos);
+        std::string::size_type pos     = filepattern.find_first_of(L";", lastPos);
 
         while (std::string::npos != pos || std::string::npos != lastPos)
         {
@@ -177,7 +179,7 @@ int _tmain(int argc, _TCHAR* argv[])
             lastPos = filepattern.find_first_not_of(L";", pos);
 
             // find next "non-delimiter"
-            pos = filepattern.find_first_of(L";", lastPos);
+            pos     = filepattern.find_first_of(L";", lastPos);
         }
     }
     // split the file extension string into the extensions
@@ -190,7 +192,7 @@ int _tmain(int argc, _TCHAR* argv[])
             std::string::size_type lastPos = filepattern.find_first_not_of(L";", 0);
 
             // find first "non-delimiter".
-            std::string::size_type pos = filepattern.find_first_of(L";", lastPos);
+            std::string::size_type pos     = filepattern.find_first_of(L";", lastPos);
 
             while (std::string::npos != pos || std::string::npos != lastPos)
             {
@@ -203,47 +205,79 @@ int _tmain(int argc, _TCHAR* argv[])
                 lastPos = filepattern.find_first_not_of(L";", pos);
 
                 // find next "non-delimiter"
-                pos = filepattern.find_first_of(L";", lastPos);
+                pos     = filepattern.find_first_of(L";", lastPos);
             }
         }
     }
 
-    CDirFileEnum filelister((cwd));
-
-    std::wstring filepath;
-    bool         bIsDir = false;
-    while (filelister.NextFile(filepath, &bIsDir, true))
+    if (PathIsDirectory(cwd))
     {
-        if (!bIsDir)
-        {
-            if (!FileExtensionInPattern(filepath))
-                continue;
+        CDirFileEnum filelister((cwd));
 
-            CTextFile              file;
-            CTextFile::UnicodeType ut;
-            volatile LONG          cancelled = FALSE;
-            if (file.Load(filepath.c_str(), ut, false, &cancelled))
+        std::wstring filepath;
+        bool         bIsDir = false;
+        while (filelister.NextFile(filepath, &bIsDir, true))
+        {
+            if (!bIsDir)
             {
-                if (ConvertTabSpaces::Convert(file, bUseSpaces, tabsize, bCheckOnly, bCStyle))
+                if (!FileExtensionInPattern(filepath))
+                    continue;
+
+                CTextFile              file;
+                CTextFile::UnicodeType ut;
+                volatile LONG          cancelled = FALSE;
+                if (file.Load(filepath.c_str(), ut, false, &cancelled))
                 {
-                    // the file was modified, we have to reload it for the next conversion
-                    file.Save(filepath.c_str());
-                    file.Load(filepath.c_str(), ut, false, &cancelled);
-                }
-                if (bRemoveEOLWhitespaces)
-                {
-                    if (ConvertTabSpaces::RemoveEndSpaces(file, bCheckOnly))
+                    if (ConvertTabSpaces::Convert(file, bUseSpaces, tabsize, bCheckOnly, bCStyle))
                     {
+                        // the file was modified, we have to reload it for the next conversion
                         file.Save(filepath.c_str());
+                        file.Load(filepath.c_str(), ut, false, &cancelled);
+                    }
+                    if (bRemoveEOLWhitespaces)
+                    {
+                        if (ConvertTabSpaces::RemoveEndSpaces(file, bCheckOnly))
+                        {
+                            file.Save(filepath.c_str());
+                        }
                     }
                 }
+                else
+                {
+                    _fputts(L"error: could not load file '", stderr);
+                    _fputts(filepath.c_str(), stderr);
+                    _fputts(L"'\n", stderr);
+                }
             }
-            else
+        }
+    }
+    else
+    {
+        std::wstring           filepath = cwd;
+        CTextFile              file;
+        CTextFile::UnicodeType ut;
+        volatile LONG          cancelled = FALSE;
+        if (file.Load(filepath.c_str(), ut, false, &cancelled))
+        {
+            if (ConvertTabSpaces::Convert(file, bUseSpaces, tabsize, bCheckOnly, bCStyle))
             {
-                _fputts(L"error: could not load file '", stderr);
-                _fputts(filepath.c_str(), stderr);
-                _fputts(L"'\n", stderr);
+                // the file was modified, we have to reload it for the next conversion
+                file.Save(filepath.c_str());
+                file.Load(filepath.c_str(), ut, false, &cancelled);
             }
+            if (bRemoveEOLWhitespaces)
+            {
+                if (ConvertTabSpaces::RemoveEndSpaces(file, bCheckOnly))
+                {
+                    file.Save(filepath.c_str());
+                }
+            }
+        }
+        else
+        {
+            _fputts(L"error: could not load file '", stderr);
+            _fputts(filepath.c_str(), stderr);
+            _fputts(L"'\n", stderr);
         }
     }
 
