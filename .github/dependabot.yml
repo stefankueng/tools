@@ -3,9 +3,9 @@ updates:
   - package-ecosystem: "npm"
     directory: "/www"
     schedule:
-      interval: "montly"
+      interval: "monthly"
     versioning-strategy: increase
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "montly"
+      interval: "monthly"
