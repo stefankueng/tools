@@ -4,29 +4,19 @@
 <div class="content">
     <h2>Evernote2Onenote</h2>
 
-    <section class="important">
-        <h2>Microsoft import tool</h2>
-        <p>
-        Microsoft now has its own tool to import notes from Evernote into
-        Onenote. It works similar to Evernote2Onenote.
-        You can get Microsofts tool from
-        <a href="https://www.onenote.com/import-evernote-to-onenote">https://www.onenote.com/import-evernote-to-onenote</a>
-        </p>
-    </section>
-
     <p>Evernote2Onenote is a small tool to import
     <a href="https://evernote.com/">Evernote</a> notebooks to <a href="http://www.onenote.com/">Onenote</a>.
     </p>
     <img src="./img/Evernote2Onenote/Evernote2Onenote-dialog.png" alt="main dialog" width="537" height="180">
     <p>
-    Evernote2Onenote requires .NET Framework 4.6. You can get this via Windows
-    update or directly from <a href="https://www.microsoft.com/en-us/download/details.aspx?id=48130">here</a>.
+    Evernote2Onenote requires .NET Framework 4.8. You can get this via Windows
+    update or directly from <a href="https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-web-installer">here</a>.
     </p>
 
     <h3 id="details">Details: how it works</h3>
     <p>
-    Evernote2Onenote uses the Evernote script engine <code>ENScript.exe</code>
-    to export notes. These notes are parsed and then imported into Onenote.
+    You can export your Evernote notebooks as an ENEX file. This file is then used
+    by Evernote2Onenote to import those notebooks into Onenote.
     </p>
 
 </div>
@@ -37,8 +27,7 @@
 
     <h3>Prerequisites</h3>
     <p>
-    Evernote2Onenote requires that both Evernote and Onenote are installed.
-    Also, at least Onenote 2013 or 2016 is required.
+    Evernote2Onenote requires that Onenote is installed.
     </p>
     <section class="important">
         <h2>Desktop version</h2>
@@ -50,20 +39,11 @@
 
     <h3>How to use</h3>
     <p>
-    Start Evernote2Onenote, then select the notebook you want to import into
-    Onenote from the combobox. Then click the <code>Start import</code> button
-    and wait until the import is finished.
+    Start Evernote2Onenote, then select the the options you want for your import.
+    Usually the default options are good enough.
+    Then click the "Import ENEX file" button, select the exported notebook file from Evernote.
+    After that the import starts and imports all the notes into Onenote.
     </p>
-
-    <h3>Command line</h3>
-    <p>
-    To use Evernote2Onenote from a command line, you can specify the notebook
-    to import and the date from which on notes should be imported:
-    </p>
-<pre>
-Evernote2Onenote.exe NotebookName 01-01-2015
-</pre>
-    <p>If no date is specified, all notes are imported.</p>
 
     <section class="important">
         <h2>Evernote tags</h2>
@@ -81,11 +61,6 @@ Evernote2Onenote.exe NotebookName 01-01-2015
             import that enex file into the new notebook. And then of course
             only import that new notebook into Onenote.
         </p>
-        <h3>For the free version of Onenote:</h3>
-        <p>
-            The free version of Onenote has a few restrictions, so all
-            notes are imported to the unfiled/quicknotes section.
-        </p>
     </section>
 
     <h3 id="installation">Installation</h3>
@@ -95,19 +70,19 @@ Evernote2Onenote.exe NotebookName 01-01-2015
     <h3 id="reports">Report problems</h3>
     <p>
     In case you encounter a bug or some other problem, please file an
-    issue in the <a href="https://sourceforge.net/p/evimsync/tickets/?source=navbar">issue tracker</a>.
+    issue in the <a href="https://github.com/stefankueng/EvImSync/issues">issue tracker</a>.
     </p>
 
     <h3 id="download">Download</h3>
     <p>
-    Evernote2Onenote is open source (<a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3</a>). You can get the source code from
-    the SourceForge <a href="https://sourceforge.net/p/evimsync">project page</a>.
+    Evernote2Onenote is open source (<a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3</a>).
+    You can get the source code from the GitHub <a href="https://github.com/stefankueng/EvImSync">project page</a>.
     The source is in a subfolder for the EvImSync project since a lot of the code
     is similar to that project.
     </p>
     <p>
     If you just want the compiled application, get it from the
-    <a href="https://sourceforge.net/projects/evimsync/files/evernote2onenote/">download page</a>.
+    <a href="https://github.com/stefankueng/EvImSync/releases">download page</a>.
     </p>
 </div>
 </div>
