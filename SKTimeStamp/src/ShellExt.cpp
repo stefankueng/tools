@@ -119,14 +119,12 @@ HRESULT __stdcall CShellExt::Initialize(LPCITEMIDLIST /*pIDFolder*/,
                 UINT len = DragQueryFile(drop, i, nullptr, 0);
                 if (len == 0)
                     continue;
-                WCHAR *szFileName = new WCHAR[len + 1];
-                if (0 == DragQueryFile(drop, i, szFileName, len + 1))
+                auto szFileName = std::make_unique<WCHAR[]>(len + 1);
+                if (0 == DragQueryFile(drop, i, szFileName.get(), len + 1))
                 {
-                    delete[] szFileName;
                     continue;
                 }
-                std::wstring str = std::wstring(szFileName);
-                delete[] szFileName;
+                std::wstring str = std::wstring(szFileName.get());
                 if (str.empty() == false)
                 {
                     m_files.push_back(str);
