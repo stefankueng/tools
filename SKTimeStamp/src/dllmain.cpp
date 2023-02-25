@@ -69,7 +69,7 @@ STDAPI DllRegisterServer(void)
 {
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
-    TCHAR szModule[MAX_PATH * 4] = {0};
+    WCHAR szModule[MAX_PATH * 4] = {0};
     // Get this dll's path and file name.
     DWORD retval                 = GetModuleFileName(g_hmodThisDll, szModule, _countof(szModule));
     if (retval == NULL)
@@ -78,32 +78,32 @@ STDAPI DllRegisterServer(void)
         return SELFREG_E_CLASS;
     }
 
-    if (RegSetValue(HKEY_CLASSES_ROOT, _T("*\\shellex\\PropertySheetHandlers\\SKTimeStamp"), REG_SZ, _T(SKTIMESTAMP_GUID), static_cast<DWORD>(_tcslen(_T(SKTIMESTAMP_GUID))) * sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CLASSES_ROOT, L"*\\shellex\\PropertySheetHandlers\\SKTimeStamp", REG_SZ, SKTIMESTAMP_GUID, static_cast<DWORD>(wcslen(SKTIMESTAMP_GUID)) * sizeof(WCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (RegSetValue(HKEY_CLASSES_ROOT, _T("Directory\\shellex\\PropertySheetHandlers\\SKTimeStamp"), REG_SZ, _T(SKTIMESTAMP_GUID), static_cast<DWORD>(_tcslen(_T(SKTIMESTAMP_GUID))) * sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CLASSES_ROOT, L"Directory\\shellex\\PropertySheetHandlers\\SKTimeStamp", REG_SZ, SKTIMESTAMP_GUID, static_cast<DWORD>(wcslen(SKTIMESTAMP_GUID)) * sizeof(WCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID), REG_SZ, _T("SKTimeStamp"), static_cast<DWORD>(_tcslen(_T("SKTimeStamp"))) * sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CURRENT_USER, L"SOFTWARE\\Classes\\CLSID\\" SKTIMESTAMP_GUID, REG_SZ, L"SKTimeStamp", static_cast<DWORD>(wcslen(L"SKTimeStamp")) * sizeof(WCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID) _T("\\InProcServer32"), REG_SZ, szModule, static_cast<DWORD>(_tcslen(szModule)) * sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CURRENT_USER, L"SOFTWARE\\Classes\\CLSID\\" SKTIMESTAMP_GUID L"\\InProcServer32", REG_SZ, szModule, static_cast<DWORD>(wcslen(szModule)) * sizeof(WCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (SHSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID) _T("\\InProcServer32"), _T("ThreadingModel"), REG_SZ, _T("Apartment"), 20) != ERROR_SUCCESS)
+    if (SHSetValue(HKEY_CURRENT_USER, L"SOFTWARE\\Classes\\CLSID\\" SKTIMESTAMP_GUID L"\\InProcServer32", L"ThreadingModel", REG_SZ, const_cast<LPWSTR>(L"Apartment"), 20) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (SHSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Approved"), _T(SKTIMESTAMP_GUID), REG_SZ, _T("SKTimeStamp"), 24) != ERROR_SUCCESS)
+    if (SHSetValue(HKEY_CURRENT_USER, L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Approved", SKTIMESTAMP_GUID, REG_SZ, const_cast<LPWSTR>(L"SKTimeStamp"), 24) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
@@ -115,22 +115,22 @@ STDAPI DllRegisterServer(void)
 STDAPI DllUnregisterServer(void)
 {
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-    if (SHDeleteKey(HKEY_CLASSES_ROOT, _T("*\\shellex\\PropertySheetHandlers\\SKTimeStamp")) != ERROR_SUCCESS)
+    if (SHDeleteKey(HKEY_CLASSES_ROOT, L"*\\shellex\\PropertySheetHandlers\\SKTimeStamp") != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (SHDeleteKey(HKEY_CLASSES_ROOT, _T("Directory\\shellex\\PropertySheetHandlers\\SKTimeStamp")) != ERROR_SUCCESS)
+    if (SHDeleteKey(HKEY_CLASSES_ROOT, L"Directory\\shellex\\PropertySheetHandlers\\SKTimeStamp") != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (SHDeleteKey(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID)) != ERROR_SUCCESS)
+    if (SHDeleteKey(HKEY_CURRENT_USER, L"SOFTWARE\\Classes\\CLSID\\" SKTIMESTAMP_GUID) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (SHDeleteValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Approved"), _T(SKTIMESTAMP_GUID)) != ERROR_SUCCESS)
+    if (SHDeleteValue(HKEY_CURRENT_USER, L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Approved", SKTIMESTAMP_GUID) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;

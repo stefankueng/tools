@@ -119,7 +119,7 @@ HRESULT __stdcall CShellExt::Initialize(LPCITEMIDLIST /*pIDFolder*/,
                 UINT len = DragQueryFile(drop, i, nullptr, 0);
                 if (len == 0)
                     continue;
-                TCHAR *szFileName = new TCHAR[len + 1];
+                WCHAR *szFileName = new WCHAR[len + 1];
                 if (0 == DragQueryFile(drop, i, szFileName, len + 1))
                 {
                     delete[] szFileName;

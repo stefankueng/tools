@@ -47,7 +47,7 @@ STDMETHODIMP  CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage,
     psp.hInstance                 = g_hmodThisDll;
     psp.pszTemplate               = MAKEINTRESOURCE(IDD_PROPPAGE);
     // psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
-    psp.pszTitle                  = _T("TimeStamps");
+    psp.pszTitle                  = L"TimeStamps";
     psp.pfnDlgProc                = reinterpret_cast<DLGPROC>(PageProc);
     psp.lParam                    = reinterpret_cast<LPARAM>(sheetPage);
     psp.pfnCallback               = PropPageCallbackProc;
@@ -250,14 +250,14 @@ void CShellPropertyPage::InitWorkfileView()
     {
         // more than one file/folder selected, show only the number of
         // selected items as info text
-        TCHAR buf[50]  = {0};
-        TCHAR buf2[50] = {0};
+        WCHAR buf[50]  = {0};
+        WCHAR buf2[50] = {0};
         if (LoadString(g_hmodThisDll, IDS_FILEINFO, buf, _countof(buf)) == 0)
         {
             // load string failed, use hard coded string
-            _tcscpy_s(buf, _countof(buf), _T("Selected %ld files/folders"));
+            wcscpy_s(buf, _countof(buf), L"Selected %ld files/folders");
         }
-        _stprintf_s(buf2, _countof(buf2), buf, fileNames.size());
+        swprintf_s(buf2, _countof(buf2), buf, fileNames.size());
         SetDlgItemText(m_hwnd, IDC_FILEINFO, buf2);
     }
 }
@@ -313,21 +313,21 @@ void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteT
     {
         // could not set the dates for one or more files
         // show an error message
-        TCHAR buf[4096] = {0};
+        WCHAR buf[4096] = {0};
         if (LoadString(g_hmodThisDll, IDS_ERR_FILEDATES, buf, _countof(buf)) == 0)
         {
             // load string failed, use hard coded string
-            _tcscpy_s(buf, _countof(buf), _T("Could not set the date/time for the following files:"));
+            wcscpy_s(buf, _countof(buf), L"Could not set the date/time for the following files:");
         }
 
         std::wstringstream strMsg;
         strMsg << buf;
         for (std::vector<std::wstring>::iterator it = failedFiles.begin(); it != failedFiles.end(); ++it)
         {
-            strMsg << _T("\n\"") << it->c_str() << _T("\"");
+            strMsg << L"\n\"" << it->c_str() << L"\"";
         }
 
-        MessageBox(m_hwnd, strMsg.str().c_str(), _T("SKTimeStamp"), MB_ICONERROR);
+        MessageBox(m_hwnd, strMsg.str().c_str(), L"SKTimeStamp", MB_ICONERROR);
     }
 }
 
