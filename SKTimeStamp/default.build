@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <project name="SKTimeStamp" default="build">
   <!-- the signinfo.txt file has to contain one line with parameters for signtool.exe,
        for example:
@@ -50,6 +50,23 @@
       <arg value="/maxcpucount" />
     </exec>
 
+    <exec program="msbuild.exe" >
+      <arg value="SKTimeStamp.sln" />
+      <arg value="/t:Rebuild" />
+      <arg value="/p:Configuration=Debug" />
+      <arg value="/p:Platform=ARM64" />
+      <arg value="/verbosity:minimal" />
+      <arg value="/maxcpucount" />
+    </exec>
+    <exec program="msbuild.exe" >
+      <arg value="SKTimeStamp.sln" />
+      <arg value="/t:Rebuild" />
+      <arg value="/p:Configuration=Release" />
+      <arg value="/p:Platform=ARM64" />
+      <arg value="/verbosity:minimal" />
+      <arg value="/maxcpucount" />
+    </exec>
+
     <!-- sign all release binaries -->
     <if test="${file::exists('signinfo.txt')}">
       <exec program="signtool">
@@ -61,6 +78,11 @@
         <arg value="sign" />
         <arg value="${signinfo}" />
         <arg value="bin/SKTimeStamp/release_x64/SKTimeStamp.dll" />
+      </exec>
+      <exec program="signtool">
+        <arg value="sign" />
+        <arg value="${signinfo}" />
+        <arg value="bin/SKTimeStamp/release_ARM64/SKTimeStamp.dll" />
       </exec>
     </if>
 
@@ -97,6 +119,22 @@
       <arg value="bin\Setup64.wixobj" />
     </exec>
 
+    <exec program="candle">
+      <arg value="-nologo" />
+      <arg value="-out" />
+      <arg value="bin\" />
+      <arg value="src/setup/SetupARM64.wxs" />
+    </exec>
+    <exec program="light">
+      <arg value="-nologo" />
+      <arg value="-ext" />
+      <arg value="WixUIExtension" />
+      <arg value="-cultures:en-us" />
+      <arg value="-out" />
+      <arg value="bin\SKTimeStampARM64.msi" />
+      <arg value="bin\SetupARM64.wixobj" />
+    </exec>
+
     <delete>
       <fileset>
         <include name="bin\*.wixobj" />
@@ -104,6 +142,11 @@
       </fileset>
     </delete>
     <if test="${file::exists('signinfo.txt')}">
+      <exec program="signtool">
+        <arg value="sign" />
+        <arg value="${signinfo}" />
+        <arg value="bin\SKTimeStampARM64.msi" />
+      </exec>
       <exec program="signtool">
         <arg value="sign" />
         <arg value="${signinfo}" />
