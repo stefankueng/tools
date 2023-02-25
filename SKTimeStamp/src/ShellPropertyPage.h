@@ -51,7 +51,7 @@ protected:
      * Sets the dates on the selected files and folders.
      * If a filetime is zero, the original date of the file/folder is used, i.e., the filedate is not changed.
      */
-    void                      SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteTime, FILETIME ftLastAccessTime);
+    void                      SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteTime, FILETIME ftLastAccessTime) const;
 
     HWND                      m_hwnd;
     std::vector<std::wstring> fileNames;

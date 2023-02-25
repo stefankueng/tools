@@ -262,13 +262,13 @@ void CShellPropertyPage::InitWorkfileView()
     }
 }
 
-void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteTime, FILETIME ftLastAccessTime)
+void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteTime, FILETIME ftLastAccessTime) const
 {
     FILETIME                  ftLastWriteTime2, ftLastAccessTime2, ftCreationTime2;
     std::vector<std::wstring> failedFiles;
-    for (std::vector<std::wstring>::iterator it = fileNames.begin(); it != fileNames.end(); ++it)
+    for (const auto& fileName : fileNames)
     {
-        HANDLE hFile = CreateFile(it->c_str(), FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_READ_ATTRIBUTES | FILE_READ_EA, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+        HANDLE hFile = CreateFile(fileName.c_str(), FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_READ_ATTRIBUTES | FILE_READ_EA, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
         if (hFile != INVALID_HANDLE_VALUE)
         {
             if ((ftCreationTime.dwHighDateTime == 0 && ftCreationTime.dwLowDateTime == 0) ||
@@ -288,25 +288,25 @@ void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteT
                     if (ftLastWriteTime.dwHighDateTime == 0 && ftLastWriteTime.dwLowDateTime == 0)
                         ftLastWriteTime2 = fi.ftLastWriteTime;
                     if (SetFileTime(hFile, &ftCreationTime2, &ftLastAccessTime2, &ftLastWriteTime2) == FALSE)
-                        failedFiles.push_back(*it);
+                        failedFiles.push_back(fileName);
                 }
                 else
                 {
                     // could not open the file
-                    failedFiles.push_back(*it);
+                    failedFiles.push_back(fileName);
                 }
             }
             else
             {
                 if (SetFileTime(hFile, &ftCreationTime, &ftLastAccessTime, &ftLastWriteTime) == FALSE)
-                    failedFiles.push_back(*it);
+                    failedFiles.push_back(fileName);
             }
             CloseHandle(hFile);
         }
         else
         {
             // could not open the file
-            failedFiles.push_back(*it);
+            failedFiles.push_back(fileName);
         }
     }
     if (!failedFiles.empty())
@@ -322,9 +322,9 @@ void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteT
 
         std::wstringstream strMsg;
         strMsg << buf;
-        for (std::vector<std::wstring>::iterator it = failedFiles.begin(); it != failedFiles.end(); ++it)
+        for (const auto& failedFile : failedFiles)
         {
-            strMsg << L"\n\"" << it->c_str() << L"\"";
+            strMsg << L"\n\"" << failedFile.c_str() << L"\"";
         }
 
         MessageBox(m_hwnd, strMsg.str().c_str(), L"SKTimeStamp", MB_ICONERROR);
