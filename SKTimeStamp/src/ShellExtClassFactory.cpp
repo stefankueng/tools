@@ -1,6 +1,6 @@
-// SkTimeStamp - Change file dates easily, directly from explorer
+﻿// SkTimeStamp - Change file dates easily, directly from explorer
 
-// Copyright (C) 2012 - Stefan Kueng
+// Copyright (C) 2012, 2023 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 #include "ShellExt.h"
 #include "ShellExtClassFactory.h"
 
-
 CShellExtClassFactory::CShellExtClassFactory()
 {
     m_cRef = 0L;
@@ -33,16 +32,16 @@ CShellExtClassFactory::~CShellExtClassFactory()
     g_cRefThisDll--;
 }
 
-STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
-                                                   LPVOID FAR *ppv)
+HRESULT __stdcall CShellExtClassFactory::QueryInterface(REFIID      riid,
+                                                        LPVOID FAR *ppv)
 {
-    *ppv = NULL;
+    *ppv = nullptr;
 
     // Any interface on this object is the object pointer
 
     if (IsEqualIID(riid, IID_IUnknown) || IsEqualIID(riid, IID_IClassFactory))
     {
-        *ppv = (LPCLASSFACTORY)this;
+        *ppv = static_cast<LPCLASSFACTORY>(this);
 
         AddRef();
 
@@ -52,12 +51,12 @@ STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
     return E_NOINTERFACE;
 }
 
-STDMETHODIMP_(ULONG) CShellExtClassFactory::AddRef()
+ULONG __stdcall CShellExtClassFactory::AddRef()
 {
     return ++m_cRef;
 }
 
-STDMETHODIMP_(ULONG) CShellExtClassFactory::Release()
+ULONG __stdcall CShellExtClassFactory::Release()
 {
     if (--m_cRef)
         return m_cRef;
@@ -67,11 +66,11 @@ STDMETHODIMP_(ULONG) CShellExtClassFactory::Release()
     return 0L;
 }
 
-STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
-                                                   REFIID riid,
-                                                   LPVOID *ppvObj)
+HRESULT __stdcall CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
+                                                        REFIID    riid,
+                                                        LPVOID   *ppvObj)
 {
-    *ppvObj = NULL;
+    *ppvObj = nullptr;
 
     // Shell extensions typically don't support aggregation (inheritance)
 
@@ -82,16 +81,15 @@ STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
     // QueryInterface with IID_IShellExtInit--this is how shell extensions are
     // initialized.
 
-    CShellExt* pShellExt = new CShellExt();  //Create the CShellExt object
+    CShellExt *pShellExt = new CShellExt(); // Create the CShellExt object
 
-    if (NULL == pShellExt)
+    if (nullptr == pShellExt)
         return E_OUTOFMEMORY;
 
     return pShellExt->QueryInterface(riid, ppvObj);
 }
 
-
-STDMETHODIMP CShellExtClassFactory::LockServer(BOOL /*fLock*/)
+HRESULT __stdcall CShellExtClassFactory::LockServer(BOOL /*fLock*/)
 {
-    return E_NOTIMPL;
+    return static_cast<HRESULT>(0x80004001L);
 }

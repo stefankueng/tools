@@ -1,6 +1,6 @@
-// SkTimeStamp - Change file dates easily, directly from explorer
+﻿// SkTimeStamp - Change file dates easily, directly from explorer
 
-// Copyright (C) 2012 - Stefan Kueng
+// Copyright (C) 2012, 2023 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,8 +31,7 @@ CShellExt::CShellExt()
 
     INITCOMMONCONTROLSEX used = {
         sizeof(INITCOMMONCONTROLSEX),
-            ICC_DATE_CLASSES | ICC_WIN95_CLASSES | ICC_BAR_CLASSES | ICC_USEREX_CLASSES
-    };
+        ICC_DATE_CLASSES | ICC_WIN95_CLASSES | ICC_BAR_CLASSES | ICC_USEREX_CLASSES};
     InitCommonControlsEx(&used);
 }
 
@@ -41,17 +40,17 @@ CShellExt::~CShellExt()
     g_cRefThisDll--;
 }
 
-STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
+HRESULT __stdcall CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 {
-    *ppv = NULL;
+    *ppv = nullptr;
 
     if (IsEqualIID(riid, IID_IShellExtInit) || IsEqualIID(riid, IID_IUnknown))
     {
-        *ppv = (LPSHELLEXTINIT)this;
+        *ppv = static_cast<LPSHELLEXTINIT>(this);
     }
     else if (IsEqualIID(riid, IID_IShellPropSheetExt))
     {
-        *ppv = (LPSHELLPROPSHEETEXT)this;
+        *ppv = static_cast<LPSHELLPROPSHEETEXT>(this);
     }
     if (*ppv)
     {
@@ -63,12 +62,12 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
     return E_NOINTERFACE;
 }
 
-STDMETHODIMP_(ULONG) CShellExt::AddRef()
+ULONG __stdcall CShellExt::AddRef()
 {
     return ++m_cRef;
 }
 
-STDMETHODIMP_(ULONG) CShellExt::Release()
+ULONG __stdcall CShellExt::Release()
 {
     if (--m_cRef)
         return m_cRef;
@@ -79,63 +78,62 @@ STDMETHODIMP_(ULONG) CShellExt::Release()
 }
 
 // IShellExtInit
-STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST /*pIDFolder*/,
-                                   LPDATAOBJECT pDataObj,
-                                   HKEY /* hRegKey */)
+HRESULT __stdcall CShellExt::Initialize(LPCITEMIDLIST /*pIDFolder*/,
+                                        LPDATAOBJECT pDataObj,
+                                        HKEY /* hRegKey */)
 {
-    files_.clear();
+    m_files.clear();
     // get selected files/folders
     if (pDataObj)
     {
         STGMEDIUM medium;
         FORMATETC fmte = {CF_HDROP,
-            (DVTARGETDEVICE FAR *)NULL,
-            DVASPECT_CONTENT,
-            -1,
-            TYMED_HGLOBAL};
-        HRESULT hres = pDataObj->GetData(&fmte, &medium);
+                          static_cast<DVTARGETDEVICE *>(nullptr),
+                          DVASPECT_CONTENT,
+                          -1,
+                          TYMED_HGLOBAL};
+        HRESULT   hres = pDataObj->GetData(&fmte, &medium);
 
         if (SUCCEEDED(hres) && medium.hGlobal)
         {
-            FORMATETC etc = { CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
-            STGMEDIUM stg = { TYMED_HGLOBAL };
-            if ( FAILED( pDataObj->GetData ( &etc, &stg )))
+            FORMATETC etc = {CF_HDROP, nullptr, DVASPECT_CONTENT, -1, TYMED_HGLOBAL};
+            STGMEDIUM stg = {TYMED_HGLOBAL};
+            if (FAILED(pDataObj->GetData(&etc, &stg)))
             {
-                ReleaseStgMedium ( &medium );
+                ReleaseStgMedium(&medium);
                 return E_INVALIDARG;
             }
 
-
-            HDROP drop = (HDROP)GlobalLock(stg.hGlobal);
-            if ( NULL == drop )
+            HDROP drop = static_cast<HDROP>(GlobalLock(stg.hGlobal));
+            if (nullptr == drop)
             {
-                ReleaseStgMedium ( &stg );
-                ReleaseStgMedium ( &medium );
+                ReleaseStgMedium(&stg);
+                ReleaseStgMedium(&medium);
                 return E_INVALIDARG;
             }
 
-            int count = DragQueryFile(drop, (UINT)-1, NULL, 0);
-            for (int i = 0; i < count; i++)
+            int count = DragQueryFile(drop, static_cast<UINT>(-1), nullptr, 0);
+            for (int i = 0; i < count; ++i)
             {
                 // find the path length in chars
-                UINT len = DragQueryFile(drop, i, NULL, 0);
+                UINT len = DragQueryFile(drop, i, nullptr, 0);
                 if (len == 0)
                     continue;
-                TCHAR * szFileName = new TCHAR[len+1];
-                if (0 == DragQueryFile(drop, i, szFileName, len+1))
+                TCHAR *szFileName = new TCHAR[len + 1];
+                if (0 == DragQueryFile(drop, i, szFileName, len + 1))
                 {
-                    delete [] szFileName;
+                    delete[] szFileName;
                     continue;
                 }
                 std::wstring str = std::wstring(szFileName);
-                delete [] szFileName;
+                delete[] szFileName;
                 if (str.empty() == false)
                 {
-                    files_.push_back(str);
+                    m_files.push_back(str);
                 }
             }
-            GlobalUnlock ( drop );
-            ReleaseStgMedium ( &stg );
+            GlobalUnlock(drop);
+            ReleaseStgMedium(&stg);
         }
     }
 

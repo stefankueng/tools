@@ -1,6 +1,6 @@
-// SkTimeStamp - Change file dates easily, directly from explorer
+﻿// SkTimeStamp - Change file dates easily, directly from explorer
 
-// Copyright (C) 2012 - Stefan Kueng
+// Copyright (C) 2012, 2023 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,14 +33,14 @@ public:
 
     //@{
     /// IUnknown members
-    STDMETHODIMP         QueryInterface(REFIID, LPVOID FAR *);
-    STDMETHODIMP_(ULONG) AddRef();
-    STDMETHODIMP_(ULONG) Release();
+    HRESULT __stdcall QueryInterface(REFIID, LPVOID FAR *) override;
+    ULONG __stdcall AddRef() override;
+    ULONG __stdcall Release() override;
     //@}
 
     //@{
     /// IClassFactory members
-    STDMETHODIMP      CreateInstance(LPUNKNOWN, REFIID, LPVOID FAR *);
-    STDMETHODIMP      LockServer(BOOL);
+    HRESULT __stdcall CreateInstance(LPUNKNOWN, REFIID, LPVOID FAR *) override;
+    HRESULT __stdcall LockServer(BOOL) override;
     //@}
 };

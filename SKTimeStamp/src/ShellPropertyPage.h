@@ -1,6 +1,6 @@
-// SkTimeStamp - Change file dates easily, directly from explorer
+﻿// SkTimeStamp - Change file dates easily, directly from explorer
 
-// Copyright (C) 2012 - Stefan Kueng
+// Copyright (C) 2012, 2023 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 
 #include <vector>
 #include "ShellExt.h"
-
 
 /**
  * Displays and updates all controls on the property page. The property
@@ -47,13 +46,13 @@ protected:
     /**
      * Initializes the property page.
      */
-    virtual void InitWorkfileView();
+    virtual void              InitWorkfileView();
     /**
      * Sets the dates on the selected files and folders.
      * If a filetime is zero, the original date of the file/folder is used, i.e., the filedate is not changed.
      */
-    void SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteTime, FILETIME ftLastAccessTime);
+    void                      SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteTime, FILETIME ftLastAccessTime);
 
-    HWND m_hwnd;
-    std::vector<std::wstring> filenames;
+    HWND                      m_hwnd;
+    std::vector<std::wstring> fileNames;
 };

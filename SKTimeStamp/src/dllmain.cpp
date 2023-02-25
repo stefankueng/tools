@@ -1,6 +1,6 @@
-// SkTimeStamp - Change file dates easily, directly from explorer
+﻿// SkTimeStamp - Change file dates easily, directly from explorer
 
-// Copyright (C) 2012, 2015 - Stefan Kueng
+// Copyright (C) 2012, 2015, 2023 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,28 +21,26 @@
 #include "ShellExtClassFactory.h"
 #include <olectl.h>
 
-HINSTANCE   g_hmodThisDll = NULL;           ///< handle to this DLL itself.
-UINT        g_cRefThisDll = 0;              ///< reference count of this DLL.
-
+HINSTANCE              g_hmodThisDll = nullptr; ///< handle to this DLL itself.
+UINT                   g_cRefThisDll = 0;       ///< reference count of this DLL.
 
 extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance,
-                               DWORD dwReason,
+                               DWORD     dwReason,
                                LPVOID /*lpReserved*/)
 {
     switch (dwReason)
     {
-    case DLL_PROCESS_ATTACH:
-        // Extension DLL one-time initialization
-        g_hmodThisDll = hInstance;
-        break;
-    case DLL_THREAD_ATTACH:
-    case DLL_THREAD_DETACH:
-    case DLL_PROCESS_DETACH:
-        break;
+        case DLL_PROCESS_ATTACH:
+            // Extension DLL one-time initialization
+            g_hmodThisDll = hInstance;
+            break;
+        case DLL_THREAD_ATTACH:
+        case DLL_THREAD_DETACH:
+        case DLL_PROCESS_DETACH:
+            break;
     }
     return TRUE;
 }
-
 
 STDAPI DllCanUnloadNow(void)
 {
@@ -51,7 +49,7 @@ STDAPI DllCanUnloadNow(void)
 
 STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 {
-    *ppvOut = NULL;
+    *ppvOut = nullptr;
 
     if (IsEqualIID(rclsid, CLSID_SKTIMESTAMP))
     {
@@ -69,33 +67,33 @@ STDAPI DllInstall(__in BOOL /*bInstall*/, __in LPCWSTR /*pszCmdLine*/)
 
 STDAPI DllRegisterServer(void)
 {
-    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
-    TCHAR szModule[MAX_PATH*4] = {0};
+    TCHAR szModule[MAX_PATH * 4] = {0};
     // Get this dll's path and file name.
-    DWORD retval = GetModuleFileName(g_hmodThisDll, szModule, _countof(szModule));
+    DWORD retval                 = GetModuleFileName(g_hmodThisDll, szModule, _countof(szModule));
     if (retval == NULL)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
 
-    if (RegSetValue(HKEY_CLASSES_ROOT, _T("*\\shellex\\PropertySheetHandlers\\SKTimeStamp"), REG_SZ, _T(SKTIMESTAMP_GUID), (DWORD)_tcslen(_T(SKTIMESTAMP_GUID))*sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CLASSES_ROOT, _T("*\\shellex\\PropertySheetHandlers\\SKTimeStamp"), REG_SZ, _T(SKTIMESTAMP_GUID), static_cast<DWORD>(_tcslen(_T(SKTIMESTAMP_GUID))) * sizeof(TCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (RegSetValue(HKEY_CLASSES_ROOT, _T("Directory\\shellex\\PropertySheetHandlers\\SKTimeStamp"), REG_SZ, _T(SKTIMESTAMP_GUID), (DWORD)_tcslen(_T(SKTIMESTAMP_GUID))*sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CLASSES_ROOT, _T("Directory\\shellex\\PropertySheetHandlers\\SKTimeStamp"), REG_SZ, _T(SKTIMESTAMP_GUID), static_cast<DWORD>(_tcslen(_T(SKTIMESTAMP_GUID))) * sizeof(TCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID), REG_SZ, _T("SKTimeStamp"), (DWORD)_tcslen(_T("SKTimeStamp"))*sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID), REG_SZ, _T("SKTimeStamp"), static_cast<DWORD>(_tcslen(_T("SKTimeStamp"))) * sizeof(TCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
     }
-    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID) _T("\\InProcServer32"), REG_SZ, szModule, (DWORD)_tcslen(szModule)*sizeof(TCHAR)) != ERROR_SUCCESS)
+    if (RegSetValue(HKEY_CURRENT_USER, _T("SOFTWARE\\Classes\\CLSID\\") _T(SKTIMESTAMP_GUID) _T("\\InProcServer32"), REG_SZ, szModule, static_cast<DWORD>(_tcslen(szModule)) * sizeof(TCHAR)) != ERROR_SUCCESS)
     {
         CoUninitialize();
         return SELFREG_E_CLASS;
@@ -116,7 +114,7 @@ STDAPI DllRegisterServer(void)
 
 STDAPI DllUnregisterServer(void)
 {
-    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
     if (SHDeleteKey(HKEY_CLASSES_ROOT, _T("*\\shellex\\PropertySheetHandlers\\SKTimeStamp")) != ERROR_SUCCESS)
     {
         CoUninitialize();

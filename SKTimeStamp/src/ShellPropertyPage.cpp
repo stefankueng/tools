@@ -19,57 +19,55 @@
 #include "stdafx.h"
 
 #include "ShellPropertyPage.h"
-#include "ShellExt.h"
 #include <sstream>
+#include "ShellExt.h"
 
+#include "resource.h"
 
 // Nonmember function prototypes
-BOOL CALLBACK PageProc (HWND, UINT, WPARAM, LPARAM);
-UINT CALLBACK PropPageCallbackProc ( HWND hwnd, UINT uMsg, LPPROPSHEETPAGE ppsp );
+BOOL CALLBACK PageProc(HWND, UINT, WPARAM, LPARAM);
+UINT CALLBACK PropPageCallbackProc(HWND hwnd, UINT uMsg, LPPROPSHEETPAGE ppsp);
 // Misc utility functions.
-void ReadDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pFiletime);
-void SetDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, const FILETIME* pFiletime);
+void          readDtpCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pFiletime);
+void          setDtpCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, const FILETIME* pFiletime);
 
 // CShellExt member functions (needed for IShellPropSheetExt)
-STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
-    LPARAM lParam)
+STDMETHODIMP  CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage,
+                                  LPARAM               lParam)
 {
-    if (files_.empty())
+    if (m_files.empty())
         return NOERROR;
 
     PROPSHEETPAGE psp;
     SecureZeroMemory(&psp, sizeof(PROPSHEETPAGE));
-    HPROPSHEETPAGE hPage;
-    CShellPropertyPage *sheetpage = new CShellPropertyPage(files_);
+    CShellPropertyPage* sheetPage = new CShellPropertyPage(m_files);
 
-    psp.dwSize = sizeof (psp);
-    psp.dwFlags = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;
-    psp.hInstance = g_hmodThisDll;
-    psp.pszTemplate = MAKEINTRESOURCE(IDD_PROPPAGE);
-    //psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
-    psp.pszTitle = _T("TimeStamps");
-    psp.pfnDlgProc = (DLGPROC) PageProc;
-    psp.lParam = (LPARAM) sheetpage;
-    psp.pfnCallback = PropPageCallbackProc;
-    psp.pcRefParent = &g_cRefThisDll;
+    psp.dwSize                    = sizeof(psp);
+    psp.dwFlags                   = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;
+    psp.hInstance                 = g_hmodThisDll;
+    psp.pszTemplate               = MAKEINTRESOURCE(IDD_PROPPAGE);
+    // psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
+    psp.pszTitle                  = _T("TimeStamps");
+    psp.pfnDlgProc                = reinterpret_cast<DLGPROC>(PageProc);
+    psp.lParam                    = reinterpret_cast<LPARAM>(sheetPage);
+    psp.pfnCallback               = PropPageCallbackProc;
+    psp.pcRefParent               = &g_cRefThisDll;
 
-    hPage = CreatePropertySheetPage (&psp);
+    HPROPSHEETPAGE hPage          = CreatePropertySheetPage(&psp);
 
-    if (hPage != NULL)
+    if (hPage != nullptr)
     {
-        if (!lpfnAddPage (hPage, lParam))
+        if (!lpfnAddPage(hPage, lParam))
         {
-            delete sheetpage;
-            DestroyPropertySheetPage (hPage);
+            delete sheetPage;
+            DestroyPropertySheetPage(hPage);
         }
     }
 
     return NOERROR;
 }
 
-
-
-STDMETHODIMP CShellExt::ReplacePage (UINT /*uPageID*/, LPFNADDPROPSHEETPAGE /*lpfnReplaceWith*/, LPARAM /*lParam*/)
+STDMETHODIMP CShellExt::ReplacePage(UINT /*uPageID*/, LPFNADDPROPSHEETPAGE /*lpfnReplaceWith*/, LPARAM /*lParam*/)
 {
     return E_FAIL;
 }
@@ -77,48 +75,48 @@ STDMETHODIMP CShellExt::ReplacePage (UINT /*uPageID*/, LPFNADDPROPSHEETPAGE /*lp
 /////////////////////////////////////////////////////////////////////////////
 // Dialog procedures and other callback functions
 
-BOOL CALLBACK PageProc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+BOOL CALLBACK PageProc(HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
-    CShellPropertyPage * sheetpage;
+    CShellPropertyPage* sheetPage;
 
     if (uMessage == WM_INITDIALOG)
     {
-        sheetpage = (CShellPropertyPage*) ((LPPROPSHEETPAGE) lParam)->lParam;
-        SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) sheetpage);
-        sheetpage->SetHwnd(hwnd);
+        sheetPage = reinterpret_cast<CShellPropertyPage*>(reinterpret_cast<LPPROPSHEETPAGEW>(lParam)->lParam);
+        SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(sheetPage));
+        sheetPage->SetHwnd(hwnd);
     }
     else
     {
-        sheetpage = (CShellPropertyPage*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
+        sheetPage = reinterpret_cast<CShellPropertyPage*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
     }
 
-    if (sheetpage != 0L)
-        return sheetpage->PageProc(hwnd, uMessage, wParam, lParam);
+    if (sheetPage != nullptr)
+        return sheetPage->PageProc(hwnd, uMessage, wParam, lParam);
 
     return FALSE;
 }
 
-UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE ppsp )
+UINT CALLBACK PropPageCallbackProc(HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE ppsp)
 {
     // Delete the page before closing.
     if (PSPCB_RELEASE == uMsg)
     {
-        CShellPropertyPage* sheetpage = (CShellPropertyPage*) ppsp->lParam;
-        if (sheetpage != NULL)
-            delete sheetpage;
+        CShellPropertyPage* sheetPage = reinterpret_cast<CShellPropertyPage*>(ppsp->lParam);
+        if (sheetPage != nullptr)
+            delete sheetPage;
     }
     return 1;
 }
 
 // *********************** CShellPropertyPage *************************
 
-CShellPropertyPage::CShellPropertyPage(const std::vector<std::wstring> &newFilenames)
-    : filenames(newFilenames)
-    , m_hwnd(NULL)
+CShellPropertyPage::CShellPropertyPage(const std::vector<std::wstring>& newFilenames)
+    : m_hwnd(nullptr)
+    , fileNames(newFilenames)
 {
 }
 
-CShellPropertyPage::~CShellPropertyPage(void)
+CShellPropertyPage::~CShellPropertyPage()
 {
 }
 
@@ -127,29 +125,29 @@ void CShellPropertyPage::SetHwnd(HWND newHwnd)
     m_hwnd = newHwnd;
 }
 
-BOOL CShellPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LPARAM lParam)
+BOOL CShellPropertyPage::PageProc(HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
     switch (uMessage)
     {
-    case WM_INITDIALOG:
+        case WM_INITDIALOG:
         {
             InitWorkfileView();
             return TRUE;
         }
-    case WM_NOTIFY:
+        case WM_NOTIFY:
         {
-            LPNMHDR point = (LPNMHDR)lParam;
-            int code = point->code;
-            BOOL bRet = FALSE;
+            LPNMHDR point = reinterpret_cast<LPNMHDR>(lParam);
+            int     code  = point->code;
+            BOOL    bRet  = FALSE;
             switch (code)
             {
-            case PSN_APPLY:
+                case PSN_APPLY:
                 {
                     FILETIME ftLastWriteTime, ftLastAccessTime, ftCreationTime;
                     // Retrieve the dates/times from the DTP controls.
-                    ReadDTPCtrl(m_hwnd, IDC_DATECREATED, IDC_TIMECREATED, &ftCreationTime);
-                    ReadDTPCtrl(m_hwnd, IDC_DATEMODIFIED, IDC_TIMEMODIFIED, &ftLastWriteTime);
-                    ReadDTPCtrl(m_hwnd, IDC_DATEACCESSED, IDC_TIMEACCESSED, &ftLastAccessTime);
+                    readDtpCtrl(m_hwnd, IDC_DATECREATED, IDC_TIMECREATED, &ftCreationTime);
+                    readDtpCtrl(m_hwnd, IDC_DATEMODIFIED, IDC_TIMEMODIFIED, &ftLastWriteTime);
+                    readDtpCtrl(m_hwnd, IDC_DATEACCESSED, IDC_TIMEACCESSED, &ftLastAccessTime);
 
                     SetDates(ftCreationTime, ftLastWriteTime, ftLastAccessTime);
 
@@ -157,65 +155,63 @@ BOOL CShellPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, 
                     SetWindowLongPtr(m_hwnd, DWLP_MSGRESULT, PSNRET_NOERROR);
                 }
                 break;
-            case DTN_DATETIMECHANGE:
+                case DTN_DATETIMECHANGE:
                 {
                     // If the user changes any of the DTP controls, enable
                     // the Apply button.
-                    SYSTEMTIME st = {0};
-                    LRESULT res = SendDlgItemMessage(m_hwnd, IDC_DATECREATED, DTM_GETSYSTEMTIME, 0, (LPARAM)&st);
+                    SYSTEMTIME st  = {0};
+                    LRESULT    res = SendDlgItemMessage(m_hwnd, IDC_DATECREATED, DTM_GETSYSTEMTIME, 0, reinterpret_cast<LPARAM>(&st));
                     SendDlgItemMessage(m_hwnd, IDC_TIMECREATED, WM_ENABLE, res == GDT_VALID, 0);
-                    res = SendDlgItemMessage(m_hwnd, IDC_DATEACCESSED, DTM_GETSYSTEMTIME, 0, (LPARAM)&st);
+                    res = SendDlgItemMessage(m_hwnd, IDC_DATEACCESSED, DTM_GETSYSTEMTIME, 0, reinterpret_cast<LPARAM>(&st));
                     SendDlgItemMessage(m_hwnd, IDC_TIMEACCESSED, WM_ENABLE, res == GDT_VALID, 0);
-                    res = SendDlgItemMessage(m_hwnd, IDC_DATEMODIFIED, DTM_GETSYSTEMTIME, 0, (LPARAM)&st);
+                    res = SendDlgItemMessage(m_hwnd, IDC_DATEMODIFIED, DTM_GETSYSTEMTIME, 0, reinterpret_cast<LPARAM>(&st));
                     SendDlgItemMessage(m_hwnd, IDC_TIMEMODIFIED, WM_ENABLE, res == GDT_VALID, 0);
 
-                    SendMessage(GetParent(m_hwnd), PSM_CHANGED, (WPARAM)m_hwnd, 0);
+                    SendMessage(GetParent(m_hwnd), PSM_CHANGED, reinterpret_cast<WPARAM>(m_hwnd), 0);
                 }
                 break;
             }
             SetWindowLongPtr(m_hwnd, DWLP_MSGRESULT, FALSE);
             return bRet;
         }
-    case WM_DESTROY:
-        return TRUE;
+        case WM_DESTROY:
+            return TRUE;
 
-    case WM_COMMAND:
-        switch (HIWORD(wParam))
-        {
-        case BN_CLICKED:
-            if (LOWORD(wParam) == IDC_TOUCH)
+        case WM_COMMAND:
+            switch (HIWORD(wParam))
             {
-                FILETIME ftLocal;
-                FILETIME ftNULL = {0};
-                SYSTEMTIME st;
-                GetSystemTime(&st);
-                SystemTimeToFileTime(&st, &ftLocal);
-                // 'touch' means to set the last modification time to the current time
-                SetDates(ftNULL, ftLocal, ftNULL);
-                InitWorkfileView(); // update the controls
-                return TRUE;
+                case BN_CLICKED:
+                    if (LOWORD(wParam) == IDC_TOUCH)
+                    {
+                        FILETIME   ftLocal;
+                        FILETIME   ftNull = {0};
+                        SYSTEMTIME st;
+                        GetSystemTime(&st);
+                        SystemTimeToFileTime(&st, &ftLocal);
+                        // 'touch' means to set the last modification time to the current time
+                        SetDates(ftNull, ftLocal, ftNull);
+                        InitWorkfileView(); // update the controls
+                        return TRUE;
+                    }
+                    break;
             }
-            break;
-        }
     }
     return FALSE;
 }
 
 void CShellPropertyPage::InitWorkfileView()
 {
-    WIN32_FILE_ATTRIBUTE_DATA fdata = {0};
-    WIN32_FILE_ATTRIBUTE_DATA fdata2 = {0};
-    bool bValidCreate = true;
-    bool bValidWrite = true;
-    bool bValidAccessed = true;
+    WIN32_FILE_ATTRIBUTE_DATA fData          = {0};
+    bool                      bValidCreate   = true;
+    bool                      bValidWrite    = true;
+    bool                      bValidAccessed = true;
 
-    for (std::vector<std::wstring>::iterator it = filenames.begin(); it != filenames.end() && (bValidCreate || bValidWrite || bValidAccessed); ++it)
+    for (std::vector<std::wstring>::iterator it = fileNames.begin(); it != fileNames.end() && (bValidCreate || bValidWrite || bValidAccessed); ++it)
     {
-        fdata2 = fdata;
-        if (!GetFileAttributesEx(it->c_str(), GetFileExInfoStandard, &fdata))
+        if (!GetFileAttributesEx(it->c_str(), GetFileExInfoStandard, &fData))
         {
-            bValidCreate = false;
-            bValidWrite = false;
+            bValidCreate   = false;
+            bValidWrite    = false;
             bValidAccessed = false;
         }
         else
@@ -223,65 +219,65 @@ void CShellPropertyPage::InitWorkfileView()
     }
     if (bValidCreate)
     {
-        SetDTPCtrl(m_hwnd, IDC_DATECREATED, IDC_TIMECREATED, &fdata.ftCreationTime);
+        setDtpCtrl(m_hwnd, IDC_DATECREATED, IDC_TIMECREATED, &fData.ftCreationTime);
     }
     else
     {
-        SetDTPCtrl(m_hwnd, IDC_DATECREATED, IDC_TIMECREATED, 0);
+        setDtpCtrl(m_hwnd, IDC_DATECREATED, IDC_TIMECREATED, nullptr);
     }
     if (bValidWrite)
     {
-        SetDTPCtrl(m_hwnd, IDC_DATEMODIFIED, IDC_TIMEMODIFIED, &fdata.ftLastWriteTime);
+        setDtpCtrl(m_hwnd, IDC_DATEMODIFIED, IDC_TIMEMODIFIED, &fData.ftLastWriteTime);
     }
     else
     {
-        SetDTPCtrl(m_hwnd, IDC_DATEMODIFIED, IDC_TIMEMODIFIED, 0);
+        setDtpCtrl(m_hwnd, IDC_DATEMODIFIED, IDC_TIMEMODIFIED, nullptr);
     }
     if (bValidAccessed)
     {
-        SetDTPCtrl(m_hwnd, IDC_DATEACCESSED, IDC_TIMEACCESSED, &fdata.ftLastAccessTime);
+        setDtpCtrl(m_hwnd, IDC_DATEACCESSED, IDC_TIMEACCESSED, &fData.ftLastAccessTime);
     }
     else
     {
-        SetDTPCtrl(m_hwnd, IDC_DATEACCESSED, IDC_TIMEACCESSED, 0);
+        setDtpCtrl(m_hwnd, IDC_DATEACCESSED, IDC_TIMEACCESSED, nullptr);
     }
-    if (filenames.size() == 1)
+    if (fileNames.size() == 1)
     {
         // only one file/folder selected, show the full path
-        SetDlgItemText(m_hwnd, IDC_FILEINFO, filenames[0].c_str());
+        SetDlgItemText(m_hwnd, IDC_FILEINFO, fileNames[0].c_str());
     }
-    else if (filenames.size() > 1)
+    else if (fileNames.size() > 1)
     {
         // more than one file/folder selected, show only the number of
         // selected items as info text
-        TCHAR buf[50] = {0};
+        TCHAR buf[50]  = {0};
         TCHAR buf2[50] = {0};
         if (LoadString(g_hmodThisDll, IDS_FILEINFO, buf, _countof(buf)) == 0)
         {
             // load string failed, use hard coded string
             _tcscpy_s(buf, _countof(buf), _T("Selected %ld files/folders"));
         }
-        _stprintf_s(buf2, _countof(buf2), buf, filenames.size());
+        _stprintf_s(buf2, _countof(buf2), buf, fileNames.size());
         SetDlgItemText(m_hwnd, IDC_FILEINFO, buf2);
     }
 }
 
 void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteTime, FILETIME ftLastAccessTime)
 {
-    FILETIME ftLastWriteTime2, ftLastAccessTime2, ftCreationTime2;
+    FILETIME                  ftLastWriteTime2, ftLastAccessTime2, ftCreationTime2;
     std::vector<std::wstring> failedFiles;
-    for (std::vector<std::wstring>::iterator it = filenames.begin(); it != filenames.end(); ++it)
+    for (std::vector<std::wstring>::iterator it = fileNames.begin(); it != fileNames.end(); ++it)
     {
-        HANDLE hFile = CreateFile(it->c_str(), FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_READ_ATTRIBUTES | FILE_READ_EA, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
+        HANDLE hFile = CreateFile(it->c_str(), FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_READ_ATTRIBUTES | FILE_READ_EA, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
         if (hFile != INVALID_HANDLE_VALUE)
         {
             if ((ftCreationTime.dwHighDateTime == 0 && ftCreationTime.dwLowDateTime == 0) ||
                 (ftLastAccessTime.dwHighDateTime == 0 && ftLastAccessTime.dwLowDateTime == 0) ||
                 (ftLastWriteTime.dwHighDateTime == 0 && ftLastWriteTime.dwLowDateTime == 0))
             {
-                ftCreationTime2 = ftCreationTime;
-                ftLastAccessTime2 = ftLastAccessTime;
-                ftLastWriteTime2 = ftLastWriteTime;
+                ftCreationTime2               = ftCreationTime;
+                ftLastAccessTime2             = ftLastAccessTime;
+                ftLastWriteTime2              = ftLastWriteTime;
                 BY_HANDLE_FILE_INFORMATION fi = {0};
                 if (GetFileInformationByHandle(hFile, &fi))
                 {
@@ -335,16 +331,16 @@ void CShellPropertyPage::SetDates(FILETIME ftCreationTime, FILETIME ftLastWriteT
     }
 }
 
-void ReadDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pFiletime)
+void readDtpCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pFiletime)
 {
     SYSTEMTIME st = {0}, stDate = {0}, stTime = {0}, stAdjusted = {0};
 
     pFiletime->dwHighDateTime = 0;
-    pFiletime->dwLowDateTime = 0;
+    pFiletime->dwLowDateTime  = 0;
 
-    if (SendDlgItemMessage(hwnd, idcDatePicker, DTM_GETSYSTEMTIME, 0, (LPARAM)&stDate) != GDT_VALID)
+    if (SendDlgItemMessage(hwnd, idcDatePicker, DTM_GETSYSTEMTIME, 0, reinterpret_cast<LPARAM>(&stDate)) != GDT_VALID)
         return;
-    if (SendDlgItemMessage(hwnd, idcTimePicker, DTM_GETSYSTEMTIME, 0, (LPARAM)&stTime) != GDT_VALID)
+    if (SendDlgItemMessage(hwnd, idcTimePicker, DTM_GETSYSTEMTIME, 0, reinterpret_cast<LPARAM>(&stTime)) != GDT_VALID)
         return;
 
     st.wMonth  = stDate.wMonth;
@@ -354,26 +350,25 @@ void ReadDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, FILETIME* pF
     st.wMinute = stTime.wMinute;
     st.wSecond = stTime.wSecond;
 
-    TzSpecificLocalTimeToSystemTime (NULL, &st, &stAdjusted);
+    TzSpecificLocalTimeToSystemTime(nullptr, &st, &stAdjusted);
     SystemTimeToFileTime(&stAdjusted, pFiletime);
 }
 
-
-void SetDTPCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, const FILETIME* pFiletime)
+void setDtpCtrl(HWND hwnd, UINT idcDatePicker, UINT idcTimePicker, const FILETIME* pFiletime)
 {
-    SYSTEMTIME st, sttemp;
-    DWORD flag = GDT_VALID;
+    SYSTEMTIME st, stTemp;
+    DWORD      flag = GDT_VALID;
     if (pFiletime)
     {
-        FileTimeToSystemTime(pFiletime, &sttemp);
-        SystemTimeToTzSpecificLocalTime(NULL, &sttemp, &st);
+        FileTimeToSystemTime(pFiletime, &stTemp);
+        SystemTimeToTzSpecificLocalTime(nullptr, &stTemp, &st);
     }
     else
     {
         flag = GDT_NONE;
     }
 
-    SendDlgItemMessage(hwnd, idcDatePicker, DTM_SETSYSTEMTIME, flag, (LPARAM)&st);
-    SendDlgItemMessage(hwnd, idcTimePicker, DTM_SETSYSTEMTIME, 0, (LPARAM)&st);
+    SendDlgItemMessage(hwnd, idcDatePicker, DTM_SETSYSTEMTIME, flag, reinterpret_cast<LPARAM>(&st));
+    SendDlgItemMessage(hwnd, idcTimePicker, DTM_SETSYSTEMTIME, 0, reinterpret_cast<LPARAM>(&st));
     SendDlgItemMessage(hwnd, idcTimePicker, WM_ENABLE, flag == GDT_VALID, 0);
 }
