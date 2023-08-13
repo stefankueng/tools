@@ -27,7 +27,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set Node.js version
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "${{ env.NODE }}"
