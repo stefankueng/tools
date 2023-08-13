@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  NODE: 16
+  NODE: 18
   FORCE_COLOR: 2
 
 defaults:
