@@ -2,163 +2,169 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tools.stefankueng.com/AAClr.html</loc>
-    <lastmod>2023-09-01T05:51:06.148Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.822Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/about.html</loc>
-    <lastmod>2023-09-01T05:51:06.152Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.822Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/BowPad_history.html</loc>
-    <lastmod>2023-09-01T05:51:06.152Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.826Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/BowPad_lexerconfig.html</loc>
-    <lastmod>2023-09-01T05:51:06.160Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.826Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/BowPad_plugins.html</loc>
-    <lastmod>2023-09-01T05:51:06.160Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.826Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/BowPad_translate.html</loc>
-    <lastmod>2023-09-01T05:51:06.164Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.830Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/BowPad.html</loc>
-    <lastmod>2023-09-01T05:51:06.164Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.830Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/CommitMonitor.html</loc>
-    <lastmod>2023-09-01T05:51:06.168Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.830Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/CryptSync.html</loc>
-    <lastmod>2023-09-01T05:51:06.168Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.834Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/DemoHelper.html</loc>
-    <lastmod>2023-09-01T05:51:06.168Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.834Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/donate.html</loc>
-    <lastmod>2023-09-01T05:51:06.168Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.834Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/Evernote2Onenote.html</loc>
-    <lastmod>2023-09-01T05:51:06.172Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.842Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/EvImSync.html</loc>
-    <lastmod>2023-09-01T05:51:06.172Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.842Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/FavIconizer.html</loc>
-    <lastmod>2023-09-01T05:51:06.172Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.846Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/FileTool.html</loc>
-    <lastmod>2023-09-01T05:51:06.172Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.846Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/grepWin_cmd.html</loc>
-    <lastmod>2023-09-01T05:51:06.176Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.846Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/grepWin.html</loc>
-    <lastmod>2023-09-01T05:51:06.176Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.846Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/</loc>
-    <lastmod>2023-09-01T05:51:06.176Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.850Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/index.zh.html</loc>
-    <lastmod>2023-09-01T05:51:06.180Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.850Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/MailNoter.html</loc>
-    <lastmod>2023-09-01T05:51:06.180Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.850Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tools.stefankueng.com/privacy.html</loc>
+    <lastmod>2023-09-06T13:14:40.850Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/regexhelp.html</loc>
-    <lastmod>2023-09-01T05:51:06.180Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.854Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/SendMessage.html</loc>
-    <lastmod>2023-09-01T05:51:06.180Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.854Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/SKTimeStamp.html</loc>
-    <lastmod>2023-09-01T05:51:06.180Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.858Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/StExBar.html</loc>
-    <lastmod>2023-09-01T05:51:06.184Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.858Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/svnrobots.html</loc>
-    <lastmod>2023-09-01T05:51:06.184Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.858Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/tabspace.html</loc>
-    <lastmod>2023-09-01T05:51:06.184Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.858Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tools.stefankueng.com/trafficWatcher.html</loc>
-    <lastmod>2023-09-01T05:51:06.184Z</lastmod>
+    <lastmod>2023-09-06T13:14:40.862Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
