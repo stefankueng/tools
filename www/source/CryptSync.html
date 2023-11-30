@@ -134,6 +134,9 @@
     <p>CryptSync can also be used from the command line. The following
     options are available:</p>
     <dl>
+        <dt>/help</dt>
+        <dd>shows a dialog with the command line options</dd>
+        
         <dt>/src:"path"</dt>
         <dd>specifies the path to the source folder where the unencrypted
         files are located. This parameter is not optional!</dd>
@@ -151,9 +154,15 @@
         <dt>/nsy:"pattern"</dt>
         <dd>file pattern of files that are not synched at all</dd>
 
+        <dt>/encnamesNew</dt>
+        <dd>if specified, the file and foldernames are also encrypted
+        using the new algorithm in the destination folder</dd>
+        
         <dt>/encnames</dt>
         <dd>if specified, the file and foldernames are also encrypted
-        in the destination folder</dd>
+        in the destination folder. This uses an old algorithm for encrypting
+        the filenames which can lead to exceeding the path length limit of Windows.
+        You should use <em>/encnamesNew</em> instead</dd>
 
         <dt>/encnamesNew</dt>
         <dd>if specified, the file and foldernames are also encrypted
@@ -209,9 +218,21 @@
         <dt>/compresssize</dt>
         <dd>turn off compression for files bigger than this size in MB</dd>
 
-        <dt>/nosyncdelete</dt>
+        <dt>/nosyncdeleted</dt>
         <dd>if specified, deletions are not synchronized. Only useful if also /mirror or /mirrorback is specified</dd>
+        
+        <dt>/resetarchiveattr</dt>
+        <dd>reset archive attribute on original after succsssful encryption or copy</dd>
     </dl>
+    <p>
+    The %ERRORLEVEL% is set to a bitmask on return, or zero on success:
+    <ul>
+        <li>1: cancelled</li>
+        <li>2: access denied</li>
+        <li>4: en/decryption error</li>
+        <li>8: copy error</li>
+    </ul>
+    </p>
 
 @@include("_includes/adsense_inpage.html")
 
