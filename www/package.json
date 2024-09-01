@@ -34,7 +34,7 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-filerev": "^2.3.1",
     "grunt-gh-pages": "^4.0.0",
-    "grunt-html": "^17.0.0",
+    "grunt-html": "^17.0.1",
     "grunt-include-replace": "^5.0.0",
     "grunt-purgecss": "^6.0.0",
     "grunt-sitemap": "^2.0.1",
