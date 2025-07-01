@@ -40,7 +40,7 @@
     "grunt-sitemap": "^2.0.1",
     "grunt-usemin": "^3.1.1",
     "load-grunt-tasks": "^5.1.0",
-    "postcss": "^8.5.4"
+    "postcss": "^8.5.6"
   },
   "engines": {
     "node": ">=14"
