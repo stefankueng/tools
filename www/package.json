@@ -21,7 +21,7 @@
   "devDependencies": {
     "@lodder/grunt-postcss": "^3.1.1",
     "@lodder/time-grunt": "^4.0.0",
-    "autoprefixer": "^10.4.21",
+    "autoprefixer": "^10.4.23",
     "grunt": "^1.6.1",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-concat": "^2.1.0",
@@ -34,7 +34,7 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-filerev": "^2.3.1",
     "grunt-gh-pages": "^4.0.0",
-    "grunt-html": "^17.1.0",
+    "grunt-html": "^18.0.2",
     "grunt-include-replace": "^5.0.0",
     "grunt-purgecss": "^7.0.2",
     "grunt-sitemap": "^2.0.1",
