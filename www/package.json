@@ -36,7 +36,7 @@
     "grunt-gh-pages": "^4.0.0",
     "grunt-html": "^18.0.2",
     "grunt-include-replace": "^5.0.0",
-    "grunt-purgecss": "^7.0.2",
+    "grunt-purgecss": "^8.0.0",
     "grunt-sitemap": "^2.0.1",
     "grunt-usemin": "^3.1.1",
     "load-grunt-tasks": "^5.1.0",
