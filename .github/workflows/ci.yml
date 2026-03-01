@@ -43,7 +43,7 @@ jobs:
         run: npm test
 
       - name: Upload files
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: success() && github.repository == 'stefankueng/tools' && github.ref == 'refs/heads/main'
         with:
           name: www
